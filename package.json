@@ -1,0 +1,34 @@
+{
+  "name": "cheap",
+  "version": "0.0.1",
+  "description": "一个多线程和高性能 wasm 开发库",
+  "sideEffects": [
+    "./heap.ts",
+    "./thread/initClass.ts",
+    "./thread/initFunction.ts",
+    "./thread/initModule.ts",
+    "./webassembly/runThread.ts"
+  ],
+  "directories": {
+    "src": "src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhaohappy/cheap.git"
+  },
+  "scripts": {
+    "test-transformer": "jest --verbose"
+  },
+  "author": "Gaoxing Zhao",
+  "license": "MIT",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^23.3.14",
+    "@types/node": "^10.5.5",
+    "cross-env": "^7.0.3",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^5.2.2",
+    "yargs": "^13.3.0"
+  }
+}
