@@ -407,6 +407,7 @@ declare function unmake<T extends Object>(target: T): void
 
 /**
  * 申请大小为 size 字节的内存
+ * 分配的地址以 8 字节对齐
  * 
  * @param size 
  */

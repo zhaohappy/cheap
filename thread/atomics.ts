@@ -20,7 +20,7 @@ export type AtomicType2Shift<T> =
                     : never
 
 /**
- * 给定的值加到数组里的某个特定位置上
+ * 给定的值加到指定位置上
  * 
  * 返回该位置的旧值
  *
@@ -28,7 +28,7 @@ export type AtomicType2Shift<T> =
 export let add: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
- * 给定的值与数组里的某个特定位置上的值相减
+ * 给定的值与指定位置上的值相减
  * 
  * 返回该位置的旧值
  *
@@ -36,7 +36,7 @@ export let add: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
 export let sub: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行与运算
+ * 给定的值与指定位置上的值进行与运算
  * 
  * 返回该位置的旧值
  *
@@ -44,7 +44,7 @@ export let sub: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
 export let and: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行或运算
+ * 给定的值与指定位置上的值进行或运算
  * 
  * 返回该位置的旧值
  *
@@ -52,7 +52,7 @@ export let and: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
 export let or: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行异或运算
+ * 给定的值与指定位置上的值进行异或运算
  * 
  * 返回该位置的旧值
  *
@@ -96,7 +96,7 @@ export let exchange: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(add
 
 
 /**
- * 唤醒等待队列中正在数组指定位置的元素上等待的线程。返回值为成功唤醒的线程数量。
+ * 唤醒等待队列中正在指定位置上等待的线程。返回值为成功唤醒的线程数量。
  * 
  * 返回被唤醒的代理的数量 0 将不会唤醒任何线程
  *
