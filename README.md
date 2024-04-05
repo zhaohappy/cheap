@@ -566,7 +566,7 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 ### 一些建议
 
 - 设计上应该尽量少使用 struct 做数据结构、只在需要在多个线程之间传递和 js 和 wasm 之间传递时使用 struct，其他时候应该使用 js 对象。
-- 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以在主线程上也能运行。
+- 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以回退到在主线程上也能运行。
 - 目前有一个项目[libmedia](https://github.com/zhaohappy/libmedia) 使用 cheap 进行开发，如果你想学习 cheap 如何用来开发，可以参考这个项目的使用方法和设计模式。
 
 ### 注意
@@ -578,4 +578,5 @@ cheap 目前尚未在生产环境使用，可能存在一些 bug，请谨慎使�
 [MIT](https://opensource.org/licenses/MIT)
 
 版权所有 (C) 2024-现在 赵高兴
+
 Copyright (C) 2024-present, Gaoxing Zhao
