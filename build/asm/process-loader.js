@@ -68,8 +68,15 @@ async function runTask(cmd, source, input, output) {
 module.exports = function(source) {
     let callback = this.async();
     try {
-        const inputPath = `${this.query.tmpPath ? `${this.query.tmpPath}/` : ''}${input}`;
-        const outputPath = `${this.query.tmpPath ? `${this.query.tmpPath}/` : ''}${output}`;
+
+        const distPath = `${this.query.tmpPath ? `${this.query.tmpPath}/` : ''}`;
+
+        if (distPath && !fs.existsSync(distPath)) {
+            fs.mkdirSync(distPath, { recursive: true });
+        }
+
+        const inputPath = `${distPath}${input}`;
+        const outputPath = `${distPath}${output}`;
 
         const pthreadEnable = enablePthread(this.loaders);
         const cmd = `${this.query.wat2wasm} ${inputPath} ${enableSimd(this.loaders) ? '--enable-simd' : ''} ${pthreadEnable ? '--enable-threads' : ''} -o ${outputPath}`;
