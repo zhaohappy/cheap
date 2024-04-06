@@ -811,10 +811,6 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
               exp
             ]
           )
-          sourceType = 'int32'
-        }
-        // int32 -> bigint
-        if (array.has(BuiltinNumber, sourceType)) {
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createIdentifier('BigInt'),
             undefined,
@@ -822,7 +818,25 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
               exp
             ]
           )
-          sourceType = array.has(BuiltinUint, sourceType) ? 'uint64' : 'int65'
+          sourceType = 'int64'
+        }
+        // int32 uint32 -> bigint
+        if (array.has(BuiltinNumber, sourceType)) {
+          if (!array.has(BuiltinUint, sourceType)) {
+            exp = statement.context.factory.createBinaryExpression(
+              exp,
+              ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+              statement.context.factory.createNumericLiteral(0)
+            )
+          }
+          exp = statement.context.factory.createCallExpression(
+            statement.context.factory.createIdentifier('BigInt'),
+            undefined,
+            [
+              exp
+            ]
+          )
+          sourceType = 'uint64'
         }
 
         if (array.has(BuiltinUint, sourceType) && !array.has(BuiltinUint, targetType) && sourceBytes === 8) {
