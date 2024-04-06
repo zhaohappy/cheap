@@ -1,7 +1,7 @@
 
 ### 介绍
 
-cheap 是一个用于多线程和高性能 WebAssembly 程序的开发库
+cheap 是一个用于 Web 平台多线程和高性能 WebAssembly 程序开发的工具库
 
 
 ### 使用
@@ -503,6 +503,7 @@ function compareExchange<T extends atomictype>(
   expectedValue: AtomicType2Type<T>,
   replacementValue: AtomicType2Type<T>
 ): AtomicType2Type<T>
+
 /**
  * 将指定位置的元素更新为给定的值，并返回该元素更新前的值。
  * 
@@ -580,7 +581,7 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 
 cheap 目前还在研发阶段，尚未在生产环境使用，可能存在一些 bug，请谨慎使用。
 
-目前测试过的 wasm 模块都是从 emscripten 编译而来，cheap 中的 wasm runtime 也是针对 C/C++ 的，其他语言如 Rust 编译来的可能需要自己追加一些导入函数。至于其他带有 GC 的语言不能使用。
+目前测试过的 wasm 模块都是从 emscripten 编译而来，cheap 中的 wasm runtime 也是针对 C/C++ 的，其他语言如 Rust 编译来的可能需要自己追加一些导入函数。至于其他带有 GC 的语言则不能使用。
 
 ### 开源协议
 

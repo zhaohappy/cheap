@@ -257,7 +257,7 @@ export default class WebAssemblyRunner {
 
           /**
            * postMessage 并不是同步的，而是在事件循环中处理的
-           * 因此父线程不能被阻塞在当前的时间片中，否则子线程无法成功运行
+           * 因此父线程不能被阻塞在当前的事件循环中，否则子线程无法成功运行
            * 只有 childReadyPromises 中的 Promise 都 resolve 了之后才能阻塞
            */
           worker.postMessage({
