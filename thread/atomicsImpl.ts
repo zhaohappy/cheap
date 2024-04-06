@@ -11,7 +11,7 @@ let getAtomicsBuffer: (type: atomictype) => AtomicsBuffer
 const useAtomics = config.USE_THREADS || isWorker() || (!browser.chrome || browser.checkVersion(browser.majorVersion, '94', true))
 
 /**
- * 给定的值加到数组里的某个特定位置上
+ * 给定的值加到指定位置上
  * 
  * 返回该位置的旧值
  *
@@ -31,7 +31,7 @@ function add<T extends atomictype>(address: pointer<T>, value: AtomicType2Type<T
 }
 
 /**
- * 给定的值与数组里的某个特定位置上的值相减
+ * 给定的值与指定位置上的值相减
  * 
  * 返回该位置的旧值
  *
@@ -51,7 +51,7 @@ function sub<T extends atomictype>(address: pointer<T>, value: AtomicType2Type<T
 }
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行与运算
+ * 给定的值与指定位置上的值进行与运算
  * 
  * 返回该位置的旧值
  *
@@ -71,7 +71,7 @@ function and<T extends atomictype>(address: pointer<T>, value: AtomicType2Type<T
 }
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行或运算
+ * 给定的值与指定位置上的值进行或运算
  * 
  * 返回该位置的旧值
  *
@@ -91,7 +91,7 @@ function or<T extends atomictype>(address: pointer<T>, value: AtomicType2Type<T>
 }
 
 /**
- * 给定的值与数组里的某个特定位置上的值进行异或运算
+ * 给定的值与指定位置上的值进行异或运算
  * 
  * 返回该位置的旧值
  *
@@ -150,7 +150,7 @@ function load<T extends atomictype>(address: pointer<T>, type?: T, shift?: uint3
 }
 
 /**
- * 如果数组中指定的元素与给定的值相等，则将其更新为新的值，并返回该元素原先的值
+ * 如果指定位置的值与给定的值相等，则将其更新为新的值，并返回该位置原先的值
  * 
  * 返回该位置的旧值
  *
@@ -183,7 +183,7 @@ function compareExchange<T extends atomictype>(
 }
 
 /**
- * 将数组中指定的元素更新为给定的值，并返回该元素更新前的值。
+ * 将指定位置的值更新为给定的值，并返回该位置更新前的值。
  * 
  * 返回该位置的旧值
  *
@@ -203,7 +203,7 @@ function exchange<T extends atomictype>(address: pointer<T>, value: AtomicType2T
 }
 
 /**
- * 唤醒等待队列中正在数组指定位置的元素上等待的线程。返回值为成功唤醒的线程数量。
+ * 唤醒等待队列中正在指定位置上等待的线程。返回值为成功唤醒的线程数量。
  * 
  * 返回被唤醒的代理的数量
  *
@@ -219,12 +219,11 @@ function notify(address: pointer<atomic_int32>, count: uint32): uint32 {
 }
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
  * 
  * 0 "ok"、1 "not-equal" 或 2 "timed-out"
  *
  */
-
 const waitMap: Record<'ok' | 'not-equal' | 'timed-out', 0 | 1 | 2> = {
   'ok': 0,
   'not-equal': 1,
@@ -237,7 +236,7 @@ function wait(address: pointer<atomic_int32>, value: int32): 0 | 1 | 2 {
 }
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
  * 
  * 0 "ok"、1 "not-equal" 或 2 "time-out"
  *
@@ -247,6 +246,12 @@ function waitTimeout(address: pointer<atomic_int32>, value: int32, timeout: int3
   return waitMap[Atomics.wait(getAtomicsBuffer(atomic_int32) as Int32Array, address >>> 2, value, timeout)]
 }
 
+/**
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
+ * 
+ * 0 "ok"、1 "not-equal" 或 2 "timed-out"
+ *
+ */
 async function waitAsync(address: pointer<atomic_int32>, value: int32): Promise<0 | 1 | 2> {
 
   assert(address, 'Out Of Bounds, address: 0')
@@ -265,7 +270,7 @@ async function waitAsync(address: pointer<atomic_int32>, value: int32): Promise<
     }
     else {
       while (static_cast<int32>(load(address)) === value) {
-        // 跳过当前时间片
+        // 跳过当前事件循环
         await new Promise<void>((resolve) => {
           nextTick(() => {
             resolve()
@@ -277,6 +282,12 @@ async function waitAsync(address: pointer<atomic_int32>, value: int32): Promise<
   }
 }
 
+/**
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 
+ * 0 "ok"、1 "not-equal" 或 2 "time-out"
+ *
+ */
 async function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout: int32): Promise<0 | 1 | 2> {
 
   assert(address, 'Out Of Bounds, address: 0')
@@ -297,14 +308,14 @@ async function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, ti
       const now = getTimestamp()
 
       while (static_cast<int32>(load(address)) === value && (getTimestamp() - now < timeout)) {
-        // 跳过当前时间片
+        // 跳过当前事件循环
         await new Promise<void>((resolve) => {
           nextTick(() => {
             resolve()
           })
         })
       }
-      return static_cast<int32>(load(address)) !== value ? 0 : 2
+      return load(address) !== value ? 0 : 2
     }
   }
 }

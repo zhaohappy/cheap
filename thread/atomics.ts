@@ -76,7 +76,7 @@ export let store: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(addres
 export let load: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>) => AtomicType2Type<T>
 
 /**
- * 如果数组中指定的元素与给定的值相等，则将其更新为新的值，并返回该元素原先的值
+ * 如果指定位置的值与给定的值相等，则将其更新为新的值，并返回该元素原先的值
  * 
  * 返回该位置的旧值
  *
@@ -87,7 +87,7 @@ export let compareExchange: <T extends atomictype, args = [T, AtomicType2Shift<T
   replacementValue: AtomicType2Type<T>
 ) => AtomicType2Type<T>
 /**
- * 将数组中指定的元素更新为给定的值，并返回该元素更新前的值。
+ * 将指定位置的值更新为给定的值，并返回该元素更新前的值。
  * 
  * 返回该位置的旧值
  *
@@ -104,7 +104,7 @@ export let exchange: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(add
 export let notify: (address: pointer<atomic_int32>, count: uint32) => uint32
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
  * 
  * 0 "ok"、1 "not-equal"
  *
@@ -112,7 +112,7 @@ export let notify: (address: pointer<atomic_int32>, count: uint32) => uint32
 export let wait: (address: pointer<atomic_int32>, value: int32) => 0 | 1 | 2
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时（毫秒）
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时（毫秒）
  * 
  * 0 "ok"、1 "not-equal" 或 2 "time-out"
  *
@@ -120,14 +120,18 @@ export let wait: (address: pointer<atomic_int32>, value: int32) => 0 | 1 | 2
 export let waitTimeout: (address: pointer<atomic_int32>, value: int32, timeout: int32) => 0 | 1 | 2
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
+ * 
+ * 异步非阻塞，适合在主线程上使用
  * 
  * 0 "ok"、1 "not-equal"
  *
  */
 export let waitAsync: (address: pointer<atomic_int32>, value: int32) => Promise<0 | 1 | 2>
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 
+ * 异步非阻塞，适合在主线程上使用
  * 
  * 0 "ok"、1 "not-equal" 或 2 "time-out"
  *

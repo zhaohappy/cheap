@@ -36,7 +36,7 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
 ```
 
 ```tsconfig.json``` 中添加配置，将 cheap 和 common 目录下面的代码包括进工程
-```json
+```Javascript
 {
   "paths": {
     ...
@@ -79,7 +79,7 @@ cheap 从如何让 js 和 wasm 之间更好的进行数据传递（特别是复�
 3. 使用 typescript transformer api 编写一个插件来在编译期间对 ts 代码中的指针访问编译成函数调用
 4. 创建 worker 时将当前线程的全局 Heap 传递到创建的 worker 中，并初始化相关配置（这种情况下的 Heap 一定是在 SharedArrayBuffer 之上的）得到多线程数据共享的环境。这要求 Allocator 是要线程安全的。各个线程分配内存由各自线程的 Allocator 负责，它们都在同一个内存上进行分配
 
-如此 wasm 的所有内存在 Heap 中，每个 js worker 分配的内存在 Heap 中，就可以让所有地方都实现了数据共享。
+如此 wasm 的所有内存在 Heap 中，每个 js worker 分配的内存在 Heap 中，就可以让所有地方都实现了数据共享，wasm 和 wasm 之间是共享的，worker 和 worker 之间是共享的，js 和 wasm 之间是共享的。
 
 ### API
 
@@ -89,6 +89,7 @@ cheap 从如何让 js 和 wasm 之间更好的进行数据传递（特别是复�
 
 | 类型 | 描述 |
 |----------|----------|
+| char | 8 位无符号数，标记 C 中的字符串指针
 | uint8 | 8 位无符号数
 | int8 |8 位有符号数
 | uint16|16 位无符号数
@@ -98,8 +99,8 @@ cheap 从如何让 js 和 wasm 之间更好的进行数据传递（特别是复�
 | uint64| 64 位无符号数
 | int64| 64 位有符号数
 | float| 32 位浮点数
-| double| 64 位浮点数
-| pointer| 指针
+| double、float64| 64 位浮点数
+| pointer\<T>| 指针
 
 
 ##### struct 定义
@@ -263,7 +264,6 @@ function sizeof(type: any): size
  * - 任意 builtin 基本类型之间转换，只做编译时类型转换，运行时可能不安全（需要自己确保安全）
  *   - int8 -> int32 是安全的， int64 -> int32 是不安全的
  *   - uint8 -> int16 是安全的，uint8 -> int8 可能是不安全的
- *   
  */
 function reinterpret_cast<T extends (anyptr | BuiltinType)>(target: anyptr | BuiltinType): T
 
@@ -273,14 +273,18 @@ function reinterpret_cast<T extends (anyptr | BuiltinType)>(target: anyptr | Bui
  * uin8 -> int8 => a >> 0
  * int8 -> uint8 => a >>> 0
  * uint32 -> int8 => (a & 0xff) >> 0
- * int16 -> uint64 => BigInt.asUintN(64, BigInt(a))
+ * int16 -> uint64 =>  BigInt(a >>> 0)
  * uint64 -> int32 => Number(a & 0xffffffffn) >> 0
  * uint64 -> int16 => (Number(a & 0xffffn) & 0x80000) ? -(0x10000 - Number(a & 0xffffn)) : Number(a & 0xffffn)
+ * double -> int64 => BigInt(Math.floor(a))
+ * float -> int32 => Math.floor(a)
  */
 function static_cast<T extends BuiltinType>(target: BuiltinType): T
 
 /**
  * 断言
+ * debug 模式下打开控制台在断言处触发会在此暂停
+ * release 模式下会把断言语句去掉
  * 
  * @param condition 条件
  * @param msg 当断言失败时打印的错误消息
@@ -517,7 +521,7 @@ function exchange<T extends atomictype>(address: pointer<T>, value: AtomicType2T
 function notify(address: pointer<atomic_int32>, count: uint32): uint32
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
  * 
  * 0 "ok"、1 "not-equal"
  *
@@ -525,7 +529,7 @@ function notify(address: pointer<atomic_int32>, count: uint32): uint32
 function wait(address: pointer<atomic_int32>, value: int32): 0 | 1 | 2
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时（毫秒）
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时（毫秒）
  * 
  * 0 "ok"、1 "not-equal" 或 2 "time-out"
  *
@@ -533,14 +537,16 @@ function wait(address: pointer<atomic_int32>, value: int32): 0 | 1 | 2
 function waitTimeout(address: pointer<atomic_int32>, value: int32, timeout: int32): 0 | 1 | 2
 
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒
+ * 异步非阻塞，适合在主线程上使用
  * 
  * 0 "ok"、1 "not-equal"
  *
  */
 function waitAsync(address: pointer<atomic_int32>, value: int32): Promise<0 | 1 | 2>
 /**
- * 检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 检测指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时
+ * 异步非阻塞，适合在主线程上使用
  * 
  * 0 "ok"、1 "not-equal" 或 2 "time-out"
  *
@@ -557,6 +563,7 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 
 信号量在 cheap/thread/semaphore.ts 中定义
 
+
 ##### wasm 模块中使用多线程
 
 在 C/C++ 中使用 cheap/include 下面的 wasmatomic.h 来做原子操作，
@@ -566,12 +573,14 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 ### 一些建议
 
 - 设计上应该尽量少使用 struct 做数据结构、只在需要在多个线程之间传递和 js 和 wasm 之间传递时使用 struct，其他时候应该使用 js 对象。
-- 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以回退到在主线程上也能运行。
+- 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以回退到在主线程上也能运行（兼容问题是 Web 无法避开的）；并且这样写会让多线程写法变得更简单，你只需要去关注那些需要在不同线程间流转的数据的同步问题，这样的数据用引用计数就可以很好的管理其生命周期，其他时候都可以和写我们熟悉的方式的单线程的 JavaScript 一样。
 - 目前有一个项目[libmedia](https://github.com/zhaohappy/libmedia) 使用 cheap 进行开发，如果你想学习 cheap 如何用来开发，可以参考这个项目的使用方法和设计模式。
 
 ### 注意
 
-cheap 目前尚未在生产环境使用，可能存在一些 bug，请谨慎使用。
+cheap 目前还在研发阶段，尚未在生产环境使用，可能存在一些 bug，请谨慎使用。
+
+目前测试过的 wasm 模块都是从 emscripten 编译而来，cheap 中的 wasm runtime 也是针对 C/C++ 的，其他语言如 Rust 编译来的可能需要自己追加一些导入函数。至于其他带有 GC 的语言不能使用。
 
 ### 开源协议
 
