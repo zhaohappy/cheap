@@ -59,11 +59,12 @@ export class WebassemblyTable {
     const node = this.nodes[p]
 
     if (node.length > count) {
-      this.nodes.splice(p, 0, {
+      this.nodes.splice(p + 1, 0, {
         pointer: node.pointer + count,
         length: node.length - count,
         free: true
       })
+      node.length = count
     }
 
     node.free = false
