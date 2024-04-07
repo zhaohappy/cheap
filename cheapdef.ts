@@ -132,7 +132,7 @@ declare const __LINE__: number
 // 当前文件
 declare const __FILE__: string
 
-declare const nullptr: anyptr
+declare const nullptr: nullptr
 
 declare const typeptr: pointer<void>
 
@@ -219,6 +219,13 @@ declare type pointer<T> =
   & number
 
 declare type anyptr = {
+  zzzlevel__?: any
+  zzztype__?: any
+  indexOf?: (index: uint32) => any
+  [index: number]: any
+} & number
+
+declare type nullptr = {
   zzzlevel__?: any
   zzztype__?: any
   indexOf?: (index: uint32) => any
@@ -356,7 +363,7 @@ declare function inline(...args: any[]): any
 /**
  * 标记为可编译成同步函数
  */
-declare function synchronize(...args: any[]): any
+declare function deasync(...args: any[]): any
 
 declare type defined<T extends string> = `defined(${T})`
 

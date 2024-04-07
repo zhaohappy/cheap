@@ -20,7 +20,7 @@ describe('unary', () => {
   test('function', () => {
     const source = `
       // @ts-ignore
-      @synchronize
+      @deasync
       async function a() {
 
       }
@@ -51,7 +51,7 @@ describe('unary', () => {
       async function a() {
 
       }
-      @synchronize
+      @deasync
       async function b() {
         while (true) {
           await a()
@@ -81,7 +81,7 @@ describe('unary', () => {
   test('class', () => {
     const source = `
       class A {
-        @synchronize
+        @deasync
         async a() {
 
         }
@@ -113,7 +113,7 @@ describe('unary', () => {
   test('xx.class', () => {
     const source = `
       class A {
-        @synchronize
+        @deasync
         async a() {
 
         }
@@ -151,7 +151,7 @@ describe('unary', () => {
     const source = `
       abstract class A {
         // @ts-ignore
-        @synchronize
+        @deasync
         abstract a(): Promise<void>
       }
       class B extends A {

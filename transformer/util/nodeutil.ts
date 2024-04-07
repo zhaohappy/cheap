@@ -367,7 +367,7 @@ export function isSynchronizeFunction(node: ts.FunctionDeclaration | ts.Function
       const modifier = node.modifiers[i]
       if (ts.isDecorator(modifier)
         && ts.isIdentifier(modifier.expression)
-        && modifier.expression.escapedText === constant.csynchronize
+        && modifier.expression.escapedText === constant.cdeasync
       ) {
         return true
       }

@@ -115,7 +115,7 @@ class MyStruct {
   b: uint32
   // 指向 uint8 类型的指针
   c: pointer<uint8>
-  // 类型为 int32，大小位 8 的数组
+  // 类型为 int32，大小为 8 的数组
   d: array<int32, 8>
   // 类型为 int32 的二维数组
   e: array<array<int32, 8>, 8>
@@ -178,8 +178,28 @@ myStructPointer.b = 1
 // 取值
 console.log(myStructPointer.b)
 
+// pa 的类型为 pointer<int8>
+// 等于 C 中的 int8* pa = &myStructPointer->a
+const pa = addressof(myStructPointer.a)
+// 等于 C 中的 int8 va = *pa
+const va = accessof(pa)
+
+// 等于 C 中的 *va = (int8)34
+// 由于 js 中函数调用不能是左值，所以加了个  <- 语法
+// 但是有个小瑕疵如果两边类型是结构体 ts 会报错，需要用 @ts-ignore 忽略一下
+accessof(pa) <- static_cast<int8>(34)
+
+// 指针可以自增自减，两个类型一样的指针可以相减，规则和 C 一样
+pa++
+pa--
+
+// 指针可以当成数组取下标
+// 等于 accessof(pa + 3)
+const aa = pa[3]
+
 // 回收内存 
 free(myStructPointer)
+// nullptr 为空指针定义
 myStructPointer = nullptr
 
 

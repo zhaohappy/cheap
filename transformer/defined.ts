@@ -55,7 +55,7 @@ export const BuiltinDecorator = [
   constant.carray,
   constant.cbitField,
   constant.cinline,
-  constant.csynchronize
+  constant.cdeasync
 ]
 
 export const AtomicCall = [

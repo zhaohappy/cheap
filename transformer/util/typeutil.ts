@@ -174,6 +174,13 @@ export function isArrayType(type: ts.Type) {
     && type.aliasTypeArguments[1]?.isNumberLiteral()
 }
 
+export function isNullPointer(type: ts.Type) {
+  if (type.aliasSymbol) {
+    return type.aliasSymbol.escapedName === constant.typeNullptr
+  }
+  return false
+}
+
 export function isMultiPointer(type: ts.Type) {
   if (type.aliasSymbol) {
     return type.aliasSymbol.escapedName === constant.typeMultiPointer

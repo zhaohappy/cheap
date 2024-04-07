@@ -120,7 +120,7 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
       const type1 = statement.typeChecker.getTypeAtLocation(node.left)
       const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand)
 
-      if (typeUtils.isTypeEquals(type1, type2)) {
+      if (typeUtils.isTypeEquals(type1, type2) || typeUtils.isPointerType(type1) && typeUtils.isNullPointer(type2)) {
 
         let left = ts.visitNode(statement.context.factory.createCallExpression(
           statement.context.factory.createIdentifier(constant.addressof),
