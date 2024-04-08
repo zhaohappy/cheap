@@ -1,11 +1,16 @@
 import { SELF } from 'common/util/constant'
 
-export default function init(run: (...args: any[]) => any) {
+let parentPort = SELF
+if (defined(ENV_NODE)) {
+  const { parentPort: parentPort_ } = require('worker_threads')
+  parentPort = parentPort_
+}
 
+export default function init(run: (...args: any[]) => any) {
   let retval: any
 
-  SELF.onmessage = (message) => {
-    const origin = message.data
+  const handler = (message: MessageEvent<any>) => {
+    const origin = defined(ENV_NODE) ? message : message.data
     const type = origin.type
     const data = origin.data
 
@@ -13,20 +18,19 @@ export default function init(run: (...args: any[]) => any) {
       case 'init':
         if (SELF.CHeap && SELF.CHeap.initThread) {
           SELF.CHeap.initThread(data).then(() => {
-            SELF.postMessage({
+            parentPort.postMessage({
               type: 'ready'
             })
           })
           return
         }
 
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'ready'
         })
         break
       case 'run':
-
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'running'
         })
 
@@ -36,22 +40,31 @@ export default function init(run: (...args: any[]) => any) {
       case 'stop':
 
         if (retval && retval.then) {
-          retval.then((res) => {
-            SELF.postMessage({
+          retval.then((res: any) => {
+            parentPort.postMessage({
               type: 'stopped',
               data: res
             })
           })
         }
         else {
-          SELF.postMessage({
+          parentPort.postMessage({
             type: 'stopped',
             data: retval
           })
         }
         break
       default:
+        console.log('default')
         break
     }
+  }
+
+  if (defined(ENV_NODE)) {
+    // @ts-ignore
+    parentPort.on('message', handler)
+  }
+  else {
+    parentPort.onmessage = handler
   }
 }

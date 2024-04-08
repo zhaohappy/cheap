@@ -1,9 +1,23 @@
 import { RemoveNeverProperties } from 'common/types/advanced'
 import IPCPort from 'common/network/IPCPort'
+import NodeIPCPort from 'common/network/NodeIPCPort'
 import { Memory } from '../heap'
 import sourceLoad from 'common/function/sourceLoad'
 import * as config from '../config'
 import * as is from 'common/util/is'
+import { SELF } from 'common/util/constant'
+import generateUUID from 'common/function/generateUUID'
+
+// @ts-ignore
+let Worker: new (url: string) => Worker = SELF.Worker
+// @ts-ignore
+let MessageChannel: new () => MessageChannel = SELF.MessageChannel
+
+if (defined(ENV_NODE)) {
+  const { Worker: Worker_, MessageChannel: MessageChannel_ } = require('worker_threads')
+  Worker = Worker_
+  MessageChannel = MessageChannel_
+}
 
 if (defined(ENABLE_THREADS)) {
   // 保证打包工具可以包含下面的模块代码
@@ -126,8 +140,15 @@ export function createThreadFromClass<T, U extends any[]>(
             ${initClass}
             init.default(run);
           `
-          const blob = new Blob([source], { type: 'text/javascript' })
-          workerUrl = URL.createObjectURL(blob)
+          if (defined(ENV_NODE)) {
+            workerUrl = `./cheap_${generateUUID()}.js`
+            const fs = require('fs')
+            fs.writeFileSync(workerUrl, source);
+          }
+          else {
+            const blob = new Blob([source], { type: 'text/javascript' })
+            workerUrl = URL.createObjectURL(blob)
+          }
 
           caches.set(cacheKey, {
             url: workerUrl,
@@ -148,7 +169,7 @@ export function createThreadFromClass<T, U extends any[]>(
         )
 
         function running() {
-          const ipc = new IPCPort(channel.port1)
+          const ipc = defined(ENV_NODE) ? new NodeIPCPort(channel.port1) : new IPCPort(channel.port1)
 
           const obj: Thread<T> = {
             $worker: worker,
@@ -190,8 +211,8 @@ export function createThreadFromClass<T, U extends any[]>(
           resolve(proxy as Thread<T>)
         }
 
-        worker.onmessage = (message) => {
-          const origin = message.data
+        const handler = (message: MessageEvent<any>) => {
+          const origin = defined(ENV_NODE) ? message : message.data
           const type = origin.type
           const data = origin.data
 
@@ -212,6 +233,16 @@ export function createThreadFromClass<T, U extends any[]>(
               break
           }
         }
+
+        if (defined(ENV_NODE)) {
+          // @ts-ignore
+          worker.on('message', handler)
+        }
+        else {
+          worker.onmessage = handler
+        }
+
+        worker.onmessage = handler
 
         worker.postMessage({
           type: 'init',
@@ -336,13 +367,20 @@ export function createThreadFromFunction<T extends any[]>(
           const source = `
             ${module}
             function run(params) {
-              return __module_${entity.name}__.__${entity.name}__.apply(self, params)
+              return __module_${entity.name}__.__${entity.name}__.apply(${defined(ENV_NODE) ? 'global' : 'self'}, params)
             }
             ${initFunction}
             init.default(run);
           `
-          const blob = new Blob([source], { type: 'text/javascript' })
-          workerUrl = URL.createObjectURL(blob)
+          if (defined(ENV_NODE)) {
+            workerUrl = `./cheap_${generateUUID()}.js`
+            const fs = require('fs')
+            fs.writeFileSync(workerUrl, source);
+          }
+          else {
+            const blob = new Blob([source], { type: 'text/javascript' })
+            workerUrl = URL.createObjectURL(blob)
+          }
 
           caches.set(cacheKey, {
             url: workerUrl,
@@ -371,8 +409,8 @@ export function createThreadFromFunction<T extends any[]>(
           resolve(obj)
         }
 
-        worker.onmessage = (message) => {
-          const origin = message.data
+        const handler = (message: MessageEvent<any>) => {
+          const origin = defined(ENV_NODE) ? message : message.data
           const type = origin.type
           const data = origin.data
 
@@ -392,6 +430,16 @@ export function createThreadFromFunction<T extends any[]>(
               break
           }
         }
+
+        if (defined(ENV_NODE)) {
+          // @ts-ignore
+          worker.on('message', handler)
+        }
+        else {
+          worker.onmessage = handler
+        }
+
+        worker.onmessage = handler
 
         worker.postMessage({
           type: 'init',
@@ -478,9 +526,16 @@ export function createThreadFromModule<T extends Object>(
             ${initModule}
             init.default(${moduleName});
           `
-          const blob = new Blob([source], { type: 'text/javascript' })
-          workerUrl = URL.createObjectURL(blob)
 
+          if (defined(ENV_NODE)) {
+            workerUrl = `./cheap_${generateUUID()}.js`
+            const fs = require('fs')
+            fs.writeFileSync(workerUrl, source);
+          }
+          else {
+            const blob = new Blob([source], { type: 'text/javascript' })
+            workerUrl = URL.createObjectURL(blob)
+          }
           caches.set(cacheKey, {
             url: workerUrl,
             refCount: 1
@@ -499,7 +554,7 @@ export function createThreadFromModule<T extends Object>(
         )
 
         function running() {
-          const ipc = new IPCPort(channel.port1)
+          const ipc = defined(ENV_NODE) ? new NodeIPCPort(channel.port1) : new IPCPort(channel.port1)
 
           const obj: Thread<T> = {
             $worker: worker,
@@ -541,8 +596,8 @@ export function createThreadFromModule<T extends Object>(
           resolve(proxy as Thread<T>)
         }
 
-        worker.onmessage = (message) => {
-          const origin = message.data
+        const handler = (message: MessageEvent<any>) => {
+          const origin = defined(ENV_NODE) ? message : message.data
           const type = origin.type
           const data = origin.data
 
@@ -562,6 +617,16 @@ export function createThreadFromModule<T extends Object>(
               break
           }
         }
+
+        if (defined(ENV_NODE)) {
+          // @ts-ignore
+          worker.on('message', handler)
+        }
+        else {
+          worker.onmessage = handler
+        }
+
+        worker.onmessage = handler
 
         worker.postMessage({
           type: 'init',
@@ -630,7 +695,13 @@ export function closeThread(thread: Thread<{}>) {
       if (caches.has(cacheKey)) {
         caches.get(cacheKey).refCount--
         if (caches.get(cacheKey).refCount === 0) {
-          URL.revokeObjectURL(caches.get(cacheKey).url)
+          if (defined(ENV_NODE)) {
+            const fs = require('fs')
+            fs.unlinkSync(caches.get(cacheKey).url)
+          }
+          else {
+            URL.revokeObjectURL(caches.get(cacheKey).url)
+          }
           caches.delete(cacheKey)
         }
       }
@@ -661,8 +732,9 @@ export function closeThread(thread: Thread<{}>) {
 export async function joinThread<T>(thread: Thread<{}>) {
   if (thread.$worker) {
     return new Promise<T>((resolve) => {
-      thread.$worker.onmessage = (message) => {
-        const origin = message.data
+
+      function handler(message: MessageEvent<any>) {
+        const origin = defined(ENV_NODE) ? message : message.data
         const type = origin.type
         const data = origin.data
 
@@ -674,6 +746,16 @@ export async function joinThread<T>(thread: Thread<{}>) {
           default:
             break
         }
+      }
+
+      if (defined(ENV_NODE)) {
+        // @ts-ignore
+        thread.$worker.removeAllListeners('message')
+        // @ts-ignore
+        thread.$worker.on('message', handler)
+      }
+      else {
+        thread.$worker.onmessage = handler
       }
       thread.$worker.postMessage({
         type: 'stop'

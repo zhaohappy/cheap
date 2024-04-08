@@ -85,11 +85,9 @@ export function isBuiltinType(type: ts.Type) {
     return is.number(Type2CTypeEnum[type.aliasSymbol.escapedName as string])
   }
   if (type.isIntersection()) {
-    const type_ = type.getProperty(constant.typeProperty)
-    // @ts-ignore
-    if (type_?.links?.type?.value) {
-      // @ts-ignore
-      return is.number(Type2CTypeEnum[type_.links.type.value.replace(/\*$/g, '')])
+    const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+    if (value) {
+      return is.number(Type2CTypeEnum[value.replace(/\*$/g, '')])
     }
   }
   return false
@@ -119,10 +117,9 @@ export function isStructType(type: ts.Type, ignoreLevel: boolean = false) {
   }
   else if (type.isIntersection()) {
 
-    const level_ = type.getProperty(constant.levelProperty)
+    const level = getSymbolTypeValue(type.getProperty(constant.levelProperty))
 
-    // @ts-ignore
-    if (!ignoreLevel && level_?.links?.type?.value && level_.links.type.value > 0) {
+    if (!ignoreLevel && level && level > 0) {
       return false
     }
 
@@ -203,11 +200,9 @@ export function isPointerType(type: ts.Type) {
     return type.symbol.escapedName === constant.typePointer
   }
   if (type.isIntersection()) {
-    const type_ = type.getProperty(constant.levelProperty)
-    // @ts-ignore
-    if (type_?.links?.type?.value != null) {
-      // @ts-ignore
-      return type_.links.type.value > 0
+    const value = getSymbolTypeValue(type.getProperty(constant.levelProperty))
+    if (value != null) {
+      return value > 0
     }
   }
   return false
@@ -225,9 +220,8 @@ export function isPointerStructType(type: ts.Type) {
       return isStructType(type.aliasTypeArguments[0])
     }
     else if (!type.symbol && !type.aliasSymbol && type.isIntersection()) {
-      const level_ = type.getProperty(constant.levelProperty)
-      // @ts-ignore
-      if (level_?.links?.type?.value && level_.links.type.value > 1) {
+      const level = getSymbolTypeValue(type.getProperty(constant.levelProperty))
+      if (level && level > 1) {
         return false
       }
       return isStructType(type, true)
@@ -298,15 +292,12 @@ export function getBuiltinNameByType(type: ts.Type) {
     return type.aliasSymbol.escapedName as string
   }
   if (type.isIntersection()) {
-    const type_ = type.getProperty(constant.typeProperty)
-    // @ts-ignore
-    if (type_?.links?.type?.value) {
-      // @ts-ignore
-      if (/\*+$/.test(type_.links.type.value)) {
+    const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+    if (value) {
+      if (/\*+$/.test(value)) {
         return CTypeEnum2Type[CTypeEnum.pointer]
       }
-      // @ts-ignore
-      return type_.links.type.value
+      return value
     }
   }
 }
@@ -329,15 +320,12 @@ export function getPointerBuiltinByType(type: ts.Type) {
       return CTypeEnum.pointer
     }
 
-    const type_ = type.getProperty(constant.typeProperty)
-    // @ts-ignore
-    if (type_?.links?.type?.value) {
-      // @ts-ignore
-      if (/\*{2}$/.test(type_.links.type.value)) {
+    const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+    if (value) {
+      if (/\*{2}$/.test(value)) {
         return CTypeEnum.pointer
       }
-      // @ts-ignore
-      return Type2CTypeEnum[type_.links.type.value.replace(/\**$/, '')]
+      return Type2CTypeEnum[value.replace(/\**$/, '')]
     }
   }
   return builtinType
@@ -349,11 +337,9 @@ export function getFixTypeByType(type: ts.Type) {
       return getFixTypeByType(type.aliasTypeArguments[0])
     }
     else {
-      const type_ = type.getProperty(constant.typeProperty)
-      // @ts-ignore
-      if (type_?.links?.type?.value) {
-        // @ts-ignore
-        return Type2CTypeEnum[type_.links.type.value.replace(/\**$/, '')]
+      const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+      if (value) {
+        return Type2CTypeEnum[value.replace(/\**$/, '')]
       }
       else {
         return getStructByType(type)
@@ -370,12 +356,26 @@ export function getFixTypeByType(type: ts.Type) {
 
 export function getPointerLevelByType(type: ts.Type) {
   if (isPointerType(type) && type.isIntersection()) {
-    const type_ = type.getProperty(constant.levelProperty)
-    // @ts-ignore
-    if (type_?.links?.type?.value) {
-      // @ts-ignore
-      return type_.links.type.value
+    const value = getSymbolTypeValue(type.getProperty(constant.levelProperty))
+    if (value) {
+      return value
     }
   }
   return 0
+}
+
+function getSymbolTypeValue(type: ts.Symbol) {
+  if (!type) {
+    return
+  }
+  // @ts-ignore
+  if (type?.links?.type?.value) {
+    // @ts-ignore
+    return type.links.type.value
+  }
+  // @ts-ignore
+  else if (type?.valueDeclaration?.type?.literal) {
+    // @ts-ignore
+    return type.valueDeclaration.type.literal.text
+  }
 }

@@ -9,9 +9,9 @@ declare module '*.asm' {
   export default content
 }
 
-declare const DEBUG: boolean
+declare const ENV_NODE: boolean
 
-declare const ENABLE_LOG_TRACE: boolean
+declare const DEBUG: boolean
 
 declare const ENABLE_THREADS: boolean
 

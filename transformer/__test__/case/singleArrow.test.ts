@@ -37,6 +37,24 @@ describe('signal arrow', () => {
     })
   })
 
+  test('pointer[0] = accessof(pointer)', () => {
+    const source = `
+      let a: pointer<uint8>
+      let b: pointer<uint8>
+      a[0] = accessof(b)
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<uint8>
+      let b: pointer<uint8>;
+      CTypeEnumWrite[${CTypeEnum.uint8}](a, CTypeEnumRead[${CTypeEnum.uint8}](b));
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('accessof(pointer<atomic_int64>) <- BigInt(x)', () => {
     const source = `
       let a: pointer<atomic_int64>
@@ -110,6 +128,54 @@ describe('signal arrow', () => {
     })
   })
 
+  test('accessof(x)[0] <- xx', () => {
+    const source = `
+      let a: pointer<pointer<uint8>>
+      accessof(a)[0] = nullptr
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<pointer<uint8>>;
+      CTypeEnumWrite[2](CTypeEnumRead[20](a), 0);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('p[x][x] = xx', () => {
+    const source = `
+      let a: pointer<pointer<uint8>>
+      a[0][0] = nullptr
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<pointer<uint8>>;
+      CTypeEnumWrite[2](CTypeEnumRead[20](a), 0);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('p[x] <- xx', () => {
+    const source = `
+      let a: pointer<pointer<uint8>>
+      a[2] = nullptr
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<pointer<uint8>>;
+      CTypeEnumWrite[${CTypeEnum.pointer}](a + 8, 0);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('pointer<struct>[x]', () => {
     const source = `
       @struct
@@ -122,6 +188,46 @@ describe('signal arrow', () => {
       let b: pointer<TestA>;
       // @ts-ignore
       a[2] <- b[2]
+    `
+    const target = `
+      import { memcpy as memcpy } from "cheap/std/memory";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import structAccess from "cheap/std/structAccess";
+      class TestA {
+        a: uint8
+        b: float
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: 18, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+        definedMetaProperty(prototype, symbolStructLength, 8);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(TestA.prototype);
+      let a: pointer<TestA>;
+      let b: pointer<TestA>;
+      // @ts-ignore
+      memcpy(a + 16, b + 16, 8);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<struct>[x]', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: uint8
+        b: float
+      }
+
+      let a: pointer<TestA>;
+      let b: pointer<TestA>;
+      a[2] = b[2]
     `
     const target = `
       import { memcpy as memcpy } from "cheap/std/memory";

@@ -109,13 +109,13 @@ function generateWritePropertyNode(address: ts.Expression, value: ts.Expression,
 
 function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   if (ts.isPrefixUnaryExpression(node.right)) {
-    if ((ts.isCallExpression(node.left)
+    if (node.parent && ts.isExpressionStatement(node.parent) && ((ts.isCallExpression(node.left)
       && (ts.isIdentifier(node.left.expression) && node.left.expression.escapedText === constant.accessof
         || ts.isPropertyAccessExpression(node.left.expression)
           && node.left.expression.name.escapedText === constant.indexOf
           && isPointerNode(node.left.expression.expression)
       ))
-      || ts.isElementAccessExpression(node.left) && nodeUtils.isPointerElementAccess(node.left)
+      || ts.isElementAccessExpression(node.left) && nodeUtils.isPointerElementAccess(node.left))
     ) {
       const type1 = statement.typeChecker.getTypeAtLocation(node.left)
       const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand)
@@ -240,7 +240,6 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
     return ts.visitEachChild(node, visitor, statement.context)
   }
   else {
-
     if (ts.isPropertyAccessExpression(node.left)
       && nodeUtils.isExpressionPointer(node.left)
       && ts.isObjectLiteralExpression(node.right)
@@ -368,11 +367,10 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             ]
           )
         }
-        else if ((type1.aliasSymbol
-            && (is.number(Type2CTypeEnum[type1.aliasSymbol.escapedName as string])
-              || type1.aliasSymbol.escapedName === constant.typeBit
-            )
-        )
+        else if (typeUtils.isBuiltinType(type1)
+          || (type1.aliasSymbol
+            && type1.aliasSymbol.escapedName === constant.typeBit
+          )
           || (type1.symbol?.valueDeclaration
             && (
               ts.isEnumDeclaration(type1.symbol.valueDeclaration)

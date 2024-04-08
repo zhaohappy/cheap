@@ -117,6 +117,9 @@ class CheapPlugin {
                   exclude: me.options.exclude || '__test__',
                   reportError: (message) => {
                     me.reportError(message);
+                  },
+                  defined: {
+                    ENV_NODE: me.options.env === 'node'
                   }
                 });
 
@@ -147,12 +150,25 @@ class CheapPlugin {
           }
         ]
       });
+
+      if (me.options.env === 'node') {
+        if (!compiler.options.externals) {
+          compiler.options.externals = {
+            'worker_threads': 'worker_threads',
+            fs: 'fs'
+          };
+        }
+        else {
+          compiler.options.externals['worker_threads'] = 'worker_threads';
+          compiler.options.externals['fs'] = 'fs';
+        }
+      }
     });
 
     compiler.hooks.thisCompilation.tap('CheapPlugin', (compilation) => {
       compilation.hooks.afterOptimizeTree.tap('CheapPlugin', (chunks, modules) => {
         const handleModules = [];
-        const threadFiles = this.options.threadFiles || [];
+        const threadFiles = me.options.threadFiles || [];
         if (!threadFiles.length) {
           return;
         }

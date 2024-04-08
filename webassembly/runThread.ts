@@ -8,10 +8,17 @@ SELF.imports = {
   }
 }
 
-export default function init(preRun: Promise<void>) {
-  SELF.onmessage = (message) => {
+let parentPort = SELF
+if (defined(ENV_NODE)) {
+  const { parentPort: parentPort_ } = require('worker_threads')
+  parentPort = parentPort_
+}
 
-    const origin = message.data
+
+export default function init(preRun: Promise<void>) {
+  const handler = (message: MessageEvent<any>) => {
+
+    const origin = defined(ENV_NODE) ? message : message.data
     const type = origin.type
     const data = origin.data
 
@@ -20,7 +27,7 @@ export default function init(preRun: Promise<void>) {
     switch (type) {
       case 'run':
 
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'run'
         })
 
@@ -51,5 +58,13 @@ export default function init(preRun: Promise<void>) {
         }
         break
     }
+  }
+
+  if (defined(ENV_NODE)) {
+    // @ts-ignore
+    parentPort.on('message', handler)
+  }
+  else {
+    parentPort.onmessage = handler
   }
 }

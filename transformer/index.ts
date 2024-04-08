@@ -15,6 +15,7 @@ import bigIntLiteralVisitor from './visitor/bigIntLiteralVisitor'
 import expressionVisitor from './visitor/expressionVisitor'
 
 const DefaultDefined = {
+  ENV_NODE: false,
   ENABLE_THREADS: true,
   ENABLE_THREADS_SPLIT: false,
   DEBUG: false,
@@ -33,18 +34,20 @@ export default function (program: ts.Program, options: TransformerOptions = {}):
   const configFile = configFileName && ts.readConfigFile(configFileName, ts.sys.readFile)
 
   let compilerOptions = {
-    defined: {
-
-    }
+    defined: null
   }
 
-  if (configFile?.config) {
+  const defined = object.extend({}, DefaultDefined)
+  if (configFile?.config?.cheap) {
+    object.extend(defined, configFile.config.cheap.defined || {})
     compilerOptions = object.extend(compilerOptions, configFile.config['cheap'] || {})
   }
 
   if (options.defined) {
-    compilerOptions.defined = object.extend(DefaultDefined, options.defined)
+    object.extend(defined, options.defined)
   }
+  compilerOptions.defined = defined
+
 
   statement.options = options
   statement.cheapCompilerOptions = compilerOptions

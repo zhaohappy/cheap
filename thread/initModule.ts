@@ -1,14 +1,21 @@
 import IPCPort, { REQUEST } from 'common/network/IPCPort'
+import NodeIPCPort from 'common/network/NodeIPCPort'
 import { SELF } from 'common/util/constant'
 import * as is from 'common/util/is'
 import { CHeapError } from '../error'
+
+let parentPort = SELF
+if (defined(ENV_NODE)) {
+  const { parentPort: parentPort_ } = require('worker_threads')
+  parentPort = parentPort_
+}
 
 export default function init(module: Object) {
 
   let ipc: IPCPort
 
   function initIPC(port: MessagePort) {
-    ipc = new IPCPort(port)
+    ipc = defined(ENV_NODE) ? new NodeIPCPort(port) : new IPCPort(port)
     ipc.on(REQUEST, async (data: any) => {
       const method = data.method
       const params = data.params
@@ -28,8 +35,8 @@ export default function init(module: Object) {
     })
   }
 
-  SELF.onmessage = (message) => {
-    const origin = message.data
+  const handler = (message: MessageEvent<any>) => {
+    const origin = defined(ENV_NODE) ? message : message.data
     const type = origin.type
     const data = origin.data
 
@@ -37,19 +44,19 @@ export default function init(module: Object) {
       case 'init':
         if (SELF.CHeap && SELF.CHeap.initThread) {
           SELF.CHeap.initThread(data).then(() => {
-            SELF.postMessage({
+            parentPort.postMessage({
               type: 'ready'
             })
           })
           return
         }
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'ready'
         })
         break
       case 'run':
 
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'running'
         })
 
@@ -60,12 +67,20 @@ export default function init(module: Object) {
         if (ipc) {
           ipc.destroy()
         }
-        SELF.postMessage({
+        parentPort.postMessage({
           type: 'stopped'
         })
         break
       default:
         break
     }
+  }
+
+  if (defined(ENV_NODE)) {
+    // @ts-ignore
+    parentPort.on('message', handler)
+  }
+  else {
+    parentPort.onmessage = handler
   }
 }

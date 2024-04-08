@@ -1,8 +1,9 @@
 
 ### 介绍
 
-cheap 是一个用于 Web 平台多线程和高性能 WebAssembly 程序开发的工具库
+cheap 是一个用于 JavaScript 多线程和高性能 WebAssembly 程序开发的工具库
 
+cheap 可以用于浏览器环境和 Node 环境
 
 ### 使用
 
@@ -22,6 +23,8 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
   ...
   plugins: [
     new CheapPlugin({
+      // 'browser' | 'node'
+      env: 'browser',
       // 项目根目录，这里表示 webpack.config.js 在项目根目录下面
       projectPath: __dirname,
       // 需要排除处理的文件匹配
@@ -142,7 +145,7 @@ class MyStructB {
   b: pointer<pointer<MyStruct>>
 }
 
-// 用 union 装饰器来标记一个 union 定义，union 所有属性共享一段内存，其大小为最大成员变量的大小
+// 用 union 装饰器来标记一个 union 定义，union 所有属性共享一段内存，其大小为最大属性成员的大小
 @union
 class MyUnion {
   a: uint8
@@ -184,18 +187,23 @@ const pa = addressof(myStructPointer.a)
 // 等于 C 中的 int8 va = *pa
 const va = accessof(pa)
 
-// 等于 C 中的 *va = (int8)34
-// 由于 js 中函数调用不能是左值，所以加了个  <- 语法
-// 但是有个小瑕疵如果两边类型是结构体 ts 会报错，需要用 @ts-ignore 忽略一下
-accessof(pa) <- static_cast<int8>(34)
-
-// 指针可以自增自减，两个类型一样的指针可以相减，规则和 C 一样
-pa++
-pa--
-
 // 指针可以当成数组取下标
 // 等于 accessof(pa + 3)
 const aa = pa[3]
+
+// 等于 C 中的 *va = (int8)34
+// 由于 js 中函数调用不能是左值，所以加了个  <- 语法
+// 但是有个小瑕疵如果两边类型是结构体 ts 会报错，需要用 @ts-ignore 忽略一下
+// 或者 pa[0] = static_cast<int8>(34)，虽然也很诡异，但不会报错
+accessof(pa) <- static_cast<int8>(34)
+
+// 指针可以自增自减，可以和 number 做加法， 两个类型一样的指针可以相减，规则和 C 一样
+// + 1 表示指针往后偏移一个指针类型的大小个字节，非 1 个字节
+// pointer<uint8>++ 偏移 1 一个字节
+// pointer<uint64>++ 偏移 8 个字节
+pa++
+pa--
+pa += 8
 
 // 回收内存 
 free(myStructPointer)
@@ -593,7 +601,7 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 
 ### 一些建议
 
-- 设计上应该尽量少使用 struct 做数据结构、只在需要在多个线程之间传递和 js 和 wasm 之间传递时使用 struct，其他时候应该使用 js 对象。
+- 设计上应该尽量少使用 struct 做数据结构、只在需要在多个线程之间传递和 js 和 wasm 之间传递时使用 struct，其他时候应该使用 js 对象。否则内存泄漏、内存脏写、空悬指针这些问题让人头大。
 - 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以回退到在主线程上也能运行（兼容问题是 Web 无法避开的）；并且这样写会让多线程写法变得更简单，你只需要去关注那些需要在不同线程间流转的数据的同步问题，这样的数据用引用计数就可以很好的管理其生命周期，其他时候都可以和写我们熟悉的方式的单线程的 JavaScript 一样。
 - 目前有一个项目[libmedia](https://github.com/zhaohappy/libmedia) 使用 cheap 进行开发，如果你想学习 cheap 如何用来开发，可以参考这个项目的使用方法和设计模式。
 

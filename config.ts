@@ -4,7 +4,7 @@ import { SELF } from 'common/util/constant'
 /**
  * 是否使用多线程
  */
-export const USE_THREADS = defined(ENABLE_THREADS) && support.thread && (SELF as any).CHEAP_DISABLE_PTHREAD !== true
+export const USE_THREADS = defined(ENABLE_THREADS) && (support.thread || defined(ENV_NODE)) && (SELF as any).CHEAP_DISABLE_PTHREAD !== true
 
 /**
  * 栈地址对齐

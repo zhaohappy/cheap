@@ -477,12 +477,24 @@ export function initMain() {
   }
 }
 
-if (!isWorker() && !isAudioWorklet()) {
-  initMain()
-}
-else {
-  SELF.CHeap = {
-    initThread
+if (defined(ENV_NODE)) {
+  const { isMainThread } = require('worker_threads')
+  if (isMainThread) {
+    initMain()
+  }
+  else {
+    SELF.CHeap = {
+      initThread
+    }
   }
 }
-
+else {
+  if (!isWorker() && !isAudioWorklet()) {
+    initMain()
+  }
+  else {
+    SELF.CHeap = {
+      initThread
+    }
+  }
+}
