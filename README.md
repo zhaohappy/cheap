@@ -408,7 +408,7 @@ cheap 支持多线程操作，并且让多线程开发变得更加的优雅简�
 
 ##### 线程创建和结束
 
-线程创建和结束函数在 cheap/thread/thread.ts 中定义
+线程创建和结束函数在 ```cheap/thread/thread.ts``` 中定义
 
 ```typescript
 
@@ -419,7 +419,7 @@ cheap 支持多线程操作，并且让多线程开发变得更加的优雅简�
  */
 function createThreadFromClass<T, U extends any[]>(entity: new (...args: U) => T, options?: ThreadOptions): {
   run: (...args: U) => Promise<Thread<T>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: U) => Promise<Thread<T>>
   }
 }
@@ -431,7 +431,7 @@ function createThreadFromClass<T, U extends any[]>(entity: new (...args: U) => T
  */
 function createThreadFromFunction<T extends any[]>(entity: (...args: T) => void, options?: ThreadOptions): {
   run: (...args: T) => Promise<Thread<{}>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: T) => Promise<Thread<{}>>
   }
 }
@@ -478,7 +478,7 @@ cheap 支持原子操作、锁、条件变量、信号量等线程同步方法�
 | atomic_uint64| 64 位无符号数
 | atomic_int64| 64 位有符号数
 
-原子操作函数在 cheap/thread/atomic.ts 中定义
+原子操作函数在 ```cheap/thread/atomic.ts``` 中定义
 
 ```typescript
 
@@ -604,7 +604,7 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 
 ###### 锁、条件变量、信号量
 
-锁在 cheap/thread/mutex.ts 中定义
+锁在 ```cheap/thread/mutex.ts``` 中定义
 
 ```typescript
 
@@ -647,7 +647,7 @@ function destroy(mutex: pointer<Mutex>): int32
 
 ```
 
-条件变量在 cheap/thread/cond.ts 中定义
+条件变量在 ```cheap/thread/cond.ts``` 中定义
 
 ```typescript
 /**
@@ -710,7 +710,7 @@ function timedWait(cond: pointer<Cond>, mutex: pointer<Mutex>, timeout: int32): 
 async function timedwaitAsync(cond: pointer<Cond>, mutex: pointer<Mutex>, timeout: int32): Promise<int32>
 ```
 
-信号量在 cheap/thread/semaphore.ts 中定义
+信号量在 ```cheap/thread/semaphore.ts``` 中定义
 
 
 ```typescript
