@@ -101,6 +101,12 @@ export function unlock(mutex: pointer<Mutex>): int32 {
   return 0
 }
 
+/**
+ * 销毁锁
+ * 
+ * @param mutex 
+ * @returns 
+ */
 export function destroy(mutex: pointer<Mutex>): int32 {
   atomics.store(addressof(mutex.atomic), STATUS.UNLOCK)
   return 0

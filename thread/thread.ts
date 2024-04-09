@@ -42,10 +42,10 @@ type AsyncReturnWithoutProperties<T> = RemoveNeverProperties<{
   [K in keyof T]: T[K] extends (...args: any[]) => any
     ? (T[K] extends (...args: any[]) => Promise<any>
       ? T[K] & {
-        transfer: (transfer: Transferable[]) => { invoke: T[K] }
+        transfer: (...transfer: Transferable[]) => { invoke: T[K] }
       }
       : (...args: Parameters<T[K]>) => Promise<ReturnType<T[K]>> ) & {
-      transfer: (transfer: Transferable[]) => { invoke: T[K] }
+      transfer: (...transfer: Transferable[]) => { invoke: T[K] }
     }
     : never
 }>
@@ -80,7 +80,7 @@ function getCacheKey(moduleId: string, type: ThreadType) {
 
 export function createThreadFromClass<T, U extends any[], args=[moduleId<'0'>]>(entity: new (...args: U) => T, options?: ThreadOptions): {
   run: (...args: U) => Promise<Thread<T>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: U) => Promise<Thread<T>>
   }
 }
@@ -90,7 +90,7 @@ export function createThreadFromClass<T, U extends any[]>(
   moduleId: string
 ): {
   run: (...args: U) => Promise<Thread<T>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: U) => Promise<Thread<T>>
   }
 }
@@ -100,7 +100,7 @@ export function createThreadFromClass<T, U extends any[]>(
   moduleId?: string | Worker
 ): {
     run: (...args: U) => Promise<Thread<T>>
-    transfer: (transfer: Transferable[]) => {
+    transfer: (...transfer: Transferable[]) => {
       run: (...args: U) => Promise<Thread<T>>
     }
   } {
@@ -191,7 +191,7 @@ export function createThreadFromClass<T, U extends any[]>(
                     params: args
                   })
                 }
-                call.transfer = function (transfer: Transferable[] = []) {
+                call.transfer = function (...transfer: Transferable[]) {
                   return {
                     invoke: async function (...args: any[]) {
                       return ipc.request(propertyKey as string, {
@@ -279,7 +279,7 @@ export function createThreadFromClass<T, U extends any[]>(
             const call = function (...args: any[]) {
               return worker[propertyKey](...args)
             }
-            call.transfer = function (transfer: Transferable[] = []) {
+            call.transfer = function (...transfer: Transferable[]) {
               return {
                 invoke: function (...args: any[]) {
                   return worker[propertyKey](...args)
@@ -298,7 +298,7 @@ export function createThreadFromClass<T, U extends any[]>(
     })
   }
 
-  function transfer(transfer: Transferable[] = []) {
+  function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
       run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain
@@ -313,7 +313,7 @@ export function createThreadFromClass<T, U extends any[]>(
 
 export function createThreadFromFunction<T extends any[], args=[moduleId<'0'>]>(entity: (...args: T) => void, options?: ThreadOptions): {
   run: (...args: T) => Promise<Thread<{}>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: T) => Promise<Thread<{}>>
   }
 }
@@ -323,7 +323,7 @@ export function createThreadFromFunction<T extends any[]>(
   moduleId: string
 ): {
   run: (...args: T) => Promise<Thread<{}>>
-  transfer: (transfer: Transferable[]) => {
+  transfer: (...transfer: Transferable[]) => {
     run: (...args: T) => Promise<Thread<{}>>
   }
 }
@@ -333,7 +333,7 @@ export function createThreadFromFunction<T extends any[]>(
   moduleId?: string | Worker
 ): {
     run: (...args: T) => Promise<Thread<{}>>
-    transfer: (transfer: Transferable[]) => {
+    transfer: (...transfer: Transferable[]) => {
       run: (...args: T) => Promise<Thread<{}>>
     }
   } {
@@ -469,7 +469,7 @@ export function createThreadFromFunction<T extends any[]>(
     })
   }
 
-  function transfer(transfer: Transferable[] = []) {
+  function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
       run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain
@@ -576,7 +576,7 @@ export function createThreadFromModule<T extends Object>(
                     params: args
                   })
                 }
-                call.transfer = function (transfer: Transferable[] = []) {
+                call.transfer = function (...transfer: Transferable[]) {
                   return {
                     invoke: async function (...args: any[]) {
                       return ipc.request(propertyKey as string, {
@@ -661,7 +661,7 @@ export function createThreadFromModule<T extends Object>(
             const call = function (...args: any[]) {
               return entity[propertyKey](...args)
             }
-            call.transfer = function (transfer: Transferable[] = []) {
+            call.transfer = function (...transfer: Transferable[]) {
               return {
                 invoke: function (...args: any[]) {
                   return entity[propertyKey](...args)

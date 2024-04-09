@@ -1,3 +1,7 @@
+cheap
+======
+[English](README_en.md)
+
 
 ### 介绍
 
@@ -129,10 +133,20 @@ class MyStruct {
     a: uint8
   }>
   // 内联联合体
-  f: union<{
+  h: union<{
     a: uint8
     b: uint32
   }>
+  // 这个不是内建类型，在布局时会忽略
+  // 当你使用实例访问时访问的是 js 对象属性
+  // 使用指针访问会编译报错
+  i: number
+
+  // 可以使用装饰器修饰属性
+  // 这里表示当宏 ENABLE_XX 开启时会忽略此属性
+  // 可以在 struct 里面做条件编译
+  @ignore(defined(ENABLE_XX))
+  j: int16
 }
 
 @struct
@@ -165,6 +179,8 @@ class MyStruct {
 }
 
 // 创建结构体实例，第二个参数可以传递初始化数据
+// 返回的 myStruct 是一个 proxy 代理的 js 对象
+// 每次读写属性时走的 getter 和 setter 逻辑
 const myStruct = make(MyStruct, { a: 0, b: 0 })
 myStruct.a = 3
 myStruct.b = 4
@@ -199,7 +215,7 @@ accessof(pa) <- static_cast<int8>(34)
 
 // 指针可以自增自减，可以和 number 做加法， 两个类型一样的指针可以相减，规则和 C 一样
 // + 1 表示指针往后偏移一个指针类型的大小个字节，非 1 个字节
-// pointer<uint8>++ 偏移 1 一个字节
+// pointer<uint8>++ 偏移 1 个字节
 // pointer<uint64>++ 偏移 8 个字节
 pa++
 pa--
@@ -214,6 +230,7 @@ myStructPointer = nullptr
 ```
 
 #### 内置函数（全局作用域）
+
 
 ```typescript
 /**
@@ -334,7 +351,7 @@ function defined<T>(def: T): T
 
 目前的 WebAssembly 开发模式都是使用其他语言来开发，然后通过编译工具编译成 wasm 字节码，其中需要的 js 胶水层代码也由编译工具来完成。这给我的感觉是本来 WebAssembly 技术一开始是给 Web 使用的，但它却和 Web 的主角 JavaScript 有一种割裂感，我认为在 Web 平台上应该由 JavaScript 来主导整个程序，这样我们既拥有了 JavaScript 的优点（开发快速、社区大量的库），又可以把其他语言的一些优势引入 Web；而不是让写其他语言的人员主导整过程让 JavaScript 沦为那些代码看起来丑陋和晦涩难懂的胶水层的运行时代码。JavaScript 作为整个 Web 技术的核心，抛弃它只会把其他语言的缺点引入 Web，而不会成为 1 + 1 > 2 的可能。
 
-所以在 cheap 中我们只需要编译之后的 wasm 字节码，不需要胶水层代码，同时 cheap 提供了一些基础的运行时。这个运行时有内存分配、标准输出、atomic、pthread、semaphore。总结就是 wasm 模块应该只负责计算部分，IO 的输入输出应该由 JavaScript 负责。因为我们的 wasm 模块绝大部分从 C/C++ 编译而来，其同步阻塞的 IO 方式和 Web 异步的方式天生不合，所有将 IO 放进 wasm 内部而用 JavaScript 去模拟一套同步阻塞的运行时都将成为这个系统的致命缺陷。当然你也可以使用编译工具让 wasm 内部支持调用 JavaScript 的异步函数，但它带来的是要么编译产物 wasm 体积变大，性能下降；要么可以使用的场景有很大限制。据我所知 emscripten 支持让 C/C++ 调用 JavaScript 的异步函数，但前提是整个调用链上不能有间接调用。
+所以在 cheap 中我们只需要编译之后的 wasm 字节码，不需要胶水层代码，同时 cheap 提供了一些基础的运行时。这个运行时有内存分配、标准输出（用于日志打印）、atomic、pthread、semaphore。总结就是 wasm 模块应该只负责计算部分，IO 的输入输出和业务逻辑应该由 JavaScript 负责。因为我们的 wasm 模块绝大部分从 C/C++ 编译而来，其同步阻塞的 IO 方式和 Web 异步的方式天生不合，所有将 IO 放进 wasm 内部而用 JavaScript 去模拟一套同步阻塞的运行时都将成为这个系统的致命缺陷。当然你也可以使用编译工具让 wasm 内部支持调用 JavaScript 的异步函数，但它带来的是要么编译产物 wasm 体积变大，性能下降；要么可以使用的场景有很大限制。据我所知 emscripten 支持让 C/C++ 调用 JavaScript 的异步函数，但前提是整个调用链上不能有间接调用。
 
 要在 cheap 上使用 wasm 模块，你需要将你的 wasm 编译成动态链接的方式，下面是一个例子
 
@@ -428,12 +445,13 @@ function createThreadFromModule<T extends Object>(entity: T, options?: ThreadOpt
 
 /**
  * 强制结束线程
+ * 可能会导致内存泄漏，请使用 joinThread
  * 
  */
 function closeThread(thread: Thread<{}>): void
 
 /**
- * 等待线程退出，用于等待线程退出
+ * 等待线程退出
  * 从函数创建的线程会等待函数返回，并返回函数的返回结果
  * 从类和模块创建的线程会在线程内部的下一次事件循环中退出
  */
@@ -588,9 +606,168 @@ function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, timeout:
 
 锁在 cheap/thread/mutex.ts 中定义
 
+```typescript
+
+/**
+ * 初始化锁
+ * 
+ * @param mutex 
+ */
+function init(mutex: pointer<Mutex>): int32
+
+/**
+ * 加锁
+ * 
+ * @param mutex 
+ * @param spin 是否自旋
+ */
+function lock(mutex: pointer<Mutex>, spin: boolean = false): int32
+
+/**
+ * 异步加锁
+ * 
+ * @param mutex
+ */
+async function lockAsync(mutex: pointer<Mutex>): Promise<int32>
+
+/**
+ * 释放锁
+ * 
+ * @param mutex 
+ */
+function unlock(mutex: pointer<Mutex>): int32
+
+/**
+ * 销毁锁
+ * 
+ * @param mutex 
+ * @returns 
+ */
+function destroy(mutex: pointer<Mutex>): int32
+
+```
+
 条件变量在 cheap/thread/cond.ts 中定义
 
+```typescript
+/**
+ * 初始化条件变量
+ */
+function init(cond: pointer<Cond>, attr: pointer<void>): int32
+
+/**
+ * 销毁条件变量
+ */
+function destroy(cond: pointer<Cond>): int32
+
+/**
+ * 唤醒条件变量上的一个等待线程
+ * 
+ * @param cond 
+ */
+function signal(cond: pointer<Cond>): int32
+
+/**
+ * 唤醒条件变量上的所有等待线程
+ * 
+ * @param cond 
+ */
+function broadcast(cond: pointer<Cond>): int32 
+
+/**
+ * 线程在条件变量处等待
+ * 
+ * @param cond 
+ * @param mutex 
+ * @returns 
+ */
+function wait(cond: pointer<Cond>, mutex: pointer<Mutex>): int32 
+
+/**
+ * 线程在条件变量处异步等待
+ * 
+ * @param cond 
+ * @param mutex 
+ */
+async function waitAsync(cond: pointer<Cond>, mutex: pointer<Mutex>): Promise<int32>
+
+/**
+ * 线程在条件变量处超时等待
+ * 
+ * @param cond 
+ * @param mutex 
+ * @param timeout 毫秒
+ */
+function timedWait(cond: pointer<Cond>, mutex: pointer<Mutex>, timeout: int32): int32
+
+/**
+ * 线程在条件变量处超时异步等待
+ * 
+ * @param cond 
+ * @param mutex 
+ * @param timeout 毫秒
+ */
+async function timedwaitAsync(cond: pointer<Cond>, mutex: pointer<Mutex>, timeout: int32): Promise<int32>
+```
+
 信号量在 cheap/thread/semaphore.ts 中定义
+
+
+```typescript
+
+/**
+ * 初始化信号量
+ * 
+ * @param sem 
+ * @param value 信号量初始值
+ */
+function init(sem: pointer<Sem>, value: uint32): int32
+
+/**
+ * 生产信号量
+ * 
+ * @param sem 
+ */
+function post(sem: pointer<Sem>): int32
+
+/**
+ * 消费信号量
+ * 
+ * @param sem 
+ */
+function wait(sem: pointer<Sem>): int32 
+
+/**
+ * 消费信号量，不会挂起线程
+ * 
+ * @param sem 
+ */
+function tryWait(sem: pointer<Sem>): int32
+
+/**
+ * 消费信号量，并设置一个超时
+ * 
+ * @param sem 
+ * @param timeout 毫秒
+ */
+function timedWait(sem: pointer<Sem>, timeout: int32): int32
+
+/**
+ * 异步消费信号量
+ * 
+ * @param sem 
+ */
+async function waitAsync(sem: pointer<Sem>): Promise<int32>
+
+/**
+ * 异步消费信号量，并设置一个超时
+ * 
+ * @param sem 
+ * @param timeout 毫秒
+ */
+async function timedWaitAsync(sem: pointer<Sem>, timeout: int32): Promise<int32>
+
+```
 
 
 ##### wasm 模块中使用多线程

@@ -14,8 +14,6 @@ export class Sem {
  * 
  * @param sem 
  * @param value 信号量初始值
- * @param atomics 
- * @returns 
  */
 export function init(sem: pointer<Sem>, value: uint32): int32 {
   atomics.store(addressof(sem.atomic), static_cast<int32>(value))
@@ -32,7 +30,6 @@ export function destroy(sem: pointer<Sem>): int32 {
  * 生产信号量
  * 
  * @param sem 
- * @param atomics 
  */
 export function post(sem: pointer<Sem>): int32 {
   atomics.add(addressof(sem.atomic), 1)
@@ -44,7 +41,6 @@ export function post(sem: pointer<Sem>): int32 {
  * 消费信号量
  * 
  * @param sem 
- * @param atomics 
  */
 export function wait(sem: pointer<Sem>): int32 {
   while (true) {
@@ -65,7 +61,6 @@ export function wait(sem: pointer<Sem>): int32 {
  * 消费信号量
  * 
  * @param sem 
- * @param atomics 
  */
 export function tryWait(sem: pointer<Sem>): int32 {
   mutex.lock(addressof(sem.mutex))
@@ -79,6 +74,7 @@ export function tryWait(sem: pointer<Sem>): int32 {
 }
 
 /**
+ * 消费信号量，并设置一个超时
  * 
  * @param sem 
  * @param timeout 毫秒
@@ -102,7 +98,6 @@ export function timedWait(sem: pointer<Sem>, timeout: int32): int32 {
  * 异步消费信号量
  * 
  * @param sem 
- * @param atomics 
  */
 export async function waitAsync(sem: pointer<Sem>): Promise<int32> {
   while (true) {
@@ -120,10 +115,10 @@ export async function waitAsync(sem: pointer<Sem>): Promise<int32> {
 }
 
 /**
+ * 异步消费信号量，并设置一个超时
  * 
  * @param sem 
  * @param timeout 毫秒
- * @returns 
  */
 export async function timedWaitAsync(sem: pointer<Sem>, timeout: int32): Promise<int32> {
   let ret = await atomics.waitTimeoutAsync(addressof(sem.atomic), 0, timeout)
