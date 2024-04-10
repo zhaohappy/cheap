@@ -1,6 +1,8 @@
 cheap
 ======
-[English](README_en.md)
+中文 | [English](README_en.md)
+
+![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap)
 
 
 ### 介绍
@@ -425,7 +427,7 @@ function createThreadFromClass<T, U extends any[]>(entity: new (...args: U) => T
 }
 
 /**
- * 从一个函数创建线程
+ * 从一个函数创建线程，建议函数定义单独在一个文件
  * 线程创建之后会马上运行这个函数，函数返回时线程退出
  * 和 C 创建线程一致
  */

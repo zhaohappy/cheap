@@ -1,6 +1,8 @@
 cheap
 ======
-[中文](README.md)
+English | [中文](README.md)
+
+![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap)
 
 
 ### Introduction
