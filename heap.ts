@@ -18,6 +18,8 @@ import browser from 'common/util/browser'
  */
 export let ThreadId: number = -1
 
+export let isMainThread: boolean = true
+
 /**
  * 线程名
  */
@@ -342,8 +344,11 @@ export async function initThread(options: {
 
     StackSize,
     StackTop,
-    StackPointer
+    StackPointer,
+    isMainThread: false
   }
+
+  isMainThread = false
 
   if (!defined(DEBUG)) {
     if (!options.disableAsm) {
@@ -470,22 +475,26 @@ export function initMain() {
       StackSize,
       StackTop,
       StackPointer,
+      isMainThread: true,
 
       threadCounter: staticData.threadCounter,
       heapMutex: staticData.heapMutex
     }
   }
+  isMainThread = true
 }
 
 if (defined(ENV_NODE)) {
-  const { isMainThread } = require('worker_threads')
-  if (isMainThread) {
+  const { isMainThread: isMainThread_ } = require('worker_threads')
+  if (isMainThread_) {
     initMain()
   }
   else {
     SELF.CHeap = {
-      initThread
+      initThread,
+      isMainThread: false
     }
+    isMainThread = false
   }
 }
 else {
@@ -494,7 +503,9 @@ else {
   }
   else {
     SELF.CHeap = {
-      initThread
+      initThread,
+      isMainThread: false
     }
+    isMainThread = false
   }
 }

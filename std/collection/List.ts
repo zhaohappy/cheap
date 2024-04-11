@@ -22,7 +22,7 @@ class ListNode<T = void, D extends ListNodeDepth[number] = 9> {
 @struct
 export default class List<T> {
 
-  public length: uint16 = 0
+  public length: uint32 = 0
 
   private head: pointer<ListNode<T>> = nullptr
   private tail: pointer<ListNode<T>> = nullptr

@@ -21,7 +21,8 @@ const DefaultDefined = {
   DEBUG: false,
   BIGINT_LITERAL: true,
   CHEAP_HEAP_INITIAL: 256,
-  ENABLE_SYNCHRONIZE_API: false
+  ENABLE_SYNCHRONIZE_API: false,
+  ENABLE_LOG_PATH: true
 }
 
 export default function (program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
