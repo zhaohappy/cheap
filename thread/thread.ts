@@ -52,13 +52,13 @@ type AsyncReturnWithoutProperties<T> = RemoveNeverProperties<{
 
 type ThreadType = 'class' | 'function' | 'module'
 
-export type Thread<T> = {
+export type Thread<T, U = never> = {
   $worker: Worker
   $ipc?: IPCPort
   $channel?: MessageChannel
   $moduleId: string | Worker
   $stackPointer: pointer<void>
-  $retval?: any
+  $retval?: Promise<U>
   $instance?: any
   $type: ThreadType
 } & AsyncReturnWithoutProperties<T>
@@ -311,36 +311,36 @@ export function createThreadFromClass<T, U extends any[]>(
   }
 }
 
-export function createThreadFromFunction<T extends any[], args=[moduleId<'0'>]>(entity: (...args: T) => void, options?: ThreadOptions): {
-  run: (...args: T) => Promise<Thread<{}>>
+export function createThreadFromFunction<T extends any[], U extends any, args=[moduleId<'0'>]>(entity: (...args: T) => U, options?: ThreadOptions): {
+  run: (...args: T) => Promise<Thread<{}, U>>
   transfer: (...transfer: Transferable[]) => {
-    run: (...args: T) => Promise<Thread<{}>>
+    run: (...args: T) => Promise<Thread<{}, U>>
   }
 }
-export function createThreadFromFunction<T extends any[]>(
-  entity: (...args: T) => void,
+export function createThreadFromFunction<T extends any[], U extends any>(
+  entity: (...args: T) => U,
   options: ThreadOptions,
   moduleId: string
 ): {
-  run: (...args: T) => Promise<Thread<{}>>
+  run: (...args: T) => Promise<Thread<{}, U>>
   transfer: (...transfer: Transferable[]) => {
-    run: (...args: T) => Promise<Thread<{}>>
+    run: (...args: T) => Promise<Thread<{}, U>>
   }
 }
-export function createThreadFromFunction<T extends any[]>(
-  entity: (...args: T) => void,
+export function createThreadFromFunction<T extends any[], U extends any>(
+  entity: (...args: T) => U,
   options: ThreadOptions = {},
   moduleId?: string | Worker
 ): {
-    run: (...args: T) => Promise<Thread<{}>>
+    run: (...args: T) => Promise<Thread<{}, U>>
     transfer: (...transfer: Transferable[]) => {
-      run: (...args: T) => Promise<Thread<{}>>
+      run: (...args: T) => Promise<Thread<{}, U>>
     }
   } {
 
   let transferData: Transferable[] = []
 
-  let runInWorker: (...args: T) => Promise<Thread<{}>>
+  let runInWorker: (...args: T) => Promise<Thread<{}, U>>
 
   if (defined(ENABLE_THREADS)) {
     runInWorker = (...args: T) => {
@@ -390,7 +390,7 @@ export function createThreadFromFunction<T extends any[]>(
         worker = new Worker(workerUrl)
       }
 
-      return new Promise<Thread<{}>>((resolve, reject) => {
+      return new Promise<Thread<{}, U>>((resolve, reject) => {
 
         const stackPointer = aligned_alloc(
           config.STACK_ALIGNMENT,
@@ -422,8 +422,6 @@ export function createThreadFromFunction<T extends any[]>(
                   params: args
                 }
               }, transferData)
-              break
-            case 'running':
               running()
               break
             default:
@@ -455,15 +453,15 @@ export function createThreadFromFunction<T extends any[]>(
   }
 
   function runInMain(...args: T) {
-    return new Promise<Thread<{}>>((resolve, reject) => {
-      const obj: Thread<{}> = {
+    return new Promise<Thread<{}, U>>((resolve, reject) => {
+      const obj: Thread<{}, U> = {
         $worker: null,
         $moduleId: moduleId,
         $stackPointer: null,
         $type: 'function'
       }
       resolve(obj)
-      obj.$retval = new Promise((resolve) => {
+      obj.$retval = new Promise<U>((resolve) => {
         resolve(entity(...args))
       })
     })
@@ -684,7 +682,7 @@ export function createThreadFromModule<T extends Object>(
   }
 }
 
-export function closeThread(thread: Thread<{}>) {
+export function closeThread<T, U>(thread: Thread<T, U>) {
   if (thread.$worker) {
     thread.$worker.terminate()
     thread.$worker = null
@@ -729,9 +727,9 @@ export function closeThread(thread: Thread<{}>) {
   }
 }
 
-export async function joinThread<T>(thread: Thread<{}>) {
+export async function joinThread<T, U>(thread: Thread<{}, U>) {
   if (thread.$worker) {
-    return new Promise<T>((resolve) => {
+    return new Promise<U>((resolve) => {
 
       function handler(message: MessageEvent<any>) {
         const origin = defined(ENV_NODE) ? message : message.data
@@ -763,6 +761,6 @@ export async function joinThread<T>(thread: Thread<{}>) {
     })
   }
   else if (thread.$retval) {
-    return thread.$retval as T
+    return thread.$retval
   }
 }

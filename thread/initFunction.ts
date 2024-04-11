@@ -30,15 +30,9 @@ export default function init(run: (...args: any[]) => any) {
         })
         break
       case 'run':
-        parentPort.postMessage({
-          type: 'running'
-        })
-
         retval = run(data.params)
-
         break
       case 'stop':
-
         if (retval && retval.then) {
           retval.then((res: any) => {
             parentPort.postMessage({
