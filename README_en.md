@@ -399,7 +399,7 @@ const runner = new WebAssemblyRunner(resource)
 await runner.run()
 
 // Then you can call the function exported by wasm
-runner.call('func_a', [0])
+runner.call('func_a', 0)
 
 
 ```
