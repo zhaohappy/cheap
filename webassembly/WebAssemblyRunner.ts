@@ -470,7 +470,7 @@ export default class WebAssemblyRunner {
    * @param func 方法名
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
-  public call<T extends number | bigint | void = void>(func: string, args?: (number | bigint)[]): T  {
+  public call<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): T  {
     if (!this.asm) {
       return -1 as T
     }
