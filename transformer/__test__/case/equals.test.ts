@@ -377,6 +377,26 @@ describe('equals', () => {
     })
   })
 
+  test('pointer property equal: pointer.array[i] = 0', () => {
+    const source = `
+      let a: pointer<float>;
+      for (let i = 0; i < 5; i++) {
+        a[i] = 0.0
+      }
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<float>;
+      for (let i = 0; i < 5; i++) {
+        CTypeEnumWrite[18](a + (i * 4), 0.0);
+      }
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('pointer property equal: pointer.bit = 4', () => {
     const source = `
       ${snippetClassTestABSource}

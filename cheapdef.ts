@@ -47,10 +47,10 @@ declare type int16 = {
   zzztype__?: 'int16'
 } & number
 declare type int32 = {
-  zzztype__?: 'int32'
+  zzztype__?: 'i32'
 } & number
 declare type int64 = {
-  zzztype__?: 'int64'
+  zzztype__?: 'i64'
 } & bigint
 
 declare type float = {

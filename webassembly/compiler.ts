@@ -6,6 +6,8 @@ import { ExternalKind, SectionId, readSLeb128Async,
   readULeb128Async, writeSleb128Async, writeUleb128Async
 } from 'common/util/wasm'
 import concatTypeArray from 'common/function/concatTypeArray'
+import * as object from 'common/util/object'
+import * as config from '../config'
 
 export interface WebAssemblyResource {
   tableSize?: number
@@ -232,6 +234,11 @@ export default async function compile(source: WebAssemblySource, options: Compil
   let tableSize: number
   let dataSize: number
   let buffer: ArrayBuffer
+
+  options = object.extend({
+    enableThread: config.USE_THREADS,
+    initFuncs: ['__wasm_apply_data_relocs', '_initialize']
+  }, options)
 
   if (is.number(source.dataSize) && is.number(source.tableSize)) {
     tableSize = source.dataSize

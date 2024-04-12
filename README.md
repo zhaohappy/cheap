@@ -380,6 +380,7 @@ emcc -O3 xx.c
 
 import compile from 'cheap/webassembly/compiler'
 import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
+import * as config from 'cheap/config'
 
 // resource 可以存入 indexDB 里面，下一次直接取出来用，不用在进行网络请求和编译了
 const resource = await compile(
@@ -388,7 +389,7 @@ const resource = await compile(
   },
   {
     // 是否在多线程上跑，决定导入的 Memory 是否有 share 标志
-    enableThread: true,
+    enableThread: config.USE_THREADS,
     // wasm 模块运行之后需要调用的初始化函数，一般由编译工具生成，emscripten 是下面的两个
     initFuncs: ['__wasm_apply_data_relocs', '_initialize']
   }

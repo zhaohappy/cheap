@@ -124,7 +124,11 @@ export const CTypeEnum2Type: Record<CTypeEnum, string> = {
 }
 
 export const Type2CTypeEnum: Record<string, CTypeEnum> = {
-  typeptr: CTypeEnum.pointer
+  typeptr: CTypeEnum.pointer,
+  i32: CTypeEnum.int32,
+  i64: CTypeEnum.int64,
+  f32: CTypeEnum.float,
+  f64: CTypeEnum.double
 }
 
 object.each(CTypeEnum2Type, (value, key) => {
