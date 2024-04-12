@@ -1,4 +1,4 @@
-import { RemoveNeverProperties } from 'common/types/advanced'
+import { PromiseType, RemoveNeverProperties } from 'common/types/advanced'
 import IPCPort from 'common/network/IPCPort'
 import NodeIPCPort from 'common/network/NodeIPCPort'
 import { Memory } from '../heap'
@@ -7,6 +7,7 @@ import * as config from '../config'
 import * as is from 'common/util/is'
 import { SELF } from 'common/util/constant'
 import generateUUID from 'common/function/generateUUID'
+import toString from 'common/function/toString'
 
 // @ts-ignore
 let Worker: new (url: string) => Worker = SELF.Worker
@@ -175,7 +176,7 @@ export function createThreadFromClass<T, U extends any[]>(
             $worker: worker,
             $ipc: ipc,
             $channel: channel,
-            $moduleId: moduleId,
+            $moduleId: toString(moduleId),
             $stackPointer: stackPointer,
             $type: 'class'
           } as Thread<T>
@@ -264,7 +265,7 @@ export function createThreadFromClass<T, U extends any[]>(
         $worker: null,
         $ipc: null,
         $channel: null,
-        $moduleId: moduleId,
+        $moduleId: toString(moduleId),
         $stackPointer: nullptr,
         $instance: worker,
         $type: 'class'
@@ -402,7 +403,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
         function running() {
           const obj: Thread<{}> = {
             $worker: worker,
-            $moduleId: moduleId,
+            $moduleId: toString(moduleId),
             $stackPointer: stackPointer,
             $type: 'function'
           }
@@ -456,7 +457,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
     return new Promise<Thread<{}, U>>((resolve, reject) => {
       const obj: Thread<{}, U> = {
         $worker: null,
-        $moduleId: moduleId,
+        $moduleId: toString(moduleId),
         $stackPointer: null,
         $type: 'function'
       }
@@ -558,7 +559,7 @@ export function createThreadFromModule<T extends Object>(
             $worker: worker,
             $ipc: ipc,
             $channel: channel,
-            $moduleId: moduleId,
+            $moduleId: toString(moduleId),
             $stackPointer: stackPointer,
             $type: 'module'
           } as Thread<T>
@@ -644,7 +645,7 @@ export function createThreadFromModule<T extends Object>(
         $worker: null,
         $ipc: null,
         $channel: null,
-        $moduleId: moduleId,
+        $moduleId: toString(moduleId),
         $stackPointer: nullptr,
         $instance: entity,
         $type: 'module'
@@ -729,7 +730,7 @@ export function closeThread<T, U>(thread: Thread<T, U>) {
 
 export async function joinThread<T, U>(thread: Thread<{}, U>) {
   if (thread.$worker) {
-    return new Promise<U>((resolve) => {
+    return new Promise<PromiseType<U>>((resolve) => {
 
       function handler(message: MessageEvent<any>) {
         const origin = defined(ENV_NODE) ? message : message.data
@@ -761,6 +762,6 @@ export async function joinThread<T, U>(thread: Thread<{}, U>) {
     })
   }
   else if (thread.$retval) {
-    return thread.$retval
+    return thread.$retval as PromiseType<U>
   }
 }
