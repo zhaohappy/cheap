@@ -116,6 +116,7 @@ export default class List<T> {
 
     this.length--
 
+    free(reinterpret_cast<pointer<void>>(pNode.data))
     free(pNode)
 
     return result
@@ -139,6 +140,7 @@ export default class List<T> {
 
     this.length--
 
+    free(reinterpret_cast<pointer<void>>(pNode.data))
     free(pNode)
 
     return result
