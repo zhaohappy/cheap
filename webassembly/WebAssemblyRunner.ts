@@ -6,9 +6,7 @@ import * as logger from 'common/util/logger'
 import * as is from 'common/util/is'
 import { Memory, StackPointer, Table, allocThreadId, StackTop } from '../heap'
 import { memcpy, memset } from '../std/memory'
-import { environGet, environSizesGet, fdClose, fdFdstatGet,
-  fdRead, fdSeek, fdWrite, abort, emscriptenDateNow
-} from './runtime/clib'
+import { fd_fdstat_get, fd_write, abort, random_get, clock_time_get, clock_res_get } from './runtime/clib'
 import { WebAssemblyResource } from './compiler'
 import * as atomics from './runtime/atomic'
 import * as pthread from './runtime/pthread'
@@ -49,6 +47,8 @@ if (defined(ENABLE_THREADS)) {
 const runThread = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./runThread'), {
   varName: 'init'
 }) : null
+
+function emptyFunction() {}
 
 let atomicAsmOverride = false
 
@@ -124,23 +124,23 @@ export default class WebAssemblyRunner {
         __stack_pointer: StackPointer,
         __indirect_function_table: Table.table,
 
-        clock_time_get: (type: number, b: number, ptime: number) => {
-          return 0
-        },
+        clock_time_get: clock_time_get,
+        clock_res_get: clock_res_get,
+        random_get: random_get,
 
         abort: abort,
-        environ_get: environGet,
-        environ_sizes_get: environSizesGet,
-        emscripten_date_now: emscriptenDateNow,
         proc_exit: function (exitCode: number) {
           logger.error(`wasm module exit, code: ${exitCode}`)
         },
 
-        fd_close: fdClose,
-        fd_fdstat_get: fdFdstatGet,
-        fd_read: fdRead,
-        fd_seek: fdSeek,
-        fd_write: fdWrite,
+        environ_get: emptyFunction,
+        environ_sizes_get: emptyFunction,
+
+        fd_close: emptyFunction,
+        fd_fdstat_get: fd_fdstat_get,
+        fd_read: emptyFunction,
+        fd_seek: emptyFunction,
+        fd_write: fd_write,
 
         emscripten_builtin_malloc: (size: size) => {
           const p = malloc(size)
