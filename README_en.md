@@ -770,6 +770,7 @@ Use ```wasmpthread.h``` to do thread, lock, and condition variable related opera
 - The design should use struct as little as possible as a data structure. Use struct only when it needs to be transferred between multiple threads or between js and wasm. js objects should be used at other times. Otherwise, problems such as memory leaks, dirty memory writes, and dangling pointers will cause headaches.
 - Although the API provided by cheap can use C style thread calling, my suggestion is that each thread should use asynchronous development in event loop. The advantage of this is that when multi-threading can not support in environment, you can fall back to running on the main thread (compatibility issues cannot be avoided on the Web); and writing in this way will make multi-threading easier, you only need to pay attention to those things that need to be transferred between different threads. The data synchronization problem can use reference counting to manage its life cycle well. At other times, it can be written in the same way as single-threaded JavaScript that we are familiar with.
 - There is currently a project [libmedia](https://github.com/zhaohappy/libmedia) that use cheap for development. If you want to learn how to use cheap, you can refer to the usage and design patterns of this project.
+- [cheap-example](https://github.com/zhaohappy/cheap-example) is some simple examples for cheap.
 
 ### Notice
 

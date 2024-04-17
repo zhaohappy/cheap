@@ -790,6 +790,7 @@ async function timedWaitAsync(sem: pointer<Sem>, timeout: int32): Promise<int32>
 - 设计上应该尽量少使用 struct 做数据结构、只在需要在多个线程之间传递和 js 和 wasm 之间传递时使用 struct，其他时候应该使用 js 对象。否则内存泄漏、内存脏写、空悬指针这些问题让人头大。
 - 虽然 cheap 提供的 API 可以使用 C 那种同步阻塞的线程调用方式，但我的建议是应当在每个线程都用事件循环的方式做异步开发，这样的好处是一套代码当浏览器不能支持多线程时可以回退到在主线程上也能运行（兼容问题是 Web 无法避开的）；并且这样写会让多线程写法变得更简单，你只需要去关注那些需要在不同线程间流转的数据的同步问题，这样的数据用引用计数就可以很好的管理其生命周期，其他时候都可以和写我们熟悉的方式的单线程的 JavaScript 一样。
 - 目前有一个项目[libmedia](https://github.com/zhaohappy/libmedia) 使用 cheap 进行开发，如果你想学习 cheap 如何用来开发，可以参考这个项目的使用方法和设计模式。
+- [cheap-example](https://github.com/zhaohappy/cheap-example) 是一些使用 cheap 的简单例子。
 
 ### 注意
 
