@@ -29,8 +29,8 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
   ...
   plugins: [
     new CheapPlugin({
-      // 'browser' | 'node'
-      env: 'browser',
+      // 'web' | 'node'
+      env: 'web',
       // 项目根目录，这里表示 webpack.config.js 在项目根目录下面
       projectPath: __dirname,
       // 需要排除处理的文件匹配
@@ -158,7 +158,13 @@ class MyStructB {
   // 指向另一个结构体的指针
   b: pointer<MyStruct>
   // 指向另一个结构体的二维指针
-  b: pointer<pointer<MyStruct>>
+  c: pointer<pointer<MyStruct>>
+}
+
+// 结构体可以继承
+@struct
+class MyStructC extends MyStructB {
+  d: float
 }
 
 // 用 union 装饰器来标记一个 union 定义，union 所有属性共享一段内存，其大小为最大属性成员的大小
@@ -390,8 +396,8 @@ const resource = await compile(
   {
     // 是否在多线程上跑，决定导入的 Memory 是否有 share 标志
     enableThread: config.USE_THREADS,
-    // wasm 模块运行之后需要调用的初始化函数，一般由编译工具生成，emscripten 是下面的两个
-    initFuncs: ['__wasm_apply_data_relocs', '_initialize']
+    // wasm 模块运行之后需要调用的初始化函数，一般由编译工具生成，emscripten 是下面的一个
+    initFuncs: ['__wasm_apply_data_relocs']
   }
 )
 

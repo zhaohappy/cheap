@@ -31,18 +31,20 @@ const task = [];
 function next() {
     if (task.length) {
         const command = task[0];
+
         fs.writeFileSync(command.input, command.source);
+
         exec(command.cmd, (error, stdout, stderr) => {
             if (!error) {
                 const buffer = fs.readFileSync(command.output);
                 command.resolve(`module.exports = "${buffer.toString('base64')}";`);
-                task.shift();
-                if (task.length) {
-                    next();
-                }
             }
             else {
                 command.reject(error);
+            }
+            task.shift();
+            if (task.length) {
+                next();
             }
         });
     }
@@ -78,13 +80,12 @@ module.exports = function(source) {
         const inputPath = `${distPath}${input}`;
         const outputPath = `${distPath}${output}`;
 
-        const pthreadEnable = enablePthread(this.loaders);
-        const cmd = `${this.query.wat2wasm} ${inputPath} ${enableSimd(this.loaders) ? '--enable-simd' : ''} ${pthreadEnable ? '--enable-threads' : ''} -o ${outputPath}`;
+        const cmd = `${this.query.wat2wasm} ${inputPath} --enable-simd --enable-threads -o ${outputPath}`;
 
         if (!/^\S*\(module/.test(source)) {
             source = `
                 (module
-                    (import "env" "memory" (memory 1 32768${pthreadEnable ? ' shared' : ''}))
+                    (import "env" "memory" (memory 1 32768 shared))
                     ${source}
                 )
             `;
@@ -93,10 +94,19 @@ module.exports = function(source) {
         runTask(cmd, source, inputPath, outputPath).then((text) => {
             callback(null, text);
         }).catch((error) => {
-            callback(error, error.toString());
+            let message = error.message.split('\n');
+            message.shift();
+            message = message.join('\n');
+            message = message.replace(/.wat:(\d)+:(\d)+/g, (str) => {
+                return str.replace(/(\d)+/, (str) => {
+                    return (+str - 3)+ '';
+                });
+            });
+            message = message.replaceAll(inputPath, this.resourcePath);
+            callback(new Error(message));
         });
     }
     catch (error) {
-        callback(error, error.toString());
+        callback(error);
     }
 };

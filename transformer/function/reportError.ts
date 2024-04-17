@@ -1,12 +1,27 @@
 import ts from 'typescript'
 import statement from '../statement'
 
-export default function reportError(file: ts.SourceFile, node: ts.Node, message: string, code: number = 9000) {
+export default function reportError(
+  file: ts.SourceFile,
+  node: ts.Node,
+  message: string,
+  code: number = 9000,
+  startPos: number = 0,
+  endPos: number = 0
+) {
+
+  if (!startPos && node.pos > -1) {
+    startPos = node.getStart()
+  }
+  if (!endPos && node.end > -1) {
+    endPos = node.getEnd()
+  }
+
   const format = ts.formatDiagnostic(
     {
       file: file,
-      start: node.pos > -1 ? node.getStart() : 0,
-      length: node.pos > -1 ? (node.end - node.getStart()) : 0,
+      start: startPos,
+      length: endPos - startPos,
       category: ts.DiagnosticCategory.Error,
       code,
       messageText: message
@@ -22,8 +37,8 @@ export default function reportError(file: ts.SourceFile, node: ts.Node, message:
     }
   )
   if (statement.options.reportError) {
-    const start = file.getLineAndCharacterOfPosition(node.getStart())
-    const end = file.getLineAndCharacterOfPosition(node.getEnd())
+    const start = file.getLineAndCharacterOfPosition(startPos)
+    const end = file.getLineAndCharacterOfPosition(endPos)
     statement.options.reportError({
       file: file.fileName,
       loc: {

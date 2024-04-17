@@ -31,6 +31,7 @@ export type Struct = {
   structType: StructType
   definedClassParent?: Struct
   inlineStructPathMap?: Map<ts.Symbol, string>
+  name: string
 }
 
 const StructMap: Map<ts.Symbol, Struct> = new Map()
@@ -117,7 +118,8 @@ function analyzeModifiers(list: ts.NodeArray<ts.ModifierLike>, data: KeyMetaExt)
                   length: 0,
                   structType: StructType.CSTRUCT,
                   meta: null,
-                  symbol: null
+                  symbol: null,
+                  name: ''
                 }
               }
             }
@@ -332,7 +334,8 @@ function getInlineStruct(type: ts.Type, structType: StructType) {
       symbol: type.symbol,
       parent: null,
       structType: StructType.INLINE_OBJECT,
-      definedClassParent: Stack[Stack.length - 1].struct
+      definedClassParent: Stack[Stack.length - 1].struct,
+      name: type.symbol.name
     })
     return StructMap.get(type.symbol)
   }
@@ -366,7 +369,8 @@ function analyze(symbol: ts.Symbol) {
     meta: null,
     symbol: symbol,
     parent: null,
-    structType: structType
+    structType: structType,
+    name: symbol.name
   }
   const treePath = []
 

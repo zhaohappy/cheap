@@ -15,6 +15,7 @@ export interface DeclarationData {
 }
 
 export interface TransformerOptions {
+  tmpPath?: string
   projectPath?: string
   formatIdentifier?: boolean
   exclude?: RegExp
@@ -33,5 +34,6 @@ export interface TransformerOptions {
     }
     code: number,
     message: string
-  }) => void
+  }) => void,
+  wat2wasm?: string
 }

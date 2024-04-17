@@ -17,6 +17,9 @@ export default class ASMRunner {
     if (config.USE_THREADS && defined(ENABLE_THREADS)) {
       wasmUtils.setMemoryShared(wasm, true)
     }
+    else {
+      wasmUtils.setMemoryShared(wasm, false)
+    }
 
     this.wasm = wasm
   }

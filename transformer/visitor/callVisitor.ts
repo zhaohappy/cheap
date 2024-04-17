@@ -6,7 +6,7 @@ import statement from '../statement'
 import { BuiltinBigInt, BuiltinFloat, BuiltinNumber, BuiltinUint, Type2CTypeEnum } from '../defined'
 import reportError from '../function/reportError'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
-import { Struct, StructType, hasStruct } from '../struct'
+import { Struct, StructType, getStruct, hasStruct } from '../struct'
 import { isPointerNode } from '../util/nodeutil'
 import relativePath from '../function/relativePath'
 import isDef from 'common/function/isDef'
@@ -635,6 +635,30 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       }
       else {
         reportError(statement.currentFile, node, `the type of ${arg.getText()} is not pointer`)
+        return node
+      }
+    }
+    else if (callName === constant.offsetof && !statement.lookupFunc(constant.offsetof)) {
+      if (node.arguments.length === 2) {
+        const type = statement.typeChecker.getTypeAtLocation(node.arguments[0])
+        if (typeUtils.isStructType(type) && ts.isStringLiteral(node.arguments[1])) {
+          const struct = getStruct(type.symbol)
+          const meta = getStructMeta(struct, node.arguments[1].text)
+          if (meta) {
+            return statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+          }
+          else {
+            reportError(statement.currentFile, node, `struct ${struct.name} has not property ${node.arguments[1].text}`)
+            return node
+          }
+        }
+        else {
+          reportError(statement.currentFile, node, `offsetof invalid arguments`)
+          return node
+        }
+      }
+      else {
+        reportError(statement.currentFile, node, `offsetof invalid arguments`)
         return node
       }
     }

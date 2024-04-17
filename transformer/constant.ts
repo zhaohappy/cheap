@@ -2,6 +2,7 @@
 
 export const accessof = 'accessof'
 export const addressof = 'addressof'
+export const offsetof = 'offsetof'
 export const memcpy = 'memcpy'
 export const sizeof = 'sizeof'
 export const move = 'move'
@@ -46,6 +47,8 @@ export const typeStruct = 'struct'
 export const defined = 'defined'
 export const args = 'args'
 export const enableArgs = 'enableArgs'
+
+export const tagAsm = 'asm'
 
 export const prototype = 'prototype'
 

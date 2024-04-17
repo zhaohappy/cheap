@@ -3,10 +3,11 @@
 import { base64ToUint8Array } from 'common/util/base64'
 import * as logger from 'common/util/logger'
 
-import asm from 'asm-with-pthread!./thread.asm'
+import asm from './thread.asm'
 import { Mutex } from '../../../thread/mutex'
 import { Cond } from '../../../thread/cond'
 import { Timespec } from '../semaphore'
+import * as wasmUtils from 'common/util/wasm'
 
 /**
  * WebAssembly runtime 实例
@@ -32,7 +33,11 @@ export async function init(memory: WebAssembly.Memory, override: (
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
 
-      wasmThreadProxy = (await WebAssembly.instantiate(base64ToUint8Array(asm), {
+      const wasm = base64ToUint8Array(asm)
+
+      wasmUtils.setMemoryShared(wasm, true)
+
+      wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
         env: {
           memory
         }

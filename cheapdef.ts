@@ -380,6 +380,11 @@ declare function addressof<T>(struct: T): T extends any[] ? pointer<UnwrapArray<
 declare function accessof<T extends (IsBuiltinType<T> extends true ? never : anyptr)>(pointer: T): UnwrapPointer<T>
 
 /**
+ * 获取 struct 属性偏移
+ */
+declare function offsetof<T extends new (init?: Partial<{}>) => any>(struct: T, key: T extends new (init?: Partial<{}>) => infer U ? keyof U : never): uint32
+
+/**
  * 返回 type 大小
  */
 declare function sizeof(type: any): size
@@ -396,6 +401,13 @@ declare function reinterpret_cast<T extends (anyptr | BuiltinType)>(target: anyp
  * 基本类型之间强转
  */
 declare function static_cast<T extends BuiltinType>(target: BuiltinType): T
+
+/**
+ * 汇编模板标签
+ * 
+ * @param template 
+ */
+declare function asm(template: TemplateStringsArray, ...exps: any[]): string
 
 /**
  * 创建结构体实例

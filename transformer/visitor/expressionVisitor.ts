@@ -7,22 +7,23 @@ import propertyAccessExpressionVisitor from './propertyAccessExpressionVisitor'
 import binaryExpressionVisitor from './binaryExpressionVisitor'
 import unaryExpressionVisitor from './unaryExpressionVisitor'
 import elementAccessExpressionVisitor from './elementAccessExpressionVisitor'
+import taggedTemplateExpressionVisitor from './taggedTemplateExpressionVisitor'
 
 export default function (node: ts.Expression, visitor: ts.Visitor): ts.Node {
   if (ts.isBinaryExpression(node)) {
-    return binaryExpressionVisitor(node, statement.visitor)
+    return binaryExpressionVisitor(node, visitor)
   }
   else if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
-    return unaryExpressionVisitor(node, statement.visitor)
+    return unaryExpressionVisitor(node, visitor)
   }
   else if (ts.isCallExpression(node)) {
-    return callVisitor(node, statement.visitor)
+    return callVisitor(node, visitor)
   }
   else if (ts.isPropertyAccessExpression(node)) {
-    return propertyAccessExpressionVisitor(node, statement.visitor)
+    return propertyAccessExpressionVisitor(node, visitor)
   }
   else if (ts.isElementAccessExpression(node)) {
-    return elementAccessExpressionVisitor(node, statement.visitor)
+    return elementAccessExpressionVisitor(node, visitor)
   }
   else if (statement.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API
     && ts.isAwaitExpression(node)
@@ -35,6 +36,9 @@ export default function (node: ts.Expression, visitor: ts.Visitor): ts.Node {
     )
   ) {
     return ts.visitEachChild(node.expression, visitor, statement.context)
+  }
+  else if (ts.isTaggedTemplateExpression(node)) {
+    return taggedTemplateExpressionVisitor(node, visitor)
   }
 
   return ts.visitEachChild(node, visitor, statement.context)

@@ -120,7 +120,9 @@ class CheapPlugin {
                   },
                   defined: {
                     ENV_NODE: me.options.env === 'node'
-                  }
+                  },
+                  tmpPath: compiler.options.output.path,
+                  wat2wasm: path.resolve(__dirname, '../../asm') + '/wat2wasm'
                 });
 
                 if (!result.before) {

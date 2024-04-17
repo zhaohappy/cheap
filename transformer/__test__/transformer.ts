@@ -38,7 +38,9 @@ function transform2AST(source: string, options: {
   const transformer = transformerFactory(program, {
     projectPath: projectPath,
     formatIdentifier: false,
-    defined: options.defined
+    defined: options.defined,
+    tmpPath: distPath,
+    wat2wasm: path.join(__dirname, '../../build/asm/wat2wasm')
   })
   const transformed = ts.transform(program.getSourceFile(options.input), [transformer], compilerOptions)
 

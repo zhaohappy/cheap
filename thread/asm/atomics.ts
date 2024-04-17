@@ -1,7 +1,8 @@
 import { base64ToUint8Array } from 'common/util/base64'
 import * as logger from 'common/util/logger'
+import * as wasmUtils from 'common/util/wasm'
 
-import asm from 'asm-with-pthread!./atomics.asm'
+import asm from './atomics.asm'
 
 import { override } from '../atomics'
 
@@ -18,7 +19,11 @@ export default async function init(memory: WebAssembly.Memory) {
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
 
-      instance = (await WebAssembly.instantiate(base64ToUint8Array(asm), {
+      const wasm = base64ToUint8Array(asm)
+
+      wasmUtils.setMemoryShared(wasm, true)
+
+      instance = (await WebAssembly.instantiate(wasm, {
         env: {
           memory
         }
