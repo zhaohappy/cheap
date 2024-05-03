@@ -8,5 +8,5 @@ import * as object from 'common/util/object'
  * @returns 
  */
 export default function isCStruct(struct: Object) {
-  return object.has(struct, symbolStructAddress)
+  return object.has(struct, symbolStructAddress as any)
 }
