@@ -1,6 +1,6 @@
 
 import ts from 'typescript'
-import path from 'path-browserify'
+import path from 'path'
 import * as array from 'common/util/array'
 import parseImports from './function/parseImports'
 import { DeclarationData, ImportData, TransformerOptions } from './type'

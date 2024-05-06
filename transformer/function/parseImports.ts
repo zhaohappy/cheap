@@ -1,5 +1,5 @@
 import ts from 'typescript'
-import path from 'path-browserify'
+import path from 'path'
 import getFilePath from './getFilePath'
 
 export default function parseImports(file: ts.SourceFile, program: ts.Program, typeChecker: ts.TypeChecker, locals: Map<string, ts.Symbol>) {

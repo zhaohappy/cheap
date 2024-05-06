@@ -3,6 +3,7 @@ import transformerFactory from '../index'
 import * as path from 'path'
 import * as fs from 'fs'
 import compare from './compare'
+import os from 'os'
 
 export const projectPath = __dirname
 export const distPath = path.join(__dirname, './__test__cache')
@@ -35,12 +36,21 @@ function transform2AST(source: string, options: {
 }) {
   fs.writeFileSync(options.input, source)
   const program = ts.createProgram([cheapdef, options.input], compilerOptions, compilerHost)
+
+  let wat2wasmPath = path.resolve(__dirname, '../../build/asm/ubuntu') + '/wat2wasm'
+  if (os.platform() === 'win32') {
+    wat2wasmPath = path.resolve(__dirname, '../../build/asm/win') + '/wat2wasm.exe'
+  }
+  else if (os.platform() === 'darwin') {
+    wat2wasmPath = path.resolve(__dirname, '../../build/asm/macos') + '/wat2wasm'
+  }
+
   const transformer = transformerFactory(program, {
     projectPath: projectPath,
     formatIdentifier: false,
     defined: options.defined,
     tmpPath: distPath,
-    wat2wasm: path.join(__dirname, '../../build/asm/wat2wasm')
+    wat2wasm: wat2wasmPath
   })
   const transformed = ts.transform(program.getSourceFile(options.input), [transformer], compilerOptions)
 

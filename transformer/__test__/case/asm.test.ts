@@ -18,7 +18,7 @@ describe('args', () => {
   })
 
 
-  test('args defined', () => {
+  test('asm', () => {
     const source = `
       const text = asm\`
       (func $write16 (export "write16") (param $p0 i32) (param $p1 i32)

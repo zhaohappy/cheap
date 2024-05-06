@@ -1,5 +1,6 @@
 
 const path = require('path');
+const os = require('os');
 const transformer = require('../../transformer').default;
 
 function formatKey(error) {
@@ -98,6 +99,14 @@ class CheapPlugin {
         compiler.options.module.rules = [];
       }
 
+      let wat2wasmPath = path.resolve(__dirname, '../../asm/ubuntu') + '/wat2wasm';
+      if (os.platform() === 'win32') {
+        wat2wasmPath = path.resolve(__dirname, '../../asm/win') + '/wat2wasm.exe';
+      }
+      else if (os.platform() === 'darwin') {
+        wat2wasmPath = path.resolve(__dirname, '../../asm/macos') + '/wat2wasm';
+      }
+
       compiler.options.module.rules.forEach((item) => {
         if (item.use) {
           item.use.forEach((loader) => {
@@ -110,6 +119,7 @@ class CheapPlugin {
                 old = function () {
                 };
               }
+
               loader.options.getCustomTransformers = function (program) {
                 const result = old(program) || {};
                 const trans = transformer(program, {
@@ -122,7 +132,7 @@ class CheapPlugin {
                     ENV_NODE: me.options.env === 'node'
                   },
                   tmpPath: compiler.options.output.path,
-                  wat2wasm: path.resolve(__dirname, '../../asm') + '/wat2wasm'
+                  wat2wasm: wat2wasmPath
                 });
 
                 if (!result.before) {
@@ -147,7 +157,7 @@ class CheapPlugin {
             loader: path.resolve(__dirname, '../../asm/process-loader.js'),
             options: {
               tmpPath: compiler.options.output.path,
-              wat2wasm: path.resolve(__dirname, '../../asm') + '/wat2wasm',
+              wat2wasm: wat2wasmPath
             }
           }
         ]
