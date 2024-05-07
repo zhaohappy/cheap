@@ -89,7 +89,7 @@ class CheapPlugin {
           'node_modules'
         ];
       }
-      compiler.options.resolveLoader.modules.push(path.resolve('../loader'));
+      compiler.options.resolveLoader.modules.push(path.resolve(__dirname, '../loader'));
       compiler.options.resolveLoader.alias = {
         'asm-with-simd': path.resolve(__dirname, '../../asm/simd-loader.js'),
         'asm-with-pthread': path.resolve(__dirname, '../../asm/pthread-loader.js'),
