@@ -55,7 +55,7 @@ export default function processAsm(template: ts.TemplateExpression | ts.NoSubsti
       (import "env" "memory" (memory 1 32768 shared))
       ${text}
     )
-  `;
+  `
 
   ts.sys.writeFile(inputPath, source)
 

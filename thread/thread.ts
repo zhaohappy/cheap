@@ -144,7 +144,7 @@ export function createThreadFromClass<T, U extends any[]>(
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
             const fs = require('fs')
-            fs.writeFileSync(workerUrl, source);
+            fs.writeFileSync(workerUrl, source)
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })
@@ -376,7 +376,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
             const fs = require('fs')
-            fs.writeFileSync(workerUrl, source);
+            fs.writeFileSync(workerUrl, source)
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })
@@ -529,7 +529,7 @@ export function createThreadFromModule<T extends Object>(
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
             const fs = require('fs')
-            fs.writeFileSync(workerUrl, source);
+            fs.writeFileSync(workerUrl, source)
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })

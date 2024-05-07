@@ -653,12 +653,12 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           }
         }
         else {
-          reportError(statement.currentFile, node, `offsetof invalid arguments`)
+          reportError(statement.currentFile, node, 'offsetof invalid arguments')
           return node
         }
       }
       else {
-        reportError(statement.currentFile, node, `offsetof invalid arguments`)
+        reportError(statement.currentFile, node, 'offsetof invalid arguments')
         return node
       }
     }

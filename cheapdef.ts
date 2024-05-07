@@ -382,7 +382,10 @@ declare function accessof<T extends (IsBuiltinType<T> extends true ? never : any
 /**
  * 获取 struct 属性偏移
  */
-declare function offsetof<T extends new (init?: Partial<{}>) => any>(struct: T, key: T extends new (init?: Partial<{}>) => infer U ? keyof U : never): uint32
+declare function offsetof<T extends new (init?: Partial<{}>) => any>(
+  struct: T,
+  key: T extends new (init?: Partial<{}>) => infer U ? keyof U : never
+): uint32
 
 /**
  * 返回 type 大小

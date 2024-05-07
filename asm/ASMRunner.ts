@@ -11,7 +11,7 @@ export default class ASMRunner {
 
   private wasm: Uint8Array
 
-  constructor (asmBase64: string) {
+  constructor(asmBase64: string) {
     let wasm = base64ToUint8Array(asmBase64)
 
     if (config.USE_THREADS && defined(ENABLE_THREADS)) {
@@ -46,7 +46,7 @@ export default class ASMRunner {
     this.wasm = null
   }
 
-  get exports () {
+  get exports() {
     return this.runner.exports
   }
 }
