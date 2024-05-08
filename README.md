@@ -357,7 +357,7 @@ function defined<T>(def: T): T
 
 我们使用 WebAssembly 的目的首先是复用现有的大量 C/C++ 写的基础库，其次是 WebAssembly 带来的性能提升。
 
-目前的 WebAssembly 开发模式都是使用其他语言来开发，然后通过编译工具编译成 wasm 字节码，其中需要的 js 胶水层代码也由编译工具来完成。这给我的感觉是本来 WebAssembly 技术一开始是给 Web 使用的，但它却和 Web 的主角 JavaScript 有一种割裂感，我认为在 Web 平台上应该由 JavaScript 来主导整个程序，这样我们既拥有了 JavaScript 的优点（开发快速、社区大量的库），又可以把其他语言的一些优势引入 Web；而不是让写其他语言的人员主导整过程让 JavaScript 沦为那些代码看起来丑陋和晦涩难懂的胶水层的运行时代码。JavaScript 作为整个 Web 技术的核心，抛弃它只会把其他语言的缺点引入 Web，而不会成为 1 + 1 > 2 的可能。
+目前的 WebAssembly 开发模式都是使用其他语言来开发，然后通过编译工具编译成 wasm 字节码，其中需要的 js 胶水层代码也由编译工具来完成。这给我的感觉是本来 WebAssembly 技术一开始是给 Web 使用的，但它却和 Web 的主角 JavaScript 有一种割裂感，我认为在 Web 平台上应该由 JavaScript 来主导整个程序，这样我们既拥有了 JavaScript 的优点（开发快速、社区大量的库），又可以把其他语言的一些优势引入 Web；而不是让写其他语言的人员主导整个过程让 JavaScript 沦为那些代码看起来丑陋和晦涩难懂的胶水层的运行时代码。JavaScript 作为整个 Web 技术的核心，抛弃它只会把其他语言的缺点引入 Web，而不会成为 1 + 1 > 2 的可能。
 
 所以在 cheap 中我们只需要编译之后的 wasm 字节码，不需要胶水层代码，同时 cheap 提供了一些基础的运行时。这个运行时有内存分配、标准输出（用于日志打印）、atomic、pthread、semaphore。总结就是 wasm 模块应该只负责计算部分，IO 的输入输出和业务逻辑应该由 JavaScript 负责。因为我们的 wasm 模块绝大部分从 C/C++ 编译而来，其同步阻塞的 IO 方式和 Web 异步的方式天生不合，所有将 IO 放进 wasm 内部而用 JavaScript 去模拟一套同步阻塞的运行时都将成为这个系统的致命缺陷。当然你也可以使用编译工具让 wasm 内部支持调用 JavaScript 的异步函数，但它带来的是要么编译产物 wasm 体积变大，性能下降；要么可以使用的场景有很大限制。据我所知 emscripten 支持让 C/C++ 调用 JavaScript 的异步函数，但前提是整个调用链上不能有间接调用。
 
