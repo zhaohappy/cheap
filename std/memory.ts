@@ -14,10 +14,10 @@ export function memcpy(dst: anyptr, src: anyptr, size: size) {
   getHeapU8().set(getHeapU8().subarray(src, src + size), dst)
 }
 
-export function memcpyFromUint8Array(src: pointer<void>, max: size, data: Uint8Array) {
-  assert(src, 'Out Of Bounds, address: 0')
-  assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  getHeapU8().set(data.subarray(0, max), src)
+export function memcpyFromUint8Array(dst: pointer<void>, max: size, data: Uint8Array) {
+  assert(dst, 'Out Of Bounds, address: 0')
+  assert(Allocator.isAlloc(dst), `src address ${dst} is not alloc`)
+  getHeapU8().set(data.subarray(0, max), dst)
 }
 
 export function memmove(dst: anyptr, src: anyptr, size: size) {
