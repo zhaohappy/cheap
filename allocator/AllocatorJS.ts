@@ -456,7 +456,6 @@ export default class AllocatorJS implements Allocator {
         const preceding: int32 = getFreeBlockBefore(int32Array, block)
         if (preceding !== nullptr) {
           insertAfter(int32Array, preceding, block, blockSize, this.updates)
-
         }
         else {
           insert(int32Array, block, blockSize, this.updates)
