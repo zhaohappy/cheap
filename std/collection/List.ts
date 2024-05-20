@@ -12,10 +12,12 @@ type ListNodeDepth = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 class ListNode<T = void, D extends ListNodeDepth[number] = 9> {
   @type(ListNode<T>)
   @pointer()
-    prev: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
+  prev: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
+
   @type(ListNode<T>)
   @pointer()
-    next: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
+  next: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
+  
   data: pointer<T>
 }
 
