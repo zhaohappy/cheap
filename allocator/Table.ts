@@ -101,6 +101,20 @@ export class WebassemblyTable {
         }
       }
     }
+
+    if (this.nodes.length === 1 && this.nodes[0].free) {
+      // 当全部 free 之后重新创建新的 Table，之前 WebAssembly 设置的函数引用在 chrome 上没有被回收，会内存泄漏
+      this.table = new WebAssembly.Table({
+        initial: 10,
+        element: 'anyfunc'
+      })
+      this.pointer = 1
+      this.nodes = [{
+        pointer: 1,
+        length: 9,
+        free: true
+      }]
+    }
   }
 
   public get<T extends(...args: any[]) => any>(index: pointer<T>): T {
