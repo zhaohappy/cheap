@@ -34,6 +34,21 @@ describe('pointer array access', () => {
     })
   })
 
+  test('pointer[0]', () => {
+    const source = `
+      let a: pointer<uint8>
+      let b = a[0]
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      let a: pointer<uint8>
+      let b = CTypeEnumRead[${CTypeEnum.uint8}](a);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('pointer[x]', () => {
     const source = `
       let a: pointer<uint8>

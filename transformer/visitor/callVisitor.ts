@@ -586,11 +586,14 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           )
         }
 
-        return statement.context.factory.createBinaryExpression(
-          address as ts.Expression,
-          ts.SyntaxKind.PlusToken,
-          offset
-        )
+        if (offset) {
+          return statement.context.factory.createBinaryExpression(
+            address as ts.Expression,
+            ts.SyntaxKind.PlusToken,
+            offset
+          )
+        }
+        return address as ts.Expression
       }
       else {
         const type = statement.typeChecker.getTypeAtLocation(arg)
