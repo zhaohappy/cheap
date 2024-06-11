@@ -27,6 +27,9 @@ export default function init(module: Object) {
           ipc.reply(data, result, null, transfer)
         }
         catch (error) {
+          if (defined(DEBUG)) {
+            console.error(error)
+          }
           ipc.reply(data, CHeapError.REQUEST_ERROR, {
             message: error.message
           })

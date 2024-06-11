@@ -49,7 +49,6 @@ export default function init(run: (...args: any[]) => any) {
         }
         break
       default:
-        console.log('default')
         break
     }
   }
