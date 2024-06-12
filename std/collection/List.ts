@@ -17,7 +17,7 @@ class ListNode<T = void, D extends ListNodeDepth[number] = 9> {
   @type(ListNode<T>)
   @pointer()
   next: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
-  
+
   data: pointer<T>
 }
 
