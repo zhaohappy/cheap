@@ -22,6 +22,7 @@ export const BuiltinType = [
   'char',
   'size',
   'void',
+  'bool',
 
   'atomic_char',
   'atomic_uint8',
@@ -31,7 +32,8 @@ export const BuiltinType = [
   'atomic_int16',
   'atomic_int32',
   'atomic_int64',
-  'atomic_uint64'
+  'atomic_uint64',
+  'atomic_bool'
 ]
 
 export const BuiltinAtomicType = [
@@ -43,7 +45,8 @@ export const BuiltinAtomicType = [
   'atomic_int16',
   'atomic_int32',
   'atomic_int64',
-  'atomic_uint64'
+  'atomic_uint64',
+  'atomic_bool'
 ]
 
 export const BuiltinDecorator = [
@@ -97,6 +100,11 @@ export const BuiltinUint = [
   'atomic_uint64'
 ]
 
+export const BuiltinBool = [
+  'bool',
+  'atomic_bool'
+]
+
 export const CTypeEnum2Type: Record<CTypeEnum, string> = {
   [CTypeEnum.uint8]: 'uint8',
   [CTypeEnum.atomic_uint8]: 'atomic_uint8',
@@ -120,7 +128,9 @@ export const CTypeEnum2Type: Record<CTypeEnum, string> = {
   [CTypeEnum.void]: 'void',
   [CTypeEnum.null]: 'nullptr',
   [CTypeEnum.atomic_uint64]: 'atomic_uint64',
-  [CTypeEnum.atomic_int64]: 'atomic_int64'
+  [CTypeEnum.atomic_int64]: 'atomic_int64',
+  [CTypeEnum.bool]: 'bool',
+  [CTypeEnum.atomic_bool]: 'atomic_bool'
 }
 
 export const Type2CTypeEnum: Record<string, CTypeEnum> = {
@@ -135,4 +145,4 @@ object.each(CTypeEnum2Type, (value, key) => {
   Type2CTypeEnum[value] = +key
 })
 
-export const BuiltinNumber = array.exclude(array.exclude(BuiltinType, BuiltinFloat), BuiltinBigInt)
+export const BuiltinNumber = array.exclude(array.exclude(array.exclude(BuiltinType, BuiltinFloat), BuiltinBigInt), BuiltinBool)

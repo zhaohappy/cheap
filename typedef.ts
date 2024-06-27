@@ -28,7 +28,10 @@ export const enum CTypeEnum {
   pointer,
 
   atomic_int64,
-  atomic_uint64
+  atomic_uint64,
+
+  bool,
+  atomic_bool
 }
 
 export const CTypeEnum2Bytes: Record<CTypeEnum, number> = {
@@ -55,7 +58,10 @@ export const CTypeEnum2Bytes: Record<CTypeEnum, number> = {
   [CTypeEnum.void]: 4,
 
   [CTypeEnum.atomic_uint64]: 8,
-  [CTypeEnum.atomic_int64]: 8
+  [CTypeEnum.atomic_int64]: 8,
+
+  [CTypeEnum.bool]: 1,
+  [CTypeEnum.atomic_bool]: 1
 }
 
 export const CTypeEnumPointerShiftMap: Record<CTypeEnum, number> = {
@@ -81,7 +87,10 @@ export const CTypeEnumPointerShiftMap: Record<CTypeEnum, number> = {
   [CTypeEnum.void]: 2,
   [CTypeEnum.null]: 2,
   [CTypeEnum.atomic_uint64]: 4,
-  [CTypeEnum.atomic_int64]: 4
+  [CTypeEnum.atomic_int64]: 4,
+
+  [CTypeEnum.bool]: 0,
+  [CTypeEnum.atomic_bool]: 0
 }
 
 export const enum KeyMetaKey {
@@ -113,51 +122,57 @@ export type KeyMeta = {
 export type Struct = new (init?: Data) => any
 export type Union = new (init?: Data) => any
 
+/* eslint-disable */
 export type CTypeEnum2Type<T> =
   T extends CTypeEnum.null
-    ? void
-    : T extends CTypeEnum.void
-      ? void
-      : T extends CTypeEnum.uint8
-        ? uint8
-        : T extends CTypeEnum.atomic_int8
-          ? atomic_uint8
-          : T extends CTypeEnum.char
-            ? char
-            : T extends CTypeEnum.uint16
-              ? uint16
-              : T extends CTypeEnum.atomic_uint16
-                ? atomic_uint16
-                : T extends CTypeEnum.uint32
-                  ? uint32
-                  : T extends CTypeEnum.atomic_uint32
-                    ? atomic_uint32
-                    : T extends CTypeEnum.uint64
-                      ? uint64
-                      : T extends CTypeEnum.int8
-                        ? int8
-                        : T extends CTypeEnum.atomic_int8
-                          ? atomic_int8
-                          : T extends CTypeEnum.int16
-                            ? int16
-                            : T extends CTypeEnum.atomic_int16
-                              ? atomic_int16
-                              : T extends CTypeEnum.int32
-                                ? int32
-                                : T extends CTypeEnum.atomic_int32
-                                  ? atomic_int32
-                                  : T extends CTypeEnum.int64
-                                    ? int64
-                                    : T extends CTypeEnum.float
-                                      ? float
-                                      : T extends CTypeEnum.double
-                                        ? double
-                                        : T extends CTypeEnum.pointer
-                                          ? pointer<void>
-                                          : T extends CTypeEnum.atomic_int64
-                                            ? atomic_int64
-                                            : T extends CTypeEnum.atomic_uint64
-                                              ? atomic_uint64
-                                              : never
+  ? void
+  : T extends CTypeEnum.void
+  ? void
+  : T extends CTypeEnum.uint8
+  ? uint8
+  : T extends CTypeEnum.atomic_int8
+  ? atomic_uint8
+  : T extends CTypeEnum.char
+  ? char
+  : T extends CTypeEnum.uint16
+  ? uint16
+  : T extends CTypeEnum.atomic_uint16
+  ? atomic_uint16
+  : T extends CTypeEnum.uint32
+  ? uint32
+  : T extends CTypeEnum.atomic_uint32
+  ? atomic_uint32
+  : T extends CTypeEnum.uint64
+  ? uint64
+  : T extends CTypeEnum.int8
+  ? int8
+  : T extends CTypeEnum.atomic_int8
+  ? atomic_int8
+  : T extends CTypeEnum.int16
+  ? int16
+  : T extends CTypeEnum.atomic_int16
+  ? atomic_int16
+  : T extends CTypeEnum.int32
+  ? int32
+  : T extends CTypeEnum.atomic_int32
+  ? atomic_int32
+  : T extends CTypeEnum.int64
+  ? int64
+  : T extends CTypeEnum.float
+  ? float
+  : T extends CTypeEnum.double
+  ? double
+  : T extends CTypeEnum.pointer
+  ? pointer<void>
+  : T extends CTypeEnum.atomic_int64
+  ? atomic_int64
+  : T extends CTypeEnum.atomic_uint64
+  ? atomic_uint64
+  : T extends CTypeEnum.bool
+  ? bool
+  : T extends CTypeEnum.atomic_bool
+  ? atomic_bool
+  : never
+/* eslint-enable */
 
 export type AtomicsBuffer = Exclude<TypeArray, Float32Array | Float64Array> | BigInt64Array | BigUint64Array

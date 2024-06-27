@@ -619,4 +619,40 @@ describe('property access', () => {
       input
     })
   })
+
+  test('struct property bool type', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: bool
+      }
+
+      let p: pointer<TestA>
+      const a = p.a
+      p.a = true
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      class TestA {
+        a: bool
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: 23, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+        definedMetaProperty(prototype, symbolStructLength, 1);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(TestA.prototype);
+      let p: pointer<TestA>;
+      const a = CTypeEnumRead[23](p);
+      CTypeEnumWrite[23](p, true);
+    `
+    check(source, target, {
+      input
+    })
+  })
 })

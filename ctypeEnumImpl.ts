@@ -168,7 +168,14 @@ export default function init(getAllocator_: () => AllocatorInterface, getView_: 
 
     [CTypeEnum.float]: readf32,
     [CTypeEnum.double]: readf64,
-    [CTypeEnum.pointer]: readPointer
+    [CTypeEnum.pointer]: readPointer,
+
+    [CTypeEnum.bool]: (pointer: pointer<void>) => {
+      return !!read8(pointer)
+    },
+    [CTypeEnum.atomic_bool]: (pointer: pointer<void>) => {
+      return !!read8(pointer)
+    }
   })
 
   writeoverride({
@@ -193,6 +200,13 @@ export default function init(getAllocator_: () => AllocatorInterface, getView_: 
 
     [CTypeEnum.float]: writef32,
     [CTypeEnum.double]: writef64,
-    [CTypeEnum.pointer]: writePointer
+    [CTypeEnum.pointer]: writePointer,
+
+    [CTypeEnum.bool]: (pointer: pointer<void>, value: bool) => {
+      write8(pointer, value ? 1 : 0)
+    },
+    [CTypeEnum.atomic_bool]: ((pointer: pointer<void>, value: bool) => {
+      write8(pointer, value ? 1 : 0)
+    }) as any
   })
 }

@@ -80,6 +80,13 @@ export const CTypeEnumRead: CTypeEnumRead = {
   [CTypeEnum.atomic_int64]: function (pointer: pointer<void>) {
     throw new Error('invalid operate')
   },
+
+  [CTypeEnum.bool]: function (pointer: pointer<void>) {
+    throw new Error('invalid operate')
+  },
+  [CTypeEnum.atomic_bool]: function (pointer: pointer<void>) {
+    throw new Error('invalid operate')
+  }
 }
 
 export function override(funcs: Partial<CTypeEnumRead>) {

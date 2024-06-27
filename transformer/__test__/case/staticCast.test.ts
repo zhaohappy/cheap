@@ -17,6 +17,62 @@ describe('static cast', () => {
     fs.unlinkSync(output)
   })
 
+  test('static_cast<uint32>(bool)', () => {
+    const source = `
+      let a: bool
+      let b = static_cast<uint32>(a)
+    `
+    const target = `
+      let a: bool
+      let b = ((a) ? 1 : 0)
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<bool>(uint32)', () => {
+    const source = `
+      let a: uint32
+      let b = static_cast<bool>(a)
+    `
+    const target = `
+      let a: uint32
+      let b = !!a
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<float>(bool)', () => {
+    const source = `
+      let a: bool
+      let b = static_cast<float>(a)
+    `
+    const target = `
+      let a: bool
+      let b = ((a) ? 1.0 : 0.0)
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<int64>(bool)', () => {
+    const source = `
+      let a: bool
+      let b = static_cast<int64>(a)
+    `
+    const target = `
+      let a: bool
+      let b = ((a) ? 1n : 0n)
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('static_cast<uint8>(uint16)', () => {
     const source = `
       let a: uint16
@@ -178,7 +234,7 @@ describe('static cast', () => {
     `
     const target = `
       let a: uint32
-      let b = ((a & 0xffff) & 0x80000) ? -(0x10000 - (a & 0xffff)) : (a & 0xffff);
+      let b = (((a & 0xffff) & 0x80000) ? -(0x10000 - (a & 0xffff)) : (a & 0xffff));
     `
     check(source, target, {
       input
@@ -250,7 +306,7 @@ describe('static cast', () => {
     `
     const target = `
       let a: uint64
-      let b = (Number(a & 0xffffn) & 0x80000) ? -(0x10000 - Number(a & 0xffffn)) : Number(a & 0xffffn);
+      let b = ((Number(a & 0xffffn) & 0x80000) ? -(0x10000 - Number(a & 0xffffn)) : Number(a & 0xffffn));
     `
     check(source, target, {
       input

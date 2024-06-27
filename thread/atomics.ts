@@ -1,23 +1,32 @@
+/* eslint-disable */
 export type AtomicType2Shift<T> =
   T extends atomic_char
-    ? 0
-    : T extends atomic_int16
-      ? 1
-      : T extends atomic_int32
-        ? 2
-        : T extends atomic_int8
-          ? 0
-          : T extends atomic_uint8
-            ? 0
-            : T extends atomic_uint16
-              ? 1
-              : T extends atomic_uint32
-                ? 2
-                : T extends atomic_uint64
-                  ? 4
-                  : T extends atomic_int64
-                    ? 4
-                    : never
+  ? 0
+  : T extends atomic_int16
+  ? 1
+  : T extends atomic_int32
+  ? 2
+  : T extends atomic_int8
+  ? 0
+  : T extends atomic_uint8
+  ? 0
+  : T extends atomic_uint16
+  ? 1
+  : T extends atomic_uint32
+  ? 2
+  : T extends atomic_uint64
+  ? 4
+  : T extends atomic_int64
+  ? 4
+  : T extends atomic_bool
+  ? 0
+  : never
+/* eslint-enable */
+
+type AtomicType2CTypeEnum<T> = 
+  T extends atomic_bool
+  ? atomic_int8
+  : T
 
 /**
  * 给定的值加到指定位置上
@@ -25,7 +34,7 @@ export type AtomicType2Shift<T> =
  * 返回该位置的旧值
  *
  */
-export let add: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let add: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 给定的值与指定位置上的值相减
@@ -33,7 +42,7 @@ export let add: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
  * 返回该位置的旧值
  *
  */
-export let sub: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let sub: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 给定的值与指定位置上的值进行与运算
@@ -41,7 +50,7 @@ export let sub: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
  * 返回该位置的旧值
  *
  */
-export let and: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let and: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 给定的值与指定位置上的值进行或运算
@@ -49,7 +58,7 @@ export let and: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
  * 返回该位置的旧值
  *
  */
-export let or: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let or: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 给定的值与指定位置上的值进行异或运算
@@ -57,7 +66,7 @@ export let or: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: 
  * 返回该位置的旧值
  *
  */
-export let xor: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let xor: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 给定的值存在给定位置上
@@ -65,7 +74,7 @@ export let xor: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address:
  * 返回该位置的旧值
  *
  */
-export let store: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let store: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 /**
  * 读取给定位置上的值
@@ -73,7 +82,7 @@ export let store: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(addres
  * 返回该位置的旧值
  *
  */
-export let load: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>) => AtomicType2Type<T>
+export let load: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>) => AtomicType2Type<T>
 
 /**
  * 如果指定位置的值与给定的值相等，则将其更新为新的值，并返回该元素原先的值
@@ -81,7 +90,7 @@ export let load: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address
  * 返回该位置的旧值
  *
  */
-export let compareExchange: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(
+export let compareExchange: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(
   address: pointer<T>,
   expectedValue: AtomicType2Type<T>,
   replacementValue: AtomicType2Type<T>
@@ -92,7 +101,7 @@ export let compareExchange: <T extends atomictype, args = [T, AtomicType2Shift<T
  * 返回该位置的旧值
  *
  */
-export let exchange: <T extends atomictype, args = [T, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
+export let exchange: <T extends atomictype, args = [AtomicType2CTypeEnum<T>, AtomicType2Shift<T>]>(address: pointer<T>, value: AtomicType2Type<T>) => AtomicType2Type<T>
 
 
 /**

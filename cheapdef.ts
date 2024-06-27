@@ -26,7 +26,9 @@ declare type f32 = {
 declare type f64 = {
   zzztype__?: 'f64'
 } & number
-
+declare type bool = {
+  zzztype__?: 'bool'
+} & boolean
 declare type uint8 = {
   zzztype__?: 'uint8'
 } & number
@@ -97,11 +99,15 @@ declare type atomic_int32 = {
 declare type atomic_int64 = {
   zzztype__?: 'atomic_int64'
 } & bigint
+declare type atomic_bool = {
+  zzztype__?: 'atomic_bool'
+} & boolean
 
 declare const i32: i32
 declare const i64: int64
 declare const f32: f32
 declare const f64: f64
+declare const bool: bool
 declare const uint8: uint8
 declare const uint16: uint16
 declare const uint32: uint32
@@ -116,6 +122,7 @@ declare const double: double
 declare const char: char
 declare const size: size
 
+declare const atomic_bool: atomic_bool
 declare const atomic_char: atomic_char
 declare const atomic_uint8: atomic_uint8
 declare const atomic_uint16: atomic_uint16
@@ -140,6 +147,7 @@ declare type atomictype = atomic_char | atomic_uint8 | atomic_int8
 | atomic_uint16 | atomic_int16
 | atomic_uint32 | atomic_int32
 | atomic_uint64 | atomic_int64
+| atomic_bool
 
 type PointerLevel<T, Y = T, Level extends number[] = []> = IsAny<T> extends true
   ? Level['length']
@@ -242,33 +250,36 @@ declare type multiPointer = {
 declare type BuiltinType = i32 | i64 | f32 | f64
 | uint8 | uint16 | uint32 | uint64
 | int8 | int16 | int32 | int64
-| float | float64 | double | char
+| float | float64 | double | char | bool
 | atomic_char | atomic_uint8 | atomic_uint16
 | atomic_uint32 | atomic_int8 | atomic_int16
 | atomic_int32 | atomic_uint64 | atomic_int64
+| atomic_bool
 
-
+/* eslint-disable */
 declare type AtomicType2Type<T> =
  T extends atomic_char
-   ? char
-   : T extends atomic_int16
-     ? int16
-     : T extends atomic_int32
-       ? int32
-       : T extends atomic_int8
-         ? int8
-         : T extends atomic_uint8
-           ? uint8
-           : T extends atomic_uint16
-             ? uint16
-             : T extends atomic_uint32
-               ? uint32
-               : T extends atomic_uint64
-                 ? uint64
-                 : T extends atomic_int64
-                   ? int64
-                   : never
-
+  ? char
+  : T extends atomic_int16
+  ? int16
+  : T extends atomic_int32
+  ? int32
+  : T extends atomic_int8
+  ? int8
+  : T extends atomic_uint8
+  ? uint8
+  : T extends atomic_uint16
+  ? uint16
+  : T extends atomic_uint32
+  ? uint32
+  : T extends atomic_uint64
+  ? uint64
+  : T extends atomic_int64
+  ? int64
+  : T extends atomic_bool
+  ? bool
+  : never
+/* eslint-enable */
 
 declare type __struct__ = {
   zzzstruct__?: 'struct'

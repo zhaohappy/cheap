@@ -99,6 +99,7 @@ In order to define the memory layout, cheap has added the following basic data t
 
 | Type | Describe |
 |----------|----------|
+| bool | true or false
 | char | 8-bit unsigned number, labeled string pointer in C
 | uint8 | 8-bit unsigned integer
 | int8  | 8-bit signed integer
@@ -479,6 +480,7 @@ cheap supports thread synchronization methods such as atomic operations, locks, 
 
 | 类型 | 描述 |
 |----------|----------|
+| atomic_bool | true or false
 | atomic_uint8 | 8-bit unsigned integer
 | atomic_int8  | 8-bit signed integer
 | atomic_uint16| 16-bit unsigned integer

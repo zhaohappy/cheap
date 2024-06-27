@@ -33,9 +33,10 @@ function transform2AST(source: string, options: {
   input: string
   output?: string
   defined?: Record<string, any>
+  include?: string[]
 }) {
   fs.writeFileSync(options.input, source)
-  const program = ts.createProgram([cheapdef, options.input], compilerOptions, compilerHost)
+  const program = ts.createProgram([cheapdef, options.input].concat(options.include ? options.include : []), compilerOptions, compilerHost)
 
   let wat2wasmPath = path.resolve(__dirname, '../../build/asm/ubuntu') + '/wat2wasm'
   if (os.platform() === 'win32') {
@@ -65,6 +66,7 @@ export function check(source: string, target: string, options: {
   input: string
   output?: string
   defined?: Record<string, any>
+  include?: string[]
 }) {
   expect(compare(generateAST(target), transform2AST(source, options))).toBe(true)
 }

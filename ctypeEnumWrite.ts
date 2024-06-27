@@ -78,6 +78,13 @@ export const CTypeEnumWrite: CTypeEnumWrite = {
   },
   [CTypeEnum.atomic_int64]: function (pointer: pointer<void>, value: any): void {
     throw new Error('invalid operate')
+  },
+
+  [CTypeEnum.bool]: function (pointer: pointer<void>, value: any): void {
+    throw new Error('invalid operate')
+  },
+  [CTypeEnum.atomic_bool]: function (pointer: pointer<void>, value: any): void {
+    throw new Error('invalid operate')
   }
 }
 

@@ -3,8 +3,8 @@ import * as constant from '../constant'
 import statement from '../statement'
 import * as typeUtils from './typeutil'
 import * as array from 'common/util/array'
-import { BuiltinBigInt, BuiltinFloat, BuiltinType, BuiltinUint, Type2CTypeEnum } from '../defined'
-import { CTypeEnum2Bytes } from 'cheap/typedef'
+import { AtomicCall, BuiltinBigInt, BuiltinFloat, BuiltinType, BuiltinUint } from '../defined'
+import { atomicsPath } from '../constant'
 
 export function getEqualsBinaryExpressionRight(node: ts.BinaryExpression) {
   if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
@@ -246,6 +246,10 @@ export function getBinaryBuiltinTypeName(node: ts.Expression | ts.Identifier) {
     return type.aliasSymbol.escapedName as string
   }
 
+  if (node.kind === ts.SyntaxKind.TrueKeyword || node.kind === ts.SyntaxKind.FalseKeyword) {
+    return 'bool'
+  }
+
   if (ts.isBinaryExpression(node)) {
     const leftType = getBinaryBuiltinTypeName(node.left)
     const rightType = getBinaryBuiltinTypeName(node.right)
@@ -397,4 +401,22 @@ export function isSynchronizeFunction(node: ts.FunctionDeclaration | ts.Function
     }
   }
   return false
+}
+
+export function isAtomicCallExpression(node: ts.CallExpression) {
+  const callName = ts.isPropertyAccessExpression(node.expression)
+    ? node.expression.name.escapedText
+    : (ts.isIdentifier(node.expression)
+      ? node.expression.escapedText
+      : ''
+    )
+
+  if (!array.has(AtomicCall, callName as string)) {
+    return false
+  }
+
+  const symbol = statement.typeChecker.getSymbolAtLocation(node.expression)
+  const file = symbol.valueDeclaration.getSourceFile()
+  const atomicPathReg = new RegExp(`${atomicsPath}\\.ts$`)
+  return atomicPathReg.test(file.fileName)
 }

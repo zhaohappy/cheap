@@ -3,7 +3,7 @@ import ts from 'typescript'
 import * as is from 'common/util/is'
 import * as array from 'common/util/array'
 import statement from '../statement'
-import { BuiltinBigInt, BuiltinFloat, BuiltinNumber, BuiltinUint, Type2CTypeEnum } from '../defined'
+import { BuiltinBigInt, BuiltinBool, BuiltinFloat, BuiltinNumber, BuiltinUint, CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import reportError from '../function/reportError'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
 import { Struct, StructType, getStruct, hasStruct } from '../struct'
@@ -403,6 +403,93 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             addArgs(args, typeNode, node)
           }
         }
+
+        if (nodeUtils.isAtomicCallExpression(node)
+          && typeUtils.getPointerBuiltinByType(statement.typeChecker.getTypeAtLocation(node.arguments[0])) === CTypeEnum.atomic_bool
+        ) {
+          if (callName === 'load') {
+            return ts.visitNode(statement.context.factory.createCallExpression(
+              statement.context.factory.createIdentifier(constant.staticCast),
+              [
+                statement.context.factory.createTypeReferenceNode(
+                  statement.context.factory.createIdentifier(CTypeEnum2Type[CTypeEnum.atomic_bool]),
+                  undefined
+                )
+              ],
+              [
+                statement.context.factory.createCallExpression(
+                  node.expression,
+                  undefined,
+                  [
+                    ...node.arguments,
+                    ...args
+                  ]
+                )
+              ]
+            ), visitor)
+          }
+          else if (callName === 'store' || callName === 'exchange') {
+            return ts.visitNode(statement.context.factory.createCallExpression(
+              node.expression,
+              undefined,
+              [
+                node.arguments[0],
+                statement.context.factory.createCallExpression(
+                  statement.context.factory.createIdentifier(constant.staticCast),
+                  [
+                    statement.context.factory.createTypeReferenceNode(
+                      statement.context.factory.createIdentifier(CTypeEnum2Type[CTypeEnum.atomic_int32]),
+                      undefined
+                    )
+                  ],
+                  [
+                    node.arguments[1]
+                  ]
+                ),
+                ...args
+              ]
+            ), visitor)
+          }
+          else if (callName === 'compareExchange') {
+            return ts.visitNode(statement.context.factory.createCallExpression(
+              node.expression,
+              undefined,
+              [
+                node.arguments[0],
+                statement.context.factory.createCallExpression(
+                  statement.context.factory.createIdentifier(constant.staticCast),
+                  [
+                    statement.context.factory.createTypeReferenceNode(
+                      statement.context.factory.createIdentifier(CTypeEnum2Type[CTypeEnum.atomic_int32]),
+                      undefined
+                    )
+                  ],
+                  [
+                    node.arguments[1]
+                  ]
+                ),
+                statement.context.factory.createCallExpression(
+                  statement.context.factory.createIdentifier(constant.staticCast),
+                  [
+                    statement.context.factory.createTypeReferenceNode(
+                      statement.context.factory.createIdentifier(CTypeEnum2Type[CTypeEnum.atomic_int32]),
+                      undefined
+                    )
+                  ],
+                  [
+                    node.arguments[2]
+                  ]
+                ),
+                ...args
+              ]
+            ), visitor)
+          }
+          else {
+            reportError(statement.currentFile, node, `atomic_bool not support to ${callName} operate`)
+            return node
+          }
+        }
+
         return ts.visitNode(statement.context.factory.createCallExpression(
           node.expression,
           undefined,
@@ -668,8 +755,12 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
     else if (callName === constant.staticCast && !statement.lookupFunc(constant.staticCast)) {
       const newNode = ts.visitNode(node.arguments[0], visitor)
       let sourceType = nodeUtils.getBinaryBuiltinTypeName(node.arguments[0])
-      const targetType = node.typeArguments[0]
+      let targetType = node.typeArguments[0]
         && statement.typeChecker.getTypeAtLocation(node.typeArguments[0])?.aliasSymbol?.escapedName as string || ''
+
+      if (!targetType && ts.isTypeReferenceNode(node.typeArguments[0]) && ts.isIdentifier(node.typeArguments[0].typeName)) {
+        targetType = node.typeArguments[0].typeName.escapedText as string
+      }
 
       const argType = statement.typeChecker.getTypeAtLocation(node.arguments[0])
       // uint 字面量直接不做转换
@@ -789,7 +880,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             ))
           }
         }
-        else if (!array.has(BuiltinUint, sourceType) && array.has(BuiltinUint, targetType)) {
+        else if (!array.has(BuiltinUint, sourceType) && !array.has(BuiltinBool, sourceType) && array.has(BuiltinUint, targetType)) {
           // int -> uint
           // a >>> 0
           if (CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 1) {
@@ -815,7 +906,25 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           }
         }
 
-        if (ts.isBinaryExpression(exp)) {
+        if (array.has(BuiltinBool, sourceType)) {
+          if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+            exp = statement.context.factory.createNumericLiteral(1)
+          }
+          else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+            exp = statement.context.factory.createNumericLiteral(0)
+          }
+          else {
+            exp = statement.context.factory.createConditionalExpression(
+              statement.context.factory.createParenthesizedExpression(exp),
+              statement.context.factory.createToken(ts.SyntaxKind.QuestionToken),
+              statement.context.factory.createNumericLiteral(1),
+              statement.context.factory.createToken(ts.SyntaxKind.ColonToken),
+              statement.context.factory.createNumericLiteral(0)
+            )
+          }
+        }
+
+        if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
           exp = statement.context.factory.createParenthesizedExpression(exp)
         }
 
@@ -880,7 +989,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             ]
           )
         }
-        else if (!array.has(BuiltinUint, sourceType) && array.has(BuiltinUint, targetType)) {
+        else if (!array.has(BuiltinUint, sourceType) && !array.has(BuiltinBool, sourceType) && array.has(BuiltinUint, targetType)) {
           // int64 -> uint64
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createPropertyAccessExpression(
@@ -895,10 +1004,27 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           )
         }
 
-        if (ts.isBinaryExpression(exp)) {
-          exp = statement.context.factory.createParenthesizedExpression(exp)
+        if (array.has(BuiltinBool, sourceType)) {
+          if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+            exp = statement.context.factory.createBigIntLiteral('1n')
+          }
+          else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+            exp = statement.context.factory.createBigIntLiteral('0n')
+          }
+          else {
+            exp = statement.context.factory.createConditionalExpression(
+              statement.context.factory.createParenthesizedExpression(exp),
+              statement.context.factory.createToken(ts.SyntaxKind.QuestionToken),
+              statement.context.factory.createBigIntLiteral('1n'),
+              statement.context.factory.createToken(ts.SyntaxKind.ColonToken),
+              statement.context.factory.createBigIntLiteral('0n')
+            )
+          }
         }
 
+        if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+          exp = statement.context.factory.createParenthesizedExpression(exp)
+        }
         return exp
       }
       else if (array.has(BuiltinFloat, targetType)) {
@@ -915,10 +1041,44 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           )
         }
 
-        if (ts.isBinaryExpression(exp)) {
+        if (array.has(BuiltinBool, sourceType)) {
+          if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+            exp = statement.context.factory.createNumericLiteral(1.0)
+          }
+          else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+            exp = statement.context.factory.createNumericLiteral(0.0)
+          }
+          else {
+            exp = statement.context.factory.createConditionalExpression(
+              statement.context.factory.createParenthesizedExpression(exp),
+              statement.context.factory.createToken(ts.SyntaxKind.QuestionToken),
+              statement.context.factory.createNumericLiteral(1.0),
+              statement.context.factory.createToken(ts.SyntaxKind.ColonToken),
+              statement.context.factory.createNumericLiteral(0.0)
+            )
+          }
+        }
+
+        if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
           exp = statement.context.factory.createParenthesizedExpression(exp)
         }
         return exp
+      }
+      else if (array.has(BuiltinBool, targetType)) {
+
+        let exp = newNode as ts.Expression
+
+        if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+          exp = statement.context.factory.createParenthesizedExpression(exp)
+        }
+
+        return statement.context.factory.createPrefixUnaryExpression(
+          ts.SyntaxKind.ExclamationToken,
+          statement.context.factory.createPrefixUnaryExpression(
+            ts.SyntaxKind.ExclamationToken,
+            exp
+          )
+        )
       }
       return statement.context.factory.createParenthesizedExpression(newNode as ts.Expression)
     }
