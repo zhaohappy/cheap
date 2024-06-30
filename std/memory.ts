@@ -53,49 +53,49 @@ export function mapInt8Array(src: pointer<int8>, n: size) {
 export function mapUint16Array(src: pointer<uint16>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeapU16().subarray(src >>> 1, src + n)
+  return getHeapU16().subarray(src >>> 1, (src >>> 1) + n)
 }
 
 export function mapInt16Array(src: pointer<int16>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeap16().subarray(src >>> 1, src + n)
+  return getHeap16().subarray(src >>> 1, (src >>> 1) + n)
 }
 
 export function mapUint32Array(src: pointer<uint32>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeapU32().subarray(src >>> 2, src + n)
+  return getHeapU32().subarray(src >>> 2, (src >>> 2) + n)
 }
 
 export function mapInt32Array(src: pointer<int32>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeap32().subarray(src >>> 2, src + n)
+  return getHeap32().subarray(src >>> 2, (src >>> 2) + n)
 }
 
 export function mapUint64Array(src: pointer<uint64>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeapU64().subarray(src >>> 3, src + n)
+  return getHeapU64().subarray(src >>> 3, (src >>> 3) + n)
 }
 
 export function mapInt64Array(src: pointer<int64>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeap64().subarray(src >>> 3, src + n)
+  return getHeap64().subarray(src >>> 3, (src >>> 3) + n)
 }
 
 export function mapFloat32Array(src: pointer<float>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeapF32().subarray(src >>> 2, src + n)
+  return getHeapF32().subarray(src >>> 2, (src >>> 2) + n)
 }
 
 export function mapFloat64Array(src: pointer<double>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return getHeapF64().subarray(src >>> 3, src + n)
+  return getHeapF64().subarray(src >>> 3, (src >>> 3) + n)
 }
 
 export function readCString(pointer: pointer<char>, max?: uint32) {
