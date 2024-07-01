@@ -1,6 +1,7 @@
 
 const path = require('path');
 const os = require('os');
+const webpack = require('webpack');
 const transformer = require('../../transformer').default;
 
 function formatKey(error) {
@@ -162,6 +163,32 @@ class CheapPlugin {
           }
         ]
       });
+
+      if (compiler.options.plugins) {
+        let definePlugin;
+        compiler.options.plugins.forEach((plugin) => {
+          if (plugin instanceof webpack.DefinePlugin) {
+            definePlugin = plugin;
+          }
+        });
+        if (definePlugin) {
+          definePlugin.definitions['__LIBRARY_EXPORT_NAME__'] = `'${compiler.options.output.library.name}'`;
+        }
+        else {
+          const plugin = new webpack.DefinePlugin({
+            __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name}'`
+          });
+          compiler.options.plugins.push(plugin);
+          plugin.apply(compiler);
+        }
+      }
+      else {
+        const plugin = new webpack.DefinePlugin({
+          __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name}'`
+        });
+        compiler.options.plugins.push(plugin);
+        plugin.apply(compiler);
+      }
 
       if (me.options.env === 'node') {
         if (!compiler.options.externals) {
