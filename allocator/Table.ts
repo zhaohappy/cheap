@@ -5,6 +5,17 @@ interface Node {
   free: boolean
 }
 
+export const enum BuiltinTableSlot {
+  FREE = 1,
+  MALLOC,
+  CALLOC,
+  REALLOC,
+  ALIGNED_ALLOC,
+  SLOT_NB
+}
+
+const INIT_SIZE = 10
+
 export class WebassemblyTable {
 
   table: WebAssembly.Table
@@ -15,14 +26,14 @@ export class WebassemblyTable {
 
   constructor() {
     this.table = new WebAssembly.Table({
-      initial: 10,
+      initial: BuiltinTableSlot.SLOT_NB + INIT_SIZE,
       element: 'anyfunc'
     })
 
-    this.pointer = 1
+    this.pointer = BuiltinTableSlot.SLOT_NB
     this.nodes = [{
-      pointer: 1,
-      length: 9,
+      pointer: this.pointer,
+      length: INIT_SIZE,
       free: true
     }]
   }
@@ -104,16 +115,20 @@ export class WebassemblyTable {
 
     if (this.nodes.length === 1 && this.nodes[0].free) {
       // 当全部 free 之后重新创建新的 Table，之前 WebAssembly 设置的函数引用在 chrome 上没有被回收，会内存泄漏
-      this.table = new WebAssembly.Table({
-        initial: 10,
+      const table = new WebAssembly.Table({
+        initial: BuiltinTableSlot.SLOT_NB + INIT_SIZE,
         element: 'anyfunc'
       })
-      this.pointer = 1
+      this.pointer = BuiltinTableSlot.SLOT_NB
       this.nodes = [{
-        pointer: 1,
-        length: 9,
+        pointer: this.pointer,
+        length: INIT_SIZE,
         free: true
       }]
+      for (let i = 1; i < this.pointer; i++) {
+        table.set(i, this.table.get(i))
+      }
+      this.table = table
     }
   }
 
