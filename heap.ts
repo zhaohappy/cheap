@@ -305,6 +305,7 @@ export async function initThread(options: {
     buffer: Memory.buffer,
     memory: Memory,
     byteOffset: config.HEAP_OFFSET,
+    maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
     growAllowed: true,
     onResize(old, need) {
       Memory.grow((need - old.byteLength) >>> 16)
@@ -401,6 +402,7 @@ export function initMain() {
     buffer: Memory.buffer,
     memory: Memory,
     byteOffset: config.HEAP_OFFSET,
+    maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
     growAllowed: true,
     onResize(old, need) {
       Memory.grow((need - old.byteLength) >>> 16)

@@ -30,4 +30,4 @@ export const HEAP_INITIAL = ((SELF as any).CHEAP_HEAP_INITIAL ?? defined(CHEAP_H
 /**
  * 堆最大大小
  */
-export const HEAP_MAXIMUM = 32768
+export const HEAP_MAXIMUM = 65536

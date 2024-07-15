@@ -85,7 +85,7 @@ module.exports = function(source) {
         if (!/^\S*\(module/.test(source)) {
             source = `
                 (module
-                    (import "env" "memory" (memory 1 32768 shared))
+                    (import "env" "memory" (memory 1 65536 shared))
                     ${source}
                 )
             `;
