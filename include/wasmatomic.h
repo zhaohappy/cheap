@@ -140,15 +140,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_store_i64(p, value) \
+      atomic_store_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_store_i32(p, value) \
+        ? atomic_store_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_store_i16(p, value) \
-          : atomic_store_i8(p, value) \
+          ? atomic_store_i16((void*)p, value) \
+          : atomic_store_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -160,15 +160,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_load_i64(p) \
+      atomic_load_i64((void*)p) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_load_i32(p) \
+        ? atomic_load_i32((void*)p) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_load_i16(p) \
-          : atomic_load_i8(p) \
+          ? atomic_load_i16((void*)p) \
+          : atomic_load_i8((void*)p) \
         ) \
       ) \
     )
@@ -183,15 +183,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_exchange_i64(p, value) \
+      atomic_exchange_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_exchange_i32(p, value) \
+        ? atomic_exchange_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_exchange_i16(p, value) \
-          : atomic_exchange_i8(p, value) \
+          ? atomic_exchange_i16((void*)p, value) \
+          : atomic_exchange_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -203,15 +203,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_compare_exchange_i64(p, *expected_value, replacement_value) \
+      atomic_compare_exchange_i64((void*)p, *expected_value, replacement_value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_compare_exchange_i32(p, *expected_value, replacement_value) \
+        ? atomic_compare_exchange_i32((void*)p, *expected_value, replacement_value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_compare_exchange_i16(p, *expected_value, replacement_value) \
-          : atomic_compare_exchange_i8(p, *expected_value, replacement_value) \
+          ? atomic_compare_exchange_i16((void*)p, *expected_value, replacement_value) \
+          : atomic_compare_exchange_i8((void*)p, *expected_value, replacement_value) \
         ) \
       ) \
     )
@@ -223,15 +223,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_add_i64(p, value) \
+      atomic_add_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_add_i32(p, value) \
+        ? atomic_add_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_add_i16(p, value) \
-          : atomic_add_i8(p, value) \
+          ? atomic_add_i16((void*)p, value) \
+          : atomic_add_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -243,15 +243,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_sub_i64(p, value) \
+      atomic_sub_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_sub_i32(p, value) \
+        ? atomic_sub_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_sub_i16(p, value) \
-          : atomic_sub_i8(p, value) \
+          ? atomic_sub_i16((void*)p, value) \
+          : atomic_sub_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -263,15 +263,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_and_i64(p, value) \
+      atomic_and_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_and_i32(p, value) \
+        ? atomic_and_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_and_i16(p, value) \
-          : atomic_and_i8(p, value) \
+          ? atomic_and_i16((void*)p, value) \
+          : atomic_and_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -283,15 +283,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_or_i64(p, value) \
+      atomic_or_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_or_i32(p, value) \
+        ? atomic_or_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_or_i16(p, value) \
-          : atomic_or_i8(p, value) \
+          ? atomic_or_i16((void*)p, value) \
+          : atomic_or_i8((void*)p, value) \
         ) \
       ) \
     )
@@ -303,15 +303,15 @@
     ( \
       (sizeof(*p) == 8) \
       ? \
-      atomic_xor_i64(p, value) \
+      atomic_xor_i64((void*)p, value) \
       : \
       ( \
         (sizeof(*p) == 4) \
-        ? atomic_xor_i32(p, value) \
+        ? atomic_xor_i32((void*)p, value) \
         : ( \
           (sizeof(*p) == 2) \
-          ? atomic_xor_i16(p, value) \
-          : atomic_xor_i8(p, value) \
+          ? atomic_xor_i16((void*)p, value) \
+          : atomic_xor_i8((void*)p, value) \
         ) \
       ) \
     )

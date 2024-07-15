@@ -23,6 +23,8 @@
 
   EM_PORT_API(int) wasm_pthread_mutex_unlock(wasm_pthread_mutex_t* mutex);
 
+  EM_PORT_API(int) wasm_pthread_num_processors_np();
+
 
   typedef char wasm_pthread_condattr_t;
   
