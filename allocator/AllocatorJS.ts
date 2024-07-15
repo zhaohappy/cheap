@@ -188,8 +188,8 @@ export default class AllocatorJS implements Allocator {
       // Not enough space
       return nullptr
     }
-    const offset = bytesToQuads(address)
-    this.int32Array.subarray(offset, offset + numberOfBytes >> 2).fill(0)
+    const offset = bytesToQuads(address - this.heapOffset)
+    this.int32Array.subarray(offset, offset + bytesToQuads(numberOfBytes)).fill(0)
 
     return address
   }
@@ -295,6 +295,8 @@ export default class AllocatorJS implements Allocator {
     const alignmentAddress = (address + alignment - 1 + POINTER_SIZE_IN_BYTES) & ~(alignment - 1)
 
     this.int32Array[bytesToQuads(alignmentAddress - this.heapOffset) - POINTER_SIZE_IN_QUADS] = bytesToQuads(address - this.heapOffset)
+
+    assert(!(alignmentAddress % alignment))
 
     return alignmentAddress
   }
@@ -640,7 +642,7 @@ function inspect(int32Array: Int32Array, byteOffset: number): InspectionResult {
  * Convert quads to bytes.
  */
 function quadsToBytes(num: int32): int32 {
-  return num << BYTES_TO_QUADS_SHIFT
+  return (num << BYTES_TO_QUADS_SHIFT) >>> 0
 }
 
 /**
@@ -654,7 +656,7 @@ function bytesToQuads(num: int32): int32 {
  * Align the given value to 8 bytes.
  */
 function align(value: int32, alignment: size): int32 {
-  return (value + alignment) & ~alignment
+  return ((value + alignment) & ~alignment) >>> 0
 }
 
 /**
