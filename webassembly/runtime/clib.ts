@@ -30,6 +30,68 @@ export function writeAsciiToMemory(str: string, buffer: pointer<char>, doNotAddN
   }
 }
 
+const ENV = {}
+let thisProgram: string = './this.program'
+let getEnvStringsStrings: string[]
+
+function getExecutableName() {
+  return thisProgram || './this.program'
+}
+
+function getEnvStrings() {
+  if (!getEnvStringsStrings) {
+    const lang = (typeof navigator === 'object' && navigator.languages && navigator.languages[0] || 'C').replace('-', '_') + '.UTF-8'
+    const env = {
+      'USER': 'web_user',
+      'LOGNAME': 'web_user',
+      'PATH': '/',
+      'PWD': '/',
+      'HOME': '/home/web_user',
+      'LANG': lang,
+      '_': getExecutableName()
+    }
+    for (let x in ENV) {
+      env[x] = ENV[x]
+    }
+    const strings = []
+    for (let x in env) {
+      strings.push(x + '=' + env[x])
+    }
+    getEnvStringsStrings = strings
+  }
+  return getEnvStringsStrings
+}
+
+export function environ_get(environ: pointer<uint32>, environBuf: pointer<uint8>) {
+  let bufSize = 0
+  getEnvStrings().forEach(function (string: string, i: number) {
+
+    const ptr: pointer<uint8> = reinterpret_cast<pointer<uint8>>(environBuf + bufSize)
+
+    accessof(reinterpret_cast<pointer<uint32>>(environ + i)) <- reinterpret_cast<uint32>(ptr)
+
+    writeAsciiToMemory(string, reinterpret_cast<pointer<char>>(ptr))
+
+    bufSize += string.length + 1
+  })
+  return 0
+}
+
+export function environ_sizes_get(penvironCount: pointer<uint32>, penvironBufSize: pointer<uint32>) {
+  const strings = getEnvStrings()
+
+  accessof(penvironCount) <- static_cast<uint32>(strings.length)
+
+  let bufSize = 0
+  strings.forEach(function (string) {
+    bufSize += string.length + 1
+  })
+
+  accessof(penvironBufSize) <- static_cast<uint32>(bufSize)
+
+  return 0
+}
+
 
 export function fd_fdstat_get(fd: uint32, pBuf: pointer<void>) {
   let rightsBase = 0

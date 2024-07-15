@@ -6,7 +6,7 @@ import * as logger from 'common/util/logger'
 import * as is from 'common/util/is'
 import { Memory, StackPointer, Table, allocThreadId, StackTop } from '../heap'
 import { memcpy, memset } from '../std/memory'
-import { fd_fdstat_get, fd_write, abort, random_get, clock_time_get, clock_res_get } from './runtime/clib'
+import { fd_fdstat_get, fd_write, abort, random_get, clock_time_get, clock_res_get, environ_get, environ_sizes_get } from './runtime/clib'
 import { WebAssemblyResource } from './compiler'
 import * as atomics from './runtime/atomic'
 import * as pthread from './runtime/pthread'
@@ -18,7 +18,11 @@ import * as atomicAsm from '../thread/asm/atomics'
 
 import * as threadAsm from './runtime/asm/thread'
 import isWorker from 'common/function/isWorker'
-import { Pthread, PthreadFlags, PthreadStatus } from './runtime/pthread'
+import { ChildThread, Pthread, PthreadFlags, PthreadStatus } from './thread'
+import { ThreadDescriptor } from './thread'
+import ThreadPool from './ThreadPool'
+import * as cond from 'cheap/thread/cond'
+import * as mutex from 'cheap/thread/mutex'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
@@ -30,13 +34,6 @@ export type WebAssemblyRunnerOptions = {
   tableBase?: number
   thread?: pointer<Pthread>
   threadDescriptor?: pointer<ThreadDescriptor>
-}
-
-type ChildThread = {
-  thread: pointer<Pthread>
-  worker: Worker
-  stackPointer: uint32
-  threadDescriptor: pointer<ThreadDescriptor>
 }
 
 if (defined(ENABLE_THREADS)) {
@@ -52,15 +49,30 @@ function emptyFunction() {}
 
 let atomicAsmOverride = false
 
-@struct
-class ThreadDescriptor {
-  flags: int32
-}
-
 export default class WebAssemblyRunner {
 
   static getTable() {
     return Table
+  }
+
+  static mutexLock(mux: pointer<mutex.Mutex>) {
+    mutex.lock(mux)
+  }
+
+  static mutexUnlock(mux: pointer<mutex.Mutex>) {
+    mutex.unlock(mux)
+  }
+
+  static condWait(cnd: pointer<cond.Cond>, mux: pointer<mutex.Mutex>) {
+    cond.wait(cnd, mux)
+  }
+
+  static readPointer(p: pointer<pointer<void>>) {
+    return accessof(p)
+  }
+
+  static writePointer(p: pointer<pointer<void>>, v: pointer<void>) {
+    accessof(p) <- v
   }
 
   private resource: WebAssemblyResource
@@ -90,6 +102,8 @@ export default class WebAssemblyRunner {
   private imports: Record<string, any>
 
   private childReadyPromises: Promise<void>[]
+
+  private threadPool: ThreadPool
 
   constructor(resource: WebAssemblyResource, options: WebAssemblyRunnerOptions = {}) {
 
@@ -132,9 +146,11 @@ export default class WebAssemblyRunner {
         proc_exit: function (exitCode: number) {
           logger.error(`wasm module exit, code: ${exitCode}`)
         },
+        __syscall_renameat: emptyFunction,
+        __syscall_unlinkat: emptyFunction,
 
-        environ_get: emptyFunction,
-        environ_sizes_get: emptyFunction,
+        environ_get: environ_get,
+        environ_sizes_get: environ_sizes_get,
 
         fd_close: emptyFunction,
         fd_fdstat_get: fd_fdstat_get,
@@ -169,6 +185,9 @@ export default class WebAssemblyRunner {
         __libc_malloc: function (size: size) {
           return malloc(size)
         },
+        __libc_free: (pointer: pointer<void>) => {
+          free(pointer)
+        },
         malloc: function (size: size) {
           return malloc(size)
         },
@@ -191,31 +210,24 @@ export default class WebAssemblyRunner {
             return 0
           }
           return -1
-        }
+        },
+        memalign: function (alignment: size, size: size) {
+          return aligned_alloc(alignment, size)
+        },
       }
     }
 
     if (defined(ENABLE_THREADS)) {
       object.extend(this.imports.env, {
         wasm_pthread_create: (thread: pointer<Pthread>, attr: pointer<void>, func: pointer<((args: pointer<void>) => void)>, args: pointer<void>) => {
+          
+          if (this.threadPool && this.threadPool.hasFree()) {
+            this.threadPool.createThread(thread, attr, func, args)
+            return 0 
+          }
+          
           if (!this.childUrl) {
-            const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
-              varName: '__WebAssemblyRunner__',
-              exportName: '__WebAssemblyRunner__',
-              pointName: WebAssemblyRunner.name,
-              exportIsClass: true
-            })
-            const source = `
-              ${module}
-              ${runThread}
-              var preRun;
-              ${this.childImports ? `
-              preRun = import('${this.childImports}')
-              ` : ''}
-              init.default(preRun);
-            `
-            this.childBlob = new Blob([source], { type: 'text/javascript' })
-            this.childUrl = URL.createObjectURL(this.childBlob)
+            this.createChildUrl()
           }
 
           const worker = new Worker(this.childUrl)
@@ -293,6 +305,12 @@ export default class WebAssemblyRunner {
         },
 
         wasm_pthread_join2: (thread: pointer<Pthread>, retval: pointer<pointer<void>>) => {
+
+          if (this.threadPool && this.threadPool.isPoolThread(thread)) {
+            this.threadPool.joinThread(thread, retval)
+            return 0
+          }
+
           if (thread.flags & PthreadFlags.DETACH) {
             this.childThreads.delete(thread.id)
             return 0
@@ -318,6 +336,10 @@ export default class WebAssemblyRunner {
         },
 
         wasm_pthread_detach2: (thread: pointer<Pthread>) => {
+          if (this.threadPool && this.threadPool.isPoolThread(thread)) {
+            this.threadPool.detachThread(thread)
+            return 0
+          }
           const child = this.childThreads.get(thread.id)
           child.threadDescriptor.flags |= PthreadFlags.DETACH
           thread.flags |= PthreadFlags.DETACH
@@ -358,6 +380,26 @@ export default class WebAssemblyRunner {
       }
     }
     this.imports['wasi_snapshot_preview1'] = this.imports.env
+  }
+
+  private createChildUrl() {
+    const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
+      varName: '__WebAssemblyRunner__',
+      exportName: '__WebAssemblyRunner__',
+      pointName: WebAssemblyRunner.name,
+      exportIsClass: true
+    })
+    const source = `
+      ${module}
+      ${runThread}
+      var preRun;
+      ${this.childImports ? `
+      preRun = import('${this.childImports}')
+      ` : ''}
+      init.default(preRun);
+    `
+    this.childBlob = new Blob([source], { type: 'text/javascript' })
+    this.childUrl = URL.createObjectURL(this.childBlob)
   }
 
   private overrideAtomic() {
@@ -407,7 +449,7 @@ export default class WebAssemblyRunner {
   /**
    * 运行 wasm 实例
    */
-  public async run(imports?: Record<string, any>) {
+  public async run(imports?: Record<string, any>, threadPoolCount?: number) {
     if (is.object(imports)) {
       object.extend(this.options.imports, imports)
     }
@@ -424,9 +466,31 @@ export default class WebAssemblyRunner {
       atomicAsmOverride = true
       this.overrideAtomic()
     }
+
     this.instance = await WebAssembly.instantiate(this.resource.module, this.imports)
 
     this.initRunTime()
+
+    if (defined(ENABLE_THREADS) && this.resource.threadModule && this.resource.enableThreadPool && threadPoolCount > 0) {
+      if (!this.childUrl) {
+        this.createChildUrl()
+      }
+
+      let count = threadPoolCount
+      if (this.resource.enableThreadCountRate) {
+        count *= this.resource.enableThreadCountRate
+      }
+
+      this.threadPool = new ThreadPool(count, this.childUrl)
+      await this.threadPool.ready({
+        tableSize: this.resource.tableSize,
+        module: this.resource.threadModule.module,
+        initFuncs: this.resource.threadModule.initFuncs,
+        memoryBase: this.options.memoryBase || this.memoryBase,
+        tableBase: this.tableBase,
+        childImports: this.childImports
+      })
+    }
   }
 
   public async runAsChild(imports?: Record<string, any>) {
@@ -459,7 +523,13 @@ export default class WebAssemblyRunner {
     this.builtinMalloc = []
     if (is.array(this.resource.initFuncs)) {
       array.each(this.resource.initFuncs, (func) => {
-        this.call(func)
+        let call: Function
+        if (this.asm[func]) {
+          call = this.asm[func]
+        }
+        if (call) {
+          return call()
+        }
       })
     }
   }
@@ -547,18 +617,30 @@ export default class WebAssemblyRunner {
     this.instance = null
 
     if (this.options.thread) {
+      if (this.options.threadDescriptor) {
+        this.options.threadDescriptor.status = PthreadStatus.STOP
+      }
       if (this.options.threadDescriptor && this.options.threadDescriptor.flags & PthreadFlags.DETACH) {
-        if (StackTop) {
-          free(StackTop)
+        if (!(this.options.threadDescriptor.flags & PthreadFlags.POOL)) {
+          if (StackTop) {
+            free(StackTop)
+          }
+          free(this.options.threadDescriptor)
+          self.close()
         }
-        free(this.options.threadDescriptor)
-        self.close()
       }
       else {
         this.options.thread.status = PthreadStatus.STOP
         // 唤醒父线程收回资源
         atomicsUtils.notify(addressof(this.options.thread.status), 1)
       }
+    }
+
+    if (defined(ENABLE_THREADS)) {
+      if (this.threadPool) {
+        this.threadPool.destroy()
+      }
+      this.threadPool = null
     }
   }
 }

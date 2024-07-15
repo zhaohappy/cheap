@@ -19,6 +19,12 @@ export interface WebAssemblyResource {
     module: WebAssembly.Module
     initFuncs?: string[]
   }
+  /**
+   * 提前创建好的 worker pool
+   * 某些 wasm 创建线程之后需要马上挂起线程，这种情况需要提前将线程准备好
+   */
+  enableThreadPool?: boolean
+  enableThreadCountRate?: number
 }
 
 export interface WebAssemblySource {
@@ -178,8 +184,9 @@ async function process(context: Context) {
               // initial
               await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
               if (flags & 0x01) {
+                await readULeb128Async(context.ioReader)
                 // maximum
-                await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
+                await writeUleb128Async(context.ioWriter, config.HEAP_MAXIMUM)
               }
               counter++
               break

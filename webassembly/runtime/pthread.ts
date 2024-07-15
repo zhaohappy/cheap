@@ -10,28 +10,7 @@ import { SELF } from 'common/util/constant'
 import { Mutex } from '../../thread/mutex'
 import { Cond } from '../../thread/cond'
 import { Timespec } from './semaphore'
-
-@struct
-export class PthreadOnce {
-  atomic: atomic_int32
-}
-
-@struct
-export class Pthread {
-  id: int32
-  retval: pointer<void>
-  flags: int32
-  status: atomic_int32
-}
-
-export const enum PthreadFlags {
-  DETACH = 1
-}
-
-export const enum PthreadStatus {
-  STOP,
-  RUN
-}
+import { Pthread, PthreadOnce } from '../thread'
 
 export let wasm_pthread_mutex_init: (mutex: pointer<Mutex>, attr: pointer<void>) => int32
 
