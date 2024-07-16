@@ -15,6 +15,8 @@ import sourceLoad from 'common/function/sourceLoad'
 import * as config from '../config'
 import * as atomicsUtils from '../thread/atomics'
 import * as atomicAsm from '../thread/asm/atomics'
+import * as libcAsm from './runtime/asm/libc'
+import { BuiltinTableSlot } from '../allocator/Table'
 
 import * as threadAsm from './runtime/asm/thread'
 import isWorker from 'common/function/isWorker'
@@ -105,10 +107,13 @@ export default class WebAssemblyRunner {
 
   private threadPool: ThreadPool
 
+  private initCalling: boolean
+
   constructor(resource: WebAssemblyResource, options: WebAssemblyRunnerOptions = {}) {
 
     this.resource = resource
     this.builtinMalloc = []
+    this.initCalling = false
 
     this.childThreads = new Map()
     this.childReadyPromises = []
@@ -188,7 +193,12 @@ export default class WebAssemblyRunner {
         __libc_free: (pointer: pointer<void>) => {
           free(pointer)
         },
-        malloc: function (size: size) {
+        malloc: (size: size) => {
+          if (this.initCalling === true) {
+            const p = malloc(size)
+            this.builtinMalloc.push(p)
+            return p
+          }
           return malloc(size)
         },
         calloc: function (num: size, size: size) {
@@ -213,7 +223,14 @@ export default class WebAssemblyRunner {
         },
         memalign: function (alignment: size, size: size) {
           return aligned_alloc(alignment, size)
-        },
+        }
+      },
+      'GOT.func': {
+        malloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.MALLOC),
+        calloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.CALLOC),
+        realloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.REALLOC),
+        aligned_alloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.ALIGNED_ALLOC),
+        free: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.FREE)
       }
     }
 
@@ -462,11 +479,15 @@ export default class WebAssemblyRunner {
       await threadAsm.init(Memory, pthread.override)
       object.extend(this.imports.env, pthread)
     }
+    if (!libcAsm.wasmThreadProxy
+      && libcAsm.isSupport()
+    ) {
+      await libcAsm.init(Memory)
+    }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {
       atomicAsmOverride = true
       this.overrideAtomic()
     }
-
     this.instance = await WebAssembly.instantiate(this.resource.module, this.imports)
 
     this.initRunTime()
@@ -521,6 +542,7 @@ export default class WebAssemblyRunner {
 
   private initRunTime() {
     this.builtinMalloc = []
+    this.initCalling = true
     if (is.array(this.resource.initFuncs)) {
       array.each(this.resource.initFuncs, (func) => {
         let call: Function
@@ -532,6 +554,7 @@ export default class WebAssemblyRunner {
         }
       })
     }
+    this.initCalling = false
   }
 
   /**
