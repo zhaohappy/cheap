@@ -2,6 +2,7 @@
  * 参考 https://github.com/mozilla-spidermonkey/js-lock-and-condition
  */
 
+import { POSIXError } from '../error'
 import * as atomics from './atomics'
 import isWorker from 'common/function/isWorker'
 
@@ -53,6 +54,19 @@ export function lock(mutex: pointer<Mutex>, spin: boolean = false): int32 {
   }
 
   return 0
+}
+
+/**
+ * 尝试加锁
+ * 
+ * @param mutex 
+ */
+export function tryLock(mutex: pointer<Mutex>): int32 {
+  if (atomics.compareExchange(addressof(mutex.atomic), STATUS.UNLOCK, STATUS.LOCKED) === STATUS.UNLOCK) {
+    return 0
+  }
+  // EBUSY
+  return POSIXError.EBUSY
 }
 
 

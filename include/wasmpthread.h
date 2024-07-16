@@ -20,6 +20,7 @@
   EM_PORT_API(int) wasm_pthread_mutex_destroy(wasm_pthread_mutex_t* mutex);
 
   EM_PORT_API(int) wasm_pthread_mutex_lock(wasm_pthread_mutex_t* mutex);
+  EM_PORT_API(int) wasm_pthread_mutex_trylock(wasm_pthread_mutex_t* mutex);
 
   EM_PORT_API(int) wasm_pthread_mutex_unlock(wasm_pthread_mutex_t* mutex);
 

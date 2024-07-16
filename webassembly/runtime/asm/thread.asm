@@ -32,6 +32,17 @@
   (i32.const 0)
 )
 
+(func $trylock (export "trylock") (param $mutexAddr i32) (result i32)
+  (i32.atomic.rmw.cmpxchg (local.get $mutexAddr) (i32.const 0) (i32.const 1))
+  (i32.const 0)
+  (i32.eq)
+  if (result i32)
+    (i32.const 0)
+  else
+    (i32.const 16)
+  end
+)
+
 (func $unlock (export "unlock") (param $mutexAddr i32) (result i32)
   (i32.atomic.rmw.sub (local.get $mutexAddr) (i32.const 1))
   (i32.const 1)

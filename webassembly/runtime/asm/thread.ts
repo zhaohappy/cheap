@@ -23,6 +23,7 @@ export function isSupport() {
 export async function init(memory: WebAssembly.Memory, override: (
   data: {
     wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32,
+    wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32,
     wasm_pthread_mutex_unlock: (mutex: pointer<Mutex>) => int32,
     wasm_pthread_cond_wait: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32,
     wasm_pthread_cond_timedwait: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32,
@@ -49,6 +50,7 @@ export async function init(memory: WebAssembly.Memory, override: (
     }
     override({
       wasm_pthread_mutex_lock: wasmThreadProxy.exports.lock as (mutex: pointer<Mutex>) => int32,
+      wasm_pthread_mutex_trylock: wasmThreadProxy.exports.trylock as (mutex: pointer<Mutex>) => int32,
       wasm_pthread_mutex_unlock: wasmThreadProxy.exports.unlock as (mutex: pointer<Mutex>) => int32,
       wasm_pthread_cond_wait: wasmThreadProxy.exports.wait as (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32,
       wasm_pthread_cond_timedwait: wasmThreadProxy.exports.timedwait as (

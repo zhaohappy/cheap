@@ -18,6 +18,8 @@ export let wasm_pthread_mutex_destroy: (mutex: pointer<Mutex>) => int32
 
 export let wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32
 
+export let wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32
+
 export let wasm_pthread_mutex_unlock: (mutex: pointer<Mutex>) => int32
 
 export let wasm_pthread_cond_init: (cond: pointer<Cond>, attr: pointer<void>) => int32
@@ -63,6 +65,10 @@ wasm_pthread_mutex_lock = function (mutex: pointer<Mutex>) {
   return mutexUtils.lock(mutex)
 }
 
+wasm_pthread_mutex_trylock = function (mutex: pointer<Mutex>) {
+  return mutexUtils.tryLock(mutex)
+}
+
 wasm_pthread_mutex_unlock = function (mutex: pointer<Mutex>) {
   return mutexUtils.unlock(mutex)
 }
@@ -101,6 +107,7 @@ wasm_pthread_once = function (control: pointer<PthreadOnce>, func: pointer<() =>
 
 export function override(data: {
   wasm_pthread_mutex_lock?: (mutex: pointer<Mutex>) => int32,
+  wasm_pthread_mutex_trylock?: (mutex: pointer<Mutex>) => int32,
   wasm_pthread_mutex_unlock?: (mutex: pointer<Mutex>) => int32,
   wasm_pthread_cond_wait?: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32,
   wasm_pthread_cond_timedwait?: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32,
@@ -109,6 +116,9 @@ export function override(data: {
 }) {
   if (data.wasm_pthread_mutex_lock) {
     wasm_pthread_mutex_lock = data.wasm_pthread_mutex_lock
+  }
+  if (data.wasm_pthread_mutex_trylock) {
+    wasm_pthread_mutex_trylock = data.wasm_pthread_mutex_trylock
   }
   if (data.wasm_pthread_mutex_unlock) {
     wasm_pthread_mutex_unlock = data.wasm_pthread_mutex_unlock
