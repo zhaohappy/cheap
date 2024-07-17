@@ -23,5 +23,6 @@
 
   EM_PORT_API(int) wasm_pthread_support();
   EM_PORT_API(int) wasm_cpu_core_count();
+  EM_PORT_API(int) wasm_threw_error(int code, const char* msg);
 
 #endif

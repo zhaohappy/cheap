@@ -11,6 +11,7 @@ import { Mutex } from '../../thread/mutex'
 import { Cond } from '../../thread/cond'
 import { Timespec } from './semaphore'
 import { Pthread, PthreadOnce } from '../thread'
+import { readCString } from '../../std/memory'
 
 export let wasm_pthread_mutex_init: (mutex: pointer<Mutex>, attr: pointer<void>) => int32
 
@@ -51,6 +52,10 @@ export function wasm_pthread_support() {
 
 export function wasm_cpu_core_count() {
   return navigator.hardwareConcurrency
+}
+
+export function wasm_threw_error(code: int32, msg: pointer<char>) {
+  throw new Error(readCString(msg))
 }
 
 wasm_pthread_mutex_init = function (mutex: pointer<Mutex>, attr: pointer<void>) {
