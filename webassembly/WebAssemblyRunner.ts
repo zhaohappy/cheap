@@ -25,6 +25,7 @@ import { ThreadDescriptor } from './thread'
 import ThreadPool from './ThreadPool'
 import * as cond from 'cheap/thread/cond'
 import * as mutex from 'cheap/thread/mutex'
+import support from 'common/util/support'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
@@ -109,6 +110,8 @@ export default class WebAssemblyRunner {
 
   private initCalling: boolean
 
+  private promisingMap: Map<string, Function>
+
   constructor(resource: WebAssemblyResource, options: WebAssemblyRunnerOptions = {}) {
 
     this.resource = resource
@@ -117,6 +120,7 @@ export default class WebAssemblyRunner {
 
     this.childThreads = new Map()
     this.childReadyPromises = []
+    this.promisingMap = new Map()
 
     if (is.string(options.childImports)) {
       this.childImports =  options.childImports
@@ -235,91 +239,96 @@ export default class WebAssemblyRunner {
     }
 
     if (defined(ENABLE_THREADS)) {
-      object.extend(this.imports.env, {
-        wasm_pthread_create: (thread: pointer<Pthread>, attr: pointer<void>, func: pointer<((args: pointer<void>) => void)>, args: pointer<void>) => {
-          
-          if (this.threadPool && this.threadPool.hasFree()) {
-            this.threadPool.createThread(thread, attr, func, args)
-            return 0 
+      const createPthread = (thread: pointer<Pthread>, attr: pointer<void>, func: pointer<((args: pointer<void>) => void)>, args: pointer<void>) => {
+        if (this.threadPool && this.threadPool.hasFree()) {
+          this.threadPool.createThread(thread, attr, func, args)
+          return 0 
+        }
+        
+        if (!this.childUrl) {
+          this.createChildUrl()
+        }
+
+        const worker = new Worker(this.childUrl)
+
+        thread.id = allocThreadId()
+        thread.status = PthreadStatus.RUN
+        thread.flags = 0
+        thread.retval = 0
+
+        const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
+
+        const threadDescriptor = malloc(sizeof(ThreadDescriptor))
+        memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
+
+        this.childThreads.set(thread.id, {
+          thread,
+          worker,
+          stackPointer,
+          threadDescriptor
+        })
+
+        let resolve: (ret: int32) => void
+        const promise = new Promise<int32>((r) => {
+          resolve = r
+        })
+        if (!support.jspi) {
+          this.childReadyPromises.push(promise as unknown as Promise<void>)
+        }
+
+        worker.onmessage = (message) => {
+          const origin = message.data
+          const type = origin.type
+          const data = origin.data
+
+          switch (type) {
+            case 'run':
+              resolve(0)
+              break
           }
-          
-          if (!this.childUrl) {
-            this.createChildUrl()
-          }
+        }
 
-          const worker = new Worker(this.childUrl)
-
-          thread.id = allocThreadId()
-          thread.status = PthreadStatus.RUN
-          thread.flags = 0
-          thread.retval = 0
-
-          const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
-
-          const threadDescriptor = malloc(sizeof(ThreadDescriptor))
-          memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
-
-          this.childThreads.set(thread.id, {
-            thread,
-            worker,
-            stackPointer,
-            threadDescriptor
-          })
-
-          let resolve: () => void
-
-          this.childReadyPromises.push(new Promise((r) => {
-            resolve = r
-          }))
-
-          worker.onmessage = (message) => {
-            const origin = message.data
-            const type = origin.type
-            const data = origin.data
-
-            switch (type) {
-              case 'run':
-                resolve()
-                break
-            }
-          }
-
-          /**
-           * postMessage 并不是同步的，而是在事件循环中处理的
-           * 因此父线程不能被阻塞在当前的事件循环中，否则子线程无法成功运行
-           * 只有 childReadyPromises 中的 Promise 都 resolve 了之后才能阻塞
-           */
-          worker.postMessage({
-            type: 'run',
-            data: {
-              cheap: {
-                memory: Memory,
-                stackPointer,
-                stackSize: config.STACK_SIZE,
-                id: thread.id
+        /**
+         * postMessage 并不是同步的，而是在事件循环中处理的
+         * 因此父线程不能被阻塞在当前的事件循环中，否则子线程无法成功运行
+         * 只有 childReadyPromises 中的 Promise 都 resolve 了之后才能阻塞
+         */
+        worker.postMessage({
+          type: 'run',
+          data: {
+            cheap: {
+              memory: Memory,
+              stackPointer,
+              stackSize: config.STACK_SIZE,
+              id: thread.id
+            },
+            runner: {
+              resource: {
+                tableSize: this.resource.tableSize,
+                module: this.resource.threadModule.module,
+                initFuncs: this.resource.threadModule.initFuncs
               },
-              runner: {
-                resource: {
-                  tableSize: this.resource.tableSize,
-                  module: this.resource.threadModule.module,
-                  initFuncs: this.resource.threadModule.initFuncs
-                },
-                options: {
-                  memoryBase: this.options.memoryBase || this.memoryBase,
-                  tableBase: this.tableBase,
-                  thread,
-                  threadDescriptor,
-                  childImports: this.childImports
-                },
-                func,
-                args,
-                imports: this.childImports,
-                thread
-              }
+              options: {
+                memoryBase: this.options.memoryBase || this.memoryBase,
+                tableBase: this.tableBase,
+                thread,
+                threadDescriptor,
+                childImports: this.childImports
+              },
+              func,
+              args,
+              imports: this.childImports,
+              thread
             }
-          })
-          return 0
-        },
+          }
+        })
+
+        return support.jspi ? promise : 0
+      }
+
+      object.extend(this.imports.env, {
+        // @ts-ignore
+        wasm_pthread_create: support.jspi ? new WebAssembly.Suspending(createPthread) : createPthread,
 
         wasm_pthread_join2: (thread: pointer<Pthread>, retval: pointer<pointer<void>>) => {
 
@@ -492,7 +501,12 @@ export default class WebAssemblyRunner {
 
     this.initRunTime()
 
-    if (defined(ENABLE_THREADS) && this.resource.threadModule && this.resource.enableThreadPool && threadPoolCount > 0) {
+    if (defined(ENABLE_THREADS)
+      && this.resource.threadModule
+      && this.resource.enableThreadPool
+      && threadPoolCount > 0
+      && !support.jspi
+    ) {
       if (!this.childUrl) {
         this.createChildUrl()
       }
@@ -583,6 +597,45 @@ export default class WebAssemblyRunner {
     }
   }
 
+  /**
+   * 异步调用 wasm 模块暴露的方法
+   * 
+   * 适用于 wasm 内部会调用异步 js 函数的情况
+   * 
+   * 需要支持 JSPI
+   * 
+   * @param func 方法名
+   * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
+   */
+  public async callAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T>  {
+    if (!this.asm || !support.jspi) {
+      return -1 as T
+    }
+
+    let call: Function
+
+    if (this.promisingMap.has(func)) {
+      call = this.promisingMap.get(func)
+    }
+    else {
+      if (this.asm[func]) {
+        call = this.asm[func]
+      }
+      else if (this.options.exportMap && this.options.exportMap[func] && this.asm[this.options.exportMap[func]]) {
+        call = this.asm[this.options.exportMap[func]] as Function
+      }
+      // @ts-ignore
+      call = WebAssembly.promising(call)
+      this.promisingMap.set(func, call)
+    }
+    if (call) {
+      return call.apply(null, args)
+    }
+    else {
+      logger.error(`the wasm module has not function ${func} to call`)
+    }
+  }
+
   get asm() {
     return this.instance && this.instance.exports as Object
   }
@@ -664,6 +717,11 @@ export default class WebAssemblyRunner {
         this.threadPool.destroy()
       }
       this.threadPool = null
+    }
+
+    if (this.promisingMap) {
+      this.promisingMap.clear()
+      this.promisingMap = null
     }
   }
 }
