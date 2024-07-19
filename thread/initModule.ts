@@ -22,9 +22,12 @@ export default function init(module: Object) {
 
       if (is.func(module[method])) {
         try {
-          const transfer = []
-          const result = await module[method](...params.params, transfer)
-          ipc.reply(data, result, null, transfer)
+          if (!module[method].transfer) {
+            module[method].transfer = []
+          }
+          const result = await module[method](...params.params)
+          ipc.reply(data, result, null, module[method].transfer)
+          module[method].transfer.length = 0
         }
         catch (error) {
           if (defined(DEBUG)) {

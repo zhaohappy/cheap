@@ -575,3 +575,7 @@ declare interface Window {
   }
   __SELF_THREAD__: pointer<void>
 }
+
+interface Function {
+  transfer?: Transferable[]
+}

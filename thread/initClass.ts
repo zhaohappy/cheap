@@ -23,9 +23,12 @@ export default function init(run: (...args: any[]) => any) {
 
       if (is.func(target[method])) {
         try {
-          const transfer = []
-          const result = await target[method](...params.params, transfer)
-          ipc.reply(data, result, null, transfer)
+          if (!target[method].transfer) {
+            target[method].transfer = []
+          }
+          const result = await target[method](...params.params)
+          ipc.reply(data, result, null, target[method].transfer)
+          target[method].transfer.length = 0
         }
         catch (error) {
           if (defined(DEBUG)) {
