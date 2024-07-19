@@ -339,6 +339,9 @@ export default class AllocatorJS implements Allocator {
 
     const blockSize: int32 = readSize(this.int32Array, block)
 
+    // 对地址是否合法进行断言
+    assert(blockSize === readSize(this.int32Array, block + blockSize + 1))
+
     /* istanbul ignore if  */
     assert(!(blockSize < MIN_FREEABLE_SIZE_IN_QUADS || blockSize > (this.heapLength - OVERHEAD_IN_BYTES) / 4), `Invalid block: ${block}, got block size: ${quadsToBytes(blockSize)}`)
 
