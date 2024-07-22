@@ -10,10 +10,12 @@ type ListNodeDepth = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 @struct
 class ListNode<T = void, D extends ListNodeDepth[number] = 9> {
+  // @ts-ignore
   @type(ListNode<T>)
   @pointer()
   prev: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
 
+  // @ts-ignore
   @type(ListNode<T>)
   @pointer()
   next: [D] extends [never] ? never : pointer<ListNode<T, ListNodeDepth[D]>>
