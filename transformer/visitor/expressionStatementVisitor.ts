@@ -17,7 +17,7 @@ export default function (node: ts.ExpressionStatement, visitor: ts.Visitor): ts.
 
       const args: ts.Expression[] = [
         statement.context.factory.createStringLiteral(`[${statement.currentFilePath} line: ${line + 1}]`),
-        statement.context.factory.createStringLiteral(`assert [${node.expression.arguments[0].getText()}]`)
+        statement.context.factory.createStringLiteral(`Assertion failed: ${node.expression.arguments[0].getText()}`)
       ]
 
       if (newNode.arguments[1]) {
