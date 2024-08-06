@@ -172,11 +172,11 @@ class CheapPlugin {
           }
         });
         if (definePlugin) {
-          definePlugin.definitions['__LIBRARY_EXPORT_NAME__'] = `'${compiler.options.output.library.name}'`;
+          definePlugin.definitions['__LIBRARY_EXPORT_NAME__'] = `'${compiler.options.output.library.name || me.options.name}'`;
         }
         else {
           const plugin = new webpack.DefinePlugin({
-            __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name}'`
+            __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name || me.options.name}'`
           });
           compiler.options.plugins.push(plugin);
           plugin.apply(compiler);
@@ -184,7 +184,7 @@ class CheapPlugin {
       }
       else {
         const plugin = new webpack.DefinePlugin({
-          __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name}'`
+          __LIBRARY_EXPORT_NAME__: `'${compiler.options.output.library.name || me.options.name}'`
         });
         compiler.options.plugins.push(plugin);
         plugin.apply(compiler);
