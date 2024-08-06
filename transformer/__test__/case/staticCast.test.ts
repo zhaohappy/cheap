@@ -313,6 +313,34 @@ describe('static cast', () => {
     })
   })
 
+  test('static_cast<int8>(uint32)', () => {
+    const source = `
+      let a: uint32
+      let b = static_cast<int8>(a)
+    `
+    const target = `
+      let a: uint32
+      let b = (((a & 0xff) & 0x80) ? -(0x100 - (a & 0xff)) : (a & 0xff));
+    `
+    check(source, target, {
+      input,
+    })
+  })
+
+  test('static_cast<int8>(uint8)', () => {
+    const source = `
+      let a: uint8
+      let b = static_cast<int8>(a)
+    `
+    const target = `
+      let a: uint8
+      let b = ((a & 0x80) ? -(0x100 - a) : a);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
   test('static_cast<double>(uint64)', () => {
     const source = `
       let a: uint64

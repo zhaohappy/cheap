@@ -325,9 +325,9 @@ function reinterpret_cast<T extends (anyptr | BuiltinType)>(target: anyptr | Bui
 /**
  * Convert between basic types, excluding pointers (type safety)
  * The compiler will do some processing
- * uin8 -> int8 => a >> 0
+ * uin8 -> int8 => (a & 0x80) ? -(0x100 - a) : a
  * int8 -> uint8 => a >>> 0
- * uint32 -> int8 => (a & 0xff) >> 0
+ * uint32 -> int8 => ((a & 0xff) & 0x80) ? -(0x100 - (a & 0xff)) : (a & 0xff)
  * int16 -> uint64 =>  BigInt(a >>> 0)
  * uint64 -> int32 => Number(a & 0xffffffffn) >> 0
  * uint64 -> int16 => (Number(a & 0xffffn) & 0x80000) ? -(0x10000 - Number(a & 0xffffn)) : Number(a & 0xffffn)
