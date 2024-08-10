@@ -12,7 +12,7 @@ import { Mutex } from './thread/mutex'
  */
 let pointer: pointer<uint8> = reinterpret_cast<pointer<uint8>>(static_cast<uint32>(nullptr) + 1)
 
-function malloc(length: size, algin: number = 1): pointer<void> {
+export function malloc(length: size, algin: number = 1): pointer<void> {
 
   let address = pointer
 
