@@ -141,8 +141,10 @@ class MyStruct {
     b: uint32
   }>
   // 这个不是内建类型，在布局时会忽略
-  // 当你使用实例访问时访问的是 js 对象属性
+  // 当你使用实例访问时访问的是 js 对象属性，此属性只在本线程的 js 中可见
   // 使用指针访问会编译报错
+  // 一般不建议有此操作，一种可能的使用场景是在不同的线程中操作同一个结构体
+  // 此属性可以作为线程自己的私有属性读写自己的独占数据，不与其他线程共享
   i: number
 
   // 可以使用装饰器修饰属性
@@ -393,12 +395,6 @@ import * as config from 'cheap/config'
 const resource = await compile(
   {
     source: 'https://xxxx.wasm'
-  },
-  {
-    // 是否在多线程上跑，决定导入的 Memory 是否有 share 标志
-    enableThread: config.USE_THREADS,
-    // wasm 模块运行之后需要调用的初始化函数，一般由编译工具生成，emscripten 是下面的一个
-    initFuncs: ['__wasm_apply_data_relocs']
   }
 )
 
