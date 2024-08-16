@@ -54,6 +54,39 @@
     void* retval;
     int flags;
     int status;
+
+    #if defined(__cplusplus)
+
+    pthread(): id(0), retval(nullptr), flags(0), status(0) {
+      
+    }
+
+    pthread(int v): id(0), retval(nullptr), flags(0), status(0) {
+
+    }
+
+    explicit operator bool() const {
+      return id != 0;
+    }
+
+    pthread& operator=(const pthread& other) {
+      id = other.id;
+      retval = other.retval;
+      flags = other.flags;
+      status = other.status;
+      return *this;
+    }
+
+    pthread& operator=(const int c) {
+      if (c == 0) {
+        id = 0;
+        retval = nullptr;
+        flags = 0;
+        status = 0;
+      }
+      return *this;
+    }
+    #endif
   };
 
   typedef struct pthread wasm_pthread_t;
@@ -65,6 +98,7 @@
   typedef struct pthread_once wasm_pthread_once_t;
 
   #define WASM_PTHREAD_ONCE_INIT {0}
+  #define WASM_PTHREAD_T_INIT {0, 0, 0, 0}
 
   EM_PORT_API(int) wasm_pthread_create(wasm_pthread_t* thread, const wasm_pthread_attr_t* attr, void *(*start_routine)(void *), void* arg);
   EM_PORT_API(int) wasm_pthread_join2(wasm_pthread_t* thread, void** retval);
@@ -72,6 +106,7 @@
   EM_PORT_API(int) wasm_pthread_detach2(wasm_pthread_t* thread);
   EM_PORT_API(int) wasm_pthread_equal2(wasm_pthread_t* t1, wasm_pthread_t* t2);
   EM_PORT_API(int) wasm_pthread_once(wasm_pthread_once_t *once_control, void (*init_routine)(void));
+  EM_PORT_API(wasm_pthread_t*) wasm_pthread_self2();
 
   #define wasm_pthread_join(thread, retval) \
     wasm_pthread_join2(&thread, retval)
@@ -81,5 +116,8 @@
 
   #define wasm_pthread_equal(t1, t2) \
     wasm_pthread_equal2(&t1, &t2)
+
+  #define wasm_pthread_self() \
+    *wasm_pthread_self2()
 
 #endif

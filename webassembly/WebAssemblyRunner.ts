@@ -358,6 +358,7 @@ export default class WebAssemblyRunner {
 
           this.childThreads.delete(thread.id)
 
+          memset(thread, 0, sizeof(Pthread))
           return 0
         },
 
@@ -608,8 +609,11 @@ export default class WebAssemblyRunner {
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
   public async callAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T>  {
-    if (!this.asm || !support.jspi) {
+    if (!this.asm) {
       return -1 as T
+    }
+    if (!support.jspi) {
+      return this.call<T>(func, ...args)
     }
 
     let call: Function
@@ -696,12 +700,17 @@ export default class WebAssemblyRunner {
       if (this.options.threadDescriptor) {
         this.options.threadDescriptor.status = PthreadStatus.STOP
       }
-      if (this.options.threadDescriptor && this.options.threadDescriptor.flags & PthreadFlags.DETACH) {
+      if (this.options.threadDescriptor
+        && ((this.options.threadDescriptor.flags & PthreadFlags.DETACH)
+            || (this.options.thread.flags & PthreadFlags.EXIT)
+          )
+      ) {
         if (!(this.options.threadDescriptor.flags & PthreadFlags.POOL)) {
           if (StackTop) {
             free(StackTop)
           }
           free(this.options.threadDescriptor)
+          memset(this.options.thread, 0, sizeof(Pthread))
           self.close()
         }
       }

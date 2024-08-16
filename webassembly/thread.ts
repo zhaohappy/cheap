@@ -22,7 +22,8 @@ export class ThreadDescriptor {
 
 export const enum PthreadFlags {
   DETACH = 1,
-  POOL = 2
+  POOL = 2,
+  EXIT = 4
 }
 
 export const enum PthreadStatus {

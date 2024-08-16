@@ -10,7 +10,7 @@ import { SELF } from 'common/util/constant'
 import { Mutex } from '../../thread/mutex'
 import { Cond } from '../../thread/cond'
 import { Timespec } from './semaphore'
-import { Pthread, PthreadOnce } from '../thread'
+import { Pthread, PthreadFlags, PthreadOnce } from '../thread'
 import { readCString } from '../../std/memory'
 
 export let wasm_pthread_mutex_init: (mutex: pointer<Mutex>, attr: pointer<void>) => int32
@@ -37,9 +37,14 @@ export let wasm_pthread_cond_broadcast: (cond: pointer<Cond>) => int32
 
 export let wasm_pthread_once: (control: pointer<PthreadOnce>, func: pointer<() => void>) => int32
 
+export function wasm_pthread_self2(): pointer<Pthread> {
+  return SELF.__SELF_THREAD__ as pointer<Pthread>
+}
+
 export function wasm_pthread_exit(retval: pointer<void>) {
   const thread: pointer<Pthread> = SELF.__SELF_THREAD__
   thread.retval = retval
+  thread.flags |= PthreadFlags.EXIT
 }
 
 export function wasm_pthread_equal2(t1: pointer<Pthread>, t2: pointer<Pthread>) {
