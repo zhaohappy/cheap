@@ -285,7 +285,7 @@ function realloc(address: pointer<void>, size: size): pointer<void>
 /**
  * Allocate an aligned memory block on the heap
  * 
- * @param alignment Memory alignment requirements
+ * @param alignment Memory alignment requirements, must be pow(2, x)
  * @param size Size of allocated memory block in bytes
  */
 function aligned_alloc(alignment: size, size: size): pointer<void>

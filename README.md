@@ -286,7 +286,7 @@ function realloc(address: pointer<void>, size: size): pointer<void>
 /**
  * 堆上分配一块对齐的内存块
  * 
- * @param alignment 内存对齐的要求
+ * @param alignment 内存对齐的要求，需要为 2 的幂次方
  * @param size 分配的内存块的大小（以字节为单位）
  */
 function aligned_alloc(alignment: size, size: size): pointer<void>
