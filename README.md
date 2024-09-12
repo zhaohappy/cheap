@@ -148,9 +148,9 @@ class MyStruct {
   i: number
 
   // 可以使用装饰器修饰属性
-  // 这里表示当宏 ENABLE_XX 开启时会忽略此属性
+  // 这里表示当宏 ENABLE_XX 未开启时会忽略此属性
   // 可以在 struct 里面做条件编译
-  @ignore(defined(ENABLE_XX))
+  @ignore(!defined(ENABLE_XX))
   j: int16
 }
 

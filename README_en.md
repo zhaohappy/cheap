@@ -147,9 +147,9 @@ class MyStruct {
   i: number
 
   // You can use decorators to decorate properties
-  // This means that this attribute will be ignored when the macro ENABLE_XX is turned on
+  // This means that this attribute will be ignored when the macro ENABLE_XX is turned off
   // can use conditional compilation in struct
-  @ignore(defined(ENABLE_XX))
+  @ignore(!defined(ENABLE_XX))
   j: int16
 }
 
