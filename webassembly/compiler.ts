@@ -244,7 +244,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
 
   options = object.extend({
     enableThread: config.USE_THREADS,
-    initFuncs: options.child ? [] : ['__wasm_apply_data_relocs']
+    initFuncs: options.child ? [] : ['__wasm_apply_data_relocs', '_initialize']
   }, options)
 
   if (is.number(source.dataSize) && is.number(source.tableSize)) {
