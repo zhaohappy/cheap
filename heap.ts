@@ -473,6 +473,7 @@ export function initMain() {
       ThreadId,
       ThreadName,
       Memory,
+      Config: config,
 
       StackSize,
       StackTop,

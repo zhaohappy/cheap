@@ -500,7 +500,7 @@ declare interface Window {
       stackSize?: number
       name?: string
       disableAsm?: boolean
-      id?: int32;
+      id?: int32
     }) => Promise<void>
     Allocator?: {
       /**
@@ -568,6 +568,7 @@ declare interface Window {
     StackSize?: int32
     StackTop?: int32
     StackPointer?: WebAssembly.Global<keyof WebAssembly.ValueTypeMap>
+    Config?: Record<string, any>
 
     threadCounter?: pointer<void>
     heapMutex?: pointer<void>

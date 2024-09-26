@@ -262,7 +262,7 @@ describe('static cast', () => {
     `
     const target = `
       let a: int64
-      let b = Number(a & 0xffn)
+      let b = Number(BigInt.asUintN(8, a))
     `
     check(source, target, {
       input
@@ -292,7 +292,7 @@ describe('static cast', () => {
     `
     const target = `
       let a: uint64
-      let b = Number(a & 0xffffffffn)
+      let b = Number(BigInt.asUintN(32, a))
     `
     check(source, target, {
       input
@@ -306,7 +306,7 @@ describe('static cast', () => {
     `
     const target = `
       let a: uint64
-      let b = ((Number(a & 0xffffn) & 0x80000) ? -(0x10000 - Number(a & 0xffffn)) : Number(a & 0xffffn));
+      let b = Number(BigInt.asIntN(16, a))
     `
     check(source, target, {
       input
@@ -364,7 +364,7 @@ describe('static cast', () => {
     const target = `
       let a: int64
       let b: int64
-      let c = (Number(a - b & 0xffffffffn) >> 0)
+      let c = Number(BigInt.asIntN(32, a - b))
     `
     check(source, target, {
       input
@@ -381,6 +381,30 @@ describe('static cast', () => {
       let a: float
       let b: int32
       let c = BigInt(Math.floor(a - b * 100))
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<int64>(int32)', () => {
+    const source = `
+      let c = static_cast<int64>(a as int32)
+    `
+    const target = `
+      let c = BigInt((a as int32) >> 0);
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<int32>(int64)', () => {
+    const source = `
+      let c = static_cast<int32>(a as int64)
+    `
+    const target = `
+      let c = Number(BigInt.asIntN(32, a as int64))
     `
     check(source, target, {
       input

@@ -789,19 +789,52 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
 
           let bits = CTypeEnum2Bytes[Type2CTypeEnum[targetType]] * 8
 
-          exp = statement.context.factory.createCallExpression(
-            statement.context.factory.createIdentifier('Number'),
-            undefined,
-            [
-              statement.context.factory.createBinaryExpression(
-                newNode as ts.Expression,
-                ts.SyntaxKind.AmpersandToken,
-                statement.context.factory.createBigIntLiteral(`0x${new Array(bits >>> 2).fill('f').join('')}n`)
-              )
-            ]
-          ) as ts.Expression
+          if (!array.has(BuiltinFloat, targetType)) {
+            if (array.has(BuiltinUint, targetType)) {
+              exp = statement.context.factory.createCallExpression(
+                statement.context.factory.createPropertyAccessExpression(
+                  statement.context.factory.createIdentifier('BigInt'),
+                  statement.context.factory.createIdentifier('asUintN'),
+                ),
+                undefined,
+                [
+                  statement.context.factory.createNumericLiteral(bits),
+                  newNode as ts.Expression
+                ]
+              ) as ts.Expression
+            }
+            else {
+              exp = statement.context.factory.createCallExpression(
+                statement.context.factory.createPropertyAccessExpression(
+                  statement.context.factory.createIdentifier('BigInt'),
+                  statement.context.factory.createIdentifier('asIntN'),
+                ),
+                undefined,
+                [
+                  statement.context.factory.createNumericLiteral(bits),
+                  newNode as ts.Expression
+                ]
+              ) as ts.Expression
+            }
 
-          sourceType = `uint${bits}`
+            exp = statement.context.factory.createCallExpression(
+              statement.context.factory.createIdentifier('Number'),
+              undefined,
+              [
+                exp
+              ]
+            )
+          }
+          else {
+            exp = statement.context.factory.createCallExpression(
+              statement.context.factory.createIdentifier('Number'),
+              undefined,
+              [
+                newNode as ts.Expression
+              ]
+            ) as ts.Expression
+          }
+          sourceType = targetType
         }
 
         // 8 bit
@@ -958,12 +991,23 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         }
         // int32 uint32 -> bigint
         if (array.has(BuiltinNumber, sourceType)) {
+          let isInt64 = false
           if (!array.has(BuiltinUint, sourceType)) {
-            exp = statement.context.factory.createBinaryExpression(
-              exp,
-              ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-              statement.context.factory.createNumericLiteral(0)
-            )
+            if (array.has(BuiltinUint, targetType)) {
+              exp = statement.context.factory.createBinaryExpression(
+                exp,
+                ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+                statement.context.factory.createNumericLiteral(0)
+              )
+            }
+            else {
+              exp = statement.context.factory.createBinaryExpression(
+                exp,
+                ts.SyntaxKind.GreaterThanGreaterThanToken,
+                statement.context.factory.createNumericLiteral(0)
+              )
+              isInt64 = true
+            }
           }
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createIdentifier('BigInt'),
@@ -972,7 +1016,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
               exp
             ]
           )
-          sourceType = 'uint64'
+          sourceType = isInt64 ? 'int64' : 'uint64'
         }
 
         if (array.has(BuiltinUint, sourceType) && !array.has(BuiltinUint, targetType) && sourceBytes === 8) {
