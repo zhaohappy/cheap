@@ -153,6 +153,18 @@ export default function polyfill() {
   if (!SELF.BigInt.asIntN) {
     // @ts-ignore
     SELF.BigInt.asIntN = function (bits: number, int: bigint) {
+
+      if (bits === 64) {
+        return int
+      }
+
+      let max = Math.pow(2, bits - 1) - 1
+      let min = -Math.pow(2, bits - 1)
+
+      if (Number(int) <= max && Number(int) >= min) {
+        return int
+      }
+
       view.setBigInt64(0, int)
       if (bits === 8) {
         return view.getInt8(0)
