@@ -342,6 +342,7 @@ export async function initThread(options: {
     ThreadId,
     ThreadName,
     Memory,
+    Config: config,
 
     StackSize,
     StackTop,

@@ -1,5 +1,7 @@
 import support from 'common/util/support'
 import { SELF } from 'common/util/constant'
+import browser from 'common/util/browser'
+import os from 'common/util/os'
 
 /**
  * 是否使用多线程
@@ -29,5 +31,6 @@ export const HEAP_INITIAL = ((SELF as any).CHEAP_HEAP_INITIAL ?? defined(CHEAP_H
 
 /**
  * 堆最大大小
+ * ios safari 16以下 对最大值有限制，太大分配不出来
  */
-export const HEAP_MAXIMUM = 65536
+export const HEAP_MAXIMUM = (SELF as any).CHEAP_HEAP_MAXIMUM ?? (USE_THREADS && (os.ios && browser.safari && !browser.checkVersion(browser.majorVersion, '17', true)) ? 8192 : 65536)
