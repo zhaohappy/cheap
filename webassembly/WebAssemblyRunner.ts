@@ -242,9 +242,9 @@ export default class WebAssemblyRunner {
       const createPthread = (thread: pointer<Pthread>, attr: pointer<void>, func: pointer<((args: pointer<void>) => void)>, args: pointer<void>) => {
         if (this.threadPool && this.threadPool.hasFree()) {
           this.threadPool.createThread(thread, attr, func, args)
-          return 0 
+          return 0
         }
-        
+
         if (!this.childUrl) {
           this.createChildUrl()
         }
@@ -703,7 +703,7 @@ export default class WebAssemblyRunner {
       if (this.options.threadDescriptor
         && ((this.options.threadDescriptor.flags & PthreadFlags.DETACH)
             || (this.options.thread.flags & PthreadFlags.EXIT)
-          )
+        )
       ) {
         if (!(this.options.threadDescriptor.flags & PthreadFlags.POOL)) {
           if (StackTop) {

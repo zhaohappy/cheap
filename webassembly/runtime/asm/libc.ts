@@ -57,7 +57,7 @@ export async function init(memory: WebAssembly.Memory) {
       support = false
       return
     }
-    
+
   }
   catch (error) {
     support = false

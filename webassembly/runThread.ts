@@ -97,7 +97,7 @@ export default function init(preRun: Promise<void>) {
             // @ts-ignore
             runnerData.func = __WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.func))
             // @ts-ignore
-            runnerData.args =__WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.args))
+            runnerData.args = __WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.args))
 
             // @ts-ignore
             runner = new __WebAssemblyRunner__.__WebAssemblyRunner__(runnerData.resource, runnerData.options)

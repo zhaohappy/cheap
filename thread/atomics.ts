@@ -23,10 +23,10 @@ export type AtomicType2Shift<T> =
   : never
 /* eslint-enable */
 
-type AtomicType2CTypeEnum<T> = 
+type AtomicType2CTypeEnum<T> =
   T extends atomic_bool
-  ? atomic_int8
-  : T
+    ? atomic_int8
+    : T
 
 /**
  * 给定的值加到指定位置上
