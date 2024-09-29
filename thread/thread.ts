@@ -68,6 +68,7 @@ export interface ThreadOptions {
   name?: string
   stackSize?: number
   disableWorker?: boolean
+  dispatchToWorker?: boolean
 }
 
 const caches: Map<string, {
@@ -133,6 +134,7 @@ export function createThreadFromClass<T, U extends any[]>(
             exportIsClass: true
           })
           const source = `
+            self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             ${module}
             function run(params) {
               params.unshift(null)
@@ -162,12 +164,12 @@ export function createThreadFromClass<T, U extends any[]>(
       const channel = new MessageChannel()
       return new Promise<Thread<T>>((resolve, reject) => {
 
-        const stackPointer = aligned_alloc(
+        const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
             ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
             : config.STACK_SIZE
-        )
+        ) : nullptr
 
         function running() {
           const ipc = defined(ENV_NODE) ? new NodeIPCPort(channel.port1) : new IPCPort(channel.port1)
@@ -248,7 +250,7 @@ export function createThreadFromClass<T, U extends any[]>(
         worker.postMessage({
           type: 'init',
           data: {
-            memory: Memory,
+            memory: config.USE_THREADS ? Memory : null,
             name: options.name || entity.name,
             stackPointer,
             stackSize: options.stackSize ?? config.STACK_SIZE
@@ -302,12 +304,12 @@ export function createThreadFromClass<T, U extends any[]>(
   function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
-      run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain
+      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain
     }
   }
 
   return {
-    run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain,
+    run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain,
     transfer
   }
 }
@@ -366,6 +368,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
           })
 
           const source = `
+            self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             ${module}
             function run(params) {
               return __module_${entity.name}__.__${entity.name}__.apply(${defined(ENV_NODE) ? 'global' : 'self'}, params)
@@ -393,12 +396,12 @@ export function createThreadFromFunction<T extends any[], U extends any>(
 
       return new Promise<Thread<{}, U>>((resolve, reject) => {
 
-        const stackPointer = aligned_alloc(
+        const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
             ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
             : config.STACK_SIZE
-        )
+        ) : nullptr
 
         function running() {
           const obj: Thread<{}> = {
@@ -443,7 +446,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
         worker.postMessage({
           type: 'init',
           data: {
-            memory: Memory,
+            memory: config.USE_THREADS ? Memory : null,
             name: options.name || entity.name,
             stackPointer,
             stackSize: options.stackSize ?? config.STACK_SIZE
@@ -471,12 +474,12 @@ export function createThreadFromFunction<T extends any[], U extends any>(
   function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
-      run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain
+      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain
     }
   }
 
   return {
-    run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain,
+    run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain,
     transfer
   }
 }
@@ -521,6 +524,7 @@ export function createThreadFromModule<T extends Object>(
           })
 
           const source = `
+            self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             ${module}
             ${initModule}
             init.default(${moduleName});
@@ -545,12 +549,12 @@ export function createThreadFromModule<T extends Object>(
       const channel = new MessageChannel()
       return new Promise<Thread<T>>((resolve, reject) => {
 
-        const stackPointer = aligned_alloc(
+        const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
             ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
             : config.STACK_SIZE
-        )
+        ) : nullptr
 
         function running() {
           const ipc = defined(ENV_NODE) ? new NodeIPCPort(channel.port1) : new IPCPort(channel.port1)
@@ -630,7 +634,7 @@ export function createThreadFromModule<T extends Object>(
         worker.postMessage({
           type: 'init',
           data: {
-            memory: Memory,
+            memory: config.USE_THREADS ? Memory : null,
             name: options.name || moduleName,
             stackPointer,
             stackSize: options.stackSize ?? config.STACK_SIZE
@@ -679,7 +683,7 @@ export function createThreadFromModule<T extends Object>(
     })
   }
   return {
-    run: defined(ENABLE_THREADS) && (config.USE_THREADS && !options.disableWorker) ? runInWorker : runInMain,
+    run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain,
   }
 }
 

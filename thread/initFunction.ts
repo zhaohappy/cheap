@@ -16,7 +16,7 @@ export default function init(run: (...args: any[]) => any) {
 
     switch (type) {
       case 'init':
-        if (SELF.CHeap && SELF.CHeap.initThread) {
+        if (SELF.CHeap && SELF.CHeap.initThread && SELF.CHeap.Config.USE_THREADS) {
           SELF.CHeap.initThread(data).then(() => {
             parentPort.postMessage({
               type: 'ready'

@@ -3,12 +3,12 @@ import nextTick from 'common/function/nextTick'
 import { override } from './atomics'
 import { AtomicsBuffer } from '../typedef'
 import * as config from '../config'
-import isWorker from 'common/function/isWorker'
 import browser from 'common/util/browser'
+import support from 'common/util/support'
 
 let getAtomicsBuffer: (type: atomictype) => AtomicsBuffer
 
-const useAtomics = config.USE_THREADS || isWorker() || (!browser.chrome || browser.checkVersion(browser.majorVersion, '94', true))
+const useAtomics = config.USE_THREADS || (!browser.chrome && support.atomics || browser.checkVersion(browser.majorVersion, '94', true))
 
 /**
  * 给定的值加到指定位置上

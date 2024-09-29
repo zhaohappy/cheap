@@ -496,19 +496,21 @@ if (defined(ENV_NODE)) {
   else {
     SELF.CHeap = {
       initThread,
-      isMainThread: false
+      isMainThread: false,
+      Config: config
     }
     isMainThread = false
   }
 }
 else {
-  if (!isWorker() && !isAudioWorklet()) {
+  if (!isWorker() && !isAudioWorklet() || (isWorker() && !config.USE_THREADS)) {
     initMain()
   }
   else {
     SELF.CHeap = {
       initThread,
-      isMainThread: false
+      isMainThread: false,
+      Config: config
     }
     isMainThread = false
   }
