@@ -1,9 +1,9 @@
 import { ChildThread, Pthread, PthreadFlags, PthreadStatus, ThreadDescriptor, ThreadWait } from './thread'
 import * as config from '../config'
-import { memset } from 'cheap/std/memory'
-import { Memory, allocThreadId } from 'cheap/heap'
-import * as cond from 'cheap/thread/cond'
-import * as mutex from 'cheap/thread/mutex'
+import { memset } from '../std/memory'
+import { Memory, allocThreadId } from '../heap'
+import * as cond from '../thread/cond'
+import * as mutex from '../thread/mutex'
 import * as atomicsUtils from '../thread/atomics'
 
 interface TheadPoolEntry {

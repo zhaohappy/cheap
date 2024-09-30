@@ -1,5 +1,5 @@
-import { Cond } from 'cheap/thread/cond'
-import { Mutex } from 'cheap/thread/mutex'
+import { Cond } from '../thread/cond'
+import { Mutex } from '../thread/mutex'
 
 @struct
 export class PthreadOnce {

@@ -23,8 +23,8 @@ import isWorker from 'common/function/isWorker'
 import { ChildThread, Pthread, PthreadFlags, PthreadStatus } from './thread'
 import { ThreadDescriptor } from './thread'
 import ThreadPool from './ThreadPool'
-import * as cond from 'cheap/thread/cond'
-import * as mutex from 'cheap/thread/mutex'
+import * as cond from '../thread/cond'
+import * as mutex from '../thread/mutex'
 import support from 'common/util/support'
 
 export type WebAssemblyRunnerOptions = {
