@@ -9,6 +9,7 @@ import concatTypeArray from 'common/function/concatTypeArray'
 import * as object from 'common/util/object'
 import * as config from '../config'
 import browser from 'common/util/browser'
+import os from 'common/util/os'
 
 export interface WebAssemblyResource {
   tableSize?: number
@@ -187,8 +188,8 @@ async function process(context: Context) {
               await writeUleb128Async(context.ioWriter, config.HEAP_INITIAL || initial)
               if (flags & 0x01) {
                 let max = await readULeb128Async(context.ioReader)
-                if (!(browser.safari && !browser.checkVersion(browser.majorVersion, '17', true)) || !context.options.enableThread) {
-                  // safari 16 以下改更了会编译错误，但它也不会去检查 max 和导入的内存是否限制一致
+                if (!(browser.safari && os.ios && !browser.checkVersion(browser.majorVersion, '17', true)) || !context.options.enableThread) {
+                  // ios safari 16 以下改更了会编译错误，但它也不会去检查 max 和导入的内存是否限制一致
                   // 所以这里不更改了
                   max = config.HEAP_MAXIMUM
                 }
