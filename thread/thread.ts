@@ -135,6 +135,8 @@ export function createThreadFromClass<T, U extends any[]>(
           })
           const source = `
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
+            self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
+            self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
             ${module}
             function run(params) {
               params.unshift(null)
@@ -369,6 +371,8 @@ export function createThreadFromFunction<T extends any[], U extends any>(
 
           const source = `
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
+            self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
+            self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
             ${module}
             function run(params) {
               return __module_${entity.name}__.__${entity.name}__.apply(${defined(ENV_NODE) ? 'global' : 'self'}, params)
@@ -525,6 +529,8 @@ export function createThreadFromModule<T extends Object>(
 
           const source = `
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
+            self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
+            self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
             ${module}
             ${initModule}
             init.default(${moduleName});
