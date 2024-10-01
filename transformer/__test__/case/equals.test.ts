@@ -836,4 +836,36 @@ describe('equals', () => {
       input
     })
   })
+
+  test('int32 assignable to pointer<void>', () => {
+    const source = `
+      let a: pointer<void>
+      let b: int32
+      a = b
+    `
+    const target = `
+      let a: pointer<void>
+      let b: int32
+      a = b
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<void> assignable to int32', () => {
+    const source = `
+      let a: int32
+      let b: pointer<void>
+      a = b
+    `
+    const target = `
+      let a: int32
+      let b: pointer<void>
+      a = b
+    `
+    check(source, target, {
+      input
+    })
+  })
 })

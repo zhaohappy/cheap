@@ -228,7 +228,7 @@ export default class AllocatorJS implements Allocator {
 
     assert(!(address < FIRST_BLOCK_OFFSET_IN_BYTES || address > this.heapLength), `Address must be between ${FIRST_BLOCK_OFFSET_IN_BYTES} and ${this.heapLength - OVERHEAD_IN_BYTES}`)
 
-    let originBlock = bytesToQuads(address)
+    let originBlock = bytesToQuads(reinterpret_cast<int32>(address))
     let block = originBlock
     let padding = 0
 
@@ -327,7 +327,7 @@ export default class AllocatorJS implements Allocator {
 
     assert(!(address < FIRST_BLOCK_OFFSET_IN_BYTES || address > this.heapLength), `Address must be between ${FIRST_BLOCK_OFFSET_IN_BYTES} and ${this.heapLength - OVERHEAD_IN_BYTES}`)
 
-    let block = bytesToQuads(address)
+    let block = bytesToQuads(reinterpret_cast<int32>(address))
 
     if (isAlign(this.int32Array, block)) {
       block = this.int32Array[block - POINTER_SIZE_IN_QUADS]

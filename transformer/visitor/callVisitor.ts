@@ -15,6 +15,7 @@ import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
 import toString from 'common/function/toString'
 import getStructMeta from '../function/getStructMeta'
+import * as error from '../error'
 
 function definedReplace(name: string, node: ts.Node) {
   if (name === constant.LINE || name === constant.LINE_2) {
@@ -1285,6 +1286,27 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             return accessCType(tree, ctype)
           }
 
+        }
+      }
+    }
+  }
+
+  if (signature && node.arguments.length) {
+    for (let i = 0; i < node.arguments.length; i++) {
+      if (signature.parameters[i]) {
+        const argumentType = statement.typeChecker.getTypeAtLocation(node.arguments[i])
+        const parameterType = statement.typeChecker.getTypeOfSymbol(signature.parameters[i])
+
+        if (typeUtils.isPointerType(argumentType)
+            && typeUtils.isBuiltinType(parameterType)
+            && !typeUtils.isPointerType(parameterType)
+            && !typeUtils.isNullPointer(parameterType)
+          || typeUtils.isBuiltinType(argumentType)
+            && !typeUtils.isPointerType(argumentType)
+            && !typeUtils.isNullPointer(argumentType)
+            && typeUtils.isPointerType(parameterType)
+        ) {
+          reportError(statement.currentFile, node.arguments[i], `type ${typeUtils.getBuiltinNameByType(argumentType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(parameterType)}`, error.TYPE_MISMATCH)
         }
       }
     }

@@ -51,7 +51,7 @@ function getBitFieldValue(address: () => pointer<void>, type: CTypeEnum, bitLen:
 
 function setPointerValue(address: () => pointer<void>) {
   return function (newValue: pointer<void>) {
-    CTypeEnumWrite[CTypeEnum.uint32](address(), newValue)
+    CTypeEnumWrite[CTypeEnum.pointer](address(), newValue)
   }
 }
 

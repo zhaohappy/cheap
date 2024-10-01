@@ -10,11 +10,12 @@ import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
 import { getEqualsBinaryExpressionRight, isPointerNode } from '../util/nodeutil'
 import isMergeOperator from '../function/isMergeOperator'
 import mergeOperator2Operator from '../function/mergeOperator2Operator'
-import { BuiltinNumber, Type2CTypeEnum } from '../defined'
+import { BuiltinNumber } from '../defined'
 import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
 import { compute } from '../function/compute'
 import getStructMeta from '../function/getStructMeta'
+import * as error from '../error'
 
 function visitorLeft(node: ts.Node, visitor: ts.Visitor, operatorToken: ts.SyntaxKind): ts.Node {
   let push = false
@@ -236,6 +237,22 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
 }
 
 function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
+
+  const leftType = statement.typeChecker.getTypeAtLocation(node.left)
+  const rightType = statement.typeChecker.getTypeAtLocation(node.right)
+
+  if (typeUtils.isPointerType(leftType)
+      && typeUtils.isBuiltinType(rightType)
+      && !typeUtils.isPointerType(rightType)
+      && !typeUtils.isNullPointer(rightType)
+    || typeUtils.isBuiltinType(leftType)
+      && !typeUtils.isPointerType(leftType)
+      && !typeUtils.isNullPointer(leftType)
+      && typeUtils.isPointerType(rightType)
+  ) {
+    reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(leftType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(rightType)}`, error.TYPE_MISMATCH)
+  }
+
   if (ts.isIdentifier(node.left) && ts.isIdentifier(node.right)) {
     return ts.visitEachChild(node, visitor, statement.context)
   }
