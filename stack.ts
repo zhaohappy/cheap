@@ -1,4 +1,4 @@
-import { StackPointer, StackTop, StackSize} from './heap'
+import { StackPointer, StackTop, StackSize } from './heap'
 
 export function malloc(size: size): pointer<void> {
   assert(StackPointer.value - size >= StackTop, 'stack up overflow')
