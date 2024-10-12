@@ -410,4 +410,24 @@ describe('static cast', () => {
       input
     })
   })
+
+  test('static_cast<uint64>(number)', () => {
+    const source = `
+      const enum TYPE {
+        ITEM = 0
+      }
+      const list = [
+        TYPE.ITEM
+      ]
+      let index: uin8 = 0
+      let c = static_cast<uint64>(list[index])
+    `
+    const target = `
+      let c = Number(BigInt.asUintN(64, 255))
+    `
+    check(source, target, {
+      input,
+      output
+    })
+  })
 })

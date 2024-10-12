@@ -295,6 +295,10 @@ export function getBinaryBuiltinTypeName(node: ts.Expression | ts.Identifier) {
     return 'uint64'
   }
 
+  if (type.flags & ts.TypeFlags.Enum || type.flags & ts.TypeFlags.EnumLiteral) {
+    return 'int32'
+  }
+
   if (type.flags & ts.TypeFlags.Number || type.flags & ts.TypeFlags.NumberLiteral) {
 
     if (type.flags & ts.TypeFlags.NumberLiteral) {
