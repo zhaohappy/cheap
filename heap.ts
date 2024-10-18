@@ -224,11 +224,11 @@ export function getView() {
   return view
 }
 
-export function getAtomicsBuffer(type: number) {
+export function getAtomicsBuffer(type: atomictype) {
   if (defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
-  return AtomicBufferMap[type]
+  return AtomicBufferMap[type as number]
 }
 
 function setAllocator(a: AllocatorInterface) {

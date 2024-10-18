@@ -138,8 +138,11 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
         }
         args.push(key)
       }
-      else {
+      else if (type.symbol) {
         args.push(statement.context.factory.createIdentifier(type.symbol.escapedName as string))
+      }
+      else {
+        args.push(statement.context.factory.createIdentifier('undefined'))
       }
     }
     else {
@@ -493,7 +496,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
 
         return ts.visitNode(statement.context.factory.createCallExpression(
           node.expression,
-          undefined,
+          node.typeArguments,
           [
             ...node.arguments,
             ...args
@@ -1213,8 +1216,57 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       )
     }
     else if (callName === constant.make && !statement.lookupFunc(constant.make)) {
+      if (node.arguments.length < 2) {
+        if (!node.typeArguments
+          || node.typeArguments.length !== 1
+          || !ts.isTypeReferenceNode(node.typeArguments[0])
+          || !ts.isIdentifier(node.typeArguments[0].typeName)
+        ) {
+          reportError(statement.currentFile, node, 'invalid typeArguments', error.INVALID_OPERATE)
+          return node
+        }
+        const type = statement.typeChecker.getTypeAtLocation(node.typeArguments[0].typeName)
+        const isValid = type.symbol
+          && type.symbol.valueDeclaration
+          && ts.isClassDeclaration(type.symbol.valueDeclaration)
+          && hasStruct(type.symbol)
+
+        if (!isValid) {
+          reportError(statement.currentFile, node, `invalid typeArguments, not found struct defined of ${node.typeArguments[0].typeName.escapedText}`, error.INVALID_OPERATE)
+          return node
+        }
+      }
       return statement.context.factory.createCallExpression(
         statement.addIdentifierImport(constant.make, constant.makePath, true),
+        undefined,
+        node.arguments
+      )
+    }
+    else if (callName === constant.makeSharedPtr && !statement.lookupFunc(constant.makeSharedPtr)) {
+      if (node.arguments.length < 3) {
+        if (!node.typeArguments
+          || node.typeArguments.length !== 1
+          || !ts.isTypeReferenceNode(node.typeArguments[0])
+          || !ts.isIdentifier(node.typeArguments[0].typeName)
+        ) {
+          reportError(statement.currentFile, node, 'invalid typeArguments', error.INVALID_OPERATE)
+          return node
+        }
+
+        const type = statement.typeChecker.getTypeAtLocation(node.typeArguments[0].typeName)
+        const isValid = type.symbol
+          && type.symbol.valueDeclaration
+          && ts.isClassDeclaration(type.symbol.valueDeclaration)
+          && hasStruct(type.symbol)
+          || typeUtils.isBuiltinType(type)
+
+        if (!isValid) {
+          reportError(statement.currentFile, node, `invalid typeArguments, not found struct defined of ${node.typeArguments[0].typeName.escapedText} or ${node.typeArguments[0].typeName.escapedText} is not builtin type`, error.INVALID_OPERATE)
+          return node
+        }
+      }
+      return statement.context.factory.createCallExpression(
+        statement.addIdentifierImport(constant.makeSharedPtr, constant.makeSharedPtrPath, false),
         undefined,
         node.arguments
       )

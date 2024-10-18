@@ -76,6 +76,11 @@ export default function init(run: (...args: any[]) => any) {
         if (ipc) {
           ipc.destroy()
         }
+        // @ts-ignore
+        if (SELF.__freeSmartPtr__) {
+          // @ts-ignore
+          SELF.__freeSmartPtr__()
+        }
         parentPort.postMessage({
           type: 'stopped'
         })

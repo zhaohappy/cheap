@@ -37,6 +37,29 @@ export function isExpressionPointer(node: ts.PropertyAccessExpression | ts.Ident
   return false
 }
 
+export function isExpressionSmartPointer(node: ts.PropertyAccessExpression | ts.Identifier) {
+  let root = getPropertyAccessExpressionRootNode(node)
+
+  while (root && root !== node) {
+    const type = statement.typeChecker.getTypeAtLocation(root)
+    if (typeUtils.isSmartPointerType(type)) {
+      return true
+    }
+    root = root.parent
+  }
+
+  if (!root) {
+    return false
+  }
+
+  const type = statement.typeChecker.getTypeAtLocation(root)
+  if (typeUtils.isSmartPointerType(type)) {
+    return true
+  }
+
+  return false
+}
+
 export function getPointerExpressionType(node: ts.Node) {
   if (ts.isBinaryExpression(node)) {
     const type = statement.typeChecker.getTypeAtLocation(node.right)
@@ -76,6 +99,24 @@ export function isPointerNode(node: ts.Node) {
   // xx[][]
   else if (ts.isElementAccessExpression(node)) {
     return isPointerNode(node.expression)
+  }
+  return false
+}
+
+export function isSmartPointerNode(node: ts.Node) {
+  // 检查表达式类型
+  let type = statement.typeChecker.getTypeAtLocation(node)
+  if (typeUtils.isSmartPointerType(type)) {
+    return true
+  }
+  if (ts.isPropertyAccessExpression(node)) {
+    return isExpressionSmartPointer(node)
+  }
+  else if (ts.isElementAccessExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
+    return isExpressionSmartPointer(node.expression)
+  }
+  else if (ts.isElementAccessExpression(node)) {
+    return isSmartPointerNode(node.expression)
   }
   return false
 }
@@ -136,6 +177,10 @@ export function isPointerIndexOfCall(node: ts.CallExpression) {
 
 export function isPointerElementAccess(node: ts.Node) {
   return ts.isElementAccessExpression(node) && isPointerNode(node.expression)
+}
+
+export function isSmartPointerElementAccess(node: ts.Node) {
+  return ts.isElementAccessExpression(node) && isSmartPointerNode(node.expression)
 }
 
 export function getPropertyAccessExpressionRootNode(node: ts.Node) {

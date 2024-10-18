@@ -287,6 +287,10 @@ export function getPointerStructByType(type: ts.Type) {
     || !type.symbol && !type.aliasSymbol && getStructByType(type)
 }
 
+export function getSmartPointerStructByType(type: ts.Type) {
+  return type.aliasSymbol && type.aliasTypeArguments?.length === 1 && getStruct(type.aliasTypeArguments[0].symbol)
+}
+
 export function getBuiltinNameByType(type: ts.Type) {
   if  (type.aliasSymbol) {
     return type.aliasSymbol.escapedName as string
@@ -362,6 +366,17 @@ export function getPointerLevelByType(type: ts.Type) {
     }
   }
   return 0
+}
+
+export function isSmartPointerType(type: ts.Type) {
+  if (!type) {
+    return false
+  }
+  if (type.aliasSymbol) {
+    const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+    return type.aliasSymbol.escapedName === constant.sharedPtr && value === constant.sharedPtr
+  }
+  return false
 }
 
 function getSymbolTypeValue(type: ts.Symbol) {

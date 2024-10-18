@@ -31,6 +31,10 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
       visitor
     )
   }
+  else if (nodeUtils.isSmartPointerElementAccess(node)) {
+    reportError(statement.currentFile, node, 'smart pointer not support [] operate')
+    return node
+  }
   // array[]
   else if (ts.isPropertyAccessExpression(node.expression)
       && nodeUtils.isPointerNode(node.expression.expression)

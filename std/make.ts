@@ -2,7 +2,6 @@ import { memset } from './memory'
 import { symbolStruct } from '../symbol'
 import * as object from 'common/util/object'
 import { Data } from 'common/types/type'
-import { SetOmitFunctions } from 'common/types/advanced'
 import isDef from 'common/function/isDef'
 import structAccess from './structAccess'
 
@@ -12,9 +11,14 @@ import structAccess from './structAccess'
  * @param target 
  * @returns 
  */
-export default function make<T>(struct: new (init?: Data) => T, init?: Partial<SetOmitFunctions<T>>): T {
+export default function make<T>(init?: Data, struct?: new (...args: any[]) => T): T {
 
   assert(struct.prototype[symbolStruct], 'cannot make struct because of not defined')
+
+  if (!isDef(struct)) {
+    struct = init as unknown as new (...args: any[]) => any
+    init = null
+  }
 
   const size = sizeof(struct)
   const address = malloc(size)

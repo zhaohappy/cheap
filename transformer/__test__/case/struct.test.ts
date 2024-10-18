@@ -230,8 +230,7 @@ describe('struct', () => {
       let b = CTypeEnumRead[20](p + 64 + 4);
     `
     check(source, target, {
-      input,
-      output
+      input
     })
   })
 

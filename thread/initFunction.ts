@@ -35,6 +35,11 @@ export default function init(run: (...args: any[]) => any) {
       case 'stop':
         if (retval && retval.then) {
           retval.then((res: any) => {
+            // @ts-ignore
+            if (SELF.__freeSmartPtr__) {
+              // @ts-ignore
+              SELF.__freeSmartPtr__()
+            }
             parentPort.postMessage({
               type: 'stopped',
               data: res
@@ -42,6 +47,11 @@ export default function init(run: (...args: any[]) => any) {
           })
         }
         else {
+          // @ts-ignore
+          if (SELF.__freeSmartPtr__) {
+            // @ts-ignore
+            SELF.__freeSmartPtr__()
+          }
           parentPort.postMessage({
             type: 'stopped',
             data: retval

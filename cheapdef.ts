@@ -1,4 +1,5 @@
 type UnwrapPointer<T> = T extends pointer<infer U> ? U : never
+type UnwrapSharedPtr<T> = T extends SharedPtr<infer U> ? U : never
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : never
 
@@ -181,6 +182,10 @@ type IsPointer<T> = Required<T> extends {
   zzzlevel__: number
   indexOf: (index: uint32) => any
 }
+  ? true
+  : false
+
+type IsSharedPtr<T> = T extends SharedPtr<{}>
   ? true
   : false
 
@@ -429,7 +434,57 @@ declare function asm(template: TemplateStringsArray, ...exps: any[]): string
  * @param struct 
  * @param init 
  */
-declare function make<T>(struct: new (init?: Partial<{}>) => T, init?: Partial<SetOmitFunctions<T>>): T
+declare function make<T extends {}, args=[T]>(): T
+declare function make<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>): T
+
+declare type deleter<T> = (p: pointer<T>) => void
+
+declare interface SharedPtrTransferable<T> {
+  readonly buffer: ArrayBuffer
+}
+declare type SharedPtr<T extends (BuiltinType | {})> = {
+  /**
+   * 获取原始指针
+   */
+  get(): pointer<T>
+  /**
+   * 重置原始指针
+   * 
+   * @param value 
+   */
+  reset(value?: pointer<T>): void
+  /**
+   * 返回当前的原始指针是否只有一个引用
+   */
+  unique(): boolean
+
+  /**
+   * 返回当前的引用计数
+   */
+  useCount(): int32
+
+  /**
+   * 将智能指针转为可转移
+   */
+  transferable(): SharedPtrTransferable<T>
+
+  /**
+   * 克隆智能指针（增加引用计数）
+   * 
+   * @returns 
+   */
+  clone(): SharedPtr<T>
+} & SetOmitFunctions<T> & { zzztype__?: 'SharedPtr' }
+
+declare function makeSharedPtr<T extends BuiltinType, args=[T]>(): SharedPtr<T>
+declare function makeSharedPtr<T extends BuiltinType, args=[T]>(deleter: deleter<T>): SharedPtr<T>
+declare function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T): SharedPtr<T>
+declare function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T, deleter: deleter<T>): SharedPtr<T>
+
+declare function makeSharedPtr<T extends {}, args=[T]>(): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(deleter: deleter<T>): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
 /**
  * 销毁结构体实例

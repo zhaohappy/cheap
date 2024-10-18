@@ -8,12 +8,115 @@ import relativePath from '../function/relativePath'
 import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
 import * as constant from '../constant'
-import { StructType, getStruct } from '../struct'
+import { KeyMetaExt, StructType, getStruct } from '../struct'
 import getStructMeta from '../function/getStructMeta'
 
 
+function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
+  if (meta[KeyMetaKey.Pointer]) {
+    tree = statement.context.factory.createCallExpression(
+      statement.context.factory.createElementAccessExpression(
+        statement.addMemoryImport(constant.ctypeEnumRead),
+        CTypeEnum.pointer
+      ),
+      undefined,
+      [
+        meta[KeyMetaKey.BaseAddressOffset]
+          ? nodeUtils.createPlusExpress(
+            tree as ts.Expression,
+            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+          )
+          : tree as ts.Expression
+      ]
+    )
+    return tree
+  }
+  else if (is.number(meta[KeyMetaKey.Type]) && !is.func(meta.getTypeMeta)) {
+    tree = statement.context.factory.createCallExpression(
+      statement.context.factory.createElementAccessExpression(
+        statement.addMemoryImport(constant.ctypeEnumRead),
+        meta[KeyMetaKey.Type] as number
+      ),
+      undefined,
+      [
+        meta[KeyMetaKey.BaseAddressOffset]
+          ? nodeUtils.createPlusExpress(
+            tree as ts.Expression,
+            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+          )
+          : tree as ts.Expression
+      ]
+    )
+
+    if (meta[KeyMetaKey.BitField] && !statement.lookupStage(StageStatus.AddressOf)) {
+      const shift = CTypeEnum2Bytes[meta[KeyMetaKey.Type] as number] * 8 - meta[KeyMetaKey.BaseBitOffset] - meta[KeyMetaKey.BitFieldLength]
+      const mask = Math.pow(2, meta[KeyMetaKey.BitFieldLength]) - 1
+      tree = statement.context.factory.createBinaryExpression(
+        statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
+          tree as ts.Expression,
+          ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+          statement.context.factory.createNumericLiteral(shift)
+        )),
+        ts.SyntaxKind.AmpersandToken,
+        statement.context.factory.createNumericLiteral(mask)
+      )
+    }
+
+    return tree
+  }
+  else if (is.func(meta.getTypeMeta)) {
+    const targetStruct = meta.getTypeMeta()
+
+    let targetSymbol = targetStruct.symbol
+    let targetPath = ''
+
+    if (targetStruct.structType === StructType.INLINE_OBJECT) {
+      targetSymbol = targetStruct.definedClassParent.symbol
+      targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol)
+    }
+
+    const targetSource = targetSymbol.valueDeclaration?.getSourceFile()
+    if (targetSource) {
+      let key: ts.Expression
+      if (targetSource !== statement.currentFile) {
+        key = statement.addIdentifierImport(
+          targetSymbol.escapedName as string,
+          relativePath(statement.currentFile.fileName, targetSource.fileName),
+          !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(targetSymbol.escapedName)
+        )
+      }
+      else {
+        key = statement.context.factory.createIdentifier(targetSymbol.escapedName as string)
+      }
+      const args = [
+        meta[KeyMetaKey.BaseAddressOffset]
+          ? nodeUtils.createPlusExpress(
+            tree as ts.Expression,
+            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+          )
+          : tree as ts.Expression,
+        key
+      ]
+      if (targetPath) {
+        args.push(statement.context.factory.createStringLiteral(targetPath))
+      }
+      return statement.context.factory.createCallExpression(
+        statement.addIdentifierImport(constant.structAccess, constant.structAccessPath, true),
+        undefined,
+        args
+      )
+    }
+  }
+  else {
+    reportError(statement.currentFile, node, 'struct type mismatch')
+    return node
+  }
+}
+
 export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor): ts.Node {
-  if (nodeUtils.isPointerNode(node)) {
+  if (nodeUtils.isPointerNode(node)
+    && !(node.name.escapedText === 'get' && nodeUtils.isSmartPointerNode(node.expression))
+  ) {
     if (statement.getCurrentStage()?.stage !== StageStatus.EqualLeft) {
       let root: ts.Node = nodeUtils.getPropertyAccessExpressionRootNode(node)
       let tree: ts.Node = root
@@ -26,17 +129,22 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
         const type = statement.typeChecker.getTypeAtLocation(root)
         if (lastIsIndexOf
           || typeUtils.isPointerType(type)
+          || typeUtils.isSmartPointerType(type)
           || type.aliasSymbol?.escapedName === constant.typeArray
         ) {
           let struct = lastIsIndexOf
             ? getStruct(type.symbol)
             : (
-              typeUtils.isPointerType(type)
-                ? typeUtils.getPointerStructByType(type)
+              typeUtils.isSmartPointerType(type)
+                ? typeUtils.getSmartPointerStructByType(type)
                 : (
-                  typeUtils.isPointerType(type.aliasTypeArguments[0])
-                    ? null
-                    : typeUtils.getStructByType(type.aliasTypeArguments[0])
+                  typeUtils.isPointerType(type)
+                    ? typeUtils.getPointerStructByType(type)
+                    : (
+                      typeUtils.isPointerType(type.aliasTypeArguments[0])
+                        ? null
+                        : typeUtils.getStructByType(type.aliasTypeArguments[0])
+                    )
                 )
             )
 
@@ -52,6 +160,17 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
                 if (!meta) {
                   reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${next.name.escapedText}`)
                   return node
+                }
+
+                if (typeUtils.isSmartPointerType(type)) {
+                  tree = statement.context.factory.createCallExpression(
+                    statement.context.factory.createPropertyAccessExpression(
+                      tree as ts.Expression,
+                      statement.context.factory.createIdentifier('get')
+                    ),
+                    undefined,
+                    []
+                  )
                 }
 
                 if (meta[KeyMetaKey.Pointer] && !meta[KeyMetaKey.Array]) {
@@ -286,104 +405,37 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       tree = ts.visitNode(tree, visitor)
       statement.popStage()
 
-      if (meta[KeyMetaKey.Pointer]) {
-        tree = statement.context.factory.createCallExpression(
-          statement.context.factory.createElementAccessExpression(
-            statement.addMemoryImport(constant.ctypeEnumRead),
-            CTypeEnum.pointer
-          ),
-          undefined,
-          [
-            meta[KeyMetaKey.BaseAddressOffset]
-              ? nodeUtils.createPlusExpress(
-                tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
-              )
-              : tree as ts.Expression
-          ]
-        )
-        return tree
-      }
-      else if (is.number(meta[KeyMetaKey.Type]) && !is.func(meta.getTypeMeta)) {
-        tree = statement.context.factory.createCallExpression(
-          statement.context.factory.createElementAccessExpression(
-            statement.addMemoryImport(constant.ctypeEnumRead),
-            meta[KeyMetaKey.Type] as number
-          ),
-          undefined,
-          [
-            meta[KeyMetaKey.BaseAddressOffset]
-              ? nodeUtils.createPlusExpress(
-                tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
-              )
-              : tree as ts.Expression
-          ]
-        )
-
-        if (meta[KeyMetaKey.BitField] && !statement.lookupStage(StageStatus.AddressOf)) {
-          const shift = CTypeEnum2Bytes[meta[KeyMetaKey.Type] as number] * 8 - meta[KeyMetaKey.BaseBitOffset] - meta[KeyMetaKey.BitFieldLength]
-          const mask = Math.pow(2, meta[KeyMetaKey.BitFieldLength]) - 1
-          tree = statement.context.factory.createBinaryExpression(
-            statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
-              tree as ts.Expression,
-              ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-              statement.context.factory.createNumericLiteral(shift)
-            )),
-            ts.SyntaxKind.AmpersandToken,
-            statement.context.factory.createNumericLiteral(mask)
-          )
-        }
-
-        return tree
-      }
-      else if (is.func(meta.getTypeMeta)) {
-        const targetStruct = meta.getTypeMeta()
-
-        let targetSymbol = targetStruct.symbol
-        let targetPath = ''
-
-        if (targetStruct.structType === StructType.INLINE_OBJECT) {
-          targetSymbol = targetStruct.definedClassParent.symbol
-          targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol)
-        }
-
-        const targetSource = targetSymbol.valueDeclaration?.getSourceFile()
-        if (targetSource) {
-          let key: ts.Expression
-          if (targetSource !== statement.currentFile) {
-            key = statement.addIdentifierImport(
-              targetSymbol.escapedName as string,
-              relativePath(statement.currentFile.fileName, targetSource.fileName),
-              !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(targetSymbol.escapedName)
-            )
-          }
-          else {
-            key = statement.context.factory.createIdentifier(targetSymbol.escapedName as string)
-          }
-          const args = [
-            meta[KeyMetaKey.BaseAddressOffset]
-              ? nodeUtils.createPlusExpress(
-                tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
-              )
-              : tree as ts.Expression,
-            key
-          ]
-          if (targetPath) {
-            args.push(statement.context.factory.createStringLiteral(targetPath))
-          }
-          return statement.context.factory.createCallExpression(
-            statement.addIdentifierImport(constant.structAccess, constant.structAccessPath, true),
-            undefined,
-            args
-          )
-        }
-      }
-      else {
+      return handleMeta(node, tree, meta)
+    }
+  }
+  else if (nodeUtils.isSmartPointerNode(node)) {
+    const expressionType = statement.typeChecker.getTypeAtLocation(node.expression)
+    if (typeUtils.isSmartPointerType(expressionType) && ts.isIdentifier(node.name) && node.name.escapedText !== 'get' && expressionType.aliasTypeArguments?.length === 1) {
+      const struct = getStruct(expressionType.aliasTypeArguments[0].symbol)
+      if (!struct) {
         reportError(statement.currentFile, node, 'struct type mismatch')
         return node
       }
+
+      const meta = getStructMeta(struct, node.name.escapedText as string)
+
+      if (!meta) {
+        reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${node.name.escapedText}`)
+        return node
+      }
+
+      let tree = ts.visitNode(node.expression, visitor)
+
+      tree = statement.context.factory.createCallExpression(
+        statement.context.factory.createPropertyAccessExpression(
+          tree as ts.Expression,
+          statement.context.factory.createIdentifier('get')
+        ),
+        undefined,
+        []
+      )
+
+      return handleMeta(node, tree, meta)
     }
   }
   return ts.visitEachChild(node, visitor, statement.context)

@@ -192,7 +192,7 @@ class MyStruct {
 // 创建结构体实例，第二个参数可以传递初始化数据
 // 返回的 myStruct 是一个 proxy 代理的 js 对象
 // 每次读写属性时走的 getter 和 setter 逻辑
-const myStruct = make(MyStruct, { a: 0, b: 0 })
+const myStruct = make<MyStruct>({ a: 0, b: 0 })
 myStruct.a = 3
 myStruct.b = 4
 console.log(myStruct.b)
@@ -246,18 +246,28 @@ myStructPointer = nullptr
 ```typescript
 /**
  * 创建结构体实例
- * 
- * @param struct 
- * @param init 
  */
-function make<T>(struct: new (init?: Partial<{}>) => T, init?: Partial<SetOmitFunctions<T>>): T
+declare function make<T extends {}>(): T
+declare function make<T extends {}>(init: Partial<SetOmitFunctions<T>>): T
 
 /**
  * 销毁结构体实例
  * 
  * @param target 
  */
- function unmake<T extends Object>(target: T): void
+function unmake<T extends Object>(target: T): void
+
+/**
+ * 创建 SharedPtr 智能指针
+ */
+function makeSharedPtr<T extends BuiltinType>(): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(): SharedPtr<T>
+function makeSharedPtr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
  /**
  * 申请大小为 size 字节的内存
@@ -781,6 +791,114 @@ async function timedWaitAsync(sem: pointer<Sem>, timeout: int32): Promise<int32>
 
 在 C/C++ 中使用 cheap/include 下面的 wasmatomic.h 来做原子操作，
 使用 wasmpthread.h 来做线程、锁、条件变量相关操作、使用 wasmsemaphore.h 来做信号量相关操作，然后重新编译 wasm 模块在 cheap 中使用即可使用 wasm 多线程。
+
+#### 智能指针
+
+智能指针用于自动管理动态申请的内存的生命周期而无需手动释放，降低内存泄漏的风险。目前实现了 ```SharedPtr```。
+
+智能指针的实现机制依赖 [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) API 且不能被 polyfill，因此请确保你的执行环境是否满足要求。
+
+下表是智能指针的兼容情况:
+
+| 环境            | 版本          |
+| -----------    | -----------  |
+| Chrome         | 84+          |
+| Firefox        | 79+          |
+| Safari         | 14.1+        |
+| Safari iOS     | 14.5+        |
+| Node.js        | 14.6.0+      |
+| Deno           | 1.0+         |
+
+> 智能指针是一个 js 对象，按引用传递
+
+##### SharedPtr
+
+SharedPtr 是可共享的智能指针，可以在多个地方引用。用法如下
+
+```typescript
+
+@struct
+class MyStruct {
+  a: int8
+}
+
+// 无参构造
+const p0 = makeSharedPtr<MyStruct>()
+const p1 = makeSharedPtr<int32>()
+// 带初始化数据的构造
+const p2 = makeSharedPtr<MyStruct>({a: 0})
+const p3 = makeSharedPtr<int32>(43)
+
+function freeMyStruct(p: pointer<MyStruct>) {
+  free(p)
+}
+// 带自定义析构函数的构造，不传使用默认析构只会 free 结构体自己的内存
+const p4 = makeSharedPtr<MyStruct>(freeMyStruct)
+
+// 带初始化数据和自定义析构函数的构造
+const p5 = makeSharedPtr<MyStruct>({a: 0}, freeMyStruct)
+
+// 访问原始指针的属性
+console.log(p5.a)
+// 获取原始指针的属性地址
+console.log(addressof(p5.a))
+
+```
+
+SharedPtr 拥有下面的方法:
+
+```typescript
+
+interface SharedPtr<T> {
+  /**
+   * 获取原始指针
+   */
+  get(): pointer<T>
+  /**
+   * 重置原始指针
+   */
+  reset(value?: pointer<T>): void
+  /**
+   * 返回当前的原始指针是否只有一个引用
+   */
+  unique(): boolean
+  /**
+   * 返回当前的原始指针引用计数
+   */
+  useCount(): int32
+  /**
+   * 将智能指针转为可转移对象
+   */
+  transferable(): SharedPtrTransferable<T>
+  /**
+   * 克隆智能指针（增加引用计数）
+   */
+  clone(): SharedPtr<T>
+}
+
+```
+
+##### 在线程之间传递智能指针
+
+```typescript
+import { deTransferableSharedPtr } from 'cheap/std/smartPtr/SharedPtr'
+import { createThreadFromFunction } from 'cheap/thread/thread'
+
+@struct
+class MyStruct {
+  a: int8
+}
+
+function worker(t: SharedPtrTransferable<MyStruct>) {
+  const p = deTransferableSharedPtr(t)
+  console.log(p.a)
+}
+
+const p = makeSharedPtr<MyStruct>()
+const transfer = p.transferable()
+const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).run(transfer)
+
+```
 
 
 ### 一些建议

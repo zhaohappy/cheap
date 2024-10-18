@@ -23,9 +23,9 @@ describe('assert', () => {
       assert(a > 0)
     `
     const target = `
-      let a: uint8
+      let a: uint8;
       if (!(a > 0)) {
-        console.error("[__test__cache/assert_input.ts line: 3]", 'assert [a > 0]');
+        console.error("[__test__cache/assert_input.ts line: 3]", "Assertion failed: a > 0");
         debugger;
       }
     `
@@ -45,7 +45,7 @@ describe('assert', () => {
     const target = `
       let a: uint8
       if (!(a > 0)) {
-        console.error("[__test__cache/assert_input.ts line: 3]", 'assert [a > 0]', '123');
+        console.error("[__test__cache/assert_input.ts line: 3]", "Assertion failed: a > 0", '123');
         debugger;
       }
     `

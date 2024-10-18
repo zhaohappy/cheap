@@ -191,7 +191,7 @@ class MyStruct {
 // Create a struct instance, the second parameter can pass initialization data
 // The return of make is a js object use proxy
 // The getter and setter logic used every time when reading and writing properties
-const myStruct = make(MyStruct, { a: 0, b: 0 })
+const myStruct = make<MyStruct>({ a: 0, b: 0 })
 myStruct.a = 3
 myStruct.b = 4
 console.log(myStruct.b)
@@ -245,18 +245,28 @@ myStructPointer = nullptr
 ```typescript
 /**
  * Create a struct instance
- * 
- * @param struct 
- * @param init 
  */
-function make<T>(struct: new (init?: Partial<{}>) => T, init?: Partial<SetOmitFunctions<T>>): T
+declare function make<T extends {}>(): T
+declare function make<T extends {}>(init: Partial<SetOmitFunctions<T>>): T
 
 /**
  * Destroy a struct instance
  * 
  * @param target 
  */
- function unmake<T extends Object>(target: T): void
+function unmake<T extends Object>(target: T): void
+
+/**
+ * Create SharedPtr Smart Pointer
+ */
+function makeSharedPtr<T extends BuiltinType>(): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(): SharedPtr<T>
+function makeSharedPtr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
  /**
  * Allocate memory of size bytes
@@ -766,6 +776,114 @@ async function timedWaitAsync(sem: pointer<Sem>, timeout: int32): Promise<int32>
 Use ```wasmatomic.h``` below ```cheap/include``` in C/C++ to do atomic operations,
 Use ```wasmpthread.h``` to do thread, lock, and condition variable related operations, use ```wasmsemaphore.h``` to do semaphore related operations, and then recompile the wasm module and use it in cheap to use wasm multi-threading.
 
+#### Smart Pointer
+
+Smart Pointer are used to automatically manage the life cycle of memory without manual release, reducing the risk of memory leaks. Currently, only ```SharedPtr``` is implemented.
+
+The implementation mechanism of Smart Pointers relies on the [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) API and cannot be polyfilled, so make sure your execution environment meets the requirements.
+
+The following table shows the compatibility of Smart Pointer:
+
+| Environment    | Version      |
+| -----------    | -----------  |
+| Chrome         | 84+          |
+| Firefox        | 79+          |
+| Safari         | 14.1+        |
+| Safari iOS     | 14.5+        |
+| Node.js        | 14.6.0+      |
+| Deno           | 1.0+         |
+
+> A Smart Pointer is a js object that is passed by reference.
+
+##### SharedPtr
+
+SharedPtr is a sharable Smart Pointer that can be referenced in multiple places. The usage is as follows:
+
+```typescript
+
+@struct
+class MyStruct {
+  a: int8
+}
+
+// Constructor with no parameter 
+const p0 = makeSharedPtr<MyStruct>()
+const p1 = makeSharedPtr<int32>()
+// Constructor with initialized data
+const p2 = makeSharedPtr<MyStruct>({a: 0})
+const p3 = makeSharedPtr<int32>(43)
+
+function freeMyStruct(p: pointer<MyStruct>) {
+  free(p)
+}
+// Constructor with a custom destructor
+// If the destructor is not pass, it will only free the structure's own memory
+const p4 = makeSharedPtr<MyStruct>(freeMyStruct)
+
+// Constructor with initialized data and custom destructor
+const p5 = makeSharedPtr<MyStruct>({a: 0}, freeMyStruct)
+
+// Access the properties's value of the raw pointer
+console.log(p5.a)
+// Get the properties's address of the raw pointer
+console.log(addressof(p5.a))
+
+```
+
+SharedPtr has the following methods:
+
+```typescript
+
+interface SharedPtr<T> {
+  /**
+   * Get the raw pointer
+   */
+  get(): pointer<T>
+  /**
+   * Reset the raw pointer
+   */
+  reset(value?: pointer<T>): void
+  /**
+   * Returns whether the current raw pointer has only one reference
+   */
+  unique(): boolean
+  /**
+   * Returns the reference count of the raw pointer
+   */
+  useCount(): int32
+  /**
+   * Convert smart pointer to transferable object
+   */
+  transferable(): SharedPtrTransferable<T>
+  /**
+   * Clone a smart pointer (increase reference count)
+   */
+  clone(): SharedPtr<T>
+}
+
+```
+
+##### Passing Smart Pointer between thread
+
+```typescript
+import { deTransferableSharedPtr } from 'cheap/std/smartPtr/SharedPtr'
+import { createThreadFromFunction } from 'cheap/thread/thread'
+
+@struct
+class MyStruct {
+  a: int8
+}
+
+function worker(t: SharedPtrTransferable<MyStruct>) {
+  const p = deTransferableSharedPtr(t)
+  console.log(p.a)
+}
+
+const p = makeSharedPtr<MyStruct>()
+const transfer = p.transferable()
+const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).run(transfer)
+
+```
 
 ### Suggestion
 

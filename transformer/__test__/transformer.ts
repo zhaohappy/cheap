@@ -29,7 +29,7 @@ function generateAST(source: string) {
   return sourceFile
 }
 
-function transform2AST(source: string, options: {
+export function transform2AST(source: string, options: {
   input: string
   output?: string
   defined?: Record<string, any>

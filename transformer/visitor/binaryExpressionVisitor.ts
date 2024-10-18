@@ -670,7 +670,7 @@ function computeVisitor(node: ts.BinaryExpression): ts.Node {
       }
     }
   }
-  return ts.visitEachChild(node, computeVisitor, statement.context)
+  return ts.visitEachChild(node, computeVisitor as ts.Visitor, statement.context)
 }
 
 export default function (node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {

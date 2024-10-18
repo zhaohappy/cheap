@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { check, distPath } from '../transformer'
+import { check, distPath, transform2AST } from '../transformer'
 import { CTypeEnum, CTypeEnum2Bytes } from '../../../typedef'
 import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport } from './snippet'
 
@@ -843,14 +843,14 @@ describe('equals', () => {
       let b: int32
       a = b
     `
-    const target = `
-      let a: pointer<void>
-      let b: int32
-      a = b
-    `
-    check(source, target, {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    transform2AST(source, {
       input
     })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type pointer is not assignable to parameter of type int32\n?$/))
+    consoleErrorSpy.mockRestore()
   })
 
   test('pointer<void> assignable to int32', () => {
@@ -859,13 +859,14 @@ describe('equals', () => {
       let b: pointer<void>
       a = b
     `
-    const target = `
-      let a: int32
-      let b: pointer<void>
-      a = b
-    `
-    check(source, target, {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    transform2AST(source, {
       input
     })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type int32 is not assignable to parameter of type pointer\n?$/))
+    consoleErrorSpy.mockRestore()
+    
   })
 })
