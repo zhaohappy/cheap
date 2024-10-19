@@ -33,6 +33,7 @@ export default function (node: ts.Identifier, visitor: ts.Visitor): ts.Node | ts
       || ts.isCaseClause(parent)
       || ts.isComputedPropertyName(parent)
       || ts.isArrayLiteralExpression(parent)
+      || ts.isAsExpression(parent)
       || statement.getCurrentStage()?.stage === StageStatus.SingleArrowRight && !ts.isTypeReferenceNode(parent)
   )
   ) {

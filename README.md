@@ -867,6 +867,10 @@ interface SharedPtr<T> {
    */
   useCount(): int32
   /**
+   * 是否有原始指针
+   */
+  has(): boolean
+  /**
    * 将智能指针转为可转移对象
    */
   transferable(): SharedPtrTransferable<T>

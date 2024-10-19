@@ -236,6 +236,7 @@ export function getStructByType(type: ts.Type) {
       || type.aliasSymbol.escapedName === constant.typeUnion
       || type.aliasSymbol.escapedName === constant.typeArray
       || type.aliasSymbol.escapedName === constant.typePointer
+      || type.aliasSymbol.escapedName === constant.sharedPtr
     ) {
       return getStructByType(type.aliasTypeArguments[0])
     }

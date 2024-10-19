@@ -852,6 +852,10 @@ interface SharedPtr<T> {
    */
   useCount(): int32
   /**
+   * Returns whether has raw pointer
+   */
+  has(): boolean
+  /**
    * Convert smart pointer to transferable object
    */
   transferable(): SharedPtrTransferable<T>

@@ -270,4 +270,22 @@ describe('args', () => {
       input
     })
   })
+
+  test('args undefined', () => {
+    const source = `
+      function info<args = [undefined]>(): void {
+        
+      }
+      info()
+    `
+    const target = `
+      function info<args = [undefined]>(): void {
+        
+      }
+      info(undefined)
+    `
+    check(source, target, {
+      input
+    })
+  })
 })

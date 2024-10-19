@@ -1,6 +1,7 @@
 
 import ts from 'typescript'
 import * as is from 'common/util/is'
+import * as array from 'common/util/array'
 import statement, { StageStatus } from '../statement'
 import reportError from '../function/reportError'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
@@ -8,7 +9,7 @@ import relativePath from '../function/relativePath'
 import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
 import * as constant from '../constant'
-import { KeyMetaExt, StructType, getStruct } from '../struct'
+import { KeyMetaExt, StructType } from '../struct'
 import getStructMeta from '../function/getStructMeta'
 
 
@@ -115,7 +116,7 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
 
 export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor): ts.Node {
   if (nodeUtils.isPointerNode(node)
-    && !(node.name.escapedText === 'get' && nodeUtils.isSmartPointerNode(node.expression))
+    && !(array.has(constant.smartPointerProperty, node.name.escapedText as string) && nodeUtils.isSmartPointerNode(node.expression))
   ) {
     if (statement.getCurrentStage()?.stage !== StageStatus.EqualLeft) {
       let root: ts.Node = nodeUtils.getPropertyAccessExpressionRootNode(node)
@@ -133,7 +134,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
           || type.aliasSymbol?.escapedName === constant.typeArray
         ) {
           let struct = lastIsIndexOf
-            ? getStruct(type.symbol)
+            ? typeUtils.getStructByType(type)
             : (
               typeUtils.isSmartPointerType(type)
                 ? typeUtils.getSmartPointerStructByType(type)
@@ -410,8 +411,12 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
   }
   else if (nodeUtils.isSmartPointerNode(node)) {
     const expressionType = statement.typeChecker.getTypeAtLocation(node.expression)
-    if (typeUtils.isSmartPointerType(expressionType) && ts.isIdentifier(node.name) && node.name.escapedText !== 'get' && expressionType.aliasTypeArguments?.length === 1) {
-      const struct = getStruct(expressionType.aliasTypeArguments[0].symbol)
+    if (typeUtils.isSmartPointerType(expressionType)
+      && ts.isIdentifier(node.name)
+      && !array.has(constant.smartPointerProperty, node.name.escapedText as string)
+      && expressionType.aliasTypeArguments?.length === 1
+    ) {
+      const struct = typeUtils.getStructByType(expressionType)
       if (!struct) {
         reportError(statement.currentFile, node, 'struct type mismatch')
         return node

@@ -10,6 +10,8 @@ import * as stack from '../../stack'
 import { SELF } from 'common/util/constant'
 import isWorker from 'common/function/isWorker'
 import make from '../make'
+import { Data } from 'common/types/type'
+import isPointer from '../function/isPointer'
 
 @struct
 class SharedPtrStruct<T> {
@@ -18,7 +20,7 @@ class SharedPtrStruct<T> {
 }
 
 const deleterMap: Map<pointer<SharedPtrStruct<void>>, {
-  deleter?: deleter<void>
+  deleter: deleter<void> | null
   refCount: number
 }> = new Map()
 
@@ -62,17 +64,19 @@ class SharedPtrImpl<T extends (BuiltinType | {})> {
 
   private deleter: deleter<T>
 
-  constructor(value: pointer<SharedPtrStruct<T>>, deleter?: deleter<T>) {
+  constructor(value: pointer<SharedPtrStruct<T>>, deleter: deleter<T> = null) {
     this.value = value
     this.deleter = deleter
-    const del = deleterMap.get(this.value as pointer<SharedPtrStruct<void>>) || {
-      deleter,
-      refCount: 0
+    if (value) {
+      const del = deleterMap.get(this.value as pointer<SharedPtrStruct<void>>) || {
+        deleter,
+        refCount: 0
+      }
+      del.refCount++
+      deleterMap.set(this.value as pointer<SharedPtrStruct<void>>, del as any)
+      atomic.add(addressof(value.refCount), 1)
+      registry.register(this, this.value as pointer<SharedPtrStruct<void>>)
     }
-    del.refCount++
-    deleterMap.set(this.value as pointer<SharedPtrStruct<void>>, del as any)
-    atomic.add(addressof(value.refCount), 1)
-    registry.register(this, this.value as pointer<SharedPtrStruct<void>>)
   }
 
   /**
@@ -90,7 +94,7 @@ class SharedPtrImpl<T extends (BuiltinType | {})> {
    * 
    * @param value 
    */
-  public reset(value: pointer<T> = nullptr as pointer<T>) {
+  public reset(value: pointer<T> | nullptr = nullptr) {
     if (this.value) {
       if (atomic.sub(addressof(this.value.refCount), 1) === 1) {
         const deleter = deleterMap.get(this.value as pointer<SharedPtrStruct<void>>)
@@ -112,8 +116,8 @@ class SharedPtrImpl<T extends (BuiltinType | {})> {
       }
     }
     if (value) {
-      const s: pointer<SharedPtrStruct<T>> = malloc(sizeof(SharedPtrStruct))
-      s.value = value
+      const s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
+      s.value = value as pointer<T>
       s.refCount = 1
       this.value = s
 
@@ -179,36 +183,60 @@ class SharedPtrImpl<T extends (BuiltinType | {})> {
 export function makeSharedPtr<T extends BuiltinType, args=[T]>(): SharedPtr<T>
 export function makeSharedPtr<T extends BuiltinType, args=[T]>(deleter: deleter<T>): SharedPtr<T>
 export function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T): SharedPtr<T>
+export function makeSharedPtr<T extends BuiltinType, args=[T, undefined, true]>(value: pointer<T>): SharedPtr<T>
 export function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T, deleter: deleter<T>): SharedPtr<T>
+export function makeSharedPtr<T extends BuiltinType, args=[T, true]>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
 
 export function makeSharedPtr<T extends {}, args=[T]>(): SharedPtr<T>
 export function makeSharedPtr<T extends {}, args=[T]>(deleter: deleter<T>): SharedPtr<T>
 export function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+export function makeSharedPtr<T extends {}, args=[T]>(init: pointer<T>): SharedPtr<T>
+export function makeSharedPtr<T extends {}, args=[T]>(init: T): SharedPtr<T>
+export function makeSharedPtr<T extends {}, args=[T]>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+export function makeSharedPtr<T extends {}, args=[T]>(init: T, deleter: deleter<T>): SharedPtr<T>
 export function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
-export function makeSharedPtr(
-  value?: CTypeEnum | Object | deleter<void> | number | bigint,
-  deleter?: CTypeEnum | Object | deleter<void>,
-  type?: CTypeEnum | Object
-): SharedPtr<any> {
+export function makeSharedPtr<T>(
+  value?: CTypeEnum | {} | deleter<T> | number | bigint | boolean | pointer<T> | nullptr,
+  deleter?: CTypeEnum | {} | deleter<T>,
+  type?: CTypeEnum | {},
+  valueIsPointer?: boolean
+): SharedPtr<T> {
   // makeSharedPtr<T>(value, deleter)
   if (isDef(type)) {
     if (is.number(type)) {
-      const p = malloc(sizeof(type))
-      CTypeEnumWrite[type as uint8](p, value as number)
-      const s: pointer<SharedPtrStruct<void>> = malloc(sizeof(SharedPtrStruct))
-      s.value = p
-      s.refCount = 0
-      // @ts-ignore
-      return new SharedPtrImpl(s as pointer<any>, deleter as deleter<any>)
+      let raw: pointer<T> = reinterpret_cast<pointer<T>>(nullptr)
+      if (valueIsPointer) {
+        raw = reinterpret_cast<pointer<T>>(value as pointer<void>)
+      }
+      else {
+        raw = reinterpret_cast<pointer<T>>(malloc(sizeof(type)))
+        CTypeEnumWrite[type as uint8](raw, value as uint8)
+      }
+      let s: pointer<SharedPtrStruct<T>> = nullptr
+      if (raw) {
+        s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
+        s.refCount = 0
+        s.value = raw
+      }
+      return new SharedPtrImpl(s, deleter as deleter<T>) as unknown as SharedPtr<T>
     }
     else if (is.func(type) && type.prototype[symbolStruct]) {
-      const p = make(value as any, type as Struct)
-      const s: pointer<SharedPtrStruct<void>> = malloc(sizeof(SharedPtrStruct))
-      s.value = p[symbolStructAddress]
-      s.refCount = 0
-      // @ts-ignore
-      return new SharedPtrImpl(s as pointer<any>, deleter as deleter<any>)
+      let raw: pointer<T> = reinterpret_cast<pointer<T>>(nullptr)
+      if (isPointer(value)) {
+        raw = reinterpret_cast<pointer<T>>(value)
+      }
+      else {
+        const p: T = value[symbolStruct] ? value : make(value as Data, type as Struct)
+        raw = p[symbolStructAddress]
+      }
+      let s: pointer<SharedPtrStruct<T>> = nullptr
+      if (raw) {
+        s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
+        s.refCount = 0
+        s.value = raw
+      }
+      return new SharedPtrImpl(s, deleter as deleter<T>) as unknown as SharedPtr<T>
     }
     else {
       throw new Error('invalid params')
@@ -218,23 +246,40 @@ export function makeSharedPtr(
   // makeSharedPtr<T>(deleter)
   else if (isDef(deleter)) {
     if (is.number(deleter)) {
-      const p = malloc(sizeof(deleter))
-      if (!is.func(value)) {
-        CTypeEnumWrite[deleter as uint8](p, value as number)
+      let raw: pointer<T> = reinterpret_cast<pointer<T>>(nullptr)
+      if (valueIsPointer) {
+        raw = reinterpret_cast<pointer<T>>(value as pointer<void>)
       }
-      const s: pointer<SharedPtrStruct<void>> = malloc(sizeof(SharedPtrStruct))
-      s.value = p
-      s.refCount = 0
-      // @ts-ignore
-      return new SharedPtrImpl(s as pointer<any>, is.func(value) ? value as deleter<any> : null)
+      else {
+        raw = reinterpret_cast<pointer<T>>(malloc(sizeof(deleter)))
+        if (!is.func(value)) {
+          CTypeEnumWrite[deleter as uint8](raw, value as uint8)
+        }
+      }
+      let s: pointer<SharedPtrStruct<T>> = nullptr
+      if (raw) {
+        s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
+        s.refCount = 0
+        s.value = raw
+      }
+      return new SharedPtrImpl(s, is.func(value) ? value as deleter<T> : null) as unknown as SharedPtr<T>
     }
     else if (is.func(deleter) && deleter.prototype[symbolStruct]) {
-      const p = make(is.func(value) ? {} : value as any, deleter as any)
-      const s: pointer<SharedPtrStruct<void>> = malloc(sizeof(SharedPtrStruct))
-      s.value = p[symbolStructAddress]
-      s.refCount = 0
-      // @ts-ignore
-      return new SharedPtrImpl(s as pointer<any>, is.func(value) ? value as deleter<any> : null)
+      let raw: pointer<T> = reinterpret_cast<pointer<T>>(nullptr)
+      if (isPointer(value)) {
+        raw = reinterpret_cast<pointer<T>>(value)
+      }
+      else {
+        const p = value[symbolStruct] ? value : make(is.func(value) ? {} : value as Data, deleter as (new (...args: any[]) => T))
+        raw = p[symbolStructAddress]
+      }
+      let s: pointer<SharedPtrStruct<T>> = nullptr
+      if (raw) {
+        s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
+        s.refCount = 0
+        s.value = raw
+      }
+      return new SharedPtrImpl(s, is.func(value) ? value as deleter<T> : null) as unknown as SharedPtr<T>
     }
     else {
       throw new Error('invalid params')
@@ -242,12 +287,11 @@ export function makeSharedPtr(
   }
   // makeSharedPtr<T>()
   else {
-    const p = malloc(sizeof(value as (CTypeEnum | Struct)))
-    const s: pointer<SharedPtrStruct<void>> = malloc(sizeof(SharedPtrStruct))
+    const p = reinterpret_cast<pointer<T>>(malloc(sizeof(value as (CTypeEnum | Struct))))
+    const s = reinterpret_cast<pointer<SharedPtrStruct<T>>>(malloc(sizeof(SharedPtrStruct)))
     s.value = p
     s.refCount = 0
-    // @ts-ignore
-    return new SharedPtrImpl(s as pointer<any>)
+    return new SharedPtrImpl(s) as unknown as SharedPtr<T>
   }
 }
 

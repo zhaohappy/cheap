@@ -25,12 +25,14 @@ describe('sharedPtr', () => {
       }
       let b = makeSharedPtr<TestA>()
       let a = b.a
+      b.a = 6
     `
     const target = `
       import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
       import definedMetaProperty from "cheap/function/definedMetaProperty";
       import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
       import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
       class TestA {
         a: int8
       }
@@ -44,6 +46,7 @@ describe('sharedPtr', () => {
       })(TestA.prototype)
       let b = makeSharedPtr(TestA)
       let a = CTypeEnumRead[11](b.get())
+      CTypeEnumWrite[11](b.get(), 6)
     `
     check(source, target, {
       input
@@ -63,12 +66,18 @@ describe('sharedPtr', () => {
       }
       let b = makeSharedPtr<TestB>()
       let a = b.b
+      let c = make<TestA>()
+      b.b.a = 6
+      b.b = c
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
+      import { memcpy as memcpy } from "cheap/std/memory";
+      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta, symbolStructAddress as symbolStructAddress } from "cheap/symbol";
       import definedMetaProperty from "cheap/function/definedMetaProperty";
       import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
       import structAccess from "cheap/std/structAccess";
+      import make from "cheap/std/make";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
       class TestA {
         a: int8;
       }
@@ -95,9 +104,13 @@ describe('sharedPtr', () => {
       })(TestB.prototype);
       let b = makeSharedPtr(TestB);
       let a = structAccess(b.get() + 1, TestA);
+      let c = make(TestA);
+      CTypeEnumWrite[11](b.get() + 1, 6);
+      memcpy(b.get() + 1, c[symbolStructAddress], 1);
     `
     check(source, target, {
-      input
+      input,
+      output
     })
   })
 
@@ -114,12 +127,14 @@ describe('sharedPtr', () => {
       }
       let b = makeSharedPtr<TestB>()
       let a = b.b.a
+      b.b.a = 8
     `
     const target = `
       import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
       import definedMetaProperty from "cheap/function/definedMetaProperty";
       import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
       import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
       class TestA {
         a: int8;
       }
@@ -146,6 +161,7 @@ describe('sharedPtr', () => {
       })(TestB.prototype);
       let b = makeSharedPtr(TestB);
       let a = CTypeEnumRead[11](CTypeEnumRead[20](b.get() + 4));
+      CTypeEnumWrite[11](CTypeEnumRead[20](b.get() + 4), 8);
     `
     check(source, target, {
       input

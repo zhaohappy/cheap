@@ -337,7 +337,8 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
       || ts.isElementAccessExpression(node.left)
     ) {
       const hasPointer = nodeUtils.isExpressionPointer(node.left.expression as ts.Identifier)
-      if (hasPointer) {
+      const hasSmartPointer = ts.isPropertyAccessExpression(node.left) && nodeUtils.isSmartPointerNode(node.left.expression)
+      if (hasPointer || hasSmartPointer) {
         const type1 = statement.typeChecker.getTypeAtLocation(node.left)
         const type2 = statement.typeChecker.getTypeAtLocation(node.right)
 

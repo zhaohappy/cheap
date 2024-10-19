@@ -6,7 +6,7 @@ import statement from '../statement'
 import { BuiltinBigInt, BuiltinBool, BuiltinFloat, BuiltinNumber, BuiltinUint, CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import reportError from '../function/reportError'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
-import { Struct, StructType, getStruct, hasStruct } from '../struct'
+import { Struct, StructType, hasStruct } from '../struct'
 import { isPointerNode } from '../util/nodeutil'
 import relativePath from '../function/relativePath'
 import isDef from 'common/function/isDef'
@@ -275,6 +275,9 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
     else if (node.literal.kind === ts.SyntaxKind.FalseKeyword) {
       args.push(statement.context.factory.createFalse())
     }
+  }
+  else if (node.kind === ts.SyntaxKind.UndefinedKeyword) {
+    args.push(statement.context.factory.createIdentifier('undefined'))
   }
 }
 
@@ -621,11 +624,24 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             )
           }
           else {
+            if (ts.isCallExpression(newArg.expression)
+              && ts.isIdentifier(newArg.expression.expression)
+              && newArg.expression.expression.escapedText === constant.structAccess
+            ) {
+              return newArg.expression.arguments[0]
+            }
             return statement.context.factory.createElementAccessExpression(
               newArg.expression,
               statement.addSymbolImport(constant.symbolStructAddress)
             )
           }
+        }
+        else if (ts.isElementAccessExpression(newArg)
+          && ts.isCallExpression(newArg.expression)
+          && ts.isIdentifier(newArg.expression.expression)
+          && newArg.expression.expression.escapedText === constant.structAccess
+        ) {
+          return newArg.expression.arguments[0]
         }
         else {
           reportError(statement.currentFile, arg, 'invalid operation')
@@ -736,7 +752,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       if (node.arguments.length === 2) {
         const type = statement.typeChecker.getTypeAtLocation(node.arguments[0])
         if (typeUtils.isStructType(type) && ts.isStringLiteral(node.arguments[1])) {
-          const struct = getStruct(type.symbol)
+          const struct = typeUtils.getStructByType(type)
           const meta = getStructMeta(struct, node.arguments[1].text)
           if (meta) {
             return statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
@@ -1236,10 +1252,11 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           return node
         }
       }
+      const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
         statement.addIdentifierImport(constant.make, constant.makePath, true),
         undefined,
-        node.arguments
+        tree.arguments
       )
     }
     else if (callName === constant.makeSharedPtr && !statement.lookupFunc(constant.makeSharedPtr)) {
@@ -1265,17 +1282,19 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           return node
         }
       }
+      const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
         statement.addIdentifierImport(constant.makeSharedPtr, constant.makeSharedPtrPath, false),
         undefined,
-        node.arguments
+        tree.arguments
       )
     }
     else if (callName === constant.unmake && !statement.lookupFunc(constant.unmake)) {
+      const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
         statement.addIdentifierImport(constant.unmake, constant.unmakePath, true),
         undefined,
-        node.arguments
+        tree.arguments
       )
     }
   }

@@ -464,6 +464,11 @@ declare type SharedPtr<T extends (BuiltinType | {})> = {
   useCount(): int32
 
   /**
+   * 是否有原始指针
+   */
+  has(): boolean
+
+  /**
    * 将智能指针转为可转移
    */
   transferable(): SharedPtrTransferable<T>
@@ -478,12 +483,18 @@ declare type SharedPtr<T extends (BuiltinType | {})> = {
 
 declare function makeSharedPtr<T extends BuiltinType, args=[T]>(): SharedPtr<T>
 declare function makeSharedPtr<T extends BuiltinType, args=[T]>(deleter: deleter<T>): SharedPtr<T>
+declare function makeSharedPtr<T extends BuiltinType, args=[T, undefined, true]>(value: pointer<T>): SharedPtr<T>
 declare function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T): SharedPtr<T>
+declare function makeSharedPtr<T extends BuiltinType, args=[T, true]>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
 declare function makeSharedPtr<T extends BuiltinType, args=[T]>(value: T, deleter: deleter<T>): SharedPtr<T>
 
 declare function makeSharedPtr<T extends {}, args=[T]>(): SharedPtr<T>
 declare function makeSharedPtr<T extends {}, args=[T]>(deleter: deleter<T>): SharedPtr<T>
 declare function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: pointer<T>): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: T): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+declare function makeSharedPtr<T extends {}, args=[T]>(init: T, deleter: deleter<T>): SharedPtr<T>
 declare function makeSharedPtr<T extends {}, args=[T]>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
 /**

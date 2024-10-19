@@ -76,6 +76,7 @@ export const AllocatorPath = 'cheap/heap'
 export const makePath = 'cheap/std/make'
 export const unmakePath = 'cheap/std/unmake'
 export const makeSharedPtrPath = 'cheap/std/smartPtr/SharedPtr'
+export const smartPointerProperty = ['get', 'reset', 'unique', 'useCount', 'has', 'transferable', 'clone']
 
 export const typeProperty = 'zzztype__'
 export const levelProperty = 'zzzlevel__'
