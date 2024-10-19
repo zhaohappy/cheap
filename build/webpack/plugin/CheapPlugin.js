@@ -130,7 +130,8 @@ class CheapPlugin {
                     me.reportError(message);
                   },
                   defined: {
-                    ENV_NODE: me.options.env === 'node'
+                    ENV_NODE: me.options.env === 'node',
+                    ...me.options.defined
                   },
                   tmpPath: compiler.options.output.path,
                   wat2wasm: wat2wasmPath
