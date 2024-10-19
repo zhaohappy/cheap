@@ -1,4 +1,5 @@
 import ts from 'typescript'
+import * as is from 'common/util/is'
 import * as object from 'common/util/object'
 import statement from './statement'
 import blockVisitor from './visitor/blockVisitor'
@@ -56,13 +57,22 @@ export default function (program: ts.Program, options: TransformerOptions = {}):
   statement.typeChecker = program.getTypeChecker()
   statement.compilerOptions = program.getCompilerOptions()
 
+  const excludes = is.array(options.exclude)
+    ? options.exclude
+    : (options.exclude
+      ? [options.exclude]
+      : []
+    )
+
   return (context: ts.TransformationContext) => {
 
     statement.context = context
 
     return (file: ts.SourceFile) => {
 
-      if (options.exclude && options.exclude.test(file.fileName)) {
+      if (excludes.some((exclude) => {
+        return exclude.test(file.fileName)
+      })) {
         return file
       }
 

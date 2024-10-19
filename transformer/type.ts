@@ -18,7 +18,7 @@ export interface TransformerOptions {
   tmpPath?: string
   projectPath?: string
   formatIdentifier?: boolean
-  exclude?: RegExp
+  exclude?: RegExp | RegExp[]
   defined?: Record<string, any>
   reportError?: (error: {
     file: string,
