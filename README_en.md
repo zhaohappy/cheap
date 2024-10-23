@@ -7,22 +7,22 @@ English | [中文](README.md)
 
 ### Introduction
 
-cheap is a tool library for JavaScript multi-threaded and high-performance WebAssembly program development.
+cheap is a tool library for develop multi-thread of JavaScript and high-performance of WebAssembly.
 
-cheap can be used in browser environment and Node environment.
+cheap can be use in browser environment and Node environment.
 
 ### Start
 
-cheap can only be developed using typescript
+cheap can only be use in typescript.
 
-Currently, cheap can only be packaged and compiled using webpack. If you use cheap, the relevant modules you use need to be packaged with webpack. It is recommended to use webpack 5. Lower versions may have problems with compilation.
+currently, cheap can only be compile and pack with webpack. If you use cheap, the relevant modules use cheap need to be compile with webpack. We recommended for you use webpack 5, lower versions may have problems with compilation.
 
-cheap depends on the [common](https://github.com/zhaohappy/common) project. It is recommended to put both cheap and common as submodules in the same directory under the project.
+cheap depends on the [common](https://github.com/zhaohappy/common) project. We recommended for you put both cheap and common as submodules in the same directory under the project.
 
-webpack configuration needs to add cheap plugin:
+the configuration of webpack needs to add cheap plugin:
 
 ```javascript
-// The plugin location is under the cheap build directory
+// The plugin location is under the cheap/build directory
 const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
 
 {
@@ -76,20 +76,20 @@ Add configuration in ```tsconfig.json``` and include the code under the cheap an
 ### Principle
 
 
-cheap thinks about the design from the perspective of how to better transfer data (especially complex data structures) between js and wasm. We know that the current wasm and js can only transfer number type data to each other. More complex data structures often require serialization and deserialization, which greatly affects the performance of the program. It can be an important reason why wasm has not become popular yet on the web platform.
+cheap thinks about the design from the perspective of how to better transfer data (especially complex data structures) between js and wasm. We know that the current wasm and js can only transfer number type data to each other. The complex data structures often require serialize and deserialize, which greatly affects the performance of the program. It can be an important reason why wasm has not become popular yet on the web platform.
 
-In order to solve this problem, cheap introduced the concept of ```struct``` into typescript. The concept of ```struct``` is consistent with the concept of ```struct``` in C. It represents the layout of a data structure in a memory. In this way, the memory can be operated according to the layout in wasm and js respectively, and data can be transferred between the two parties with the starting position of the memory, that is pointer, thus avoiding the overhead of serialization and deserialization of data.
+In order to solve this problem, cheap introduced the concept of ```struct``` into typescript. The concept of ```struct``` is consistent with the concept of ```struct``` in C. It represents the layout of a data structure in a memory. In this way, the memory can be operated according to the layout in wasm and js respectively, and data can be transferred between the two parties with the starting position of the memory, that is pointer, thus avoiding the overhead to serialize and deserialize for data.
 
-With ```struct```, we can not only transfer data efficiently between wasm and js, but also think that multi-threaded programming in js currently faces the problem of being unable to share data. If our ```struct``` is in SharedArrayBuffer, let all workers use the same SharedArrayBuffer instance can enable all workers to share data, and different workers can efficiently transfer data by passing pointers.
+With ```struct```, we can not only transfer data efficiently between wasm and js, but also think that multi-thread programming in js currently faces the problem of being unable to share data. If our ```struct``` is in SharedArrayBuffer, let all workers use the same SharedArrayBuffer instance can enable all workers to share data, and different workers can efficiently transfer data by passing pointers.
 
 The overall idea is summarized as follows:
 
-1. Implement a global memory allocator Allocator, which can allocate memory of a given size and return the starting address, and can reclaim the allocated memory. This global memory is in ```Webassembly.Memory``` and is called ```Heap```.
-2. All wasm modules are compiled using the dynamic link library mode. When allocating internal memory, use the Allocator implemented in (1) to allocate. The memory including the data segment also needs to be dynamically imported after being allocated through the Allocator in (1). The emscripten tool has a fixed Configure to enable this compilation.
+1. Implement a global memory allocator named Allocator, which can allocate memory of a given size and return the starting address, and can reclaim the allocated memory. This global memory is in ```WebAssembly.Memory``` and is called ```Heap```.
+2. All wasm modules are compiled using the dynamic link library mode. When wasm allocating internal memory, use the Allocator implemented in (1) to allocate. The data segment of wasm also needs to be dynamically imported after being allocated through the Allocator in (1). The emscripten tool has a configuration to enable this compilation.
 3. Use the typescript transformer api to write a plugin to compile pointer accesses into function calls during compilation in typescript code.
-4. When creating a worker, pass the global Heap of the current thread to the created worker, and initialize the relevant configuration (the ```Heap``` in this case must be on top of SharedArrayBuffer) to obtain a multi-threaded data sharing environment. This requires Allocator to be thread-safe. The allocation of memory by each thread is responsible for the Allocator of the respective thread. They all allocate on the same memory.
+4. When creating a worker, pass the global Heap of the current thread to the created worker, and initialize the relevant configuration (the ```Heap``` in this case must be on the SharedArrayBuffer) to obtain a multi-thread data sharing environment. This requires Allocator to be thread-safe. The allocation of memory by each thread is responsible for the Allocator of the respective thread. They all allocate on the same memory.
 
-In this way, all the memory of wasm is in the ```Heap```, and the memory allocated by each js worker is in the ```Heap```, so that data sharing can be realized everywhere. It is shared between wasm and wasm, and between worker and worker. also between javascript and wasm.
+In this way, all the memory of wasm is in the ```Heap```, and the memory allocate by each js worker is in the ```Heap```, so that data sharing can be realized everywhere. It is shared between wasm and wasm, and between worker and worker. also between javascript and wasm.
 
 ### API
 
@@ -144,9 +144,11 @@ class MyStruct {
   // This is not a built-in type and will be ignored during layout.
   // When you use struct instance access it, you access js object properties
   // Using pointer access it will cause a compile error
+  // This operation is generally not recommended. One possible usage scenario is to operate the same structure in different threads.
+  // This attribute can be used as a private attribute of the thread to read and write its own exclusive data, not shared with other threads
   i: number
 
-  // You can use decorators to decorate properties
+  // You can use decorator to decorate properties
   // This means that this attribute will be ignored when the macro ENABLE_XX is turned off
   // can use conditional compilation in struct
   @ignore(!defined(ENABLE_XX))
@@ -379,7 +381,7 @@ The current WebAssembly development model is developed using other languages, an
 
 So in cheap we only need the compiled wasm bytecode, no glue layer code is needed, and cheap provides some basic runtime. This runtime has memory allocation, standard output(used to print logs), atomic, pthread, and semaphore. The summary is that the wasm module should only be responsible for the calculation part, and JavaScript should be responsible for the input and output of IO and code business logic. Because most of our wasm modules are compiled from C/C++, its synchronous blocking IO method is inherently different from the Web's asynchronous method. All IO is put inside wasm and JavaScript is used to simulate a set of synchronous blocking runtime, would be the fatal flaw of this system. Of course, you can also use compilation tools to make wasm internally support calling JavaScript asynchronous functions, but this will either increase the size of the compiled product wasm and reduce performance; or the scenarios that can be used are greatly limited. As far as I know, emscripten supports C/C++ calling JavaScript asynchronous functions, but the premise is that there can be no indirect calls in the entire call chain.
 
-To use the wasm module on cheap, you need to compile your wasm into dynamic linking mode. Here is an example
+To use the wasm module on cheap, you need to compile your wasm into dynamic linking mode. Here is an example.
 
 ```shell
 emcc -O3 xx.c 
@@ -431,7 +433,7 @@ runner.call('func_a', 0)
 
 #### Threads
 
-cheap supports multi-threaded operations and makes multi-threaded development more elegant and simple.
+cheap supports multi-thread operations and makes multi-threaded development more elegant and simple.
 
 ##### thread create and termination
 
@@ -898,7 +900,7 @@ const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).
 ### Suggestion
 
 - The design should use struct as little as possible as a data structure. Use struct only when it needs to be transferred between multiple threads or between js and wasm. js objects should be used at other times. Otherwise, problems such as memory leaks, dirty memory writes, and dangling pointers will cause headaches.
-- Although the API provided by cheap can use C style thread calling, my suggestion is that each thread should use asynchronous development in event loop. The advantage of this is that when multi-threading can not support in environment, you can fall back to running on the main thread (compatibility issues cannot be avoided on the Web); and writing in this way will make multi-threading easier, you only need to pay attention to those things that need to be transferred between different threads. The data synchronization problem can use reference counting to manage its life cycle well. At other times, it can be written in the same way as single-threaded JavaScript that we are familiar with.
+- Although the API provided by cheap can use C style thread calling, my suggestion is that each thread should use asynchronous development in event loop. The advantage of this is that when multi-threading can not support in environment, you can fall back to running on the main thread (compatibility issues cannot be avoided on the Web); and writing in this way will make multi-threading easier, you only need to pay attention to those things that need to be transferred between different threads. The data synchronization problem can use reference counting to manage its life cycle well. At other times, it can be written in the same way as single-thread JavaScript that we are familiar with.
 - There is currently a project [libmedia](https://github.com/zhaohappy/libmedia) that use cheap for development. If you want to learn how to use cheap, you can refer to the usage and design patterns of this project.
 - [cheap-example](https://github.com/zhaohappy/cheap-example) is some simple examples for cheap.
 
