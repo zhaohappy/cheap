@@ -13,12 +13,12 @@ import structAccess from './structAccess'
  */
 export default function make<T>(init?: Data, struct?: new (...args: any[]) => T): T {
 
-  assert(struct.prototype[symbolStruct], 'cannot make struct because of not defined')
-
   if (!isDef(struct)) {
     struct = init as unknown as new (...args: any[]) => any
     init = null
   }
+
+  assert(struct.prototype[symbolStruct], 'cannot make struct because of not defined')
 
   const size = sizeof(struct)
   const address = malloc(size)
