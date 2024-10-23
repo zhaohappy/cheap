@@ -352,32 +352,28 @@ export async function initThread(options: {
 
   isMainThread = false
 
-  if (!defined(DEBUG)) {
-    if (!options.disableAsm) {
-      // @ts-ignore
-      if (typeof BigInt === 'function' && BigInt !== Number
-        && (
-          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-          || browser.newEdge
-        )
-      ) {
-        await initMemoryAsm(Memory)
-      }
-      if (defined(ENABLE_THREADS)
-        && config.USE_THREADS
-        && (
-          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-          || browser.newEdge
-        )
-      ) {
-        await initAtomicsAsm(Memory)
-      }
+  if (!options.disableAsm) {
+    // @ts-ignore
+    if (typeof BigInt === 'function' && BigInt !== Number
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      await initMemoryAsm(Memory)
     }
-
+    if (config.USE_THREADS
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      await initAtomicsAsm(Memory)
+    }
   }
 }
 

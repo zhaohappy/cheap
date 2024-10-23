@@ -16,6 +16,9 @@ export function isSupport() {
 }
 
 export default async function init(memory: WebAssembly.Memory) {
+  if (defined(DEBUG)) {
+    return
+  }
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
 

@@ -17,6 +17,9 @@ export function support() {
 }
 
 export default async function init(memory: WebAssembly.Memory) {
+  if (defined(DEBUG)) {
+    return
+  }
   try {
     let wasm = base64ToUint8Array(asm)
     wasmUtils.setMemoryShared(wasm, typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer)
