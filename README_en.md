@@ -15,7 +15,7 @@ cheap can be use in browser environment and Node environment.
 
 cheap can only be use in typescript.
 
-currently, cheap can only be compile and pack with webpack. If you use cheap, the relevant modules use cheap need to be compile with webpack. We recommended for you use webpack 5, lower versions may have problems with compilation.
+currently, cheap can only be compile and pack with webpack. The relevant modules which use cheap need to be compile with our webpack plugin. We recommended for you use webpack 5, lower versions may have problems with compilation.
 
 cheap depends on the [common](https://github.com/zhaohappy/common) project. We recommended for you put both cheap and common as submodules in the same directory under the project.
 
@@ -825,7 +825,7 @@ function freeMyStruct(p: pointer<MyStruct>) {
   free(p)
 }
 // Constructor with a custom destructor
-// If the destructor is not pass, it will only free the structure's own memory
+// If the destructor is not pass, the default destructor will only free the structure's own memory
 const p4 = makeSharedPtr<MyStruct>(freeMyStruct)
 
 // Constructor with initialized data and custom destructor
