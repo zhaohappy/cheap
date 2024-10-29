@@ -247,8 +247,8 @@ myStructPointer = nullptr
 /**
  * 创建结构体实例
  */
-declare function make<T extends {}>(): T
-declare function make<T extends {}>(init: Partial<SetOmitFunctions<T>>): T
+function make<T extends {}>(): T
+function make<T extends {}>(init: Partial<SetOmitFunctions<T>>): T
 
 /**
  * 销毁结构体实例
@@ -260,20 +260,20 @@ function unmake<T extends Object>(target: T): void
 /**
  * 创建 SharedPtr 智能指针
  */
-declare function makeSharedPtr<T extends BuiltinType>(): SharedPtr<T>
-declare function makeSharedPtr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends BuiltinType>(value: T): SharedPtr<T>
-declare function makeSharedPtr<T extends BuiltinType>(value: pointer<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends BuiltinType>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: pointer<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: T): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: T, deleter: deleter<T>): SharedPtr<T>
-declare function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: pointer<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends BuiltinType>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(): SharedPtr<T>
+function makeSharedPtr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: pointer<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: T): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: T, deleter: deleter<T>): SharedPtr<T>
+function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
  /**
  * 申请大小为 size 字节的内存
