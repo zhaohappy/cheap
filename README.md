@@ -405,7 +405,6 @@ emcc -O3 xx.c
 
 import compile from 'cheap/webassembly/compiler'
 import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
-import * as config from 'cheap/config'
 
 // resource 可以存入 indexDB 里面，下一次直接取出来用，不用在进行网络请求和编译了
 const resource = await compile(
@@ -475,7 +474,7 @@ function closeThread(thread: Thread<{}>): void
 /**
  * 等待线程退出
  * 从函数创建的线程会等待函数返回，并返回函数的返回结果
- * 从类和模块创建的线程会在线程内部的下一次事件循环中退出
+ * 从类和模块创建的线程会在线程内部的下一次事件循环中退出，如果要清理其他资源需要自己手动提前清理
  */
 async function joinThread<T>(thread: Thread<{}>): Promise<T>
 
@@ -829,20 +828,20 @@ class MyStruct {
 }
 
 // 无参构造
-const p0 = makeSharedPtr<MyStruct>()
-const p1 = makeSharedPtr<int32>()
+const p0 = make_shared_ptr<MyStruct>()
+const p1 = make_shared_ptr<int32>()
 // 带初始化数据的构造
-const p2 = makeSharedPtr<MyStruct>({a: 0})
-const p3 = makeSharedPtr<int32>(43)
+const p2 = make_shared_ptr<MyStruct>({a: 0})
+const p3 = make_shared_ptr<int32>(43)
 
 function freeMyStruct(p: pointer<MyStruct>) {
   free(p)
 }
 // 带自定义析构函数的构造，不传使用默认析构只会 free 结构体自己的内存
-const p4 = makeSharedPtr<MyStruct>(freeMyStruct)
+const p4 = make_shared_ptr<MyStruct>(freeMyStruct)
 
 // 带初始化数据和自定义析构函数的构造
-const p5 = makeSharedPtr<MyStruct>({a: 0}, freeMyStruct)
+const p5 = make_shared_ptr<MyStruct>({a: 0}, freeMyStruct)
 
 // 访问原始指针的属性
 console.log(p5.a)
@@ -904,7 +903,7 @@ function worker(t: SharedPtrTransferable<MyStruct>) {
   console.log(p.a)
 }
 
-const p = makeSharedPtr<MyStruct>()
+const p = make_shared_ptr<MyStruct>()
 const transfer = p.transferable()
 const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).run(transfer)
 

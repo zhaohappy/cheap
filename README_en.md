@@ -406,7 +406,6 @@ After getting the wasm output, you can use it under cheap
 
 import compile from 'cheap/webassembly/compiler'
 import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
-import * as config from 'cheap/config'
 
 // The resource can be stored in indexDB and taken out directly for use next time without having to perform network requests and compilation.
 const resource = await compile(
@@ -815,21 +814,21 @@ class MyStruct {
 }
 
 // Constructor with no parameter 
-const p0 = makeSharedPtr<MyStruct>()
-const p1 = makeSharedPtr<int32>()
+const p0 = make_shared_ptr<MyStruct>()
+const p1 = make_shared_ptr<int32>()
 // Constructor with initialized data
-const p2 = makeSharedPtr<MyStruct>({a: 0})
-const p3 = makeSharedPtr<int32>(43)
+const p2 = make_shared_ptr<MyStruct>({a: 0})
+const p3 = make_shared_ptr<int32>(43)
 
 function freeMyStruct(p: pointer<MyStruct>) {
   free(p)
 }
 // Constructor with a custom destructor
 // If the destructor is not pass, the default destructor will only free the structure's own memory
-const p4 = makeSharedPtr<MyStruct>(freeMyStruct)
+const p4 = make_shared_ptr<MyStruct>(freeMyStruct)
 
 // Constructor with initialized data and custom destructor
-const p5 = makeSharedPtr<MyStruct>({a: 0}, freeMyStruct)
+const p5 = make_shared_ptr<MyStruct>({a: 0}, freeMyStruct)
 
 // Access the properties's value of the raw pointer
 console.log(p5.a)
@@ -891,7 +890,7 @@ function worker(t: SharedPtrTransferable<MyStruct>) {
   console.log(p.a)
 }
 
-const p = makeSharedPtr<MyStruct>()
+const p = make_shared_ptr<MyStruct>()
 const transfer = p.transferable()
 const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).run(transfer)
 

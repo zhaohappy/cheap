@@ -546,7 +546,7 @@ export default class WebAssemblyRunner {
     this.initRunTime()
   }
 
-  public async childrenThreadReady() {
+  public async childThreadsReady() {
     if (!this.childReadyPromises.length) {
       return
     }
