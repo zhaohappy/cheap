@@ -302,7 +302,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
       new ReadableStream({
         async start(controller) {
           if (is.string(source.source)) {
-            if (AbortController) {
+            if (typeof AbortController === 'function') {
               context.abortController = new AbortController()
             }
             const params: Partial<any> = {
