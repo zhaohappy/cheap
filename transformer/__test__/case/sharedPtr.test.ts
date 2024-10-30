@@ -23,7 +23,7 @@ describe('sharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr<TestA>()
+      let b = make_shared_ptr<TestA>()
       let a = b.a
       b.a = 6
     `
@@ -64,7 +64,7 @@ describe('sharedPtr', () => {
         a: int8
         b: TestA
       }
-      let b = makeSharedPtr<TestB>()
+      let b = make_shared_ptr<TestB>()
       let a = b.b
       let c = make<TestA>()
       b.b.a = 6
@@ -125,7 +125,7 @@ describe('sharedPtr', () => {
         a: int8
         b: pointer<TestA>
       }
-      let b = makeSharedPtr<TestB>()
+      let b = make_shared_ptr<TestB>()
       let a = b.b.a
       b.b.a = 8
     `
@@ -179,7 +179,7 @@ describe('sharedPtr', () => {
         a: int8
         b: pointer<TestA>
       }
-      let b = makeSharedPtr<TestB>()
+      let b = make_shared_ptr<TestB>()
       let a = addressof(b.b.a)
     `
     const target = `
@@ -225,7 +225,7 @@ describe('sharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr<TestA>()
+      let b = make_shared_ptr<TestA>()
       let c = b[0]
     `
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()

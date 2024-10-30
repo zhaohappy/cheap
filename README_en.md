@@ -261,20 +261,20 @@ function unmake<T extends Object>(target: T): void
 /**
  * Create SharedPtr Smart Pointer
  */
-function makeSharedPtr<T extends BuiltinType>(): SharedPtr<T>
-function makeSharedPtr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends BuiltinType>(value: T): SharedPtr<T>
-function makeSharedPtr<T extends BuiltinType>(value: pointer<T>): SharedPtr<T>
-function makeSharedPtr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends BuiltinType>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(): SharedPtr<T>
-function makeSharedPtr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: pointer<T>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: T): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: T, deleter: deleter<T>): SharedPtr<T>
-function makeSharedPtr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(value: T): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(value: pointer<T>): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(value: T, deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends BuiltinType>(value: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(): SharedPtr<T>
+function make_shared_ptr<T extends {}>(deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: Partial<SetOmitFunctions<T>>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: pointer<T>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: T): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: pointer<T>, deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: T, deleter: deleter<T>): SharedPtr<T>
+function make_shared_ptr<T extends {}>(init: Partial<SetOmitFunctions<T>>, deleter: deleter<T>): SharedPtr<T>
 
  /**
  * Allocate memory of size bytes

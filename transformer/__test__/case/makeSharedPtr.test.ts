@@ -24,7 +24,7 @@ describe('makeSharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr<TestA>()
+      let b = make_shared_ptr<TestA>()
     `
     const target = `
       import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
@@ -54,7 +54,7 @@ describe('makeSharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr<TestA>({a: 0})
+      let b = make_shared_ptr<TestA>({a: 0})
     `
     const target = `
       import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
@@ -80,7 +80,7 @@ describe('makeSharedPtr', () => {
 
   test('makeSharedPtr builtin type', () => {
     const source = `
-      let b = makeSharedPtr<uint32>()
+      let b = make_shared_ptr<uint32>()
     `
     const target = `
       import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
@@ -93,7 +93,7 @@ describe('makeSharedPtr', () => {
 
   test('makeSharedPtr builtin type init', () => {
     const source = `
-      let b = makeSharedPtr<uint32>(3)
+      let b = make_shared_ptr<uint32>(3)
     `
     const target = `
       import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
@@ -110,7 +110,7 @@ describe('makeSharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr()
+      let b = make_shared_ptr()
     `
 
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
@@ -126,7 +126,7 @@ describe('makeSharedPtr', () => {
   test('makeSharedPtr invalid type', () => {
     const source = `
       type a = number
-      let b = makeSharedPtr<a>()
+      let b = make_shared_ptr<a>()
     `
 
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
@@ -144,7 +144,7 @@ describe('makeSharedPtr', () => {
       class TestA {
         a: int8
       }
-      let b = makeSharedPtr<TestA>()
+      let b = make_shared_ptr<TestA>()
     `
 
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()

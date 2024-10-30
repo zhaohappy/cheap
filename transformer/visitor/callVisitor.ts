@@ -1284,7 +1284,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       }
       const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
-        statement.addIdentifierImport(constant.makeSharedPtr, constant.makeSharedPtrPath, false),
+        statement.addIdentifierImport(constant.makeSharedPtrImportName, constant.makeSharedPtrPath, false),
         undefined,
         tree.arguments
       )

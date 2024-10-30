@@ -71,11 +71,12 @@ export const realloc = 'realloc'
 export const alignedAlloc = 'aligned_alloc'
 export const free = 'free'
 export const Allocator = 'Allocator'
-export const makeSharedPtr = 'makeSharedPtr'
+export const makeSharedPtr = 'make_shared_ptr'
 export const AllocatorPath = 'cheap/heap'
 export const makePath = 'cheap/std/make'
 export const unmakePath = 'cheap/std/unmake'
 export const makeSharedPtrPath = 'cheap/std/smartPtr/SharedPtr'
+export const makeSharedPtrImportName = 'makeSharedPtr'
 export const smartPointerProperty = ['get', 'reset', 'unique', 'useCount', 'has', 'transferable', 'clone']
 
 export const typeProperty = 'zzztype__'
