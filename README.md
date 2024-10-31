@@ -29,8 +29,8 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
   ...
   plugins: [
     new CheapPlugin({
-      // 'web' | 'node'
-      env: 'web',
+      // 'browser' | 'node'
+      env: 'browser',
       // 项目根目录，这里表示 webpack.config.js 在项目根目录下面
       projectPath: __dirname,
       // 需要排除处理的文件匹配

@@ -29,8 +29,8 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
   ...
   plugins: [
     new CheapPlugin({
-      // 'web' | 'node'
-      env: 'web',
+      // 'browser' | 'node'
+      env: 'browser',
       // project root directory, here means webpack.config.js is under the project root directory
       projectPath: __dirname,
       // files matches that need to be excluded for cheap
