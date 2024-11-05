@@ -116,7 +116,7 @@ In order to define the memory layout, cheap has added the following basic data t
 
 ##### Struct Definition
 
-The memory layout rules of cheap's struct are completely consistent with C, so cheap and C can interoperate. Other languages generally have structure definition mode that interoperate with C. If it can interoperate with C, it can interoperate with cheap.
+The memory layout rules of cheap's struct are completely consistent with C, so cheap can interoperate with C. Other languages generally have structure definition mode that interoperate with C. If it can interoperate with C, it can interoperate with cheap.
 
 ```typescript
 // Use the struct decorator to mark a struct definition
@@ -221,7 +221,7 @@ const aa = pa[3]
 
 // equal to '*va = (int8)34' in C
 // since function calls in js cannot be Lvalue, a '<-' syntax is added
-// But there is a small flaw. If the types on both sides are structures ts, an error will be reported. You need to use @ts-ignore to ignore it.
+// But there is a small flaw. If the types on both sides are structures, an error will be reported. You need to use @ts-ignore to ignore it.
 // or use 'pa[0] = static_cast<int8>(34)' it will not report an error
 accessof(pa) <- static_cast<int8>(34)
 
@@ -379,7 +379,7 @@ Our purpose of using WebAssembly is first to reuse a large number of existing ba
 
 The current WebAssembly development model is developed using other languages, and then compiled into wasm bytecode through compilation tools. The required js glue layer code is also completed by compilation tools. This gives me the feeling that WebAssembly technology was originally used for the Web, but it has a sense of separation from JavaScript, the protagonist of the Web. I think JavaScript should dominate the entire program on the Web platform, so that we have both JavaScript (fast development, a large number of libraries in the community), and can introduce some of the advantages of other languages ​​to the Web; instead of letting people who write other languages ​​lead the entire process and let JavaScript become a glue layer for those codes that look ugly and obscure runtime code. JavaScript is the core of the entire Web technology. Abandoning it will only introduce the shortcomings of other languages ​​to the Web, and will not become the possibility of 1 + 1 > 2.
 
-So in cheap we only need the compiled wasm bytecode, no glue layer code is needed, and cheap provides some basic runtime. This runtime has memory allocation, standard output(used to print logs), atomic, pthread, and semaphore. The summary is that the wasm module should only be responsible for the calculation part, and JavaScript should be responsible for the input and output of IO and code business logic. Because most of our wasm modules are compiled from C/C++, its synchronous blocking IO method is inherently different from the Web's asynchronous method. All IO is put inside wasm and JavaScript is used to simulate a set of synchronous blocking runtime, would be the fatal flaw of this system. Of course, you can also use compilation tools to make wasm internally support calling JavaScript asynchronous functions, but this will either increase the size of the compiled product wasm and reduce performance; or the scenarios that can be used are greatly limited. As far as I know, emscripten supports C/C++ calling JavaScript asynchronous functions, but the premise is that there can be no indirect calls in the entire call chain.
+So in cheap we only need the compiled wasm bytecode, no glue layer code is needed, and cheap provides some basic runtime. This runtime has memory allocation, standard output(used to print logs), atomic, pthread, and semaphore. The summary is that the wasm module should only be responsible for the calculation part, and JavaScript should be responsible for the input and output of IO and business logic code. Because most of our wasm modules are compiled from C/C++, it's synchronous blocking IO method is inherently different from the Web's asynchronous method. All IO is put inside wasm and JavaScript is used to simulate a set of synchronous blocking runtime, would be the fatal flaw of this system. Of course, you can also use compilation tools to make wasm internally support calling JavaScript asynchronous functions, but this will either increase the size of the compiled product wasm and reduce performance; or the scenarios that can be used are greatly limited. As far as I know, emscripten supports C/C++ calling JavaScript asynchronous functions, but the premise is that there can be no indirect calls in the entire call chain.
 
 To use the wasm module on cheap, you need to compile your wasm into dynamic linking mode. Here is an example.
 
@@ -411,12 +411,6 @@ import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
 const resource = await compile(
   {
     source: 'https://xxxx.wasm'
-  },
-  {
-    // Whether to run on multiple threads determines whether the imported Memory has the share flag.
-    enableThread: config.USE_THREADS,
-    //The initialization function that needs to be called after the wasm module is run, it is generally generated by the compilation tool. emscripten is the following one
-    initFuncs: ['__wasm_apply_data_relocs']
   }
 )
 
@@ -493,9 +487,9 @@ cheap supports thread synchronization methods such as atomic operations, locks, 
 
 ###### Atomic Operations
 
-新增原子类型
+Add Atomic Types
 
-| 类型 | 描述 |
+| Type | description |
 |----------|----------|
 | atomic_bool | true or false
 | atomic_uint8 | 8-bit unsigned integer
