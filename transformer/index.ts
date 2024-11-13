@@ -68,6 +68,19 @@ export default function (program: ts.Program, options: TransformerOptions = {}):
 
     statement.context = context
 
+    const createNumericLiteral = context.factory.createNumericLiteral
+
+    // @ts-ignore
+    context.factory.createNumericLiteral = (value: string | number, numericLiteralFlags?: ts.TokenFlags) => {
+      if (is.number(value) && value < 0) {
+        return statement.context.factory.createPrefixUnaryExpression(
+          ts.SyntaxKind.MinusToken,
+          statement.context.factory.createNumericLiteral(Math.abs(value))
+        )
+      }
+      return createNumericLiteral(value, numericLiteralFlags)
+    }
+
     return (file: ts.SourceFile) => {
 
       if (excludes.some((exclude) => {
