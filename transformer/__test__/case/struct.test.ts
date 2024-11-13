@@ -615,5 +615,22 @@ describe('struct', () => {
     })
   })
 
-  
+  test('struct declare', () => {
+    const source = `
+      @struct
+      declare class TestA {
+        a: uint8
+        b: uint16
+      }
+    `
+    const target = `
+      declare class TestA {
+        a: uint8
+        b: uint16
+      }
+    `
+    check(source, target, {
+      input
+    })
+  })
 })
