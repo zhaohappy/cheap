@@ -8,7 +8,7 @@ import generateStruct from './function/generateStruct'
 export default function (node: ts.ClassDeclaration, visitor: ts.Visitor): ts.Node[] | ts.Node {
   const type = statement.typeChecker.getTypeAtLocation(node)
   const struct = typeUtils.getStructByType(type)
-  if (struct) {
+  if (struct && (!node.modifiers || !node.modifiers.some((modifier) => modifier.kind === ts.SyntaxKind.DeclareKeyword))) {
 
     const structName = node.name.escapedText as string
 
