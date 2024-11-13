@@ -8,6 +8,7 @@ import * as is from 'common/util/is'
 import { SELF } from 'common/util/constant'
 import generateUUID from 'common/function/generateUUID'
 import toString from 'common/function/toString'
+import align from 'common/math/align'
 
 // @ts-ignore
 let Worker: new (url: string) => Worker = SELF.Worker
@@ -169,7 +170,7 @@ export function createThreadFromClass<T, U extends any[]>(
         const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
-            ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
+            ? align(options.stackSize, config.STACK_ALIGNMENT)
             : config.STACK_SIZE
         ) : nullptr
 
@@ -403,7 +404,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
         const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
-            ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
+            ? align(options.stackSize, config.STACK_ALIGNMENT)
             : config.STACK_SIZE
         ) : nullptr
 
@@ -558,7 +559,7 @@ export function createThreadFromModule<T extends Object>(
         const stackPointer = config.USE_THREADS ? aligned_alloc(
           config.STACK_ALIGNMENT,
           options.stackSize
-            ? ((options.stackSize + config.STACK_ALIGNMENT) & ~config.STACK_ALIGNMENT)
+            ? align(options.stackSize, config.STACK_ALIGNMENT)
             : config.STACK_SIZE
         ) : nullptr
 
