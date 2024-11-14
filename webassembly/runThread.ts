@@ -1,25 +1,34 @@
 
-import { SELF } from 'common/util/constant'
 import { ThreadWait } from './thread'
+import WebAssemblyRunner from './WebAssemblyRunner'
 
-// @ts-ignore
-SELF.imports = {
-  env: {
+/* eslint-disable camelcase */
+export default function runThread() {
 
+  let WebAssemblyRunnerClass: typeof WebAssemblyRunner
+
+  if (defined(ENV_NODE)) {
+    WebAssemblyRunnerClass = require('./WebAssemblyRunner_.js')
   }
-}
+  else if (defined(ENV_WEBPACK)) {
+    // @ts-ignore
+    WebAssemblyRunnerClass = __WebAssemblyRunner__.__WebAssemblyRunner__
+  }
+  else {
+    // @ts-ignore
+    WebAssemblyRunnerClass = __CHeap_WebAssemblyRunner__.default
+  }
 
-let parentPort = SELF
-if (defined(ENV_NODE)) {
-  const { parentPort: parentPort_ } = require('worker_threads')
-  parentPort = parentPort_
-}
+  let parentPort = self
+  if (defined(ENV_NODE)) {
+    const { parentPort: parentPort_ } = require('worker_threads')
+    parentPort = parentPort_
+  }
 
-let runner: any
-let runnerData: any
-let waitData: pointer<ThreadWait> = nullptr
+  let runner: any
+  let runnerData: any
+  let waitData: pointer<ThreadWait> = nullptr
 
-export default function init(preRun: Promise<void>) {
   const handler = (message: MessageEvent<any>) => {
 
     const origin = defined(ENV_NODE) ? message : message.data
@@ -31,29 +40,19 @@ export default function init(preRun: Promise<void>) {
         parentPort.postMessage({
           type: 'run'
         })
-        if (SELF.CHeap && SELF.CHeap.initThread) {
-          SELF.CHeap.initThread(data.cheap).then(() => {
+        if (self.CHeap && self.CHeap.initThread) {
+          self.CHeap.initThread(data.cheap).then(() => {
             function run() {
-              SELF.__SELF_THREAD__ = data.runner.thread
+              self.__SELF_THREAD__ = data.runner.thread
               // @ts-ignore
-              data.runner.options.imports = SELF.imports
-              // @ts-ignore
-              runner = new __WebAssemblyRunner__.__WebAssemblyRunner__(data.runner.resource, data.runner.options)
+              data.runner.options.imports = self.imports
+              runner = new WebAssemblyRunnerClass(data.runner.resource, data.runner.options)
               runner.runAsChild().then(() => {
-                // @ts-ignore
-                __WebAssemblyRunner__.__WebAssemblyRunner__.getTable().get(data.runner.func)(data.runner.args)
+                WebAssemblyRunnerClass.getTable().get(data.runner.func)(data.runner.args)
                 runner.destroy()
               })
             }
-
-            if (preRun) {
-              preRun.then(() => {
-                run()
-              })
-            }
-            else {
-              run()
-            }
+            run()
           })
         }
         break
@@ -61,20 +60,11 @@ export default function init(preRun: Promise<void>) {
       case 'ready': {
         runnerData = data.runner
         waitData = data.cheap.stackPointer
-        if (SELF.CHeap && SELF.CHeap.initThread) {
-          SELF.CHeap.initThread(data.cheap).then(() => {
-            if (preRun) {
-              preRun.then(() => {
-                parentPort.postMessage({
-                  type: 'ready'
-                })
-              })
-            }
-            else {
-              parentPort.postMessage({
-                type: 'ready'
-              })
-            }
+        if (self.CHeap && self.CHeap.initThread) {
+          self.CHeap.initThread(data.cheap).then(() => {
+            parentPort.postMessage({
+              type: 'ready'
+            })
           })
         }
         break
@@ -83,36 +73,26 @@ export default function init(preRun: Promise<void>) {
       case 'wait': {
         async function run() {
           while (true) {
-            // @ts-ignore
-            __WebAssemblyRunner__.__WebAssemblyRunner__.mutexLock(addressof(waitData.mutex))
-            // @ts-ignore
-            while (__WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.thread)) === nullptr) {
-              // @ts-ignore
-              __WebAssemblyRunner__.__WebAssemblyRunner__.condWait(addressof(waitData.cond), addressof(waitData.mutex))
+            WebAssemblyRunnerClass.mutexLock(addressof(waitData.mutex))
+            while (WebAssemblyRunnerClass.readPointer(addressof(waitData.thread)) === nullptr) {
+              WebAssemblyRunnerClass.condWait(addressof(waitData.cond), addressof(waitData.mutex))
             }
 
-            // @ts-ignore
-            SELF.__SELF_THREAD__ = runnerData.options.thread = runnerData.thread = __WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.thread))
+            self.__SELF_THREAD__ = runnerData.options.thread = runnerData.thread = WebAssemblyRunnerClass.readPointer(addressof(waitData.thread))
 
-            // @ts-ignore
-            runnerData.func = __WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.func))
-            // @ts-ignore
-            runnerData.args = __WebAssemblyRunner__.__WebAssemblyRunner__.readPointer(addressof(waitData.args))
+            runnerData.func = WebAssemblyRunnerClass.readPointer(addressof(waitData.func))
+            runnerData.args = WebAssemblyRunnerClass.readPointer(addressof(waitData.args))
 
-            // @ts-ignore
-            runner = new __WebAssemblyRunner__.__WebAssemblyRunner__(runnerData.resource, runnerData.options)
+            runner = new WebAssemblyRunnerClass(runnerData.resource, runnerData.options)
             await runner.runAsChild()
-            // @ts-ignore
-            __WebAssemblyRunner__.__WebAssemblyRunner__.getTable().get(runnerData.func)(runnerData.args)
+            WebAssemblyRunnerClass.getTable().get(runnerData.func)(runnerData.args)
             runner.destroy()
-            // @ts-ignore
-            __WebAssemblyRunner__.__WebAssemblyRunner__.writePointer(addressof(waitData.thread), nullptr)
-            // @ts-ignore
-            __WebAssemblyRunner__.__WebAssemblyRunner__.mutexUnlock(addressof(waitData.mutex))
+            WebAssemblyRunnerClass.writePointer(addressof(waitData.thread), nullptr)
+            WebAssemblyRunnerClass.mutexUnlock(addressof(waitData.mutex))
           }
         }
         // @ts-ignore
-        runnerData.options.imports = SELF.imports
+        runnerData.options.imports = self.imports
         run()
         break
       }

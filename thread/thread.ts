@@ -21,20 +21,20 @@ if (defined(ENV_NODE)) {
   MessageChannel = MessageChannel_
 }
 
-if (defined(ENABLE_THREADS)) {
+if (defined(ENABLE_THREADS) && defined(ENV_WEBPACK)) {
   // 保证打包工具可以包含下面的模块代码
   require('./initClass')
   require('./initFunction')
   require('./initModule')
 }
 
-const initClass = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./initClass'), {
+const initClass = (defined(ENABLE_THREADS) && defined(ENV_WEBPACK)) ? sourceLoad(require.resolve('./initClass'), {
   varName: 'init'
 }) : null
-const initFunction = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./initFunction'), {
+const initFunction = (defined(ENABLE_THREADS) && defined(ENV_WEBPACK)) ? sourceLoad(require.resolve('./initFunction'), {
   varName: 'init'
 }) : null
-const initModule = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./initModule'), {
+const initModule = (defined(ENABLE_THREADS) && defined(ENV_WEBPACK)) ? sourceLoad(require.resolve('./initModule'), {
   varName: 'init'
 }) : null
 
@@ -90,7 +90,7 @@ export function createThreadFromClass<T, U extends any[], args=[moduleId<'0'>]>(
 export function createThreadFromClass<T, U extends any[]>(
   entity: new (...args: U) => T,
   options: ThreadOptions,
-  moduleId: string
+  workerize: () => Worker
 ): {
   run: (...args: U) => Promise<Thread<T>>
   transfer: (...transfer: Transferable[]) => {
@@ -100,7 +100,7 @@ export function createThreadFromClass<T, U extends any[]>(
 export function createThreadFromClass<T, U extends any[]>(
   entity: new (...args: U) => T,
   options: ThreadOptions = {},
-  moduleId?: string | Worker
+  moduleId?: string | (() => Worker)
 ): {
     run: (...args: U) => Promise<Thread<T>>
     transfer: (...transfer: Transferable[]) => {
@@ -117,10 +117,10 @@ export function createThreadFromClass<T, U extends any[]>(
 
       let worker: Worker
 
-      if (moduleId instanceof Worker) {
-        worker = moduleId
+      if (is.func(moduleId)) {
+        worker = moduleId()
       }
-      else {
+      else if (defined(ENV_WEBPACK)) {
         let workerUrl: string
         const cacheKey = getCacheKey(moduleId, 'class')
         if (caches.has(cacheKey)) {
@@ -162,6 +162,9 @@ export function createThreadFromClass<T, U extends any[]>(
           })
         }
         worker = new Worker(workerUrl)
+      }
+      else {
+        throw new Error('not support')
       }
 
       const channel = new MessageChannel()
@@ -326,7 +329,7 @@ export function createThreadFromFunction<T extends any[], U extends any, args=[m
 export function createThreadFromFunction<T extends any[], U extends any>(
   entity: (...args: T) => U,
   options: ThreadOptions,
-  moduleId: string
+  workerize: () => Worker
 ): {
   run: (...args: T) => Promise<Thread<{}, U>>
   transfer: (...transfer: Transferable[]) => {
@@ -336,7 +339,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
 export function createThreadFromFunction<T extends any[], U extends any>(
   entity: (...args: T) => U,
   options: ThreadOptions = {},
-  moduleId?: string | Worker
+  moduleId?: string | (() => Worker)
 ): {
     run: (...args: T) => Promise<Thread<{}, U>>
     transfer: (...transfer: Transferable[]) => {
@@ -353,10 +356,10 @@ export function createThreadFromFunction<T extends any[], U extends any>(
 
       let worker: Worker
 
-      if (moduleId instanceof Worker) {
-        worker = moduleId
+      if (is.func(moduleId)) {
+        worker = moduleId()
       }
-      else {
+      else if (defined(ENV_WEBPACK)) {
         let workerUrl: string
         const cacheKey = getCacheKey(moduleId, 'function')
         if (caches.has(cacheKey)) {
@@ -397,6 +400,9 @@ export function createThreadFromFunction<T extends any[], U extends any>(
           })
         }
         worker = new Worker(workerUrl)
+      }
+      else {
+        throw new Error('not support')
       }
 
       return new Promise<Thread<{}, U>>((resolve, reject) => {
@@ -495,7 +501,7 @@ export function createThreadFromModule<T extends Object, args=[moduleId<'0'>]>(e
 export function createThreadFromModule<T extends Object>(
   entity: T,
   options: ThreadOptions,
-  moduleId: string
+  workerize: () => Worker
 ): {
   run: () => Promise<Thread<T>>
 }
@@ -503,7 +509,7 @@ export function createThreadFromModule<T extends Object>(
 export function createThreadFromModule<T extends Object>(
   entity: T,
   options: ThreadOptions = {},
-  moduleId?: string | Worker
+  moduleId?: string | (() => Worker)
 ): {
     run: () => Promise<Thread<T>>
   } {
@@ -513,10 +519,10 @@ export function createThreadFromModule<T extends Object>(
       let worker: Worker
       let moduleName = `__module_${moduleId}__`.replace(/\.|\//g, '_')
 
-      if (moduleId instanceof Worker) {
-        worker = moduleId
+      if (is.func(moduleId)) {
+        worker = moduleId()
       }
-      else {
+      else if (defined(ENV_WEBPACK)) {
         let workerUrl: string
         const cacheKey = getCacheKey(moduleId, 'module')
         if (caches.has(cacheKey)) {
@@ -553,6 +559,10 @@ export function createThreadFromModule<T extends Object>(
         }
         worker = new Worker(workerUrl)
       }
+      else {
+        throw new Error('not support')
+      }
+
       const channel = new MessageChannel()
       return new Promise<Thread<T>>((resolve, reject) => {
 

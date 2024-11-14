@@ -131,6 +131,7 @@ class CheapPlugin {
                   },
                   defined: {
                     ENV_NODE: me.options.env === 'node',
+                    ENV_WEBPACK: true,
                     ...me.options.defined
                   },
                   tmpPath: compiler.options.output.path,

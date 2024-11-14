@@ -11,7 +11,6 @@ import { WebAssemblyResource } from './compiler'
 import * as atomics from './runtime/atomic'
 import * as pthread from './runtime/pthread'
 import * as semaphore from './runtime/semaphore'
-import sourceLoad from 'common/function/sourceLoad'
 import * as config from '../config'
 import * as atomicsUtils from '../thread/atomics'
 import * as atomicAsm from '../thread/asm/atomics'
@@ -26,6 +25,9 @@ import ThreadPool from './ThreadPool'
 import * as cond from '../thread/cond'
 import * as mutex from '../thread/mutex'
 import support from 'common/util/support'
+import runThread from './runThread'
+import { SELF } from 'common/util/constant'
+import sourceLoad from 'common/function/sourceLoad'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
@@ -39,14 +41,6 @@ export type WebAssemblyRunnerOptions = {
   threadDescriptor?: pointer<ThreadDescriptor>
 }
 
-if (defined(ENABLE_THREADS)) {
-  // 保证打包工具包含下面的模块代码
-  require('./runThread')
-}
-
-const runThread = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./runThread'), {
-  varName: 'init'
-}) : null
 
 function emptyFunction() {}
 
@@ -410,23 +404,42 @@ export default class WebAssemblyRunner {
   }
 
   private createChildUrl() {
-    const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
-      varName: '__WebAssemblyRunner__',
-      exportName: '__WebAssemblyRunner__',
-      pointName: WebAssemblyRunner.name,
-      exportIsClass: true
-    })
-    const source = `
-      ${module}
-      ${runThread}
-      var preRun;
-      ${this.childImports ? `
-      preRun = import('${this.childImports}')
-      ` : ''}
-      init.default(preRun);
-    `
-    this.childBlob = new Blob([source], { type: 'text/javascript' })
-    this.childUrl = URL.createObjectURL(this.childBlob)
+    if (defined(ENABLE_THREADS)) {
+      let source = ''
+      if (defined(ENV_WEBPACK)) {
+        // 保证打包工具包含下面的模块代码
+        require('./runThread')
+        const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
+          varName: '__WebAssemblyRunner__',
+          exportName: '__WebAssemblyRunner__',
+          pointName: WebAssemblyRunner.name,
+          exportIsClass: true
+        })
+        const runThread = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./runThread'), {
+          varName: 'runThread'
+        }) : null
+        source = `
+          ${module}
+          ${runThread}
+          self.imports = {env:{}};
+          ${this.childImports ? `importScripts('${this.childImports}')` : ''}
+          runThread.default();
+        `
+      }
+      else {
+        source = `
+          self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
+          self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
+          ${defined(ENV_NODE) ? '' : `importScripts('${new URL('./WebAssemblyRunner_.js', import.meta.url)}');`}
+          ${runThread.toString()}
+          self.imports = {env:{}};
+          ${this.childImports ? `importScripts('${this.childImports}')` : ''}
+          runThread();
+        `
+      }
+      this.childBlob = new Blob([source], { type: 'text/javascript' })
+      this.childUrl = URL.createObjectURL(this.childBlob)
+    }
   }
 
   private overrideAtomic() {

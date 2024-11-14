@@ -165,101 +165,102 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
         }
       }
       else if (/^moduleId\(([0-9]+)\)$/.test(node.literal.text)) {
-        const match = node.literal.text.match(/^moduleId\(([0-9]+)\)$/)
-        const index = +match[1]
-        const arg = call.arguments[index]
-        if (arg) {
-          const type = statement.typeChecker.getTypeAtLocation(arg)
-          const targetSource = type.symbol.valueDeclaration?.getSourceFile()
-          if (targetSource) {
+        if (statement.cheapCompilerOptions.defined.ENV_WEBPACK) {
+          const match = node.literal.text.match(/^moduleId\(([0-9]+)\)$/)
+          const index = +match[1]
+          const arg = call.arguments[index]
+          if (arg) {
+            const type = statement.typeChecker.getTypeAtLocation(arg)
+            const targetSource = type.symbol.valueDeclaration?.getSourceFile()
+            if (targetSource) {
 
-            const callType = statement.typeChecker.getTypeAtLocation(call.expression)
-            const callPath = callType?.symbol?.valueDeclaration?.getSourceFile().fileName
+              const callType = statement.typeChecker.getTypeAtLocation(call.expression)
+              const callPath = callType?.symbol?.valueDeclaration?.getSourceFile().fileName
 
-            if (statement.cheapCompilerOptions.defined.ENABLE_THREADS
-              && statement.cheapCompilerOptions.defined.ENABLE_THREADS_SPLIT
-              && callPath.indexOf(constant.cheapThreadPath) >= 0
-              && (
-                callType.symbol.escapedName === constant.createThreadFromClass
-                  || callType.symbol.escapedName === constant.createThreadFromFunction
-                  || callType.symbol.escapedName === constant.createThreadFromModule
-              )
-            ) {
-              const initType = callType.symbol.escapedName === constant.createThreadFromClass
-                ? 'class'
-                : ( callType.symbol.escapedName === constant.createThreadFromModule ? 'module' : 'function')
+              if (statement.cheapCompilerOptions.defined.ENABLE_THREADS
+                && statement.cheapCompilerOptions.defined.ENABLE_THREADS_SPLIT
+                && callPath.indexOf(constant.cheapThreadPath) >= 0
+                && (
+                  callType.symbol.escapedName === constant.createThreadFromClass
+                    || callType.symbol.escapedName === constant.createThreadFromFunction
+                    || callType.symbol.escapedName === constant.createThreadFromModule
+                )
+              ) {
+                const initType = callType.symbol.escapedName === constant.createThreadFromClass
+                  ? 'class'
+                  : ( callType.symbol.escapedName === constant.createThreadFromModule ? 'module' : 'function')
 
-              let point = ts.isIdentifier(call.arguments[0]) ? call.arguments[0].escapedText
-                : (ts.isPropertyAccessExpression(call.arguments[0]) ? call.arguments[0].name.escapedText : 'unknown')
+                let point = ts.isIdentifier(call.arguments[0]) ? call.arguments[0].escapedText
+                  : (ts.isPropertyAccessExpression(call.arguments[0]) ? call.arguments[0].name.escapedText : 'unknown')
 
-              if (initType === 'class' || initType === 'function') {
-                let type: ts.Type
-                if (ts.isIdentifier(call.arguments[0])) {
-                  type = statement.typeChecker.getTypeAtLocation(call.arguments[0])
-                }
-                else if (ts.isPropertyAccessExpression(call.arguments[0])) {
-                  type = statement.typeChecker.getTypeAtLocation(call.arguments[0].name)
-                }
-                if (type?.symbol?.valueDeclaration) {
-                  if (ts.isClassDeclaration(type.symbol.valueDeclaration)) {
-                    if (type.symbol.valueDeclaration.name) {
-                      point = type.symbol.valueDeclaration.name.escapedText
-                    }
-                    else {
-                      reportError(statement.currentFile, node, 'The thread class must have a class name')
-                      return node
-                    }
+                if (initType === 'class' || initType === 'function') {
+                  let type: ts.Type
+                  if (ts.isIdentifier(call.arguments[0])) {
+                    type = statement.typeChecker.getTypeAtLocation(call.arguments[0])
                   }
-                  else if (ts.isFunctionDeclaration(type.symbol.valueDeclaration)) {
-                    if (type.symbol.valueDeclaration.name) {
-                      point = type.symbol.valueDeclaration.name.escapedText
-                    }
-                    else {
-                      reportError(statement.currentFile, node, 'The thread function must has a function name')
-                      return node
-                    }
+                  else if (ts.isPropertyAccessExpression(call.arguments[0])) {
+                    type = statement.typeChecker.getTypeAtLocation(call.arguments[0].name)
                   }
-                }
-              }
-
-              let name = `${point}Thread`
-
-              if (call.arguments[1] && ts.isObjectLiteralExpression(call.arguments[1])) {
-                call.arguments[1].properties.forEach((node) => {
-                  if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.escapedText === 'name') {
-                    let text = node.initializer.getText()
-                    if (text) {
-                      text = text.replace(/^['|"]/, '')
-                      text = text.replace(/['|"]$/, '')
-
-                      if (text) {
-                        name = text
+                  if (type?.symbol?.valueDeclaration) {
+                    if (ts.isClassDeclaration(type.symbol.valueDeclaration)) {
+                      if (type.symbol.valueDeclaration.name) {
+                        point = type.symbol.valueDeclaration.name.escapedText
+                      }
+                      else {
+                        reportError(statement.currentFile, node, 'The thread class must have a class name')
+                        return node
+                      }
+                    }
+                    else if (ts.isFunctionDeclaration(type.symbol.valueDeclaration)) {
+                      if (type.symbol.valueDeclaration.name) {
+                        point = type.symbol.valueDeclaration.name.escapedText
+                      }
+                      else {
+                        reportError(statement.currentFile, node, 'The thread function must has a function name')
+                        return node
                       }
                     }
                   }
-                })
+                }
+
+                let name = `${point}Thread`
+
+                if (call.arguments[1] && ts.isObjectLiteralExpression(call.arguments[1])) {
+                  call.arguments[1].properties.forEach((node) => {
+                    if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.escapedText === 'name') {
+                      let text = node.initializer.getText()
+                      if (text) {
+                        text = text.replace(/^['|"]/, '')
+                        text = text.replace(/['|"]$/, '')
+
+                        if (text) {
+                          name = text
+                        }
+                      }
+                    }
+                  })
+                }
+                const loader = `cheap-worker-loader?type=${initType}&point=${point}&name=${name}`
+                const identifier = statement.addIdentifierImport('worker', `${loader}!${relativePath(statement.currentFile.fileName, targetSource.fileName)}`, true)
+                args.push(identifier)
               }
-              const loader = `cheap-worker-loader?type=${initType}&point=${point}&name=${name}`
-              const identifier = statement.addIdentifierImport('worker', `${loader}!${relativePath(statement.currentFile.fileName, targetSource.fileName)}`, true)
-              args.push(statement.context.factory.createNewExpression(
-                identifier,
-                undefined,
-                []
-              ))
-            }
-            else {
-              args.push(statement.context.factory.createCallExpression(
-                statement.context.factory.createPropertyAccessExpression(
-                  statement.context.factory.createIdentifier('require'),
-                  statement.context.factory.createIdentifier('resolve')
-                ),
-                undefined,
-                [
-                  statement.context.factory.createStringLiteral(relativePath(statement.currentFile.fileName, targetSource.fileName))
-                ]
-              ))
+              else {
+                args.push(statement.context.factory.createCallExpression(
+                  statement.context.factory.createPropertyAccessExpression(
+                    statement.context.factory.createIdentifier('require'),
+                    statement.context.factory.createIdentifier('resolve')
+                  ),
+                  undefined,
+                  [
+                    statement.context.factory.createStringLiteral(relativePath(statement.currentFile.fileName, targetSource.fileName))
+                  ]
+                ))
+              }
             }
           }
+        }
+        else {
+          reportError(statement.currentFile, call, 'moduleId only support in webpack')
         }
       }
       else {
