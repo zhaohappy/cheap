@@ -134,7 +134,7 @@ class CheapPlugin {
                     ENV_WEBPACK: true,
                     ...me.options.defined
                   },
-                  tmpPath: compiler.options.output.path,
+                  tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath
                 });
 
@@ -159,7 +159,7 @@ class CheapPlugin {
           {
             loader: path.resolve(__dirname, '../../asm/process-loader.js'),
             options: {
-              tmpPath: compiler.options.output.path,
+              tmpPath: me.options.tmpPath || compiler.options.output.path,
               wat2wasm: wat2wasmPath
             }
           }
