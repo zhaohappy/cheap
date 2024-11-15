@@ -12,6 +12,7 @@ import initAtomicsAsm from './thread/asm/atomics'
 import initCtypeEnumImpl from './ctypeEnumImpl'
 import isAudioWorklet from 'common/function/isAudioWorklet'
 import browser from 'common/util/browser'
+import os from 'common/util/os'
 
 /**
  * 线程 id
@@ -359,6 +360,7 @@ export async function initThread(options: {
         browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
         || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
         || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
     ) {
@@ -369,6 +371,7 @@ export async function initThread(options: {
         browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
         || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
         || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
     ) {
@@ -445,6 +448,7 @@ export function initMain() {
         browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
         || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
         || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
     ) {
@@ -456,6 +460,7 @@ export function initMain() {
         browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
         || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
         || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
     ) {
