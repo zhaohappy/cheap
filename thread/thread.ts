@@ -138,7 +138,7 @@ export function createThreadFromClass<T, U extends any[]>(
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
             self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
-            self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'
+            ${(SELF as any).CHEAP_POLYFILL_URL ? `self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'` : ''}
             ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
             ${module}
             function run(params) {
@@ -379,7 +379,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
             self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
-            self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'
+            ${(SELF as any).CHEAP_POLYFILL_URL ? `self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'` : ''}
             ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
             ${module}
             function run(params) {
@@ -542,7 +542,7 @@ export function createThreadFromModule<T extends Object>(
             self.CHEAP_DISABLE_THREAD = ${(SELF as any).CHEAP_DISABLE_THREAD}
             self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
             self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
-            self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'
+            ${(SELF as any).CHEAP_POLYFILL_URL ? `self.CHEAP_POLYFILL_URL = '${(SELF as any).CHEAP_POLYFILL_URL}'` : ''}
             ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
             ${module}
             ${initModule}

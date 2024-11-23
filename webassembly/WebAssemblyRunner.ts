@@ -423,7 +423,7 @@ export default class WebAssemblyRunner {
           ${runThread}
           self.imports = {env:{}};
           ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
-          ${this.childImports ? `importScripts('${this.childImports}')` : ''}
+          ${this.childImports ? `importScripts('${this.childImports}');` : ''}
           runThread.default();
         `
       }
@@ -435,7 +435,7 @@ export default class WebAssemblyRunner {
           ${defined(ENV_NODE) ? '' : `importScripts('${new URL('../dist/WebAssemblyRunner.js', import.meta.url)}');`}
           ${runThread.toString()}
           self.imports = {env:{}};
-          ${this.childImports ? `importScripts('${this.childImports}')` : ''}
+          ${this.childImports ? `importScripts('${this.childImports}');` : ''}
           ${runThread.name}();
         `
       }
