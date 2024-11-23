@@ -422,6 +422,7 @@ export default class WebAssemblyRunner {
           ${module}
           ${runThread}
           self.imports = {env:{}};
+          ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
           ${this.childImports ? `importScripts('${this.childImports}')` : ''}
           runThread.default();
         `
@@ -430,11 +431,12 @@ export default class WebAssemblyRunner {
         source = `
           self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
           self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
-          ${defined(ENV_NODE) ? '' : `importScripts('${new URL('./WebAssemblyRunner_.js', import.meta.url)}');`}
+          ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
+          ${defined(ENV_NODE) ? '' : `importScripts('${new URL('../dist/WebAssemblyRunner.js', import.meta.url)}');`}
           ${runThread.toString()}
           self.imports = {env:{}};
           ${this.childImports ? `importScripts('${this.childImports}')` : ''}
-          runThread();
+          ${runThread.name}();
         `
       }
       this.childBlob = new Blob([source], { type: 'text/javascript' })
