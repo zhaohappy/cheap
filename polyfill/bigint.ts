@@ -3,7 +3,7 @@ import i64Toi32 from 'common/function/i64Toi32'
 import { SELF } from 'common/util/constant'
 import * as is from 'common/util/is'
 
-function uin32ToInt64(lowWord: number, highWord: number) {
+function uint32ToInt64(lowWord: number, highWord: number) {
   if (highWord >>> 31) {
     highWord &= 0xfffff
     if (lowWord) {
@@ -76,7 +76,7 @@ function BigInt64Array(buffer: ArrayBuffer) {
         const offset = (+p) << 1
         let lowWord = target.view[offset]
         let highWord = target.view[offset + 1]
-        return uin32ToInt64(lowWord, highWord)
+        return uint32ToInt64(lowWord, highWord)
       }
       return target[p]
     },
@@ -152,7 +152,7 @@ export default function polyfill() {
     SELF.DataView.prototype.getBigInt64 = function (this: DataView, byteOffset: number, littleEndian?: boolean) {
       let lowWord = this.getUint32(byteOffset + (littleEndian ? 0 : 4), littleEndian)
       let highWord = this.getUint32(byteOffset + (littleEndian ? 4 : 0), littleEndian)
-      return uin32ToInt64(lowWord, highWord)
+      return uint32ToInt64(lowWord, highWord)
     }
   }
   if (!SELF.DataView.prototype.setBigInt64) {
