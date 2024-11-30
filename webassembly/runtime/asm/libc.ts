@@ -19,45 +19,39 @@ export function isSupport() {
   return support
 }
 
-export async function init(memory: WebAssembly.Memory) {
+export async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
   try {
-    if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
+    const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
+      shared: typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer,
+      initial,
+      maximum
+    })
 
-      const wasm = base64ToUint8Array(asm)
-
-      wasmUtils.setMemoryShared(wasm, true)
-
-      wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
-        env: {
-          memory,
-          malloc: function (size: size) {
-            return malloc(size)
-          },
-          calloc: function (num: size, size: size) {
-            return calloc(num, size)
-          },
-          realloc: function (pointer: pointer<void>, size: size) {
-            return realloc(pointer, size)
-          },
-          aligned_alloc(alignment: size, size: size): pointer<void> {
-            return aligned_alloc(alignment, size)
-          },
-          free: function (pointer: pointer<void>) {
-            free(pointer)
-          }
+    wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
+      env: {
+        memory,
+        malloc: function (size: size) {
+          return malloc(size)
+        },
+        calloc: function (num: size, size: size) {
+          return calloc(num, size)
+        },
+        realloc: function (pointer: pointer<void>, size: size) {
+          return realloc(pointer, size)
+        },
+        aligned_alloc(alignment: size, size: size): pointer<void> {
+          return aligned_alloc(alignment, size)
+        },
+        free: function (pointer: pointer<void>) {
+          free(pointer)
         }
-      })).instance
-      Table.set(BuiltinTableSlot.MALLOC, wasmThreadProxy.exports.malloc as any)
-      Table.set(BuiltinTableSlot.FREE, wasmThreadProxy.exports.free as any)
-      Table.set(BuiltinTableSlot.CALLOC, wasmThreadProxy.exports.calloc as any)
-      Table.set(BuiltinTableSlot.REALLOC, wasmThreadProxy.exports.realloc as any)
-      Table.set(BuiltinTableSlot.ALIGNED_ALLOC, wasmThreadProxy.exports.alignedAlloc as any)
-    }
-    else {
-      support = false
-      return
-    }
-
+      }
+    })).instance
+    Table.set(BuiltinTableSlot.MALLOC, wasmThreadProxy.exports.malloc as any)
+    Table.set(BuiltinTableSlot.FREE, wasmThreadProxy.exports.free as any)
+    Table.set(BuiltinTableSlot.CALLOC, wasmThreadProxy.exports.calloc as any)
+    Table.set(BuiltinTableSlot.REALLOC, wasmThreadProxy.exports.realloc as any)
+    Table.set(BuiltinTableSlot.ALIGNED_ALLOC, wasmThreadProxy.exports.alignedAlloc as any)
   }
   catch (error) {
     support = false

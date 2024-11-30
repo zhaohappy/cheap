@@ -28,6 +28,7 @@ import support from 'common/util/support'
 import runThread from './runThread'
 import { SELF } from 'common/util/constant'
 import sourceLoad from 'common/function/sourceLoad'
+import generateUUID from 'common/function/generateUUID'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
@@ -41,6 +42,12 @@ export type WebAssemblyRunnerOptions = {
   threadDescriptor?: pointer<ThreadDescriptor>
 }
 
+// @ts-ignore
+let Worker: new (url: string) => Worker = SELF.Worker
+if (defined(ENV_NODE)) {
+  const { Worker: Worker_} = require('worker_threads')
+  Worker = Worker_
+}
 
 function emptyFunction() {}
 
@@ -270,8 +277,8 @@ export default class WebAssemblyRunner {
           this.childReadyPromises.push(promise as unknown as Promise<void>)
         }
 
-        worker.onmessage = (message) => {
-          const origin = message.data
+        const handler = (message) => {
+          const origin = defined(ENV_NODE) ? message : message.data
           const type = origin.type
           const data = origin.data
 
@@ -280,6 +287,14 @@ export default class WebAssemblyRunner {
               resolve(0)
               break
           }
+        }
+
+        if (defined(ENV_NODE)) {
+          // @ts-ignore
+          worker.on('message', handler)
+        }
+        else {
+          worker.onmessage = handler
         }
 
         /**
@@ -418,29 +433,74 @@ export default class WebAssemblyRunner {
         const runThread = defined(ENABLE_THREADS) ? sourceLoad(require.resolve('./runThread'), {
           varName: 'runThread'
         }) : null
+
+        let childImports = ''
+        let cheapPolyfillUrl = ''
+        if (defined(ENV_NODE)) {
+          if (this.childImports) {
+            childImports = `Object.assign(self.imports.env, require(${this.childImports}).env)`
+          }
+        }
+        else {
+          if (this.childImports) {
+            childImports = `importScripts('${this.childImports}');`
+          }
+          if ((SELF as any).CHEAP_POLYFILL_URL) {
+            cheapPolyfillUrl = `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');`
+          }
+        }
+
         source = `
           ${module}
           ${runThread}
           self.imports = {env:{}};
-          ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
-          ${this.childImports ? `importScripts('${this.childImports}');` : ''}
+          ${cheapPolyfillUrl}
+          ${childImports}
           runThread.default();
         `
       }
       else {
+        let WebAssemblyRunnerWorkerUrl = ''
+        let childImports = ''
+        let cheapPolyfillUrl = ''
+        if (defined(ENV_NODE)) {
+          if (this.childImports) {
+            childImports = `Object.assign(self.imports.env, require(${this.childImports}).env)`
+          }
+        }
+        else {
+          WebAssemblyRunnerWorkerUrl = `importScripts('${new URL('./WebAssemblyRunnerWorker.js', import.meta.url)}');`
+          if (this.childImports) {
+            childImports = `importScripts('${this.childImports}');`
+          }
+          if ((SELF as any).CHEAP_POLYFILL_URL) {
+            cheapPolyfillUrl = `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');`
+          }
+        }
         source = `
+          var self = typeof self !== 'undefined' ? self : (typeof globalThis !== 'undefined' ? globalThis : window)
           self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
           self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
-          ${!defined(ENV_NODE) && (SELF as any).CHEAP_POLYFILL_URL ? `importScripts('${(SELF as any).CHEAP_POLYFILL_URL}');` : '' }
-          ${defined(ENV_NODE) ? '' : `importScripts('${new URL('../dist/WebAssemblyRunner.js', import.meta.url)}');`}
+          ${cheapPolyfillUrl}
+          ${WebAssemblyRunnerWorkerUrl}
           ${runThread.toString()}
           self.imports = {env:{}};
-          ${this.childImports ? `importScripts('${this.childImports}');` : ''}
+          ${childImports}
           ${runThread.name}();
         `
       }
-      this.childBlob = new Blob([source], { type: 'text/javascript' })
-      this.childUrl = URL.createObjectURL(this.childBlob)
+      if (defined(ENV_NODE)) {
+        const path = require('path')
+        const fs = require('fs')
+        this.childUrl = path.join(__dirname, '.__node__WebAssemblyRunnerWorker.js')
+        if (!fs.existsSync(this.childUrl)) {
+          fs.writeFileSync(this.childUrl, source)
+        }
+      }
+      else {
+        this.childBlob = new Blob([source], { type: 'text/javascript' })
+        this.childUrl = URL.createObjectURL(this.childBlob)
+      }
     }
   }
 
@@ -501,13 +561,13 @@ export default class WebAssemblyRunner {
       && threadAsm.isSupport()
       && this.resource.threadModule
     ) {
-      await threadAsm.init(Memory, pthread.override)
+      await threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
       object.extend(this.imports.env, pthread)
     }
     if (!libcAsm.wasmThreadProxy
       && libcAsm.isSupport()
     ) {
-      await libcAsm.init(Memory)
+      await libcAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {
       atomicAsmOverride = true
@@ -549,7 +609,7 @@ export default class WebAssemblyRunner {
       object.extend(this.options.imports, imports)
     }
     if (!defined(DEBUG) && !threadAsm.wasmThreadProxy && threadAsm.isSupport()) {
-      await threadAsm.init(Memory, pthread.override)
+      await threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
       object.extend(this.imports.env, pthread)
     }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {
@@ -687,7 +747,13 @@ export default class WebAssemblyRunner {
     }
 
     if (this.childUrl) {
-      URL.revokeObjectURL(this.childUrl)
+      if (defined(ENV_NODE)) {
+        const fs = require('fs')
+        fs.unlinkSync(this.childUrl)
+      }
+      else {
+        URL.revokeObjectURL(this.childUrl)
+      }
       this.childUrl = null
     }
     this.childBlob = null

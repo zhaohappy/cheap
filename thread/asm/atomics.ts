@@ -15,16 +15,18 @@ export function isSupport() {
   return !!instance
 }
 
-export default async function init(memory: WebAssembly.Memory) {
+export default async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
   if (defined(DEBUG)) {
     return
   }
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
 
-      const wasm = base64ToUint8Array(asm)
-
-      wasmUtils.setMemoryShared(wasm, true)
+      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
+        shared: true,
+        initial,
+        maximum
+      })
 
       instance = (await WebAssembly.instantiate(wasm, {
         env: {

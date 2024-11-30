@@ -20,7 +20,7 @@ export function isSupport() {
   return support
 }
 
-export async function init(memory: WebAssembly.Memory, override: (
+export async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32, override: (
   data: {
     wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32,
     wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32,
@@ -33,10 +33,11 @@ export async function init(memory: WebAssembly.Memory, override: (
 ) => void) {
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
-
-      const wasm = base64ToUint8Array(asm)
-
-      wasmUtils.setMemoryShared(wasm, true)
+      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
+        shared: true,
+        initial,
+        maximum
+      })
 
       wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
         env: {

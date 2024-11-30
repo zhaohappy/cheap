@@ -364,7 +364,7 @@ export async function initThread(options: {
         || browser.newEdge
       )
     ) {
-      await initMemoryAsm(Memory)
+      await initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (config.USE_THREADS
       && (
@@ -375,7 +375,7 @@ export async function initThread(options: {
         || browser.newEdge
       )
     ) {
-      await initAtomicsAsm(Memory)
+      await initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
   }
 }
@@ -452,7 +452,7 @@ export function initMain() {
         || browser.newEdge
       )
     ) {
-      initMemoryAsm(Memory)
+      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (config.USE_THREADS
       && defined(ENABLE_THREADS)
@@ -464,7 +464,7 @@ export function initMain() {
         || browser.newEdge
       )
     ) {
-      initAtomicsAsm(Memory)
+      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
   }
 

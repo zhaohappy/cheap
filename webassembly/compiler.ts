@@ -2,14 +2,15 @@ import * as is from 'common/util/is'
 import IOReader from 'common/io/IOReader'
 import { IOError } from 'common/io/error'
 import IOWriter from 'common/io/IOWriter'
-import { ExternalKind, SectionId, readSLeb128Async,
-  readULeb128Async, writeSleb128Async, writeUleb128Async
+import { ExternalKind, SectionId, readSleb128Async,
+  readUleb128Async, writeSleb128, writeSleb128Async, writeUleb128, writeUleb128Async
 } from 'common/util/wasm'
 import concatTypeArray from 'common/function/concatTypeArray'
 import * as object from 'common/util/object'
 import * as config from '../config'
 import browser from 'common/util/browser'
 import os from 'common/util/os'
+import BufferWriter from 'common/io/BufferWriter'
 
 export interface WebAssemblyResource {
   tableSize?: number
@@ -96,7 +97,7 @@ async function process(context: Context) {
           await writeUleb128Async(context.ioWriter, 1)
           await context.ioWriter.writeUint8(0x00)
 
-          const size = await readULeb128Async(context.ioReader)
+          const size = await readUleb128Async(context.ioReader)
           await context.ioReader.skip(size)
           continue
         }
@@ -104,12 +105,12 @@ async function process(context: Context) {
 
       await context.ioWriter.writeUint8(sectionId)
 
-      const size = await readULeb128Async(context.ioReader)
-      await writeUleb128Async(context.ioWriter, size)
+      const size = await readUleb128Async(context.ioReader)
 
       const now = context.ioReader.getPos()
 
       if (sectionId === SectionId.Data) {
+        await writeUleb128Async(context.ioWriter, size)
         /**
          * - count: varuint32
          * - entries: data_segment*
@@ -118,10 +119,10 @@ async function process(context: Context) {
          *   - size varuint32
          *   - data bytes
          */
-        const count = await readULeb128Async(context.ioReader)
+        const count = await readUleb128Async(context.ioReader)
         await writeUleb128Async(context.ioWriter, count)
         if (count) {
-          await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
+          await writeUleb128Async(context.ioWriter, await readUleb128Async(context.ioReader))
           while (true) {
             const byte = await context.ioReader.readUint8()
             await context.ioWriter.writeUint8(byte)
@@ -129,7 +130,7 @@ async function process(context: Context) {
               break
             }
           }
-          context.data.dataSize = await readULeb128Async(context.ioReader)
+          context.data.dataSize = await readUleb128Async(context.ioReader)
           await writeUleb128Async(context.ioWriter, context.data.dataSize)
         }
       }
@@ -143,37 +144,37 @@ async function process(context: Context) {
          *   - field_str bytes
          *   - external_kind
          */
-
-        let count = await readULeb128Async(context.ioReader)
-        await writeUleb128Async(context.ioWriter, count)
+        const importWriter = new BufferWriter(new Uint8Array(size + 100))
+        let count = await readUleb128Async(context.ioReader)
+        writeUleb128(importWriter, count)
         let counter = 0
 
         while (count--) {
-          const moduleLen = await readULeb128Async(context.ioReader)
-          await writeUleb128Async(context.ioWriter, moduleLen)
-          await context.ioWriter.writeBuffer(await context.ioReader.readBuffer(moduleLen))
-          const fieldLen = await readULeb128Async(context.ioReader)
-          await writeUleb128Async(context.ioWriter, fieldLen)
-          await context.ioWriter.writeBuffer(await context.ioReader.readBuffer(fieldLen))
+          const moduleLen = await readUleb128Async(context.ioReader)
+          writeUleb128(importWriter, moduleLen)
+          importWriter.writeBuffer(await context.ioReader.readBuffer(moduleLen))
+          const fieldLen = await readUleb128Async(context.ioReader)
+          writeUleb128(importWriter, fieldLen)
+          importWriter.writeBuffer(await context.ioReader.readBuffer(fieldLen))
 
           const externalKind = await context.ioReader.readUint8()
-          await context.ioWriter.writeUint8(externalKind)
+          importWriter.writeUint8(externalKind)
 
           switch (externalKind) {
             case ExternalKind.Function: {
               // type index of the function signature
-              await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
+              writeUleb128(importWriter, await readUleb128Async(context.ioReader))
               break
             }
             case ExternalKind.Global: {
               // content_type
-              await writeSleb128Async(context.ioWriter, await readSLeb128Async(context.ioReader))
+              writeSleb128(importWriter, await readSleb128Async(context.ioReader))
               // mutability
-              await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
+              writeUleb128(importWriter, await readUleb128Async(context.ioReader))
               break
             }
             case ExternalKind.Memory: {
-              let flags = await readULeb128Async(context.ioReader)
+              let flags = await readUleb128Async(context.ioReader)
 
               if (context.options.enableThread) {
                 flags |= 2
@@ -182,36 +183,36 @@ async function process(context: Context) {
                 flags &= ~2
               }
 
-              await writeUleb128Async(context.ioWriter, flags)
+              writeUleb128(importWriter, flags)
               // initial
-              const initial = await readULeb128Async(context.ioReader)
-              await writeUleb128Async(context.ioWriter, config.HEAP_INITIAL || initial)
+              const initial = await readUleb128Async(context.ioReader)
+              writeUleb128(importWriter, config.HEAP_INITIAL || initial)
               if (flags & 0x01) {
-                let max = await readULeb128Async(context.ioReader)
+                let max = await readUleb128Async(context.ioReader)
                 if (!(os.ios && !browser.checkVersion(os.version, '17', true)) || !context.options.enableThread) {
                   // ios safari 16 以下改更了会编译错误，但它也不会去检查 max 和导入的内存是否限制一致
                   // 所以这里不更改了
                   max = config.HEAP_MAXIMUM
                 }
                 // maximum
-                await writeUleb128Async(context.ioWriter, max)
+                writeUleb128(importWriter, max)
               }
               counter++
               break
             }
             case ExternalKind.Table: {
               // elem_type
-              await writeSleb128Async(context.ioWriter, await readSLeb128Async(context.ioReader))
-              const flags = await readULeb128Async(context.ioReader)
-              await writeUleb128Async(context.ioWriter, flags)
-              const initial = await readULeb128Async(context.ioReader)
-              await writeUleb128Async(context.ioWriter, initial)
+              writeSleb128(importWriter, await readSleb128Async(context.ioReader))
+              const flags = await readUleb128Async(context.ioReader)
+              writeUleb128(importWriter, flags)
+              const initial = await readUleb128Async(context.ioReader)
+              writeUleb128(importWriter, initial)
 
               context.data.tableSize = initial
 
               if (flags & 0x01) {
                 // maximum
-                await writeUleb128Async(context.ioWriter, await readULeb128Async(context.ioReader))
+                writeUleb128(importWriter, await readUleb128Async(context.ioReader))
               }
               counter++
               break
@@ -222,6 +223,13 @@ async function process(context: Context) {
             break
           }
         }
+        const buffer = importWriter.getWroteBuffer()
+        const remainingLength = size - Number(context.ioReader.getPos() - now)
+        await writeUleb128Async(context.ioWriter, buffer.length + remainingLength)
+        await context.ioWriter.writeBuffer(buffer)
+      }
+      else {
+        await writeUleb128Async(context.ioWriter, size)
       }
 
       const remainingLength = size - Number(context.ioReader.getPos() - now)

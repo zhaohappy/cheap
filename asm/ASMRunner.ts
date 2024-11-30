@@ -12,16 +12,11 @@ export default class ASMRunner {
   private wasm: Uint8Array
 
   constructor(asmBase64: string) {
-    let wasm = base64ToUint8Array(asmBase64)
-
-    if (config.USE_THREADS && defined(ENABLE_THREADS)) {
-      wasmUtils.setMemoryShared(wasm, true)
-    }
-    else {
-      wasmUtils.setMemoryShared(wasm, false)
-    }
-
-    this.wasm = wasm
+    this.wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asmBase64), {
+      shared: config.USE_THREADS && defined(ENABLE_THREADS),
+      initial: config.HEAP_INITIAL,
+      maximum: config.HEAP_MAXIMUM
+    })
   }
 
   public async run() {

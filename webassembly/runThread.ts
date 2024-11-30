@@ -8,7 +8,7 @@ export default function runThread() {
   let WebAssemblyRunnerClass: typeof WebAssemblyRunner
 
   if (defined(ENV_NODE)) {
-    WebAssemblyRunnerClass = require('./WebAssemblyRunner_.js')
+    WebAssemblyRunnerClass = require('./WebAssemblyRunner.js').default
   }
   else if (defined(ENV_WEBPACK)) {
     // @ts-ignore
