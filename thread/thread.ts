@@ -81,7 +81,10 @@ function getCacheKey(moduleId: string, type: ThreadType) {
   return `${moduleId}_${type}`
 }
 
-export function createThreadFromClass<T, U extends any[], args=[moduleId<'0'>]>(entity: new (...args: U) => T, options?: ThreadOptions): {
+export function createThreadFromClass<T, U extends any[]>(
+  entity: new (...args: U) => T,
+  workerize: () => Worker
+): {
   run: (...args: U) => Promise<Thread<T>>
   transfer: (...transfer: Transferable[]) => {
     run: (...args: U) => Promise<Thread<T>>
@@ -97,9 +100,15 @@ export function createThreadFromClass<T, U extends any[]>(
     run: (...args: U) => Promise<Thread<T>>
   }
 }
+export function createThreadFromClass<T, U extends any[], args=[moduleId<'0'>]>(entity: new (...args: U) => T, options?: ThreadOptions): {
+  run: (...args: U) => Promise<Thread<T>>
+  transfer: (...transfer: Transferable[]) => {
+    run: (...args: U) => Promise<Thread<T>>
+  }
+}
 export function createThreadFromClass<T, U extends any[]>(
   entity: new (...args: U) => T,
-  options: ThreadOptions = {},
+  options: ThreadOptions | (() => Worker),
   moduleId?: string | (() => Worker)
 ): {
     run: (...args: U) => Promise<Thread<T>>
@@ -107,6 +116,12 @@ export function createThreadFromClass<T, U extends any[]>(
       run: (...args: U) => Promise<Thread<T>>
     }
   } {
+
+  options = options || {}
+  if (is.func(options)) {
+    moduleId = options
+    options = {} as ThreadOptions
+  }
 
   let transferData: Transferable[] = []
 
@@ -312,7 +327,7 @@ export function createThreadFromClass<T, U extends any[]>(
   function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
-      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain
+      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || (options as ThreadOptions).dispatchToWorker) && !(options as ThreadOptions).disableWorker) ? runInWorker : runInMain
     }
   }
 
@@ -322,12 +337,6 @@ export function createThreadFromClass<T, U extends any[]>(
   }
 }
 
-export function createThreadFromFunction<T extends any[], U extends any, args=[moduleId<'0'>]>(entity: (...args: T) => U, options?: ThreadOptions): {
-  run: (...args: T) => Promise<Thread<{}, U>>
-  transfer: (...transfer: Transferable[]) => {
-    run: (...args: T) => Promise<Thread<{}, U>>
-  }
-}
 export function createThreadFromFunction<T extends any[], U extends any>(
   entity: (...args: T) => U,
   options: ThreadOptions,
@@ -340,7 +349,22 @@ export function createThreadFromFunction<T extends any[], U extends any>(
 }
 export function createThreadFromFunction<T extends any[], U extends any>(
   entity: (...args: T) => U,
-  options: ThreadOptions = {},
+  workerize: () => Worker
+): {
+  run: (...args: T) => Promise<Thread<{}, U>>
+  transfer: (...transfer: Transferable[]) => {
+    run: (...args: T) => Promise<Thread<{}, U>>
+  }
+}
+export function createThreadFromFunction<T extends any[], U extends any, args=[moduleId<'0'>]>(entity: (...args: T) => U, options?: ThreadOptions): {
+  run: (...args: T) => Promise<Thread<{}, U>>
+  transfer: (...transfer: Transferable[]) => {
+    run: (...args: T) => Promise<Thread<{}, U>>
+  }
+}
+export function createThreadFromFunction<T extends any[], U extends any>(
+  entity: (...args: T) => U,
+  options: ThreadOptions | (() => Worker),
   moduleId?: string | (() => Worker)
 ): {
     run: (...args: T) => Promise<Thread<{}, U>>
@@ -348,6 +372,12 @@ export function createThreadFromFunction<T extends any[], U extends any>(
       run: (...args: T) => Promise<Thread<{}, U>>
     }
   } {
+
+  options = options || {}
+  if (is.func(options)) {
+    moduleId = options
+    options = {} as ThreadOptions
+  }
 
   let transferData: Transferable[] = []
 
@@ -489,7 +519,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
   function transfer(...transfer: Transferable[]) {
     transferData = transfer
     return {
-      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain
+      run: defined(ENABLE_THREADS) && ((config.USE_THREADS || (options as ThreadOptions).dispatchToWorker) && !(options as ThreadOptions).disableWorker) ? runInWorker : runInMain
     }
   }
 
@@ -499,7 +529,10 @@ export function createThreadFromFunction<T extends any[], U extends any>(
   }
 }
 
-export function createThreadFromModule<T extends Object, args=[moduleId<'0'>]>(entity: T, options?: ThreadOptions): {
+export function createThreadFromModule<T extends Object>(
+  entity: T,
+  workerize: () => Worker
+): {
   run: () => Promise<Thread<T>>
 }
 export function createThreadFromModule<T extends Object>(
@@ -509,14 +542,23 @@ export function createThreadFromModule<T extends Object>(
 ): {
   run: () => Promise<Thread<T>>
 }
-
+export function createThreadFromModule<T extends Object, args=[moduleId<'0'>]>(entity: T, options?: ThreadOptions): {
+  run: () => Promise<Thread<T>>
+}
 export function createThreadFromModule<T extends Object>(
   entity: T,
-  options: ThreadOptions = {},
+  options: ThreadOptions | (() => Worker),
   moduleId?: string | (() => Worker)
 ): {
     run: () => Promise<Thread<T>>
   } {
+
+  options = options || {}
+  if (is.func(options)) {
+    moduleId = options
+    options = {} as ThreadOptions
+  }
+
   let runInWorker: () => Promise<Thread<T>>
   if (defined(ENABLE_THREADS)) {
     runInWorker = () => {
