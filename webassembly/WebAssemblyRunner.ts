@@ -421,7 +421,7 @@ export default class WebAssemblyRunner {
   private createChildUrl() {
     if (defined(ENABLE_THREADS)) {
       let source = ''
-      if (defined(ENV_WEBPACK)) {
+      if (defined(ENV_WEBPACK) && !defined(ENV_NODE)) {
         // 保证打包工具包含下面的模块代码
         require('./runThread')
         const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
@@ -469,6 +469,7 @@ export default class WebAssemblyRunner {
           }
         }
         else {
+          // @ts-ignore
           WebAssemblyRunnerWorkerUrl = `importScripts('${new URL('./WebAssemblyRunnerWorker.js', import.meta.url)}');`
           if (this.childImports) {
             childImports = `importScripts('${this.childImports}');`
@@ -481,12 +482,13 @@ export default class WebAssemblyRunner {
           var self = typeof self !== 'undefined' ? self : (typeof globalThis !== 'undefined' ? globalThis : window)
           self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
           self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
+
+          self.imports = {env:{}};
           ${cheapPolyfillUrl}
           ${WebAssemblyRunnerWorkerUrl}
-          ${runThread.toString()}
-          self.imports = {env:{}};
           ${childImports}
-          ${runThread.name}();
+
+          (${runThread.toString()})();
         `
       }
       if (defined(ENV_NODE)) {
