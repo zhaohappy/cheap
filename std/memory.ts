@@ -1,12 +1,12 @@
 import { getHeapU8, Allocator, getHeapU16, getHeap8, getHeapU32,
   getHeap16, getHeap32, getHeapU64, getHeap64, getHeapF32, getHeapF64
 } from '../heap'
-import { strlen } from './string'
 import * as text from 'common/util/text'
 import { CTypeEnum } from '../typedef'
 import { CTypeEnumWrite } from '../ctypeEnumWrite'
 import SafeUint8Array from './buffer/SafeUint8Array'
 import * as config from '../config'
+import { CTypeEnumRead } from 'cheap/ctypeEnumRead'
 
 export function memcpy(dst: anyptr, src: anyptr, size: size) {
   assert(dst && src, 'Out Of Bounds, address: 0')
@@ -101,8 +101,10 @@ export function mapFloat64Array(src: pointer<double>, n: size) {
 export function readCString(pointer: pointer<char>, max?: uint32) {
   assert(pointer, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(pointer), `address ${pointer} is not alloc`)
-
-  const stringLen = strlen(reinterpret_cast<pointer<char>>(pointer))
+  let stringLen = 0
+  while (CTypeEnumRead[CTypeEnum.char](pointer++)) {
+    stringLen++
+  }
   const len = Math.min(stringLen, max ?? stringLen)
   return text.decode(mapUint8Array(pointer, len))
 }
