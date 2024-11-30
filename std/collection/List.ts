@@ -28,8 +28,8 @@ export default class List<T> {
 
   public length: uint32 = 0
 
-  private head: pointer<ListNode<T>> = nullptr
-  private tail: pointer<ListNode<T>> = nullptr
+  public head: pointer<ListNode<T>> = nullptr
+  public tail: pointer<ListNode<T>> = nullptr
 
   private createNode(item: any, type?: CTypeEnum | struct<{}>, move: boolean = false) {
     const pNode = malloc(sizeof(ListNode)) as pointer<ListNode<T>>
