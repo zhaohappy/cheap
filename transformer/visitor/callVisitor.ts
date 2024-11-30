@@ -538,10 +538,11 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         && (ts.isIdentifier(arg.expression) && arg.expression.escapedText === constant.accessof
           // addressof(CTypeEnumRead[type](p))
           || ts.isElementAccessExpression(arg.expression)
-            && ts.isIdentifier(arg.expression.expression)
-            && statement.isIdentifier(arg.expression.expression.escapedText as string, constant.ctypeEnumRead)
+            && (ts.isIdentifier(arg.expression.expression) || ts.isPropertyAccessExpression(arg.expression.expression))
+            && statement.isIdentifier(arg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
           // addressof(structAccess(p, A))
-          || ts.isIdentifier(arg.expression) && statement.isIdentifier(arg.expression.escapedText as string, constant.structAccess)
+          || (ts.isIdentifier(arg.expression) || ts.isPropertyAccessExpression(arg.expression))
+            && statement.isIdentifier(arg.expression, constant.structAccess, constant.structAccessPath)
         )
       ) {
         return ts.visitNode(arg.arguments[0], visitor)
@@ -568,9 +569,9 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         const newArg = ts.visitNode(arg, visitor) as ts.Expression
         if (ts.isCallExpression(newArg)
           && (ts.isIdentifier(newArg.expression)
-              && statement.isIdentifier(newArg.expression.escapedText as string, constant.structAccess)
+              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath)
             || ts.isPropertyAccessExpression(newArg.expression)
-              && statement.isIdentifier(newArg.expression.name.escapedText as string, constant.structAccess)
+              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath)
           )
         ) {
           return newArg.arguments[0]
@@ -578,9 +579,9 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         else if (ts.isCallExpression(newArg)
           && ts.isElementAccessExpression(newArg.expression)
           && (ts.isIdentifier(newArg.expression.expression)
-              && statement.isIdentifier(newArg.expression.expression.escapedText as string, constant.ctypeEnumRead)
+              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
             || ts.isPropertyAccessExpression(newArg.expression.expression)
-              && statement.isIdentifier(newArg.expression.expression.name.escapedText as string, constant.ctypeEnumRead)
+              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
           )
         ) {
           return newArg.arguments[0]

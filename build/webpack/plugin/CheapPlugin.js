@@ -2,7 +2,7 @@
 const path = require('path');
 const os = require('os');
 const webpack = require('webpack');
-const transformer = require('../../transformer').default;
+const transformer = require('../../transformer');
 
 function formatKey(error) {
   return `${error.loc.start.line}-${error.loc.start.column}-${error.loc.end.line}-${error.loc.end.column}`
@@ -123,7 +123,7 @@ class CheapPlugin {
 
               loader.options.getCustomTransformers = function (program) {
                 const result = old(program) || {};
-                const trans = transformer(program, {
+                const before = transformer.before(program, {
                   projectPath: me.options.projectPath,
                   exclude: me.options.exclude || '__test__',
                   reportError: (message) => {
@@ -135,16 +135,39 @@ class CheapPlugin {
                     ...me.options.defined
                   },
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
-                  wat2wasm: wat2wasmPath
+                  wat2wasm: wat2wasmPath,
+                  cheapPacketName: me.options.cheapPacketName
                 });
-
+                const afterDeclarations = transformer.afterDeclarations(program, {
+                  projectPath: me.options.projectPath,
+                  exclude: me.options.exclude || '__test__',
+                  reportError: (message) => {
+                    me.reportError(message);
+                  },
+                  defined: {
+                    ENV_NODE: me.options.env === 'node',
+                    ENV_WEBPACK: true,
+                    ...me.options.defined
+                  },
+                  tmpPath: me.options.tmpPath || compiler.options.output.path,
+                  wat2wasm: wat2wasmPath,
+                  cheapPacketName: me.options.cheapPacketName
+                });
                 if (!result.before) {
                   result.before = [
-                    trans
+                    before
                   ];
                 }
                 else {
-                  result.before.push(trans);
+                  result.before.push(before);
+                }
+                if (!result.afterDeclarations) {
+                  result.afterDeclarations = [
+                    afterDeclarations
+                  ];
+                }
+                else {
+                  result.afterDeclarations.push(afterDeclarations);
                 }
                 return result;
               };

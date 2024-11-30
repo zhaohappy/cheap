@@ -44,7 +44,7 @@ export default function (node: ts.Identifier, visitor: ts.Visitor): ts.Node | ts
     && parent && (
     (parent as ts.VariableDeclaration).initializer === node
         || ts.isBinaryExpression(parent)
-        || ts.isCallExpression(parent)
+        || (ts.isCallExpression(parent) && parent.expression !== node)
         || ts.isReturnStatement(parent)
         || ts.isConditionalExpression(parent)
         || ts.isCaseClause(parent)

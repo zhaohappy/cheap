@@ -1,6 +1,7 @@
 import ts from 'typescript'
 import * as is from 'common/util/is'
 import * as object from 'common/util/object'
+import * as array from 'common/util/array'
 import statement from './statement'
 import blockVisitor from './visitor/blockVisitor'
 import identifierVisitor from './visitor/identifierVisitor'
@@ -14,6 +15,8 @@ import { TransformerOptions } from './type'
 import expressionStatementVisitor from './visitor/expressionStatementVisitor'
 import bigIntLiteralVisitor from './visitor/bigIntLiteralVisitor'
 import expressionVisitor from './visitor/expressionVisitor'
+import * as constant from './constant'
+import { getStructFileIdentifiers } from './struct'
 
 const DefaultDefined = {
   ENV_NODE: false,
@@ -23,10 +26,11 @@ const DefaultDefined = {
   BIGINT_LITERAL: true,
   CHEAP_HEAP_INITIAL: 256,
   ENABLE_SYNCHRONIZE_API: false,
-  ENABLE_LOG_PATH: true
+  ENABLE_LOG_PATH: true,
+  ENV_WEBPACK: false
 }
 
-export default function (program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+export function before(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
 
   if (!options.projectPath) {
     options.projectPath = program.getCurrentDirectory()
@@ -64,9 +68,15 @@ export default function (program: ts.Program, options: TransformerOptions = {}):
       : []
     )
 
+  constant.setPacketName(options.cheapPacketName ?? '@libmedia/cheap')
+
   return (context: ts.TransformationContext) => {
 
     statement.context = context
+
+    const options = context.getCompilerOptions()
+    statement.moduleType = options.module
+    statement.esModuleInterop = options.esModuleInterop
 
     const createNumericLiteral = context.factory.createNumericLiteral
 
@@ -132,6 +142,82 @@ export default function (program: ts.Program, options: TransformerOptions = {}):
       }
 
       return statement.end(ts.visitEachChild(file, statement.visitor, statement.context))
+    }
+  }
+}
+
+export function after(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+
+  const excludes = is.array(options.exclude)
+    ? options.exclude
+    : (options.exclude
+      ? [options.exclude]
+      : []
+    )
+
+  return (context: ts.TransformationContext) => {
+
+    return (file: ts.SourceFile) => {
+
+      if (excludes.some((exclude) => {
+        return exclude.test(file.fileName)
+      })) {
+        return file
+      }
+
+      const visitor = (node: ts.Node): ts.Node | ts.Node[] => {
+
+        return ts.visitEachChild(node, visitor, context)
+      }
+      return ts.visitEachChild(file, visitor, context)
+    }
+  }
+}
+
+export function afterDeclarations(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+
+  const excludes = is.array(options.exclude)
+    ? options.exclude
+    : (options.exclude
+      ? [options.exclude]
+      : []
+    )
+
+  return (context: ts.TransformationContext) => {
+
+    return (file: ts.SourceFile) => {
+
+      if (excludes.some((exclude) => {
+        return exclude.test(file.fileName)
+      })) {
+        return file
+      }
+
+      const structFileIdentifiers = getStructFileIdentifiers(file.fileName)
+
+      const visitor = (node: ts.Node): ts.Node | ts.Node[] => {
+        if (ts.isClassDeclaration(node) && node.name && ts.isIdentifier(node.name)) {
+          let name = node.name.escapedText as string
+          if (node.modifiers && node.modifiers.some((modifier) => {
+            return modifier.kind === ts.SyntaxKind.DefaultKeyword
+          })) {
+            name = 'default'
+          }
+          if (structFileIdentifiers && array.has(structFileIdentifiers, name)) {
+            const modifiers = node.modifiers ? [...node.modifiers] : []
+            modifiers.unshift(context.factory.createDecorator(context.factory.createIdentifier(constant.typeStruct)))
+            return context.factory.createClassDeclaration(
+              modifiers,
+              node.name,
+              node.typeParameters,
+              node.heritageClauses,
+              node.members
+            )
+          }
+        }
+        return ts.visitEachChild(node, visitor, context)
+      }
+      return ts.visitEachChild(file, visitor, context)
     }
   }
 }

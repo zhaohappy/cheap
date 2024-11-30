@@ -469,3 +469,46 @@ export function isAtomicCallExpression(node: ts.CallExpression) {
   const atomicPathReg = new RegExp(`${atomicsPath}\\.ts$`)
   return atomicPathReg.test(file.fileName)
 }
+
+export function checkConditionCompile(node: ts.Node) {
+  if (ts.isParenthesizedExpression(node)) {
+    return ts.visitNode(node.expression, checkConditionCompile)
+  }
+  else if (ts.isPrefixUnaryExpression(node)) {
+    return ts.visitNode(node.operand, checkConditionCompile)
+  }
+  else if (ts.isBinaryExpression(node)) {
+    const left = ts.visitNode(node.left, checkConditionCompile)
+    if (!left) {
+      return false
+    }
+    return ts.visitNode(node.right, checkConditionCompile)
+  }
+  if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && (node.expression.escapedText as string) === constant.defined
+    || node.kind === ts.SyntaxKind.TrueKeyword
+    || node.kind === ts.SyntaxKind.FalseKeyword
+  ) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+export function hasDefined(node: ts.Node) {
+  if (ts.isParenthesizedExpression(node)) {
+    return ts.visitNode(node.expression, hasDefined)
+  }
+  else if (ts.isPrefixUnaryExpression(node)) {
+    return ts.visitNode(node.operand, hasDefined)
+  }
+  else if (ts.isBinaryExpression(node)) {
+    return ts.visitNode(node.left, hasDefined) || ts.visitNode(node.right, hasDefined)
+  }
+  if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && (node.expression.escapedText as string) === constant.defined) {
+    return true
+  }
+  else {
+    return false
+  }
+}

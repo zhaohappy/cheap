@@ -52,7 +52,7 @@ export default function processAsm(template: ts.TemplateExpression | ts.NoSubsti
 
   const source = `
     (module
-      (import "env" "memory" (memory 1 32768 shared))
+      (import "env" "memory" (memory 1 65536 shared))
       ${text}
     )
   `

@@ -29,7 +29,7 @@ describe('args', () => {
       \`
     `
     const target = `
-      const text = "AGFzbQEAAAABBgFgAn9/AAISAQNlbnYGbWVtb3J5AgMBgIACAwIBAAcLAQd3cml0ZTE2AAAKCwEJACAAIAE7AQAL";
+      const text = "AGFzbQEAAAABBgFgAn9/AAISAQNlbnYGbWVtb3J5AgMBgIAEAwIBAAcLAQd3cml0ZTE2AAAKCwEJACAAIAE7AQAL";
     `
     check(source, target, {
       input

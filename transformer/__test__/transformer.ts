@@ -1,5 +1,5 @@
 import ts from 'typescript'
-import transformerFactory from '../index'
+import { before } from '../index'
 import * as path from 'path'
 import * as fs from 'fs'
 import compare from './compare'
@@ -16,7 +16,7 @@ if (!fs.existsSync(distPath)) {
 // TypeScript 编译选项
 const compilerOptions: ts.CompilerOptions = {
   target: ts.ScriptTarget.ESNext,
-  module: ts.ModuleKind.CommonJS,
+  module: ts.ModuleKind.ESNext,
   outDir: distPath
 }
 
@@ -46,14 +46,15 @@ export function transform2AST(source: string, options: {
     wat2wasmPath = path.resolve(__dirname, '../../build/asm/macos') + '/wat2wasm'
   }
 
-  const transformer = transformerFactory(program, {
+  const transformerBefore = before(program, {
     projectPath: projectPath,
     formatIdentifier: false,
     defined: options.defined,
     tmpPath: distPath,
-    wat2wasm: wat2wasmPath
+    wat2wasm: wat2wasmPath,
+    cheapPacketName: 'cheap'
   })
-  const transformed = ts.transform(program.getSourceFile(options.input), [transformer], compilerOptions)
+  const transformed = ts.transform(program.getSourceFile(options.input), [transformerBefore], compilerOptions)
 
   if (options.output) {
     fs.writeFileSync(options.output, printer.printFile(transformed.transformed[0]))

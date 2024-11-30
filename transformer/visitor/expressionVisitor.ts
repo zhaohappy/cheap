@@ -8,6 +8,7 @@ import binaryExpressionVisitor from './binaryExpressionVisitor'
 import unaryExpressionVisitor from './unaryExpressionVisitor'
 import elementAccessExpressionVisitor from './elementAccessExpressionVisitor'
 import taggedTemplateExpressionVisitor from './taggedTemplateExpressionVisitor'
+import conditionalExpressionVisitor from './conditionalExpressionVisitor'
 
 export default function (node: ts.Expression, visitor: ts.Visitor): ts.Node {
   if (ts.isBinaryExpression(node)) {
@@ -39,6 +40,9 @@ export default function (node: ts.Expression, visitor: ts.Visitor): ts.Node {
   }
   else if (ts.isTaggedTemplateExpression(node)) {
     return taggedTemplateExpressionVisitor(node, visitor)
+  }
+  else if (ts.isConditionalExpression(node)) {
+    return conditionalExpressionVisitor(node, visitor)
   }
 
   return ts.visitEachChild(node, visitor, statement.context)

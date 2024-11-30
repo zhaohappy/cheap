@@ -3,8 +3,8 @@ import ts from 'typescript'
 import path from 'path'
 import * as array from 'common/util/array'
 import parseImports from './function/parseImports'
-import { DeclarationData, ImportData, TransformerOptions } from './type'
-import pushImport from './function/pushImport'
+import { DeclarationData, ImportData, RequireData, TransformerOptions } from './type'
+import { pushImport, pushRequire } from './function/pushImport'
 import * as constant from './constant'
 import addImportStatements from './visitor/function/addImportStatements'
 
@@ -118,10 +118,14 @@ class Statement {
   symbolImports: ImportData[]
   stdImports: ImportData[]
   identifierImports: ImportData[]
+  requires: RequireData[]
 
   stacks: BlockStack[]
 
   identifierIndex: number
+
+  moduleType: ts.ModuleKind
+  esModuleInterop: boolean
 
   start(file: ts.SourceFile) {
     this.currentFile = file
@@ -130,6 +134,7 @@ class Statement {
     this.symbolImports = []
     this.stdImports = []
     this.identifierImports = []
+    this.requires = []
 
     this.stacks = []
 
@@ -137,6 +142,10 @@ class Statement {
 
     this.imports = parseImports(file, this.program, this.typeChecker, this.getCurrentStack().locals)
     this.currentFilePath = path.relative(this.options.projectPath, file.fileName)
+  }
+
+  isOutputCJS() {
+    return this.moduleType === ts.ModuleKind.CommonJS
   }
 
   end(newFile: ts.SourceFile) {
@@ -147,17 +156,27 @@ class Statement {
     array.each(stack.topDeclaration, (item) => {
       updatedStatements.push(this.context.factory.createVariableStatement(
         undefined,
-        this.context.factory.createVariableDeclarationList([
-          this.context.factory.createVariableDeclaration(item.formatName, undefined, undefined, item.initializer)
-        ])
+        this.context.factory.createVariableDeclarationList(
+          [
+            this.context.factory.createVariableDeclaration(item.formatName, undefined, undefined, item.initializer)
+          ],
+          ts.NodeFlags.Const
+        )
       ))
     })
 
     addImportStatements(this.memoryImports, constant.memoryPath, updatedStatements)
     addImportStatements(this.symbolImports, constant.symbolPath, updatedStatements)
 
+    const cheapReg = new RegExp(`^\\S*/node_modules/${constant.PACKET_NAME}/dist/((esm|cjs)/)?`)
+
     if (this.identifierImports.length) {
       this.identifierImports.forEach((item) => {
+        let p = item.path.replace(/(\.d)?\.[t|j]s$/, '')
+        p = p.replace(cheapReg, constant.PACKET_NAME + '/')
+        if (this.options.importPath) {
+          p = this.options.importPath(p)
+        }
         const importDeclaration = this.context.factory.createImportDeclaration(
           undefined,
           this.context.factory.createImportClause(
@@ -175,9 +194,51 @@ class Statement {
                 )
               ])
           ),
-          this.context.factory.createStringLiteral(item.path)
+          this.context.factory.createStringLiteral(p)
         )
         updatedStatements.push(importDeclaration)
+      })
+    }
+
+    if (this.requires.length) {
+      this.requires.forEach((item) => {
+        let p = item.path.replace(/(\.d)?\.[t|j]s$/, '')
+        p = p.replace(cheapReg, constant.PACKET_NAME + '/')
+        if (this.options.importPath) {
+          p = this.options.importPath(p)
+        }
+
+        const requireValue = this.context.factory.createCallExpression(
+          this.context.factory.createIdentifier('require'),
+          undefined,
+          [
+            this.context.factory.createStringLiteral(p)
+          ]
+        )
+
+        const requireDeclaration = this.context.factory.createVariableStatement(
+          undefined,
+          this.context.factory.createVariableDeclarationList(
+            [
+              this.context.factory.createVariableDeclaration(
+                this.context.factory.createIdentifier(item.formatName),
+                undefined,
+                undefined,
+                this.esModuleInterop && !item.esModule
+                  ? this.context.factory.createCallExpression(
+                    this.context.factory.createIdentifier(item.default ? constant.importDefault : constant.importStar),
+                    undefined,
+                    [
+                      requireValue
+                    ]
+                  )
+                  : requireValue
+              )
+            ],
+            ts.NodeFlags.Const
+          )
+        )
+        updatedStatements.push(requireDeclaration)
       })
     }
 
@@ -283,42 +344,140 @@ class Statement {
       return this.addIdentifierImport(name, constant.ctypeEnumWritePath, false)
     }
 
-    let { formatName } = pushImport(
-      this.memoryImports,
-      name,
-      constant.memoryPath,
-      this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++), false
-    )
-    let key = this.context.factory.createIdentifier(formatName)
-    return key
+    if (this.isOutputCJS()) {
+      let { formatName } = pushRequire(
+        this.requires,
+        formatIdentifier('memory', this.identifierIndex++),
+        constant.memoryPath,
+        false,
+        true
+      )
+      return this.context.factory.createPropertyAccessExpression(
+        this.context.factory.createIdentifier(formatName),
+        this.context.factory.createIdentifier(name)
+      )
+    }
+    else {
+      let { formatName } = pushImport(
+        this.memoryImports,
+        name,
+        constant.memoryPath,
+        this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++), false
+      )
+      return this.context.factory.createIdentifier(formatName)
+    }
   }
 
   addSymbolImport(name: string) {
-    let { formatName } = pushImport(
-      this.symbolImports,
-      name,
-      constant.symbolPath,
-      this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++),
-      false
-    )
-    let key = this.context.factory.createIdentifier(formatName)
-    return key
+    if (this.isOutputCJS()) {
+      let { formatName } = pushRequire(
+        this.requires,
+        formatIdentifier('symbol', this.identifierIndex++),
+        constant.symbolPath,
+        false,
+        true
+      )
+      return this.context.factory.createPropertyAccessExpression(
+        this.context.factory.createIdentifier(formatName),
+        this.context.factory.createIdentifier(name)
+      )
+    }
+    else {
+      let { formatName } = pushImport(
+        this.symbolImports,
+        name,
+        constant.symbolPath,
+        this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++),
+        false
+      )
+      return this.context.factory.createIdentifier(formatName)
+    }
   }
 
-  addIdentifierImport(name: string, modulePath: string, defaultExport: boolean) {
-    let { formatName } = pushImport(
-      this.identifierImports,
-      name,
-      modulePath,
-      this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++),
-      defaultExport
-    )
-    let key = this.context.factory.createIdentifier(formatName)
-    return key
+  addIdentifierImport(name: string, modulePath: string, defaultExport: boolean, esModule: boolean = true) {
+    if (this.isOutputCJS()) {
+      let item = pushRequire(
+        this.requires,
+        formatIdentifier('identifier', this.identifierIndex++),
+        modulePath,
+        defaultExport,
+        true
+      )
+      if (defaultExport) {
+        item.defaultName = name
+      }
+      if (defaultExport && !esModule) {
+        return this.context.factory.createIdentifier(item.formatName)
+      }
+      else {
+        return this.context.factory.createPropertyAccessExpression(
+          this.context.factory.createIdentifier(item.formatName),
+          this.context.factory.createIdentifier(defaultExport ? 'default' : name)
+        )
+      }
+    }
+    else {
+      let { formatName } = pushImport(
+        this.identifierImports,
+        name,
+        modulePath,
+        this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++),
+        defaultExport
+      )
+      return this.context.factory.createIdentifier(formatName)
+    }
   }
 
-  isIdentifier(name: string, identifier: string) {
-    return isIdentifier(name, identifier)
+  isIdentifier(name: ts.Identifier | ts.PropertyAccessExpression, identifier: string, path: string) {
+    if (ts.isIdentifier(name)) {
+      if (name.escapedText === identifier) {
+        const symbol = this.typeChecker.getSymbolAtLocation(name)
+        if (symbol) {
+          const targetSource = symbol.valueDeclaration?.getSourceFile()
+          if (targetSource && targetSource.fileName.indexOf(path) >= 0) {
+            return true
+          }
+        }
+      }
+      return isIdentifier(name.escapedText as string, identifier) && this.identifierImports.some((item) => {
+        return item.formatName === name.escapedText
+          && item.name === identifier
+          && item.path === path
+      })
+      || isIdentifier(name.escapedText as string, 'identifier') && this.requires.some((item) => {
+        return item.defaultName === identifier
+          && item.path === path
+      })
+    }
+    else {
+      if (name.name.escapedText === identifier) {
+        const symbol = this.typeChecker.getSymbolAtLocation(name)
+        if (symbol) {
+          const targetSource = symbol.valueDeclaration?.getSourceFile()
+          if (targetSource && targetSource.fileName.indexOf(path) >= 0) {
+            return true
+          }
+        }
+        else if (ts.isIdentifier(name.expression)
+          && isIdentifier(name.expression.escapedText as string, 'identifier')
+        ) {
+          return this.requires.some((item) => {
+            return item.formatName === (name.expression as ts.Identifier).escapedText
+              && item.path === path
+          })
+        }
+      }
+      else if (name.name.escapedText === 'default'
+        && ts.isIdentifier(name.expression)
+        && isIdentifier(name.expression.escapedText as string, 'identifier')
+      ) {
+        return this.requires.some((item) => {
+          return item.defaultName === identifier
+          && item.path === path
+        })
+      }
+    }
+    return false
   }
 
   addLocal(name: string, symbol: ts.Symbol) {

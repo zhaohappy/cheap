@@ -226,4 +226,34 @@ describe('condition compile', () => {
       }
     })
   })
+
+  test('condition: defined() when true', () => {
+    const source = `
+      let f = defined(A) ? 1 : 2
+    `
+    const target = `
+      let f = 1
+    `
+    check(source, target, {
+      input,
+      defined: {
+        A: true
+      }
+    })
+  })
+
+  test('condition: defined() when false', () => {
+    const source = `
+      let f = defined(A) ? 1 : 2
+    `
+    const target = `
+      let f = 2
+    `
+    check(source, target, {
+      input,
+      defined: {
+        A: false
+      }
+    })
+  })
 })

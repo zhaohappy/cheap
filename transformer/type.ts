@@ -8,6 +8,14 @@ export interface ImportData {
   formatName: string
 }
 
+export interface RequireData {
+  formatName: string
+  path: string
+  default: boolean
+  defaultName?: string
+  esModule?: boolean
+}
+
 export interface DeclarationData {
   name: string
   formatName: string
@@ -20,6 +28,8 @@ export interface TransformerOptions {
   formatIdentifier?: boolean
   exclude?: RegExp | RegExp[]
   defined?: Record<string, any>
+  cheapPacketName?: string
+  importPath?: (path: string) => string
   reportError?: (error: {
     file: string,
     loc: {

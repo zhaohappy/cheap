@@ -35,12 +35,25 @@ export type Struct = {
 }
 
 const StructMap: Map<ts.Symbol, Struct> = new Map()
+const StructFileIdentifiers: Map<string, string[]> = new Map()
 
 const Stack: {
   struct: Struct
   treePath: string[]
   inlineStructPathMap: Map<ts.Symbol, string>
 }[] = []
+
+function addFileIdentifier(symbol: ts.Symbol) {
+  if (symbol.valueDeclaration) {
+    const fileName = symbol.valueDeclaration.getSourceFile().fileName
+    if (StructFileIdentifiers.has(fileName)) {
+      StructFileIdentifiers.get(fileName).push(symbol.name)
+    }
+    else {
+      StructFileIdentifiers.set(fileName, [symbol.name])
+    }
+  }
+}
 
 function isCStruct(node: ts.ClassDeclaration) {
 
@@ -337,6 +350,7 @@ function getInlineStruct(type: ts.Type, structType: StructType) {
       definedClassParent: Stack[Stack.length - 1].struct,
       name: type.symbol.name
     })
+    addFileIdentifier(type.symbol)
     return StructMap.get(type.symbol)
   }
   return null
@@ -463,6 +477,7 @@ function analyze(symbol: ts.Symbol) {
     })
 
     StructMap.set(symbol, struct)
+    addFileIdentifier(symbol)
   }
   else {
     if (parentStruct) {
@@ -473,6 +488,7 @@ function analyze(symbol: ts.Symbol) {
         parent: parentStruct,
       })
       StructMap.set(symbol, struct)
+      addFileIdentifier(symbol)
     }
     else {
       StructMap.set(symbol, null)
@@ -495,4 +511,8 @@ export function getStruct(symbol: ts.Symbol) {
 export function hasStruct(symbol: ts.Symbol) {
   const struct = getStruct(symbol)
   return struct != null
+}
+
+export function getStructFileIdentifiers(fileName: string) {
+  return StructFileIdentifiers.get(fileName)
 }

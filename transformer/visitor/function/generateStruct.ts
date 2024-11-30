@@ -14,14 +14,6 @@ export default function generateStruct(struct: Struct) {
   const symbolStructLength = statement.addSymbolImport(constant.symbolStructLength)
   const symbolStructKeysMeta = statement.addSymbolImport(constant.symbolStructKeysMeta)
 
-  function handleCurrentFileStruct(name: string): string  {
-    if (!statement.hasStruct(name)) {
-      const { formatName } = statement.addDeclaration(name)
-      return formatName
-    }
-    return name
-  }
-
   const list: ts.Statement[] = []
 
   // const map = new Map()
@@ -43,19 +35,39 @@ export default function generateStruct(struct: Struct) {
 
   const meta = struct.meta
   meta.forEach((data, key) => {
-    let type: ts.Expression
+    let type: ts.PropertyAssignment | ts.GetAccessorDeclaration
     if (is.func(data.getTypeMeta)) {
       if (data.typeIdentifier) {
         const targetSource = data.getTypeMeta()?.symbol.valueDeclaration.getSourceFile()
-        if (targetSource && targetSource !== statement.currentFile) {
-          type = statement.addIdentifierImport(
-            data.typeIdentifier,
-            relativePath(statement.currentFile.fileName, targetSource.fileName),
-            !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(data.typeIdentifier as ts.__String)
+        if (targetSource && targetSource.fileName !== statement.currentFile.fileName) {
+          type = statement.context.factory.createPropertyAssignment(
+            statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
+            statement.addIdentifierImport(
+              data.typeIdentifier,
+              relativePath(statement.currentFile.fileName, targetSource.fileName),
+              !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(data.typeIdentifier as ts.__String)
+            )
           )
         }
         else {
-          type = statement.context.factory.createIdentifier(handleCurrentFileStruct(data.typeIdentifier))
+          if (statement.hasStruct(data.typeIdentifier)) {
+            type = statement.context.factory.createPropertyAssignment(
+              statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
+              statement.context.factory.createIdentifier(data.typeIdentifier)
+            )
+          }
+          else {
+            type = statement.context.factory.createGetAccessorDeclaration(
+              undefined,
+              statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
+              [],
+              undefined,
+              statement.context.factory.createBlock(
+                [statement.context.factory.createReturnStatement(statement.context.factory.createIdentifier(data.typeIdentifier))],
+                false
+              )
+            )
+          }
         }
       }
       else {
@@ -63,27 +75,30 @@ export default function generateStruct(struct: Struct) {
         if (inlineStruct && inlineStruct.structType === StructType.INLINE_OBJECT) {
           const body = generateStruct(inlineStruct)
           body.push(statement.context.factory.createReturnStatement(statement.context.factory.createIdentifier(constant.prototype)))
-          type = statement.context.factory.createCallExpression(
-            statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(
-              undefined,
-              undefined,
-              undefined,
+          type = statement.context.factory.createPropertyAssignment(
+            statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
+            statement.context.factory.createCallExpression(
+              statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                [
+                  statement.context.factory.createParameterDeclaration(
+                    undefined,
+                    undefined,
+                    statement.context.factory.createIdentifier(constant.prototype)
+                  )
+                ],
+                undefined,
+                // @ts-ignore
+                statement.context.factory.createBlock(body, true)
+              )),
               undefined,
               [
-                statement.context.factory.createParameterDeclaration(
-                  undefined,
-                  undefined,
-                  statement.context.factory.createIdentifier(constant.prototype)
-                )
-              ],
-              undefined,
-              // @ts-ignore
-              statement.context.factory.createBlock(body, true)
-            )),
-            undefined,
-            [
-              statement.context.factory.createObjectLiteralExpression()
-            ]
+                statement.context.factory.createObjectLiteralExpression()
+              ]
+            )
           )
         }
         else {
@@ -92,7 +107,10 @@ export default function generateStruct(struct: Struct) {
       }
     }
     else {
-      type = statement.context.factory.createNumericLiteral(data[KeyMetaKey.Type] as number)
+      type = statement.context.factory.createPropertyAssignment(
+        statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
+        statement.context.factory.createNumericLiteral(data[KeyMetaKey.Type] as number)
+      )
     }
 
     list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(
@@ -104,10 +122,7 @@ export default function generateStruct(struct: Struct) {
       [
         statement.context.factory.createStringLiteral(key),
         statement.context.factory.createObjectLiteralExpression([
-          statement.context.factory.createPropertyAssignment(
-            statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
-            type
-          ),
+          type,
           statement.context.factory.createPropertyAssignment(
             statement.context.factory.createNumericLiteral(KeyMetaKey.Pointer),
             statement.context.factory.createNumericLiteral(data[KeyMetaKey.Pointer])
