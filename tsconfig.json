@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": false,
     "noUnusedLocals": false,
@@ -29,15 +28,17 @@
       "dom",
       "ESNext"
     ],
-    "allowJs": false
+    "allowJs": true
   },
   "include": [
     "./**/*.ts",
-    "@types/index.d.ts"
+    "@types/index.d.ts",
+    "../common/types/*.ts",
   ],
   "exclude": [
     "*.test.ts",
     "__test__",
-    "/node_modules/**"
+    "/node_modules/**",
+    "**/dist",
   ]
 }
