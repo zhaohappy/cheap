@@ -10,9 +10,7 @@ import generateUUID from 'common/function/generateUUID'
 import toString from 'common/function/toString'
 import align from 'common/math/align'
 
-// @ts-ignore
 let Worker: new (url: string) => Worker = SELF.Worker
-// @ts-ignore
 let MessageChannel: new () => MessageChannel = SELF.MessageChannel
 
 if (defined(ENV_NODE)) {

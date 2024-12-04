@@ -257,6 +257,11 @@
       "require": "./dist/cjs/thread/thread.js",
       "types": "./dist/esm/thread/thread.d.ts"
     },
+    "./thread/runThread": {
+      "import": "./dist/esm/thread/runThread.js",
+      "require": "./dist/cjs/thread/runThread.js",
+      "types": "./dist/esm/thread/runThread.d.ts"
+    },
     "./thread/asm/atomics": {
       "import": "./dist/esm/thread/asm/atomics.js",
       "require": "./dist/cjs/thread/asm/atomics.js",
