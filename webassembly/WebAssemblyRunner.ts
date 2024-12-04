@@ -28,7 +28,6 @@ import support from 'common/util/support'
 import runThread from './runThread'
 import { SELF } from 'common/util/constant'
 import sourceLoad from 'common/function/sourceLoad'
-import generateUUID from 'common/function/generateUUID'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
@@ -42,7 +41,6 @@ export type WebAssemblyRunnerOptions = {
   threadDescriptor?: pointer<ThreadDescriptor>
 }
 
-// @ts-ignore
 let Worker: new (url: string) => Worker = SELF.Worker
 if (defined(ENV_NODE)) {
   const { Worker: Worker_} = require('worker_threads')
@@ -336,7 +334,6 @@ export default class WebAssemblyRunner {
       }
 
       object.extend(this.imports.env, {
-        // @ts-ignore
         wasm_pthread_create: support.jspi ? new WebAssembly.Suspending(createPthread) : createPthread,
 
         wasm_pthread_join2: (thread: pointer<Pthread>, retval: pointer<pointer<void>>) => {
@@ -469,7 +466,6 @@ export default class WebAssemblyRunner {
           }
         }
         else {
-          // @ts-ignore
           WebAssemblyRunnerWorkerUrl = `importScripts('${new URL('./WebAssemblyRunnerWorker.js', import.meta.url)}');`
           if (this.childImports) {
             childImports = `importScripts('${this.childImports}');`
@@ -705,8 +701,7 @@ export default class WebAssemblyRunner {
       else if (this.options.exportMap && this.options.exportMap[func] && this.asm[this.options.exportMap[func]]) {
         call = this.asm[this.options.exportMap[func]] as Function
       }
-      // @ts-ignore
-      call = WebAssembly.promising(call)
+      call = WebAssembly.promising(call as (...args: any[]) => any)
       this.promisingMap.set(func, call)
     }
     if (call) {
