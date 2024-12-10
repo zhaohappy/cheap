@@ -397,10 +397,13 @@ export default async function compile(source: WebAssemblySource, options: Compil
               context.pullResolve = null
               return 0
             }
-            (await new Promise<ReadableStreamDefaultController<any>>((resolve, reject) => {
+            const controller = await new Promise<ReadableStreamDefaultController<any>>((resolve) => {
               context.bufferResolve = resolve
-            })).enqueue(buffer.slice())
-
+            })
+            controller.enqueue(buffer.slice())
+            if (context.bufferEnded) {
+              controller.close()
+            }
             return 0
           }
 
