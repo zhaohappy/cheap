@@ -35,6 +35,18 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
   if (!options.projectPath) {
     options.projectPath = program.getCurrentDirectory()
   }
+  if (!options.wat2wasm) {
+    const path = require('path')
+    const os = require('os')
+    let wat2wasmPath = path.resolve(__dirname, './asm/ubuntu') + '/wat2wasm'
+    if (os.platform() === 'win32') {
+      wat2wasmPath = path.resolve(__dirname, './asm/win') + '/wat2wasm.exe'
+    }
+    else if (os.platform() === 'darwin') {
+      wat2wasmPath = path.resolve(__dirname, './asm/macos') + '/wat2wasm'
+    }
+    options.wat2wasm = wat2wasmPath
+  }
 
   const configFileName = ts.findConfigFile(options.projectPath, ts.sys.fileExists, 'tsconfig.json')
   const configFile = configFileName && ts.readConfigFile(configFileName, ts.sys.readFile)
