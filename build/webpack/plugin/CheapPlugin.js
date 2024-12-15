@@ -125,7 +125,7 @@ class CheapPlugin {
                 const result = old(program) || {};
                 const before = transformer.before(program, {
                   projectPath: me.options.projectPath,
-                  exclude: me.options.exclude || '__test__',
+                  exclude: me.options.exclude || /__test__/,
                   reportError: (message) => {
                     me.reportError(message);
                   },
