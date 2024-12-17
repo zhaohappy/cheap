@@ -140,7 +140,7 @@ class CheapPlugin {
                 });
                 const afterDeclarations = transformer.afterDeclarations(program, {
                   projectPath: me.options.projectPath,
-                  exclude: me.options.exclude || '__test__',
+                  exclude: me.options.exclude || /__test__/,
                   reportError: (message) => {
                     me.reportError(message);
                   },
