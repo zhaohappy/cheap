@@ -23,7 +23,7 @@ npm install @libmedia/cheap
 
 #### setting tsconfig.json
 
-```json
+```javascript
 {
   "baseUrl": "./",
   "paths": {

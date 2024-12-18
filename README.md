@@ -22,7 +22,7 @@ npm install @libmedia/cheap
 
 #### 设置 tsconfig.json
 
-```json
+```javascript
 {
   "baseUrl": "./",
   "paths": {
