@@ -2,7 +2,8 @@ cheap
 ======
 English | [中文](README.md)
 
-![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap)
+
+![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap) [![npm](https://img.shields.io/npm/v/@libmedia/cheap.svg?style=flat)](https://www.npmjs.com/package/@libmedia/cheap)
 
 
 ### Introduction
@@ -13,58 +14,28 @@ cheap can be use in browser environment and Node environment.
 
 ### Start
 
-cheap can only be use in typescript.
+#### install
 
-currently, cheap can only be compile and pack with webpack. The relevant modules which use cheap need to be compile with our webpack plugin. We recommended for you use webpack 5, lower versions may have problems with compilation.
 
-cheap depends on the [common](https://github.com/zhaohappy/common) project. We recommended for you put both cheap and common as submodules in the same directory under the project.
-
-the configuration of webpack needs to add cheap plugin:
-
-```javascript
-// The plugin location is under the cheap/build directory
-const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
-
-{
-  ...
-  plugins: [
-    new CheapPlugin({
-      // 'browser' | 'node'
-      env: 'browser',
-      // project root directory, here means webpack.config.js is under the project root directory
-      projectPath: __dirname,
-      // files matches that need to be excluded for cheap
-      exclude: /__test__/,
-      // can add macro definition here
-      defined: {
-
-      }
-    })
-  ]
-}
+```bash
+npm install @libmedia/cheap
 ```
 
-Add configuration in ```tsconfig.json``` and include the code under the cheap and common directories into the project.
+#### setting tsconfig.json
 
-```Javascript
+```json
 {
+  "baseUrl": "./",
   "paths": {
     ...
-    "cheap/*": ["./src/cheap/*"],
-    "common/*": ["./src/common/*"]
+    "@libmedia/common/*": ["node_modules/@libmedia/common/dist/esm/*"],
+    "@libmedia/cheap/*": ["node_modules/@libmedia/cheap/dist/esm/*"]
   },
-  "include": [
-    "./src/cheap/**/*.ts",
-    "./src/common/**/*.ts"
-  ],
-  "exclude": [
-    // Exclude test files
-    "*.test.ts",
-    "__test__",
-    "/node_modules/**"
+  "files": [
+    "node_modules/@libmedia/cheap/dist/esm/cheapdef.d.ts"
   ],
   "cheap": {
-    // can add macro definition here
+    //  can add macro definition here
     "defined": {
 
     }
@@ -72,6 +43,185 @@ Add configuration in ```tsconfig.json``` and include the code under the cheap an
 }
 ```
 
+#### configure
+
+cheap must be developed with TypeScript.
+
+Development using TypeScript needs to configure the compilation and packaging tool. The core is to configure tsc using cheap's transformer.
+
+##### webpack
+
+```javascript
+const path = require('path');
+const transformer = require('@libmedia/cheap/build/transformer');
+module.exports = (env) => {
+  return {
+    module: {
+      rules: [
+        {
+          test: /\.ts?$/,
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                ...
+                getCustomTransformers: function(program) {
+                  return {
+                    before: [transformer.before(program)]
+                  }
+                },
+                ...
+              }
+            }
+          ]
+        }
+      ],
+    }
+  }
+}
+```
+
+##### vite
+```javascript
+
+import { defineConfig } from 'vite';
+import typescript from '@rollup/plugin-typescript';
+import transformer from '@libmedia/cheap/build/transformer';
+
+export default defineConfig({
+  ...
+  plugins: [
+    typescript({
+      ...
+      transformers: {
+        before: [
+          {
+            type: 'program',
+            factory: (program) => {
+              return transformer.before(program)
+            }
+          }
+        ]
+      },
+      ...
+    })
+  ],
+});
+```
+
+##### rollup
+
+```javascript
+
+import typescript from '@rollup/plugin-typescript';
+import transformer from '@libmedia/cheap/build/transformer'
+
+export default {
+  ...
+  plugins: [
+    typescript({
+      ...
+      transformers: {
+        before: [
+          {
+            type: 'program',
+            factory: (program) => {
+              return transformer.before(program)
+            }
+          }
+        ]
+      },
+      ...
+    }),
+  ]
+};
+
+```
+
+#### webpack plugin
+
+Cheap currently has a webpack plugin. If your use webpack, it is recommended that you use it. The usage is as follows:
+
+```javascript
+const path = require('path');
+const CheapPlugin = require('@libmedia/cheap/build/webpack/CheapPlugin');
+module.exports = (env) => {
+  return {
+    ...
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: [
+          {
+            loader: 'ts-loader'
+          }
+        ]
+      }
+    ],
+    plugins: [
+      new CheapPlugin({
+        // 'browser' | 'node'
+        env: 'browser',
+        // project root directory, here means webpack.config.js is under the project root directory
+        projectPath: __dirname,
+        // can add macro definition here
+        defined: {
+
+        }
+      })
+    ]
+  }
+}
+```
+
+#### Node compile
+
+Developing Node projects often only need to be compiled without packaging, so in general, there is no need to use webpack or vite to pack all files; only tsc compile tools are used, but the official tsc tool cannot use transformer. At this time, you need to write code to do compile.
+
+```javascript
+
+const fs = require('fs')
+const path = require('path')
+const ts = require('typescript')
+const transformer = require('@libmedia/cheap/build/transformer')
+
+// Read tsconfig.json configuration and change the path to your own tsconfig.json
+const configPath = path.resolve(__dirname, './tsconfig.json')
+const configText = fs.readFileSync(configPath, 'utf8')
+const { config } = ts.parseConfigFileTextToJson(configPath, configText)
+const parsedCommandLine = ts.parseJsonConfigFileContent(
+  config,
+  ts.sys,
+  path.dirname(configPath)
+)
+const program = ts.createProgram(parsedCommandLine.fileNames, parsedCommandLine.options)
+const emitResult = program.emit(undefined, undefined, undefined, undefined, {
+  before: [
+    transformer.before(program)
+  ]
+})
+const allDiagnostics = ts
+  .getPreEmitDiagnostics(program)
+  .concat(emitResult.diagnostics)
+
+allDiagnostics.forEach((diagnostic) => {
+  if (diagnostic.file) {
+    const { line, character } =
+      diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+    const message = ts.flattenDiagnosticMessageText(
+      diagnostic.messageText,
+      '\n'
+    );
+    console.log(
+      `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
+    );
+  } else {
+    console.log(
+      ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
+    );
+  }
+})
+```
 
 ### Principle
 

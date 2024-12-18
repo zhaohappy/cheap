@@ -2,7 +2,7 @@ cheap
 ======
 中文 | [English](README_en.md)
 
-![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap)
+![](https://img.shields.io/badge/language-typescript-blue.svg) ![](https://img.shields.io/badge/platform-web%20|%20node-lightgrey.svg) ![license](https://img.shields.io/github/license/zhaohappy/cheap) [![npm](https://img.shields.io/npm/v/@libmedia/cheap.svg?style=flat)](https://www.npmjs.com/package/@libmedia/cheap)
 
 
 ### 介绍
@@ -13,54 +13,25 @@ cheap 可以用于浏览器环境和 Node 环境
 
 ### 使用
 
-cheap 只能使用 typescript 开发
+#### 安装
 
-cheap 目前只能使用 webpack 打包编译，如果你使用了 cheap 那你所使用的相关模块就需要用 webpack 打包，建议使用 webpack 5，更低的版本可能存在无法编译的问题。
 
-cheap 依赖了 [common](https://github.com/zhaohappy/common) 项目，建议将 cheap 和 common 都作为子模块放入项目下的同级目录中。
-
-webpack 配置需要添加 cheap 的插件
-
-```javascript
-// 插件位置在 cheap build 目录下面
-const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
-
-{
-  ...
-  plugins: [
-    new CheapPlugin({
-      // 'browser' | 'node'
-      env: 'browser',
-      // 项目根目录，这里表示 webpack.config.js 在项目根目录下面
-      projectPath: __dirname,
-      // 需要排除处理的文件匹配
-      exclude: /__test__/,
-      // 添加宏定义
-      defined: {
-
-      }
-    })
-  ]
-}
+```bash
+npm install @libmedia/cheap
 ```
 
-```tsconfig.json``` 中添加配置，将 cheap 和 common 目录下面的代码包括进工程
-```Javascript
+#### 设置 tsconfig.json
+
+```json
 {
+  "baseUrl": "./",
   "paths": {
     ...
-    "cheap/*": ["./src/cheap/*"],
-    "common/*": ["./src/common/*"]
+    "@libmedia/common/*": ["node_modules/@libmedia/common/dist/esm/*"],
+    "@libmedia/cheap/*": ["node_modules/@libmedia/cheap/dist/esm/*"]
   },
-  "include": [
-    "./src/cheap/**/*.ts",
-    "./src/common/**/*.ts"
-  ],
-  "exclude": [
-    // 排除测试文件
-    "*.test.ts",
-    "__test__",
-    "/node_modules/**"
+  "files": [
+    "node_modules/@libmedia/cheap/dist/esm/cheapdef.d.ts"
   ],
   "cheap": {
     // 可以配置一些宏
@@ -71,6 +42,190 @@ const CheapPlugin = require('./src/cheap/build/webpack/plugin/CheapPlugin')
 }
 ```
 
+#### 编译配置
+
+cheap 必须使用 TypeScript 开发。
+
+使用 TypeScript 开发需要对编译打包工具进行配置。核心是配置 tsc 使用 cheap 的 transformer 插件。
+
+##### webpack
+
+```javascript
+const path = require('path');
+const transformer = require('@libmedia/cheap/build/transformer');
+module.exports = (env) => {
+  return {
+    module: {
+      rules: [
+        {
+          test: /\.ts?$/,
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                ...
+                getCustomTransformers: function(program) {
+                  return {
+                    before: [transformer.before(program)]
+                  }
+                },
+                ...
+              }
+            }
+          ]
+        }
+      ],
+    }
+  }
+}
+```
+
+##### vite
+```javascript
+
+import { defineConfig } from 'vite';
+import typescript from '@rollup/plugin-typescript';
+import transformer from '@libmedia/cheap/build/transformer';
+
+export default defineConfig({
+  ...
+  plugins: [
+    typescript({
+      ...
+      transformers: {
+        before: [
+          {
+            type: 'program',
+            factory: (program) => {
+              return transformer.before(program)
+            }
+          }
+        ]
+      },
+      ...
+    })
+  ],
+});
+```
+
+##### rollup
+
+```javascript
+
+import typescript from '@rollup/plugin-typescript';
+import transformer from '@libmedia/cheap/build/transformer'
+
+export default {
+  ...
+  plugins: [
+    typescript({
+      ...
+      transformers: {
+        before: [
+          {
+            type: 'program',
+            factory: (program) => {
+              return transformer.before(program)
+            }
+          }
+        ]
+      },
+      ...
+    }),
+  ]
+};
+
+```
+
+> vite 默认使用 esbuild 来编译 ts，但 esbuild 是不支持 transformer 的，所以需要使用 tsc 来编译使用到 cheap 的模块。你可以通过合理的模块设计将需要使用 transformer 编译的部分聚合，并配置这部分使用 tsc 编译，其他部分使用 esbuild 编译。(理论上应该可行，但我对 vite 的掌握并不是很深，不清楚如何配置，当然最简单的方式是全部都使用 tsc 来编译)
+
+#### webpack 插件
+
+cheap 目前有 webpack 插件可以使用，如果你的构建工具使用的是 webpack，推荐你使用插件。用法如下:
+
+```javascript
+const path = require('path');
+const CheapPlugin = require('@libmedia/cheap/build/webpack/CheapPlugin');
+module.exports = (env) => {
+  return {
+    ...
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: [
+          {
+            loader: 'ts-loader'
+          }
+        ]
+      }
+    ],
+    plugins: [
+      new CheapPlugin({
+        // 'browser' | 'node'
+        env: 'browser',
+        // 项目根目录，这里表示 webpack.config.js 在项目根目录下面
+        projectPath: __dirname,
+        // 需要排除处理的文件匹配
+        exclude: /__test__/,
+        // 添加宏定义
+        defined: {
+
+        }
+      })
+    ]
+  }
+}
+```
+
+#### Node 编译
+
+开发 Node 项目往往只需要编译而不用打包，所以一般情况下不需要使用 webpack 或 vite 等构建工具；只需要使用 tsc 编译工具，但官方的 tsc 工具无法使用 transformer。此时需要编写代码来编译。
+
+```javascript
+
+const fs = require('fs')
+const path = require('path')
+const ts = require('typescript')
+const transformer = require('@libmedia/cheap/build/transformer')
+
+// 读取 tsconfig.json 配置，更改为自己的 tsconfig.json 的路径
+const configPath = path.resolve(__dirname, './tsconfig.json')
+const configText = fs.readFileSync(configPath, 'utf8')
+const { config } = ts.parseConfigFileTextToJson(configPath, configText)
+const parsedCommandLine = ts.parseJsonConfigFileContent(
+  config,
+  ts.sys,
+  path.dirname(configPath)
+)
+const program = ts.createProgram(parsedCommandLine.fileNames, parsedCommandLine.options)
+const emitResult = program.emit(undefined, undefined, undefined, undefined, {
+  before: [
+    transformer.before(program)
+  ]
+})
+// 打印错误
+const allDiagnostics = ts
+  .getPreEmitDiagnostics(program)
+  .concat(emitResult.diagnostics)
+
+allDiagnostics.forEach((diagnostic) => {
+  if (diagnostic.file) {
+    const { line, character } =
+      diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+    const message = ts.flattenDiagnosticMessageText(
+      diagnostic.messageText,
+      '\n'
+    );
+    console.log(
+      `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
+    );
+  } else {
+    console.log(
+      ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
+    );
+  }
+})
+```
 
 ### 原理
 
