@@ -14,7 +14,8 @@
     "url": "git+https://github.com/zhaohappy/cheap.git"
   },
   "scripts": {
-    "test-transformer": "jest --verbose"
+    "test-transformer": "jest --verbose",
+    "prepublishOnly": "node ./scripts/check-publish-status.js"
   },
   "files": [
     "dist",
