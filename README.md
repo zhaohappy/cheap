@@ -179,7 +179,7 @@ module.exports = (env) => {
 
 #### Node 编译
 
-开发 Node 项目往往只需要编译而不用打包，所以一般情况下不需要使用 webpack 或 vite 等构建工具；只需要使用 tsc 编译工具，但官方的 tsc 工具无法使用 transformer。此时需要编写代码来编译。
+开发 Node 项目往往只需要编译而不用打包，所以一般情况下不需要使用 webpack 或 vite 等构建工具；只需要使用 tsc 编译工具，但官方的 tsc 命令无法使用 transformer。此时需要编写代码来编译。
 
 ```javascript
 

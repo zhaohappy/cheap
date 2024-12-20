@@ -176,7 +176,7 @@ module.exports = (env) => {
 
 #### Node compile
 
-Developing Node projects often only need to be compiled without packaging, so in general, there is no need to use webpack or vite to pack all files; only tsc compile tools are used, but the official tsc tool cannot use transformer. At this time, you need to write code to do compile.
+Developing Node projects often only need to be compiled without packaging, so in general, there is no need to use webpack or vite to pack all files; only tsc compile tools are used, but the official tsc command cannot use transformer. At this time, you need to write code to do compile.
 
 ```javascript
 
