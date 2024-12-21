@@ -95,15 +95,20 @@ module.exports = function(source) {
             callback(null, text);
         }).catch((error) => {
             let message = error.message.split('\n');
-            message.shift();
-            message = message.join('\n');
-            message = message.replace(/.wat:(\d)+:(\d)+/g, (str) => {
-                return str.replace(/(\d)+/, (str) => {
-                    return (+str - 3)+ '';
+            if (message.length > 1) {
+                message.shift();
+                message = message.join('\n');
+                message = message.replace(/.wat:(\d)+:(\d)+/g, (str) => {
+                    return str.replace(/(\d)+/, (str) => {
+                        return (+str - 3)+ '';
+                    });
                 });
-            });
-            message = message.replaceAll(inputPath, this.resourcePath);
-            callback(new Error(message));
+                message = message.replaceAll(inputPath, this.resourcePath);
+                callback(new Error(message));
+            }
+            else {
+                callback(error);
+            }
         });
     }
     catch (error) {
