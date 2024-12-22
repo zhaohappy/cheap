@@ -27,7 +27,6 @@ npm install @libmedia/cheap
   "baseUrl": "./",
   "paths": {
     ...
-    "@libmedia/common/*": ["node_modules/@libmedia/common/dist/esm/*"],
     "@libmedia/cheap/*": ["node_modules/@libmedia/cheap/dist/esm/*"]
   },
   "files": [
