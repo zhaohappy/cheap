@@ -2,7 +2,7 @@ import * as is from 'common/util/is'
 import IOReader from 'common/io/IOReader'
 import { IOError } from 'common/io/error'
 import IOWriter from 'common/io/IOWriter'
-import { ExternalKind, SectionId, readSleb128Async,
+import { DYlinkType, ExternalKind, SectionId, readSleb128Async,
   readUleb128Async, writeSleb128, writeSleb128Async, writeUleb128, writeUleb128Async
 } from 'common/util/wasm'
 import concatTypeArray from 'common/function/concatTypeArray'
@@ -14,7 +14,10 @@ import BufferWriter from 'common/io/BufferWriter'
 
 export interface WebAssemblyResource {
   tableSize?: number
+  tableAlign?: number
   dataSize?: number
+  dataAlign?: number
+  bssSize?: number
   initFuncs?: string[]
   module: WebAssembly.Module
   buffer?: ArrayBuffer
@@ -33,7 +36,10 @@ export interface WebAssemblyResource {
 export interface WebAssemblySource {
   source: Uint8Array | ArrayBuffer | string
   tableSize?: number
+  tableAlign?: number
   dataSize?: number
+  dataAlign?: number
+  bssSize?: number
 }
 
 interface Context {
@@ -49,7 +55,10 @@ interface Context {
 
   data: {
     tableSize?: number
+    tableAlign?: number
     dataSize?: number
+    dataAlign?: number
+    bssSize?: number
   }
   buffers: Uint8Array[]
   options: CompilerOptions
@@ -108,8 +117,37 @@ async function process(context: Context) {
       const size = await readUleb128Async(context.ioReader)
 
       const now = context.ioReader.getPos()
-
-      if (sectionId === SectionId.Data) {
+      if (sectionId === SectionId.Custom) {
+        await writeUleb128Async(context.ioWriter, size)
+        const now = context.ioReader.getPos()
+        const len = await readUleb128Async(context.ioReader)
+        const name = await context.ioReader.readString(len)
+        await writeUleb128Async(context.ioWriter, len)
+        await context.ioWriter.writeString(name)
+        if (name === 'dylink.0') {
+          const endPos = context.ioReader.getPos() + (static_cast<int64>(size) - (context.ioReader.getPos() - now))
+          while (context.ioReader.getPos() < endPos) {
+            const type = await context.ioReader.readUint8()
+            await context.ioWriter.writeUint8(type)
+            const contentSize = await readUleb128Async(context.ioReader)
+            await writeUleb128Async(context.ioWriter, contentSize)
+            if (type === DYlinkType.MEMORY) {
+              context.data.dataSize = await readUleb128Async(context.ioReader)
+              context.data.dataAlign = await readUleb128Async(context.ioReader)
+              context.data.tableSize = await readUleb128Async(context.ioReader)
+              context.data.tableAlign = await readUleb128Async(context.ioReader)
+              await writeUleb128Async(context.ioWriter, context.data.dataSize)
+              await writeUleb128Async(context.ioWriter, context.data.dataAlign)
+              await writeUleb128Async(context.ioWriter, context.data.tableSize)
+              await writeUleb128Async(context.ioWriter, context.data.tableAlign)
+            }
+            else {
+              await context.ioWriter.writeBuffer(await context.ioReader.readBuffer(contentSize))
+            }
+          }
+        }
+      }
+      else if (sectionId === SectionId.Data) {
         await writeUleb128Async(context.ioWriter, size)
         /**
          * - count: varuint32
@@ -130,8 +168,14 @@ async function process(context: Context) {
               break
             }
           }
-          context.data.dataSize = await readUleb128Async(context.ioReader)
-          await writeUleb128Async(context.ioWriter, context.data.dataSize)
+          const dataSize = await readUleb128Async(context.ioReader)
+          if (context.data.dataSize) {
+            context.data.bssSize = context.data.dataSize - dataSize
+          }
+          else {
+            context.data.dataSize = dataSize
+          }
+          await writeUleb128Async(context.ioWriter, dataSize)
         }
       }
       else if (sectionId === SectionId.Import) {
@@ -255,7 +299,11 @@ async function process(context: Context) {
 export default async function compile(source: WebAssemblySource, options: CompilerOptions = {}): Promise<WebAssemblyResource> {
   let module: WebAssembly.Module
   let tableSize: number
+  let tableAlign: number
   let dataSize: number
+  let dataAlign: number
+  let bssSize: number
+
   let buffer: ArrayBuffer
 
   options = object.extend({
@@ -266,6 +314,9 @@ export default async function compile(source: WebAssemblySource, options: Compil
   if (is.number(source.dataSize) && is.number(source.tableSize)) {
     tableSize = source.dataSize
     dataSize = source.dataSize
+    tableAlign = source.dataAlign
+    dataAlign = source.dataAlign
+    bssSize = source.bssSize
     if (is.string(source.source)) {
       const params: Partial<any> = {
         method: 'GET',
@@ -453,6 +504,9 @@ export default async function compile(source: WebAssemblySource, options: Compil
       : (is.arrayBuffer(source.source) ? source.source : (source.source as Uint8Array).buffer)
     tableSize = context.data.tableSize
     dataSize = context.data.dataSize
+    tableAlign = context.data.tableAlign
+    dataAlign = context.data.dataAlign
+    bssSize = context.data.bssSize
   }
 
   if (options.child) {
@@ -465,7 +519,10 @@ export default async function compile(source: WebAssemblySource, options: Compil
   return {
     module,
     tableSize,
+    tableAlign: tableAlign || 0,
     dataSize,
+    dataAlign: dataAlign || 8,
+    bssSize: bssSize || 0,
     initFuncs: options.initFuncs || [],
     buffer: buffer
   }

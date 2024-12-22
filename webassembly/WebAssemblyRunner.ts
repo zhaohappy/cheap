@@ -128,7 +128,10 @@ export default class WebAssemblyRunner {
       this.childImports = URL.createObjectURL(options.childImports)
     }
 
-    this.memoryBase = resource.dataSize ? malloc(resource.dataSize) : 0
+    this.memoryBase = resource.dataSize ? aligned_alloc(resource.dataAlign ?? 8, resource.dataSize) : 0
+    if (this.memoryBase && resource.bssSize) {
+      memset(this.memoryBase + resource.dataSize - resource.bssSize, 0, resource.bssSize)
+    }
 
     // 子线程的 tableBase 需要和父线程一致
     if (options.thread && options.tableBase) {
