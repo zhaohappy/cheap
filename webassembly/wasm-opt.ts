@@ -14,7 +14,7 @@ let command: {
 } = {}
 let currentOption = null
 
-args.forEach(arg => {
+args.forEach((arg) => {
   if (arg.startsWith('-')) {
     currentOption = arg.replace(/^-+/, '')
     command[currentOption] = true
@@ -84,7 +84,7 @@ function analyze() {
     ioReader.readUint32()
     while (true) {
       const sectionId = ioReader.readUint8()
-     
+
       const size = readUleb128(ioReader)
 
       const now = ioReader.getPos()
@@ -237,7 +237,7 @@ function optimize() {
   ioWriter.writeUint32(ioReader.readUint32())
 
   if (options.dataSize || options.tableSize) {
-    
+
     let bufferWriter = new BufferWriter(new Uint8Array(30))
     writeUleb128(bufferWriter, options.dataSize)
     writeUleb128(bufferWriter, options.dataAlign)
