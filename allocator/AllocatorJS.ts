@@ -83,7 +83,7 @@ export default class AllocatorJS implements Allocator {
 
   private shared: boolean
 
-  private handles: ((buffer: ArrayBuffer) => void)[]
+  private handles: ((buffer: ArrayBufferLike) => void)[]
 
   constructor(options: AllocatorJSOptions, init: boolean = true) {
     this.options = object.extend({
@@ -481,7 +481,7 @@ export default class AllocatorJS implements Allocator {
     }
   }
 
-  public getBuffer(): ArrayBuffer {
+  public getBuffer(): ArrayBufferLike {
     return this.buffer
   }
 

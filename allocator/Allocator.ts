@@ -56,5 +56,5 @@ export default interface Allocator {
    */
   sizeof(address: int32): size
 
-  getBuffer(): ArrayBuffer
+  getBuffer(): ArrayBufferLike
 }

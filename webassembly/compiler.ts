@@ -34,7 +34,7 @@ export interface WebAssemblyResource {
 }
 
 export interface WebAssemblySource {
-  source: Uint8Array | ArrayBuffer | string
+  source: Uint8Array<ArrayBuffer> | ArrayBuffer | string
   tableSize?: number
   tableAlign?: number
   dataSize?: number
@@ -336,7 +336,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
     }
     else {
       module = await WebAssembly.compile(source.source)
-      buffer = is.arrayBuffer(source.source) ? source.source : (source.source as Uint8Array).buffer
+      buffer = is.arrayBuffer(source.source) ? source.source : (source.source as Uint8Array<ArrayBuffer>).buffer
     }
   }
   else {
@@ -500,8 +500,8 @@ export default async function compile(source: WebAssemblySource, options: Compil
     }
 
     buffer = is.string(source.source)
-      ? concatTypeArray(Uint8Array, context.buffers).buffer
-      : (is.arrayBuffer(source.source) ? source.source : (source.source as Uint8Array).buffer)
+      ? (concatTypeArray(Uint8Array, context.buffers) as Uint8Array<ArrayBuffer>).buffer
+      : (is.arrayBuffer(source.source) ? source.source : (source.source as Uint8Array<ArrayBuffer>).buffer)
     tableSize = context.data.tableSize
     dataSize = context.data.dataSize
     tableAlign = context.data.tableAlign
