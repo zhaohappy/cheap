@@ -3,7 +3,7 @@ import IOReader from 'common/io/IOReader'
 import { IOError } from 'common/io/error'
 import IOWriter from 'common/io/IOWriter'
 import { DYlinkType, ExternalKind, SectionId, readSleb128Async,
-  readUleb128Async, writeSleb128, writeSleb128Async, writeUleb128, writeUleb128Async
+  readUleb128Async, writeSleb128, writeUleb128, writeUleb128Async
 } from 'common/util/wasm'
 import concatTypeArray from 'common/function/concatTypeArray'
 import * as object from 'common/util/object'
@@ -11,6 +11,7 @@ import * as config from '../config'
 import browser from 'common/util/browser'
 import os from 'common/util/os'
 import BufferWriter from 'common/io/BufferWriter'
+import nearestPowerOf2 from 'common/math/nearestPowerOf2'
 
 export interface WebAssemblyResource {
   tableSize?: number
@@ -521,7 +522,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
     tableSize,
     tableAlign: tableAlign || 0,
     dataSize,
-    dataAlign: dataAlign || 8,
+    dataAlign: dataAlign ? Math.max(nearestPowerOf2(dataAlign), 8) : 8,
     bssSize: bssSize || 0,
     initFuncs: options.initFuncs || [],
     buffer: buffer
