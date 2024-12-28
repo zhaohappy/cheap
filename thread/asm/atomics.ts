@@ -281,7 +281,7 @@ export default async function init(memory: WebAssembly.Memory, initial: int32, m
 
         assert(address, 'Out Of Bounds, address: 0')
 
-        return (instance.exports.waitTimeout as Function)(address, value, static_cast<int64>(timeout))
+        return (instance.exports.waitTimeout as Function)(address, value, static_cast<int64>(timeout) * 1000000n)
       }
     })
   }

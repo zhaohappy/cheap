@@ -73,7 +73,7 @@
   (i32.atomic.load (local.get $condAddr))
   (call $unlock (local.get $mutexAddr))
   (drop)
-  (i64.load (local.get $timeout))
+  (i64.add (i64.mul (i64.load (local.get $timeout)) (i64.const 1000000000)) (i64.extend_i32_u (i32.load offset=8 align=4 (local.get $timeout))))
   (memory.atomic.wait32)
   (call $lock (local.get $mutexAddr))
   (drop)
