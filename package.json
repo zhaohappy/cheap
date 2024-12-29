@@ -324,6 +324,7 @@
       "types": "./dist/esm/webassembly/runtime/asm/thread.d.ts"
     },
     "./build/webpack/CheapPlugin": "./build/webpack/plugin/CheapPlugin.js",
-    "./build/transformer": "./build/transformer.js"
+    "./build/transformer": "./build/transformer.js",
+    "./build/wasm-opt": "./build/wasm-opt.js"
   }
 }
