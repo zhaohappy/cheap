@@ -48,10 +48,9 @@ export default function runThread() {
               // @ts-ignore
               data.runner.options.imports = self.imports
               runner = new WebAssemblyRunnerClass(data.runner.resource, data.runner.options)
-              runner.runAsChild().then(() => {
-                WebAssemblyRunnerClass.getTable().get(data.runner.func)(data.runner.args)
-                runner.destroy()
-              })
+              runner.runAsChild()
+              WebAssemblyRunnerClass.getTable().get(data.runner.func)(data.runner.args)
+              runner.destroy()
             }
             run()
           })
@@ -85,7 +84,7 @@ export default function runThread() {
             runnerData.args = WebAssemblyRunnerClass.readPointer(addressof(waitData.args))
 
             runner = new WebAssemblyRunnerClass(runnerData.resource, runnerData.options)
-            await runner.runAsChild()
+            runner.runAsChild()
             WebAssemblyRunnerClass.getTable().get(runnerData.func)(runnerData.args)
             runner.destroy()
             WebAssemblyRunnerClass.writePointer(addressof(waitData.thread), nullptr)

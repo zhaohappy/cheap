@@ -302,6 +302,32 @@ export async function initThread(options: {
 
   Memory = options.memory
 
+  if (!options.disableAsm) {
+    // @ts-ignore
+    if (typeof BigInt === 'function' && BigInt !== Number
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    }
+    if (config.USE_THREADS
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    }
+  }
+
   const allocator = new AllocatorJS({
     buffer: Memory.buffer,
     memory: Memory,
@@ -352,32 +378,6 @@ export async function initThread(options: {
   }
 
   isMainThread = false
-
-  if (!options.disableAsm) {
-    // @ts-ignore
-    if (typeof BigInt === 'function' && BigInt !== Number
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-    ) {
-      await initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
-    }
-    if (config.USE_THREADS
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-    ) {
-      await initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
-    }
-  }
 }
 
 /**
@@ -397,6 +397,33 @@ export function initMain() {
     maximum: config.HEAP_MAXIMUM,
     shared: config.USE_THREADS
   })
+
+  if (!defined(DEBUG) && defined(ENABLE_THREADS)) {
+    // @ts-ignore
+    if (typeof BigInt === 'function' && BigInt !== Number
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    }
+    if (config.USE_THREADS
+      && defined(ENABLE_THREADS)
+      && (
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+        || os.ios && browser.checkVersion(os.version, '15', true)
+        || browser.newEdge
+      )
+    ) {
+      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    }
+  }
 
   Allocator = SELF.CHeap?.Allocator ? (SELF.CHeap.Allocator as AllocatorInterface) : new AllocatorJS({
     buffer: Memory.buffer,
@@ -438,33 +465,6 @@ export function initMain() {
       HeapU32[staticData.threadCounter >>> 2] = ThreadId + 1
       let index = addressof(staticData.heapMutex.atomic) >>> 2
       Heap32[index] = 0
-    }
-  }
-
-  if (!defined(DEBUG) && defined(ENABLE_THREADS)) {
-    // @ts-ignore
-    if (typeof BigInt === 'function' && BigInt !== Number
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-    ) {
-      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
-    }
-    if (config.USE_THREADS
-      && defined(ENABLE_THREADS)
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-    ) {
-      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
   }
 

@@ -562,19 +562,19 @@ export default class WebAssemblyRunner {
       && threadAsm.isSupport()
       && this.resource.threadModule
     ) {
-      await threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+      threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
       object.extend(this.imports.env, pthread)
     }
     if (!libcAsm.wasmThreadProxy
       && libcAsm.isSupport()
     ) {
-      await libcAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      libcAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {
       atomicAsmOverride = true
       this.overrideAtomic()
     }
-    this.instance = await WebAssembly.instantiate(this.resource.module, this.imports)
+    this.instance = new WebAssembly.Instance(this.resource.module, this.imports)
 
     this.initRunTime()
 
@@ -605,12 +605,12 @@ export default class WebAssemblyRunner {
     }
   }
 
-  public async runAsChild(imports?: Record<string, any>) {
+  public runAsChild(imports?: Record<string, any>) {
     if (is.object(imports)) {
       object.extend(this.options.imports, imports)
     }
     if (!defined(DEBUG) && !threadAsm.wasmThreadProxy && threadAsm.isSupport()) {
-      await threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+      threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
       object.extend(this.imports.env, pthread)
     }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {

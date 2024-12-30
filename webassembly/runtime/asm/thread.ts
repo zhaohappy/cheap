@@ -20,7 +20,7 @@ export function isSupport() {
   return support
 }
 
-export async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32, override: (
+export function init(memory: WebAssembly.Memory, initial: int32, maximum: int32, override: (
   data: {
     wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32,
     wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32,
@@ -39,11 +39,11 @@ export async function init(memory: WebAssembly.Memory, initial: int32, maximum: 
         maximum
       })
 
-      wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
+      wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
         env: {
           memory
         }
-      })).instance
+      })
     }
     else {
       support = false

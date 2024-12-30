@@ -19,7 +19,7 @@ export function isSupport() {
   return support
 }
 
-export async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
+export function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
   try {
     const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
       shared: typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer,
@@ -27,7 +27,7 @@ export async function init(memory: WebAssembly.Memory, initial: int32, maximum: 
       maximum
     })
 
-    wasmThreadProxy = (await WebAssembly.instantiate(wasm, {
+    wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
       env: {
         memory,
         malloc: function (size: size) {
@@ -46,7 +46,8 @@ export async function init(memory: WebAssembly.Memory, initial: int32, maximum: 
           free(pointer)
         }
       }
-    })).instance
+    })
+
     Table.set(BuiltinTableSlot.MALLOC, wasmThreadProxy.exports.malloc as any)
     Table.set(BuiltinTableSlot.FREE, wasmThreadProxy.exports.free as any)
     Table.set(BuiltinTableSlot.CALLOC, wasmThreadProxy.exports.calloc as any)

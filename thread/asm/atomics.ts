@@ -15,7 +15,7 @@ export function isSupport() {
   return !!instance
 }
 
-export default async function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
+export default function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
   if (defined(DEBUG)) {
     return
   }
@@ -28,11 +28,11 @@ export default async function init(memory: WebAssembly.Memory, initial: int32, m
         maximum
       })
 
-      instance = (await WebAssembly.instantiate(wasm, {
+      instance = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
         env: {
           memory
         }
-      })).instance
+      })
     }
     else {
       return

@@ -17,14 +17,12 @@ export default class ASMRunner {
       initial: config.HEAP_INITIAL,
       maximum: config.HEAP_MAXIMUM
     })
-  }
-
-  public async run() {
-    this.runner = (await WebAssembly.instantiate(this.wasm, {
+    const module = new WebAssembly.Module(this.wasm)
+    this.runner = new WebAssembly.Instance(module, {
       env: {
         memory: Memory
       }
-    })).instance
+    })
   }
 
   public call(name: string, ...args: (number | bigint)[]) {
