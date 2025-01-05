@@ -1,3 +1,5 @@
+
+import './defined'
 import ts from 'typescript'
 import { before } from '../index'
 import * as path from 'path'

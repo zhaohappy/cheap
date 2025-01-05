@@ -22,11 +22,11 @@ export function printChar(stream: uint32, curr: char) {
 
 export function writeAsciiToMemory(str: string, buffer: pointer<char>, doNotAddNull?: boolean) {
   for (let i = 0; i < str.length; ++i) {
-    accessof(buffer) <- static_cast<char>(str.charCodeAt(i))
+    accessof(buffer) <- reinterpret_cast<char>(str.charCodeAt(i))
     buffer++
   }
   if (!doNotAddNull) {
-    accessof(buffer) <- static_cast<char>(0)
+    accessof(buffer) <- reinterpret_cast<char>(0)
   }
 }
 
@@ -62,13 +62,13 @@ function getEnvStrings() {
   return getEnvStringsStrings
 }
 
-export function environ_get(environ: pointer<uint32>, environBuf: pointer<uint8>) {
-  let bufSize = 0
-  getEnvStrings().forEach(function (string: string, i: number) {
+export function environ_get(environ: pointer<pointer<char>>, environBuf: pointer<char>) {
+  let bufSize: uint32 = 0
+  getEnvStrings().forEach(function (string: string, i: uint32) {
 
-    const ptr: pointer<uint8> = reinterpret_cast<pointer<uint8>>(environBuf + bufSize)
+    const ptr: pointer<char> = reinterpret_cast<pointer<char>>(environBuf + bufSize)
 
-    accessof(reinterpret_cast<pointer<uint32>>(environ + i)) <- reinterpret_cast<uint32>(ptr)
+    accessof(reinterpret_cast<pointer<pointer<char>>>(environ + i)) <- ptr
 
     writeAsciiToMemory(string, reinterpret_cast<pointer<char>>(ptr))
 
@@ -77,23 +77,23 @@ export function environ_get(environ: pointer<uint32>, environBuf: pointer<uint8>
   return 0
 }
 
-export function environ_sizes_get(penvironCount: pointer<uint32>, penvironBufSize: pointer<uint32>) {
+export function environ_sizes_get(penvironCount: pointer<size>, penvironBufSize: pointer<size>) {
   const strings = getEnvStrings()
 
-  accessof(penvironCount) <- static_cast<uint32>(strings.length)
+  accessof(penvironCount) <- reinterpret_cast<size>(strings.length as uint32)
 
   let bufSize = 0
   strings.forEach(function (string) {
     bufSize += string.length + 1
   })
 
-  accessof(penvironBufSize) <- static_cast<uint32>(bufSize)
+  accessof(penvironBufSize) <- reinterpret_cast<size>(bufSize as uint32)
 
   return 0
 }
 
 
-export function fd_fdstat_get(fd: uint32, pBuf: pointer<void>) {
+export function fd_fdstat_get(fd: uint32, buf_ptr: pointer<void>) {
   let rightsBase = 0
   if (fd == 0) {
     rightsBase = 2
@@ -101,36 +101,42 @@ export function fd_fdstat_get(fd: uint32, pBuf: pointer<void>) {
   else if (fd == 1 || fd == 2) {
     rightsBase = 64
   }
-  accessof(reinterpret_cast<pointer<int8>>(pBuf)) <- static_cast<int8>(2)
-  accessof(reinterpret_cast<pointer<int16>>(pBuf + 2)) <- static_cast<int16>(1)
-  accessof(reinterpret_cast<pointer<int32>>(pBuf + 8)) <- static_cast<int32>(rightsBase)
-  accessof(reinterpret_cast<pointer<int32>>(pBuf + 12)) <- static_cast<int32>(0)
-  accessof(reinterpret_cast<pointer<int64>>(pBuf + 16)) <- static_cast<int64>(0n)
+  accessof(reinterpret_cast<pointer<int8>>(buf_ptr)) <- reinterpret_cast<int8>(2)
+  accessof(reinterpret_cast<pointer<int16>>(buf_ptr + 2)) <- reinterpret_cast<int16>(1)
+  accessof(reinterpret_cast<pointer<int32>>(buf_ptr + 8)) <- reinterpret_cast<int32>(rightsBase)
+  accessof(reinterpret_cast<pointer<int32>>(buf_ptr + 12)) <- reinterpret_cast<int32>(0)
+  accessof(reinterpret_cast<pointer<int64>>(buf_ptr + 16)) <- reinterpret_cast<int64>(0n)
 
   return WASI_ERRNO_SUCCESS
 }
 
-export function fd_read(fd: uint32, iov: pointer<uint32>, iovCnt: uint32, pNum: pointer<uint32>) {
+@struct
+class WASICiovec {
+  buf: pointer<void>
+  len: size
+}
+
+export function fd_read(fd: uint32, iovs: pointer<WASICiovec>, iovs_len: size, nread: pointer<size>) {
   return WASI_ERRNO_NOSYS
 }
 
-export function fd_seek(fd: uint32, offsetLow: uint32, offsetHigh: uint32, whence: pointer<uint32>, newOffset: uint32) {
+export function fd_seek(fd: uint32, offset: size, whence: int32, newoffset: pointer<size>) {
   return WASI_ERRNO_NOSYS
 }
 
-export function fd_write(fd: uint32, iov: pointer<uint32>, iovCnt: uint32, pNum: pointer<uint32>) {
-  let num = 0
-  for (let i = 0; i < iovCnt; i++) {
-    let ptr = reinterpret_cast<pointer<char>>(accessof(iov))
-    let len = accessof(reinterpret_cast<pointer<uint32>>(iov + 1))
-    iov = reinterpret_cast<pointer<uint32>>(iov + 2)
+export function fd_write(fd: uint32, iovs: pointer<WASICiovec>, iovs_len: size, nwritten: pointer<size>) {
+  let num: size = 0
+  for (let i = 0; i < iovs_len; i++) {
+    let ptr = iovs.buf
+    let len = iovs.len
     for (let j = 0; j < len; j++) {
-      printChar(fd, accessof(reinterpret_cast<pointer<char>>(ptr + j)))
+      printChar(fd, accessof(reinterpret_cast<pointer<char>>(ptr + (j as uint32))))
     }
     num += len
+    iovs++
   }
 
-  accessof(pNum) <- static_cast<uint32>(num)
+  accessof(nwritten) <- num
 
   return WASI_ERRNO_SUCCESS
 }
@@ -145,24 +151,24 @@ export function abort(what?: string) {
   throw new WebAssembly.RuntimeError(what)
 }
 
-export function clock_time_get(id: uint32, precision: int32, timeOut: pointer<uint64>) {
-  if (id !== 0) {
+export function clock_time_get(clock_id: uint32, precision: int32, time: pointer<uint64>) {
+  if (clock_id !== 0) {
     return WASI_ERRNO_INVAL
   }
 
   const now = new Date().getTime()
 
-  accessof(timeOut) <- reinterpret_cast<uint64>(static_cast<uint64>(now as uint32) * 1000000n)
+  accessof(time) <- reinterpret_cast<uint64>(static_cast<uint64>(now as uint32) * 1000000n)
 
   return WASI_ERRNO_SUCCESS
 }
 
-export function clock_res_get(id: uint32, resOut: pointer<uint64>) {
-  if (id !== 0) {
+export function clock_res_get(clock_id: uint32, resolution: pointer<uint64>) {
+  if (clock_id !== 0) {
     return WASI_ERRNO_INVAL
   }
 
-  accessof(resOut) <- static_cast<uint64>(1000000n)
+  accessof(resolution) <- static_cast<uint64>(1000000n)
 
   return WASI_ERRNO_SUCCESS
 }

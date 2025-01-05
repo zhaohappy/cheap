@@ -4,10 +4,10 @@ import { CTypeEnum, CTypeEnum2Bytes, Struct } from '../typedef'
 
 export default function sizeof(type: CTypeEnum | Struct): size {
   if (is.number(type)) {
-    return CTypeEnum2Bytes[type] || 0
+    return reinterpret_cast<size>((CTypeEnum2Bytes[type] || 0) as uint32)
   }
   else if (is.func(type) && type.prototype[symbolStruct]) {
-    return type.prototype[symbolStructLength]
+    return reinterpret_cast<size>(type.prototype[symbolStructLength] as uint32)
   }
   return 0
 }

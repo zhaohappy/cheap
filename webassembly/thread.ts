@@ -34,7 +34,7 @@ export const enum PthreadStatus {
 export type ChildThread = {
   thread: pointer<Pthread>
   worker: Worker
-  stackPointer: uint32
+  stackPointer: pointer<void>
   threadDescriptor: pointer<ThreadDescriptor>
 }
 

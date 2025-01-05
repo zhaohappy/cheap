@@ -127,14 +127,14 @@ export default class AllocatorJS implements Allocator {
   }
 
   private malloc_(size: size): pointer<void> {
-    size = align(size, ALIGNMENT_MASK)
+    size = reinterpret_cast<size>(align(reinterpret_cast<int32>(size), ALIGNMENT_MASK))
     if (size < MIN_FREEABLE_SIZE_IN_BYTES) {
-      size = MIN_FREEABLE_SIZE_IN_BYTES
+      size = reinterpret_cast<size>(MIN_FREEABLE_SIZE_IN_BYTES)
     }
 
     assert(!(!this.options.growSize && size > this.heapLength - OVERHEAD_IN_BYTES), `malloc size must be between ${MIN_FREEABLE_SIZE_IN_BYTES} bytes and ${this.heapLength - OVERHEAD_IN_BYTES} bytes`)
 
-    const minimumSize: int32 = bytesToQuads(size)
+    const minimumSize: int32 = bytesToQuads(reinterpret_cast<int32>(size))
     const block: int32 = this.findFreeBlock(this.int32Array, minimumSize)
     if (block <= HEADER_OFFSET_IN_QUADS) {
       return nullptr
@@ -238,7 +238,7 @@ export default class AllocatorJS implements Allocator {
     }
 
     const blockSize: int32 = readSize(this.int32Array, block) - padding
-    const minimumSize: int32 = bytesToQuads(align(size, ALIGNMENT_MASK))
+    const minimumSize: int32 = bytesToQuads(align(reinterpret_cast<int32>(size), ALIGNMENT_MASK))
 
     assert(!(blockSize < MIN_FREEABLE_SIZE_IN_QUADS || blockSize > (this.heapLength - OVERHEAD_IN_BYTES) / 4), `Invalid block: ${block}, got block size: ${quadsToBytes(blockSize)}`)
 
@@ -279,20 +279,21 @@ export default class AllocatorJS implements Allocator {
 
     assert(alignment >= 4, `alignment must not smaller then 4, but got ${alignment}`)
 
-    assert(!(alignment & (alignment - 1)), `alignment must be power of 2, but got ${alignment}`)
+    assert(!(alignment & (alignment - reinterpret_cast<size>(1))), `alignment must be power of 2, but got ${alignment}`)
 
     if (alignment <= ALIGNMENT_IN_BYTES) {
       // malloc 以 ALIGNMENT_IN_BYTES 字节对齐
       return this.malloc_(size)
     }
 
-    const address = this.malloc_(size + alignment - 1 + POINTER_SIZE_IN_BYTES)
+    const address = this.malloc_(size + alignment - reinterpret_cast<size>(1) + reinterpret_cast<size>(POINTER_SIZE_IN_BYTES))
 
     if (address === nullptr) {
       return nullptr
     }
 
-    const alignmentAddress = (address + alignment - 1 + POINTER_SIZE_IN_BYTES) & ~(alignment - 1)
+    const alignmentAddress: pointer<void> = reinterpret_cast<pointer<void>>((address + alignment - reinterpret_cast<size>(1)
+      + reinterpret_cast<size>(POINTER_SIZE_IN_BYTES)) & reinterpret_cast<size>(~(alignment - reinterpret_cast<size>(1))))
 
     this.int32Array[bytesToQuads(alignmentAddress - this.heapOffset) - POINTER_SIZE_IN_QUADS] = bytesToQuads(address - this.heapOffset)
 
@@ -401,7 +402,7 @@ export default class AllocatorJS implements Allocator {
       block = this.int32Array[block - POINTER_SIZE_IN_QUADS]
     }
 
-    return quadsToBytes(readSize(this.int32Array, block))
+    return reinterpret_cast<size>(quadsToBytes(readSize(this.int32Array, block)))
   }
 
   /**
@@ -658,7 +659,7 @@ function bytesToQuads(num: int32): int32 {
 /**
  * Align the given value to 8 bytes.
  */
-function align(value: int32, alignment: size): int32 {
+function align(value: int32, alignment: int32): int32 {
   return ((value + alignment) & ~alignment) >>> 0
 }
 
@@ -690,7 +691,7 @@ function alignHeapLength(length: int32) {
 /**
  * Read the list pointers for a given block.
  */
-function readListNode(int32Array: Int32Array, block: int32, byteOffset: size): ListNode {
+function readListNode(int32Array: Int32Array, block: int32, byteOffset: int32): ListNode {
   const height: int32 = int32Array[block + HEIGHT_OFFSET_IN_QUADS]
   const pointers: int32[] = []
   for (let i = 0; i < height; i++) {

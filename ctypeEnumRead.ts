@@ -86,7 +86,10 @@ export const CTypeEnumRead: CTypeEnumRead = {
   },
   [CTypeEnum.atomic_bool]: function (pointer: pointer<void>) {
     throw new Error('invalid operate')
-  }
+  },
+  [CTypeEnum.size]: function (pointer: pointer<void>) {
+    throw new Error('unimplemented')
+  },
 }
 
 export function override(funcs: Partial<CTypeEnumRead>) {

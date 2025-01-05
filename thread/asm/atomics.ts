@@ -3,6 +3,7 @@ import * as logger from 'common/util/logger'
 import * as wasmUtils from 'common/util/wasm'
 
 import asm from './atomics.asm'
+import asm64 from './atomics64.asm'
 
 import { override } from '../atomics'
 
@@ -15,15 +16,16 @@ export function isSupport() {
   return !!instance
 }
 
-export default function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
-  if (defined(DEBUG)) {
+export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint32) {
+  if (defined(DEBUG) && !defined(WASM_64)) {
     return
   }
   try {
-    if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
-
-      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
-        shared: true,
+    if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer || defined(WASM_64)) {
+      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+        shared: defined(WASM_64)
+          ? (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer)
+          : true,
         initial,
         maximum
       })

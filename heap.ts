@@ -1,14 +1,15 @@
 import isWorker from 'common/function/isWorker'
 import AllocatorInterface from './allocator/Allocator'
 import AllocatorJS from './allocator/AllocatorJS'
+import AllocatorJS64, { MemoryOperator } from './allocator/AllocatorJS64'
 import { WebassemblyTable } from './allocator/Table'
 import { SELF } from 'common/util/constant'
 import { AtomicsBuffer, CTypeEnum } from './typedef'
 import * as config from './config'
 import * as staticData from './staticData'
 import initAtomics from './thread/atomicsImpl'
-import initMemoryAsm from './asm/memory'
-import initAtomicsAsm from './thread/asm/atomics'
+import * as memoryAsm from './asm/memory'
+import * as atomicsAsm from './thread/asm/atomics'
 import initCtypeEnumImpl from './ctypeEnumImpl'
 import isAudioWorklet from 'common/function/isAudioWorklet'
 import browser from 'common/util/browser'
@@ -34,7 +35,7 @@ export let StackPointer: WebAssembly.Global = null
 /**
  * 栈结束位置
  */
-export let StackTop: int32 = null
+export let StackTop: pointer<void> = null
 
 /**
  * 当前线程栈大小
@@ -148,134 +149,150 @@ function checkHeap() {
   return false
 }
 
+export function getHeap() {
+  return Memory.buffer
+}
+
 export function getHeapU8() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapU8
 }
 
 export function getHeap8() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return Heap8
 }
 
 export function getHeapU16() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapU16
 }
 
 export function getHeap16() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return Heap16
 }
 
 export function getHeapU32() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapU32
 }
 
 export function getHeap32() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return Heap32
 }
 
 export function getHeap64() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return Heap64
 }
 
 export function getHeapU64() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapU64
 }
 
 export function getHeapF32() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapFloat32
 }
 
 export function getHeapF64() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapFloat64
 }
 
 export function getView() {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return view
 }
 
 export function getAtomicsBuffer(type: atomictype) {
-  if (defined(ENABLE_THREADS) && checkHeap()) {
+  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return AtomicBufferMap[type as number]
 }
 
 function setAllocator(a: AllocatorInterface) {
-  if (Allocator) {
-    Allocator.removeUpdateHandle(updateHeap)
+  if (!defined(WASM_64)) {
+    if (Allocator) {
+      Allocator.removeUpdateHandle(updateHeap)
+    }
   }
+
   Allocator = a
   if (SELF.CHeap) {
     SELF.CHeap.Allocator = Allocator
   }
 
-  Allocator.addUpdateHandle(updateHeap)
-  updateHeap(Allocator.getBuffer())
+  if (!defined(WASM_64)) {
+    Allocator.addUpdateHandle(updateHeap)
+    updateHeap(Allocator.getBuffer())
+  }
 }
 
 function updateHeap(heap: ArrayBuffer | SharedArrayBuffer) {
-  Heap8 = new Int8Array(heap)
-  Heap16 = new Int16Array(heap)
-  Heap32 = new Int32Array(heap)
-  Heap64 = new BigInt64Array(heap)
+  if (!defined(WASM_64)) {
+    Heap8 = new Int8Array(heap)
+    Heap16 = new Int16Array(heap)
+    Heap32 = new Int32Array(heap)
+    Heap64 = new BigInt64Array(heap)
 
-  HeapU8 = new Uint8Array(heap)
-  HeapU16 = new Uint16Array(heap)
-  HeapU32 = new Uint32Array(heap)
-  HeapU64 = new BigUint64Array(heap)
+    HeapU8 = new Uint8Array(heap)
+    HeapU16 = new Uint16Array(heap)
+    HeapU32 = new Uint32Array(heap)
+    HeapU64 = new BigUint64Array(heap)
 
-  HeapFloat32 = new Float32Array(heap)
-  HeapFloat64 = new Float64Array(heap)
+    HeapFloat32 = new Float32Array(heap)
+    HeapFloat64 = new Float64Array(heap)
 
-  view = new DataView(heap)
+    view = new DataView(heap)
 
-  AtomicBufferMap = {
-    [CTypeEnum.atomic_char]: HeapU8,
-    [CTypeEnum.atomic_uint8]: HeapU8,
-    [CTypeEnum.atomic_uint16]: HeapU16,
-    [CTypeEnum.atomic_uint32]: HeapU32,
-    [CTypeEnum.atomic_uint64]: HeapU64,
-    [CTypeEnum.atomic_int8]: Heap8,
-    [CTypeEnum.atomic_int16]: Heap16,
-    [CTypeEnum.atomic_int32]: Heap32,
-    [CTypeEnum.atomic_int64]: Heap64
+    AtomicBufferMap = {
+      [CTypeEnum.atomic_char]: HeapU8,
+      [CTypeEnum.atomic_uint8]: HeapU8,
+      [CTypeEnum.atomic_uint16]: HeapU16,
+      [CTypeEnum.atomic_uint32]: HeapU32,
+      [CTypeEnum.atomic_uint64]: HeapU64,
+      [CTypeEnum.atomic_int8]: Heap8,
+      [CTypeEnum.atomic_int16]: Heap16,
+      [CTypeEnum.atomic_int32]: Heap32,
+      [CTypeEnum.atomic_int64]: Heap64
+    }
   }
 }
 
 export function allocThreadId() {
-  return Atomics.add(HeapU32, staticData.threadCounter >>> 2, 1)
+  if (defined(WASM_64)) {
+    return (atomicsAsm.instance.exports.add32 as Function)(staticData.threadCounter, 1)
+  }
+  else {
+    return Atomics.add(HeapU32, staticData.threadCounter >>> 2, 1)
+  }
 }
 
 /**
@@ -285,13 +302,12 @@ export function allocThreadId() {
  */
 export async function initThread(options: {
   memory: WebAssembly.Memory
-  stackPointer?: number
-  stackSize?: number
+  stackPointer?: pointer<void>
+  stackSize?: int32
   name?: string
   disableAsm?: boolean
   id?: int32
 }) {
-
   initCtypeEnumImpl(
     () => {
       return Allocator
@@ -302,7 +318,7 @@ export async function initThread(options: {
 
   Memory = options.memory
 
-  if (!options.disableAsm) {
+  if (!options.disableAsm || defined(WASM_64)) {
     // @ts-ignore
     if (typeof BigInt === 'function' && BigInt !== Number
       && (
@@ -312,8 +328,9 @@ export async function initThread(options: {
         || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
+      || defined(WASM_64)
     ) {
-      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (config.USE_THREADS
       && (
@@ -323,33 +340,48 @@ export async function initThread(options: {
         || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
+      || defined(WASM_64)
     ) {
-      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
   }
 
-  const allocator = new AllocatorJS({
-    buffer: Memory.buffer,
-    memory: Memory,
-    byteOffset: config.HEAP_OFFSET,
-    maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
-    growAllowed: true,
-    onResize(old, need) {
-      Memory.grow((need - old.byteLength) >>> 16)
-      return {
-        buffer: Memory.buffer,
-        byteOffset: config.HEAP_OFFSET
+  const allocator = defined(WASM_64)
+    ? new AllocatorJS64(
+      {
+        memory: Memory,
+        byteOffset: static_cast<int64>(config.HEAP_OFFSET as uint32),
+        maxHeapSize: static_cast<int64>(config.HEAP_MAXIMUM) * 64n * 1024n,
+        growAllowed: true,
+        operator: memoryAsm.instance.exports as unknown as MemoryOperator
       }
-    }
-  }, false)
+      , false
+    )
+    : new AllocatorJS(
+      {
+        buffer: Memory.buffer,
+        memory: Memory,
+        byteOffset: config.HEAP_OFFSET,
+        maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
+        growAllowed: true,
+        onResize(old, need) {
+          Memory.grow((need - old.byteLength) >>> 16)
+          return {
+            buffer: Memory.buffer,
+            byteOffset: config.HEAP_OFFSET
+          }
+        }
+      },
+      false
+    )
 
-  setAllocator(allocator)
+  setAllocator(allocator as AllocatorInterface)
 
   if (options.stackPointer) {
     StackSize = options.stackSize
     StackTop = options.stackPointer
     StackPointer = new WebAssembly.Global({
-      value: 'i32',
+      value: defined(WASM_64) ? 'i64' : 'i32',
       mutable: true
     }, StackTop + StackSize)
     Table = new WebassemblyTable()
@@ -358,7 +390,12 @@ export async function initThread(options: {
     ThreadId = options.id
   }
   else {
-    ThreadId = Atomics.add(HeapU32, staticData.threadCounter >>> 2, 1)
+    if (defined(WASM_64)) {
+      ThreadId = (atomicsAsm.instance.exports.add32 as Function)(staticData.threadCounter, 1)
+    }
+    else {
+      ThreadId = Atomics.add(HeapU32, staticData.threadCounter >>> 2, 1)
+    }
   }
   ThreadName = options.name ?? 'anonymous'
 
@@ -393,12 +430,16 @@ export function initMain() {
   initAtomics(getAtomicsBuffer)
 
   Memory = SELF.CHeap?.Memory ? SELF.CHeap.Memory : new WebAssembly.Memory({
-    initial: config.HEAP_INITIAL,
-    maximum: config.HEAP_MAXIMUM,
-    shared: config.USE_THREADS
+    initial: reinterpret_cast<size>(config.HEAP_INITIAL),
+    maximum: reinterpret_cast<size>(config.HEAP_MAXIMUM),
+    shared: config.USE_THREADS,
+    // @ts-ignore
+    address: defined(WASM_64) ? 'i64' : 'i32',
+    // @ts-ignore
+    index: defined(WASM_64) ? 'i64' : 'i32'
   })
 
-  if (!defined(DEBUG) && defined(ENABLE_THREADS)) {
+  if (!defined(DEBUG) && defined(ENABLE_THREADS) || defined(WASM_64)) {
     // @ts-ignore
     if (typeof BigInt === 'function' && BigInt !== Number
       && (
@@ -408,8 +449,9 @@ export function initMain() {
         || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
+      || defined(WASM_64)
     ) {
-      initMemoryAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     if (config.USE_THREADS
       && defined(ENABLE_THREADS)
@@ -420,34 +462,48 @@ export function initMain() {
         || os.ios && browser.checkVersion(os.version, '15', true)
         || browser.newEdge
       )
+      || defined(WASM_64)
     ) {
-      initAtomicsAsm(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
   }
 
-  Allocator = SELF.CHeap?.Allocator ? (SELF.CHeap.Allocator as AllocatorInterface) : new AllocatorJS({
-    buffer: Memory.buffer,
-    memory: Memory,
-    byteOffset: config.HEAP_OFFSET,
-    maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
-    growAllowed: true,
-    onResize(old, need) {
-      Memory.grow((need - old.byteLength) >>> 16)
-      return {
-        buffer: Memory.buffer,
-        byteOffset: config.HEAP_OFFSET
-      }
-    }
-  })
+  Allocator = SELF.CHeap?.Allocator
+    ? (SELF.CHeap.Allocator as AllocatorInterface)
+    : (
+      defined(WASM_64)
+        ? new AllocatorJS64({
+          memory: Memory,
+          byteOffset: static_cast<int64>(config.HEAP_OFFSET as uint32),
+          maxHeapSize: static_cast<int64>((config.HEAP_MAXIMUM)) * 64n * 1024n,
+          growAllowed: true,
+          operator: memoryAsm.instance.exports as unknown as MemoryOperator
+        }) as unknown as AllocatorInterface
+        : new AllocatorJS({
+          buffer: Memory.buffer,
+          memory: Memory,
+          byteOffset: config.HEAP_OFFSET,
+          maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
+          growAllowed: true,
+          onResize(old, need) {
+            Memory.grow((need - old.byteLength) >>> 16)
+            return {
+              buffer: Memory.buffer,
+              byteOffset: config.HEAP_OFFSET
+            }
+          }
+        })
+    )
 
-  Allocator.addUpdateHandle(updateHeap)
-
-  updateHeap(Allocator.getBuffer())
+  if (!defined(WASM_64)) {
+    Allocator.addUpdateHandle(updateHeap)
+    updateHeap(Allocator.getBuffer())
+  }
 
   StackSize = SELF.CHeap?.StackSize ? SELF.CHeap.StackSize : config.STACK_SIZE
-  StackTop = SELF.CHeap?.StackTop ? SELF.CHeap.StackTop : Allocator.malloc(StackSize)
+  StackTop = SELF.CHeap?.StackTop ? SELF.CHeap.StackTop : Allocator.malloc(reinterpret_cast<size>(StackSize as unknown as uint32))
   StackPointer = SELF.CHeap?.StackPointer ? SELF.CHeap.StackPointer : new WebAssembly.Global({
-    value: 'i32',
+    value: defined(WASM_64) ? 'i64' : 'i32',
     mutable: true
   }, StackTop + StackSize)
 
@@ -458,13 +514,25 @@ export function initMain() {
 
   if (!SELF.CHeap) {
     if (config.USE_THREADS && defined(ENABLE_THREADS)) {
-      Atomics.store(HeapU32, staticData.threadCounter >>> 2, ThreadId + 1)
-      Atomics.store(Heap32, addressof(staticData.heapMutex.atomic) >>> 2, 0)
+      if (defined(WASM_64)) {
+        (atomicsAsm.instance.exports.store32 as Function)(staticData.threadCounter, ThreadId + 1)
+        ;(atomicsAsm.instance.exports.store32 as Function)(addressof(staticData.heapMutex.atomic), 0)
+      }
+      else {
+        Atomics.store(HeapU32, staticData.threadCounter >>> 2, ThreadId + 1)
+        Atomics.store(Heap32, addressof(staticData.heapMutex.atomic) >>> 2, 0)
+      }
     }
     else {
-      HeapU32[staticData.threadCounter >>> 2] = ThreadId + 1
-      let index = addressof(staticData.heapMutex.atomic) >>> 2
-      Heap32[index] = 0
+      if (defined(WASM_64)) {
+        (memoryAsm.instance.exports.write32 as Function)(staticData.threadCounter, ThreadId + 1)
+        ;(memoryAsm.instance.exports.write32 as Function)(addressof(staticData.heapMutex.atomic), 0)
+      }
+      else {
+        HeapU32[staticData.threadCounter >>> 2] = ThreadId + 1
+        let index = addressof(staticData.heapMutex.atomic) >>> 2
+        Heap32[index] = 0
+      }
     }
   }
 

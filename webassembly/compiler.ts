@@ -99,7 +99,7 @@ async function process(context: Context) {
           await writeUleb128Async(context.ioWriter, 0)
 
           // init_expr i32_const 0
-          await context.ioWriter.writeUint8(0x41)
+          await context.ioWriter.writeUint8(defined(WASM_64) ? 0x42 : 0x41)
           await context.ioWriter.writeUint8(0x00)
           await context.ioWriter.writeUint8(0x0b)
 

@@ -78,7 +78,7 @@ describe('signal arrow', () => {
       function _environ_get(__environ: pointer<uint32>, environ_buf: pointer<uint8>) {
         let bufSize = 0
         let i = 0
-        const ptr: pointer<uint8> = environ_buf + bufSize
+        const ptr: pointer<uint8> = reinterpret_cast<pointer<uint8>>(environ_buf + bufSize)
         accessof(reinterpret_cast<pointer<uint32>>(__environ + i)) <- reinterpret_cast<uint32>(ptr)
       }
     `
@@ -131,29 +131,48 @@ describe('signal arrow', () => {
   test('accessof(x)[0] <- xx', () => {
     const source = `
       let a: pointer<pointer<uint8>>
-      accessof(a)[0] = nullptr
+      accessof(a)[0] = 2
     `
     const target = `
       ${ctypeEnumReadImport}
       ${ctypeEnumWriteImport}
       let a: pointer<pointer<uint8>>;
-      CTypeEnumWrite[2](CTypeEnumRead[20](a), 0);
+      CTypeEnumWrite[${CTypeEnum.uint8}](CTypeEnumRead[${CTypeEnum.pointer}](a), 2);
     `
     check(source, target, {
       input
     })
   })
 
+  test('p[x][x] <- xx size wasm64', () => {
+    const source = `
+      let a: pointer<pointer<size>>
+      a[2][5] = 8
+    `
+    const target = `
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
+      let a: pointer<pointer<size>>;
+      CTypeEnumWrite[${CTypeEnum.size}](CTypeEnumRead[${CTypeEnum.pointer}](a + 16n) + 40n, 8n);
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
   test('p[x][x] = xx', () => {
     const source = `
       let a: pointer<pointer<uint8>>
-      a[0][0] = nullptr
+      a[0][0] = 3
     `
     const target = `
       ${ctypeEnumReadImport}
       ${ctypeEnumWriteImport}
       let a: pointer<pointer<uint8>>;
-      CTypeEnumWrite[2](CTypeEnumRead[20](a), 0);
+      CTypeEnumWrite[${CTypeEnum.uint8}](CTypeEnumRead[${CTypeEnum.pointer}](a), 3);
     `
     check(source, target, {
       input
@@ -200,8 +219,8 @@ describe('signal arrow', () => {
       }
       (function (prototype) {
         var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 18, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
         definedMetaProperty(prototype, symbolStruct, true);
         definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
         definedMetaProperty(prototype, symbolStructLength, 8);
@@ -240,8 +259,8 @@ describe('signal arrow', () => {
       }
       (function (prototype) {
         var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 18, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
         definedMetaProperty(prototype, symbolStruct, true);
         definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
         definedMetaProperty(prototype, symbolStructLength, 8);
@@ -281,8 +300,8 @@ describe('signal arrow', () => {
       }
       (function (prototype) {
         var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 18, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
         definedMetaProperty(prototype, symbolStruct, true);
         definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
         definedMetaProperty(prototype, symbolStructLength, 8);
@@ -291,7 +310,7 @@ describe('signal arrow', () => {
       let a: pointer<pointer<TestA>>;
       let b: pointer<TestA>;
       // @ts-ignore
-      CTypeEnumWrite[20](a + 8, b);
+      CTypeEnumWrite[${CTypeEnum.pointer}](a + 8, b);
     `
     check(source, target, {
       input

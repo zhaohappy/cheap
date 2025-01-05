@@ -436,4 +436,46 @@ describe('static cast', () => {
       input
     })
   })
+
+  test('static_cast<uint32>(nullptr)', () => {
+    const source = `
+      let c = static_cast<uint32>(nullptr)
+    `
+    const target = `
+      let c = 0
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('static_cast<uint64>(nullptr) wasm64', () => {
+    const source = `
+      let c = static_cast<uint64>(nullptr)
+    `
+    const target = `
+      let c = 0n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('static_cast<pointer>(uint32) wasm64', () => {
+    const source = `
+      let c = static_cast<pointer<void>>(23 as uint32)
+    `
+    const target = `
+      let c = BigInt(23 as uint32)
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
 })

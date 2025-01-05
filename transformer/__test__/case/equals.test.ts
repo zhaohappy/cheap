@@ -144,7 +144,7 @@ describe('equals', () => {
   test('pointer chain assignment: a = b = c', () => {
     const source = `
       let a: pointer<int8>, b: pointer<int8>, c: pointer<int8>;
-      a = 0;
+      a = reinterpret_cast<pointer<int8>>(0);
       b = c = a;
     `
     const target = `
@@ -849,7 +849,7 @@ describe('equals', () => {
       input
     })
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type pointer is not assignable to parameter of type int32\n?$/))
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type pointer is not assignable to value of type int32\n?$/))
     consoleErrorSpy.mockRestore()
   })
 
@@ -865,8 +865,152 @@ describe('equals', () => {
       input
     })
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type int32 is not assignable to parameter of type pointer\n?$/))
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type int32 is not assignable to value of type pointer\n?$/))
     consoleErrorSpy.mockRestore()
     
+  })
+
+  test('pointer<void> assignable to number', () => {
+    const source = `
+      let b: pointer<void> = 123
+    `
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    transform2AST(source, {
+      input
+    })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type number is not assignable to variable declaration of type pointer\n?$/))
+    consoleErrorSpy.mockRestore()
+    
+  })
+
+  test('size init', () => {
+    const source = `
+      let a: size = 0
+      let b: int32 = 0
+      let c: size = b
+    `
+    const target = `
+      let a: size = 0
+      let b: int32 = 0
+      let c: size = b
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('size init wasm64', () => {
+    const source = `
+      let a: size = 0
+      let b: int32 = 0
+      let c: size = b
+    `
+    const target = `
+      let a: size = 0n
+      let b: int32 = 0
+      let c: size = BigInt(b)
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('size function parameter default value', () => {
+    const source = `
+      function a(a: size = 0) {
+      }
+    `
+    const target = `
+      function a(a: size = 0) {
+      }
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('size init wasm64', () => {
+    const source = `
+      function a(a: size = 0) {
+      }
+    `
+    const target = `
+      function a(a: size = 0n) {
+      }
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('size property assignment', () => {
+    const source = `
+      type A = {
+        a: size
+      }
+      let b: A = {
+        a: 0
+      }
+    `
+    const target = `
+      type A = {
+        a: size
+      }
+      let b: A = {
+        a: 0
+      }
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+
+  test('size bind element object wasm64', () => {
+    const source = `
+      type A = {
+        a: size
+      }
+      let b: A
+      let {a = 0} = b
+    `
+    const target = `
+      type A = {
+        a: size
+      }
+      let b: A
+      let {a = 0n} = b
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('size bind element array wasm64', () => {
+    const source = `
+      let b: size[]
+      let [a = 0] = b
+    `
+    const target = `
+      let b: size[]
+      let [a = 0n] = b
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
   })
 })

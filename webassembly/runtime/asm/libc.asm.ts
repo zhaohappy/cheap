@@ -1,3 +1,4 @@
+export default asm`
 (func $env.malloc (;0;) (import "env" "malloc") (param i32) (result i32))
 (func $env.free (;1;) (import "env" "free") (param i32))
 (func $env.calloc (;2;) (import "env" "calloc") (param i32 i32) (result i32))
@@ -19,3 +20,4 @@
 (func $aligned_alloc (export "alignedAlloc") (param $alignment i32) (param $size i32) (result i32)
   (call $env.realloc (local.get $alignment) (local.get $size))
 )
+`

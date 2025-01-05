@@ -93,7 +93,7 @@ function setBitFieldValue(address: () => pointer<void>, type: CTypeEnum, bitLen:
 
 function definedArrayStruct(address: () => pointer<void>, length: number, type: Struct | {}) {
   const obj = {}
-  let size = sizeof(type)
+  let size = reinterpret_cast<int32>(sizeof(type))
   for (let i = 0; i < length; i++) {
     const key = toString(i)
     definedProperty(
@@ -123,7 +123,7 @@ function definedArrayStruct(address: () => pointer<void>, length: number, type: 
 
 function definedArrayCTypeEnum(address: () => pointer<void>, length: number, type: CTypeEnum) {
   const obj = {}
-  let size = sizeof(type)
+  let size = reinterpret_cast<int32>(sizeof(type))
   for (let i = 0; i < length; i++) {
     const key = toString(i)
     definedProperty(
@@ -198,7 +198,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
               key,
               getArray(
                 () => {
-                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  if (defined(WASM_64)) {
+                    return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                  }
+                  else {
+                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  }
                 },
                 obj,
                 key
@@ -207,7 +212,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 obj,
                 key,
                 () => {
-                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  if (defined(WASM_64)) {
+                    return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                  }
+                  else {
+                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  }
                 },
                 meta[KeyMetaKey.ArrayLength],
                 CTypeEnum.pointer
@@ -221,7 +231,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 key,
                 getArray(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   obj,
                   key
@@ -230,7 +245,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                   obj,
                   key,
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.ArrayLength],
                   meta[KeyMetaKey.Type]
@@ -243,7 +263,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 key,
                 getArray(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   obj,
                   key
@@ -252,7 +277,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                   obj,
                   key,
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.ArrayLength],
                   meta[KeyMetaKey.Type]
@@ -267,10 +297,20 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
               obj,
               key,
               getPointerValue(() => {
-                return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                if (defined(WASM_64)) {
+                  return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                }
+                else {
+                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                }
               }),
               setPointerValue(() => {
-                return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                if (defined(WASM_64)) {
+                  return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                }
+                else {
+                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                }
               })
             )
           }
@@ -282,7 +322,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 obj,
                 key,
                 () => {
-                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  if (defined(WASM_64)) {
+                    return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                  }
+                  else {
+                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  }
                 },
                 meta[KeyMetaKey.Type]
               ),
@@ -290,7 +335,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 obj,
                 key,
                 () => {
-                  return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  if (defined(WASM_64)) {
+                    return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                  }
+                  else {
+                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                  }
                 },
                 meta[KeyMetaKey.Type]
               )
@@ -303,7 +353,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 key,
                 getBitFieldValue(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.Type],
                   meta[KeyMetaKey.BitFieldLength],
@@ -311,7 +366,12 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 ),
                 setBitFieldValue(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.Type],
                   meta[KeyMetaKey.BitFieldLength],
@@ -325,13 +385,23 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                 key,
                 getCTypeEnumValue(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.Type]
                 ),
                 setCTypeEnumValue(
                   () => {
-                    return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    if (defined(WASM_64)) {
+                      return obj[symbolStructAddress] + static_cast<int64>(meta[KeyMetaKey.BaseAddressOffset] as uint32)
+                    }
+                    else {
+                      return obj[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+                    }
                   },
                   meta[KeyMetaKey.Type]
                 )

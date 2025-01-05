@@ -1,3 +1,4 @@
+export default asm`
 (func $write8 (export "write8") (param $p0 i32) (param $p1 i32)
   (local.get $p0)
   (local.get $p1)
@@ -60,3 +61,16 @@
   (local.get $p0)
   (f64.load)
 )
+(func $fill (export "fill") (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (local.get $p0)
+  (local.get $p1)
+  (local.get $p2)
+  (memory.fill)
+)
+(func $copy (export "copy") (param $p0 i32) (param $p1 i32) (param $p2 i32)
+  (local.get $p0)
+  (local.get $p1)
+  (local.get $p2)
+  (memory.copy)
+)
+`

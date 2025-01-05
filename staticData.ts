@@ -10,9 +10,9 @@ import { Mutex } from './thread/mutex'
 /**
  * 静态分配区栈顶指针
  */
-let pointer: pointer<uint8> = reinterpret_cast<pointer<uint8>>(static_cast<uint32>(nullptr) + 1)
+let pointer: pointer<void> = reinterpret_cast<pointer<void>>(reinterpret_cast<pointer<pointer<void>>>(nullptr) + 1)
 
-export function malloc(length: size, algin: number = 1): pointer<void> {
+export function malloc(length: size, algin: size = 1): pointer<void> {
 
   let address = pointer
 
@@ -22,7 +22,7 @@ export function malloc(length: size, algin: number = 1): pointer<void> {
 
   assert(address < config.HEAP_OFFSET, 'static data overflow')
 
-  pointer = reinterpret_cast<pointer<uint8>>(address + length)
+  pointer = reinterpret_cast<pointer<void>>(address + length)
 
   return address
 }

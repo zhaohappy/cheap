@@ -91,9 +91,9 @@ export default class WebAssemblyRunner {
 
   private builtinMalloc: pointer<void>[]
 
-  private memoryBase: number
+  private memoryBase: pointer<void>
 
-  private tableBase: number
+  private tableBase: pointer<void>
 
   private childImports: string
   private childUrl: string
@@ -128,9 +128,9 @@ export default class WebAssemblyRunner {
       this.childImports = URL.createObjectURL(options.childImports)
     }
 
-    this.memoryBase = resource.dataSize ? aligned_alloc(resource.dataAlign ?? 8, resource.dataSize) : 0
+    this.memoryBase = resource.dataSize ? aligned_alloc(resource.dataAlign ?? 8, resource.dataSize) : nullptr
     if (this.memoryBase && resource.bssSize) {
-      memset(this.memoryBase + resource.dataSize - resource.bssSize, 0, resource.bssSize)
+      memset(this.memoryBase + ((resource.dataSize - resource.bssSize) as uint32), 0, resource.bssSize)
     }
 
     // 子线程的 tableBase 需要和父线程一致
@@ -139,7 +139,7 @@ export default class WebAssemblyRunner {
         Table.alloc(options.tableBase - Table.getPointer())
       }
     }
-    this.tableBase = resource.tableSize ? Table.alloc(resource.tableSize) : 0
+    this.tableBase = resource.tableSize ? Table.alloc(resource.tableSize) : nullptr
 
     this.options = options
 
@@ -232,11 +232,11 @@ export default class WebAssemblyRunner {
         }
       },
       'GOT.func': {
-        malloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.MALLOC),
-        calloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.CALLOC),
-        realloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.REALLOC),
-        aligned_alloc: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.ALIGNED_ALLOC),
-        free: new WebAssembly.Global({mutable: true, value: 'i32'}, BuiltinTableSlot.FREE)
+        malloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.MALLOC)),
+        calloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.CALLOC)),
+        realloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.REALLOC)),
+        aligned_alloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.ALIGNED_ALLOC)),
+        free: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.FREE))
       }
     }
 
@@ -256,7 +256,7 @@ export default class WebAssemblyRunner {
         thread.id = allocThreadId()
         thread.status = PthreadStatus.RUN
         thread.flags = 0
-        thread.retval = 0
+        thread.retval = nullptr
 
         const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
 
@@ -738,7 +738,7 @@ export default class WebAssemblyRunner {
 
     if (this.tableBase) {
       Table.free(this.tableBase)
-      this.tableBase = null
+      this.tableBase = nullptr
     }
 
     if (this.childImports) {

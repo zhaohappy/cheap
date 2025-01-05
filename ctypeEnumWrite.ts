@@ -3,6 +3,9 @@ import * as object from 'common/util/object'
 
 type CTypeEnumWrite = {
   [key in CTypeEnum]: (pointer: pointer<void>, value: CTypeEnum2Type<key>) => void
+} & {
+  fill: (dst: pointer<void>, value: uint8, size: size) => void,
+  copy: (dst: pointer<void>, src:  pointer<void>, size: size) => void,
 }
 export const CTypeEnumWrite: CTypeEnumWrite = {
   [CTypeEnum.char]: function (pointer: pointer<void>, value: any): void {
@@ -85,7 +88,16 @@ export const CTypeEnumWrite: CTypeEnumWrite = {
   },
   [CTypeEnum.atomic_bool]: function (pointer: pointer<void>, value: any): void {
     throw new Error('invalid operate')
-  }
+  },
+  [CTypeEnum.size]: function (pointer: pointer<void>, value: any): void {
+    throw new Error('unimplemented')
+  },
+  'copy': function (dst: pointer<void>, value: int32, size: size): void {
+    throw new Error('invalid operate')
+  },
+  'fill': function (dst: pointer<void>, src: pointer<void>, size: size): void {
+    throw new Error('invalid operate')
+  },
 }
 
 export function override(funcs: Partial<CTypeEnumWrite>) {

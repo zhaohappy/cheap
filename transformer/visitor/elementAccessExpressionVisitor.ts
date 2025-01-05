@@ -71,12 +71,12 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
           tree as ts.Expression,
           ts.SyntaxKind.PlusToken,
           ts.isNumericLiteral(node.argumentExpression)
-            ? statement.context.factory.createNumericLiteral(targetStruct.length * (+node.argumentExpression.text))
-            : statement.context.factory.createBinaryExpression(
+            ? nodeUtils.createPointerOperand(targetStruct.length * (+node.argumentExpression.text))
+            : nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
               statement.context.factory.createNumericLiteral(targetStruct.length),
               ts.SyntaxKind.AsteriskToken,
               statement.context.factory.createParenthesizedExpression(node.argumentExpression)
-            )
+            ))
         )
       }
 
@@ -114,12 +114,12 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
           tree as ts.Expression,
           ts.SyntaxKind.PlusToken,
           ts.isNumericLiteral(node.argumentExpression)
-            ? statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)] * (+node.argumentExpression.text))
-            : statement.context.factory.createBinaryExpression(
+            ? nodeUtils.createPointerOperand(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)] * (+node.argumentExpression.text))
+            : nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
               statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)]),
               ts.SyntaxKind.AsteriskToken,
               statement.context.factory.createParenthesizedExpression(node.argumentExpression)
-            )
+            ))
         )
       }
 

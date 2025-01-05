@@ -27,10 +27,19 @@ export const HEAP_OFFSET = 1024
 /**
  * 堆初始大小
  */
-export const HEAP_INITIAL = ((SELF as any).CHEAP_HEAP_INITIAL ?? defined(CHEAP_HEAP_INITIAL))
+export const HEAP_INITIAL: uint32 = ((SELF as any).CHEAP_HEAP_INITIAL ?? defined(CHEAP_HEAP_INITIAL))
 
 /**
  * 堆最大大小
  * ios safari 16 以下 对最大值有限制，太大分配不出来
  */
-export const HEAP_MAXIMUM = (SELF as any).CHEAP_HEAP_MAXIMUM ?? (USE_THREADS && (os.ios && !browser.checkVersion(os.version, '17', true)) ? 8192 : 65536)
+export const HEAP_MAXIMUM: uint32 = (SELF as any).CHEAP_HEAP_MAXIMUM
+  ?? (USE_THREADS && (os.ios && !browser.checkVersion(os.version, '17', true))
+    ? 8192
+    : (defined(WASM_64)
+      // 64 位最大 16GB
+      ? 262144
+      // 32 位最大 4GB
+      : 65536
+    )
+  )

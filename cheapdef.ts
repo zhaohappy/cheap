@@ -71,7 +71,9 @@ declare type char = {
   zzztype__?: 'char'
 } & number
 
-declare type size = int32
+declare type size = {
+  zzztype__?: 'size'
+} & number
 
 declare type atomic_char = {
   zzztype__?: 'atomic_char'
@@ -231,6 +233,8 @@ declare type pointer<T> =
   }
   & number
 
+declare type ptrdiff = number
+
 declare type anyptr = {
   zzzlevel__?: any
   zzztype__?: any
@@ -259,7 +263,7 @@ declare type BuiltinType = i32 | i64 | f32 | f64
 | atomic_char | atomic_uint8 | atomic_uint16
 | atomic_uint32 | atomic_int8 | atomic_int16
 | atomic_int32 | atomic_uint64 | atomic_int64
-| atomic_bool
+| atomic_bool | size
 
 /* eslint-disable */
 declare type AtomicType2Type<T> =
@@ -427,6 +431,7 @@ declare function static_cast<T extends BuiltinType>(target: BuiltinType): T
  * @param template 
  */
 declare function asm(template: TemplateStringsArray, ...exps: any[]): string
+declare function asm64(template: TemplateStringsArray, ...exps: any[]): string
 
 /**
  * 创建结构体实例

@@ -31,6 +31,7 @@ export const createThreadFromModule = 'createThreadFromModule'
 export const typeArray = 'array'
 export const typeBit = 'bit'
 export const typePointer = 'pointer'
+export const typeSize = 'size'
 export const typeAnyptr = 'anyptr'
 export const typeNullptr = 'nullptr'
 export const typeMultiPointer = 'multiPointer'
@@ -40,7 +41,10 @@ export const defined = 'defined'
 export const args = 'args'
 export const enableArgs = 'enableArgs'
 
+export const enumPointer = 'typeptr'
+
 export const tagAsm = 'asm'
+export const tagAsm64 = 'asm64'
 
 export const prototype = 'prototype'
 
@@ -80,6 +84,7 @@ export const MODULE_2 = '__MODULE__'
 
 export const importStar = '__importStar'
 export const importDefault = '__importDefault'
+export const symbolIsPointer = Symbol('symbolIsPointer')
 
 export let PACKET_NAME = ''
 

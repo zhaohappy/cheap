@@ -80,7 +80,7 @@ module.exports = function(source) {
         const inputPath = `${distPath}${input}`;
         const outputPath = `${distPath}${output}`;
 
-        const cmd = `${this.query.wat2wasm} ${inputPath} --enable-simd --enable-threads -o ${outputPath}`;
+        const cmd = `${this.query.wat2wasm} ${inputPath} --enable-all -o ${outputPath}`;
 
         if (!/^\S*\(module/.test(source)) {
             source = `
