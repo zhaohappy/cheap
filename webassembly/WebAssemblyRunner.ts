@@ -723,6 +723,10 @@ export default class WebAssemblyRunner {
     return this.instance
   }
 
+  public getChildThreadCount() {
+    return this.childThreads.size
+  }
+
   public destroy() {
     if (this.builtinMalloc?.length) {
       array.each(this.builtinMalloc, (pointer) => {
