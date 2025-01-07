@@ -5,6 +5,7 @@ import { override as writeoverride} from '../ctypeEnumWrite'
 import * as wasmUtils from 'common/util/wasm'
 
 import asm from './memory.asm'
+import asm64 from './memory64.asm'
 import { CTypeEnum } from '../typedef'
 
 /**
@@ -16,12 +17,12 @@ export function support() {
   return !!instance
 }
 
-export default function init(memory: WebAssembly.Memory, initial: int32, maximum: int32) {
-  if (defined(DEBUG)) {
+export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint32) {
+  if (defined(DEBUG) && !defined(WASM_64)) {
     return
   }
   try {
-    const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
+    const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
       shared: typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer,
       initial,
       maximum
@@ -66,7 +67,20 @@ export default function init(memory: WebAssembly.Memory, initial: int32, maximum
       [CTypeEnum.double]: instance.exports.readf64 as any,
 
       [CTypeEnum.pointer]: (pointer: pointer<void>) => {
-        return (instance.exports.read32 as Function)(pointer) >>> 0
+        if (defined(WASM_64)) {
+          return reinterpret_cast<pointer<void>>(BigInt.asUintN(64, (instance.exports.read64 as Function)(pointer)))
+        }
+        else {
+          return (instance.exports.read32 as Function)(pointer) >>> 0
+        }
+      },
+      [CTypeEnum.size]: (pointer: pointer<void>) => {
+        if (defined(WASM_64)) {
+          return reinterpret_cast<pointer<void>>(BigInt.asUintN(64, (instance.exports.read64 as Function)(pointer)))
+        }
+        else {
+          return (instance.exports.read32 as Function)(pointer) >>> 0
+        }
       }
     })
 
@@ -95,7 +109,10 @@ export default function init(memory: WebAssembly.Memory, initial: int32, maximum
       [CTypeEnum.float]: instance.exports.writef32 as any,
       [CTypeEnum.double]: instance.exports.writef64 as any,
 
-      [CTypeEnum.pointer]: instance.exports.write32 as any
+      [CTypeEnum.pointer]: defined(WASM_64) ? instance.exports.write64 as any : instance.exports.write32 as any,
+      [CTypeEnum.size]: defined(WASM_64) ? instance.exports.write64 as any : instance.exports.write32 as any,
+      'copy': instance.exports.copy as any,
+      'fill': instance.exports.fill as any
     })
   }
   catch (error) {

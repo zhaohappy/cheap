@@ -5,6 +5,7 @@ import * as typeUtils from './typeutil'
 import * as array from 'common/util/array'
 import { AtomicCall, BuiltinBigInt, BuiltinFloat, BuiltinType, BuiltinUint } from '../defined'
 import { atomicsPath } from '../constant'
+import * as is from 'common/util/is'
 
 export function getEqualsBinaryExpressionRight(node: ts.BinaryExpression) {
   if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
@@ -58,6 +59,17 @@ export function isExpressionSmartPointer(node: ts.PropertyAccessExpression | ts.
   }
 
   return false
+}
+
+export function getSizeExpressionType(node: ts.Node) {
+  if (ts.isBinaryExpression(node)) {
+    const type = statement.typeChecker.getTypeAtLocation(node.right)
+    if (typeUtils.isSizeType(type)) {
+      return type
+    }
+    return getSizeExpressionType(node.left)
+  }
+  return statement.typeChecker.getTypeAtLocation(node)
 }
 
 export function getPointerExpressionType(node: ts.Node) {
@@ -253,42 +265,20 @@ export function checkBool(node: ts.Node, visitor: ts.Visitor) {
   return ts.visitNode(node, compute)
 }
 
-export function createPlusExpress(tree: ts.Node, right: ts.Node) {
-  // 合并 a + 2 + 3
-  if (ts.isBinaryExpression(tree)
-    && tree.operatorToken.kind === ts.SyntaxKind.PlusToken
-    && (ts.isNumericLiteral(tree.right) || ts.isNumericLiteral(tree.left))
-    && ts.isNumericLiteral(right)
-  ) {
-    if (ts.isNumericLiteral(tree.right)) {
-      return statement.context.factory.createBinaryExpression(
-        tree.left,
-        ts.SyntaxKind.PlusToken,
-        statement.context.factory.createNumericLiteral((+tree.right.text) + (+right.text))
-      )
-    }
-    else if (ts.isNumericLiteral(tree.left)) {
-      return statement.context.factory.createBinaryExpression(
-        statement.context.factory.createNumericLiteral((+tree.left.text) + (+right.text)),
-        ts.SyntaxKind.PlusToken,
-        tree.right
-      )
-    }
-  }
-  return statement.context.factory.createBinaryExpression(
-    tree as ts.Expression,
-    ts.SyntaxKind.PlusToken,
-    right as ts.Expression
-  )
-}
-
 export function getBinaryBuiltinTypeName(node: ts.Expression | ts.Identifier) {
   if (!node) {
     return ''
   }
   const type = statement.typeChecker.getTypeAtLocation(node)
-  if (type.aliasSymbol && array.has(BuiltinType, type.aliasSymbol.escapedName as string)) {
+
+  if (typeUtils.isSizeType(type)) {
+    return statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32'
+  }
+  else if (type.aliasSymbol && array.has(BuiltinType, type.aliasSymbol.escapedName as string)) {
     return type.aliasSymbol.escapedName as string
+  }
+  else if (typeUtils.isPointerType(type)) {
+    return statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32'
   }
 
   if (node.kind === ts.SyntaxKind.TrueKeyword || node.kind === ts.SyntaxKind.FalseKeyword) {
@@ -511,4 +501,82 @@ export function hasDefined(node: ts.Node) {
   else {
     return false
   }
+}
+
+export function createBitInt(value: number) {
+  if (statement.cheapCompilerOptions.defined.BIGINT_LITERAL) {
+    return statement.context.factory.createBigIntLiteral(value + 'n')
+  }
+  return statement.context.factory.createCallExpression(
+    statement.context.factory.createIdentifier('BigInt'),
+    undefined,
+    [
+      statement.context.factory.createNumericLiteral(value)
+    ]
+  )
+}
+
+export function createPointerOperand(value: number | ts.Expression) {
+  if (is.number(value)) {
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+      return createBitInt(value)
+    }
+    return statement.context.factory.createNumericLiteral(value)
+  }
+  else if (ts.isNumericLiteral(value)) {
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+      return createBitInt(+value.text)
+    }
+    return value
+  }
+  else if (isBigIntNode(value)) {
+    const num = getBigIntValue(value as ts.CallExpression)
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+      return createBitInt(Number(num))
+    }
+    return statement.context.factory.createNumericLiteral(Number(num))
+  }
+  else {
+    const typeName = getBinaryBuiltinTypeName(value)
+    if (statement.cheapCompilerOptions.defined.WASM_64
+      && (!typeName || !array.has(BuiltinBigInt, typeName) && typeName !== constant.typeSize)
+    ) {
+      return statement.context.factory.createCallExpression(
+        statement.context.factory.createIdentifier('BigInt'),
+        undefined,
+        [
+          value
+        ]
+      )
+    }
+    return value
+  }
+}
+
+export function isBigIntNode(node: ts.Node) {
+  return ts.isBigIntLiteral(node)
+    || ts.isCallExpression(node)
+      && ts.isIdentifier(node.expression)
+      && node.expression.escapedText === 'BigInt'
+      && node.arguments.length === 1
+      && ts.isNumericLiteral(node.arguments[0])
+}
+
+export function getBigIntValue(node: ts.BigIntLiteral | ts.CallExpression) {
+  if (ts.isBigIntLiteral(node)) {
+    return BigInt(node.text.substring(0, node.text.length - 1))
+  }
+  else {
+    return BigInt((node.arguments[0] as ts.NumericLiteral).text)
+  }
+}
+
+export function getTypeAtLocation(node: ts.Node) {
+  if (node.pos >= 0) {
+    return statement.typeChecker.getTypeAtLocation(node)
+  }
+  if (ts.isParenthesizedExpression(node)) {
+    return getTypeAtLocation(node.expression)
+  }
+  return statement.typeChecker.getTypeAtLocation(node)
 }

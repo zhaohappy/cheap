@@ -1,8 +1,7 @@
-
 export default interface Allocator {
 
-  addUpdateHandle(handle: (buffer: ArrayBuffer) => void): void
-  removeUpdateHandle(handle: (buffer: ArrayBuffer) => void): void
+  addUpdateHandle(handle: (buffer: ArrayBufferLike) => void): void
+  removeUpdateHandle(handle: (buffer: ArrayBufferLike) => void): void
 
   /**
    * 分配一个长度是 size 的一段内存

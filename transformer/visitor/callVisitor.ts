@@ -1,5 +1,5 @@
 
-import ts from 'typescript'
+import ts, { Expression } from 'typescript'
 import * as is from 'common/util/is'
 import * as array from 'common/util/array'
 import statement from '../statement'
@@ -356,6 +356,40 @@ function getTypeSize(nameType: ts.Type) {
   return 0
 }
 
+function formatArgument(signature: ts.Signature, args: ts.NodeArray<ts.Expression>) {
+  const newArgument: ts.Expression[] = []
+  let hasSizeParameter = false
+  for (let i = 0; i < args.length; i++) {
+    if (signature.parameters[i]) {
+      const argumentType = statement.typeChecker.getTypeAtLocation(args[i])
+      const parameterType = statement.typeChecker.getTypeOfSymbol(signature.parameters[i])
+
+      if (typeUtils.isPointerType(argumentType)
+          && typeUtils.isBuiltinType(parameterType)
+          && !typeUtils.isPointerType(parameterType)
+          && !typeUtils.isNullPointer(parameterType)
+        || typeUtils.isBuiltinType(argumentType)
+          && !typeUtils.isPointerType(argumentType)
+          && !typeUtils.isNullPointer(argumentType)
+          && typeUtils.isPointerType(parameterType)
+      ) {
+        reportError(statement.currentFile, args[i], `type ${typeUtils.getBuiltinNameByType(argumentType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(parameterType)}`, error.TYPE_MISMATCH)
+      }
+      if (typeUtils.isSizeType(parameterType)) {
+        newArgument.push(nodeUtils.createPointerOperand(args[i]))
+        hasSizeParameter = true
+      }
+      else {
+        newArgument.push(args[i])
+      }
+    }
+  }
+  return {
+    newArgument,
+    hasSizeParameter
+  }
+}
+
 export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node {
   let callName: string = ''
   if (ts.isIdentifier(node.expression)) {
@@ -520,7 +554,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       if (nameType) {
         const size = getTypeSize(nameType)
         if (size) {
-          return statement.context.factory.createNumericLiteral(size)
+          return nodeUtils.createPointerOperand(statement.context.factory.createNumericLiteral(size))
         }
         else {
           return statement.context.factory.createCallExpression(
@@ -622,7 +656,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
                 statement.addSymbolImport(constant.symbolStructAddress)
               ),
               ts.SyntaxKind.PlusToken,
-              statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+              nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
             )
           }
           else {
@@ -684,15 +718,15 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
 
         if (ts.isNumericLiteral(arg.argumentExpression)) {
           if (+arg.argumentExpression.text) {
-            offset = statement.context.factory.createNumericLiteral(+arg.argumentExpression.text * size)
+            offset = nodeUtils.createPointerOperand(+arg.argumentExpression.text * size)
           }
         }
         else {
-          offset = statement.context.factory.createBinaryExpression(
+          offset = nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
             ts.visitNode(arg.argumentExpression, visitor) as ts.Expression,
             ts.SyntaxKind.AsteriskToken,
             statement.context.factory.createNumericLiteral(size)
-          )
+          ))
         }
 
         if (offset) {
@@ -782,6 +816,11 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
 
       if (!targetType && ts.isTypeReferenceNode(node.typeArguments[0]) && ts.isIdentifier(node.typeArguments[0].typeName)) {
         targetType = node.typeArguments[0].typeName.escapedText as string
+      }
+      if (targetType === constant.typePointer
+        || targetType === constant.typeSize
+      ) {
+        targetType = statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32'
       }
 
       const argType = statement.typeChecker.getTypeAtLocation(node.arguments[0])
@@ -1149,6 +1188,39 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return statement.context.factory.createParenthesizedExpression(newNode as ts.Expression)
     }
     else if (callName === constant.reinterpretCast && !statement.lookupFunc(constant.reinterpretCast)) {
+      if (statement.cheapCompilerOptions.defined.WASM_64) {
+        let targetType = node.typeArguments[0]
+          && statement.typeChecker.getTypeAtLocation(node.typeArguments[0])?.aliasSymbol?.escapedName as string || ''
+
+        // 转 size 和 pointer 64 位需要变成 bigint
+        if (targetType === constant.typeSize
+          || targetType === constant.typePointer
+        ) {
+          const sourceType = nodeUtils.getBinaryBuiltinTypeName(node.arguments[0])
+          if (!array.has(BuiltinBigInt, sourceType)) {
+            return nodeUtils.createPointerOperand(ts.visitNode(node.arguments[0], visitor) as Expression)
+          }
+        }
+        // size 和 pointer 转 number
+        const sourceType = statement.typeChecker.getTypeAtLocation(node.arguments[0])
+        if ((typeUtils.isSizeType(sourceType) || typeUtils.isPointerType(sourceType))
+          && !array.has(BuiltinBigInt, targetType)
+          && targetType !== constant.typePointer
+          && targetType !== constant.typeSize
+        ) {
+          const result = ts.visitNode(node.arguments[0], visitor) as Expression
+          if (nodeUtils.isBigIntNode(result)) {
+            return statement.context.factory.createNumericLiteral(Number(nodeUtils.getBigIntValue(result as ts.BigIntLiteral)))
+          }
+          return statement.context.factory.createCallExpression(
+            statement.context.factory.createIdentifier('Number'),
+            undefined,
+            [
+              result
+            ]
+          )
+        }
+      }
       return ts.visitNode(node.arguments[0], visitor)
     }
     else if (callName === constant.defined
@@ -1159,16 +1231,18 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return definedReplace(name, node)
     }
     else if (callName === constant.move && !statement.lookupFunc(constant.move)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createIdentifier(constant.addressof),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
     }
     else if (callName === constant.malloc && !statement.lookupFunc(constant.malloc)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
@@ -1176,12 +1250,13 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             statement.context.factory.createIdentifier(constant.malloc)
           ),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
     }
     else if (callName === constant.calloc && !statement.lookupFunc(constant.calloc)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
@@ -1189,12 +1264,13 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             statement.context.factory.createIdentifier(constant.calloc)
           ),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
     }
     else if (callName === constant.realloc && !statement.lookupFunc(constant.realloc)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
@@ -1202,12 +1278,13 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             statement.context.factory.createIdentifier(constant.realloc)
           ),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
     }
     else if (callName === constant.alignedAlloc && !statement.lookupFunc(constant.alignedAlloc)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
@@ -1215,12 +1292,13 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             statement.context.factory.createIdentifier('alignedAlloc')
           ),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
     }
     else if (callName === constant.free && !statement.lookupFunc(constant.free)) {
+      const { newArgument } = formatArgument(signature, node.arguments)
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
@@ -1228,7 +1306,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             statement.context.factory.createIdentifier(constant.free)
           ),
           undefined,
-          node.arguments
+          newArgument
         ),
         visitor
       )
@@ -1313,15 +1391,15 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             let offset: ts.Expression = null
             if (ts.isNumericLiteral(node.arguments[0])) {
               if (+node.arguments[0].text) {
-                offset = statement.context.factory.createNumericLiteral(+node.arguments[0].text * struct.length)
+                offset = nodeUtils.createPointerOperand(+node.arguments[0].text * struct.length)
               }
             }
             else {
-              offset = statement.context.factory.createBinaryExpression(
+              offset = nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                 ts.visitNode(node.arguments[0], visitor) as ts.Expression,
                 ts.SyntaxKind.AsteriskToken,
                 statement.context.factory.createNumericLiteral(struct.length)
-              )
+              ))
             }
 
             tree = offset ? statement.context.factory.createBinaryExpression(
@@ -1340,15 +1418,15 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             let offset: ts.Expression = null
             if (ts.isNumericLiteral(node.arguments[0])) {
               if (+node.arguments[0].text) {
-                offset = statement.context.factory.createNumericLiteral(+node.arguments[0].text * byteLength)
+                offset = nodeUtils.createPointerOperand(+node.arguments[0].text * byteLength)
               }
             }
             else {
-              offset = statement.context.factory.createBinaryExpression(
+              offset = nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                 ts.visitNode(node.arguments[0], visitor) as ts.Expression,
                 ts.SyntaxKind.AsteriskToken,
                 statement.context.factory.createNumericLiteral(byteLength)
-              )
+              ))
             }
 
             tree = offset ? statement.context.factory.createBinaryExpression(
@@ -1365,23 +1443,15 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
   }
 
   if (signature && node.arguments.length) {
-    for (let i = 0; i < node.arguments.length; i++) {
-      if (signature.parameters[i]) {
-        const argumentType = statement.typeChecker.getTypeAtLocation(node.arguments[i])
-        const parameterType = statement.typeChecker.getTypeOfSymbol(signature.parameters[i])
-
-        if (typeUtils.isPointerType(argumentType)
-            && typeUtils.isBuiltinType(parameterType)
-            && !typeUtils.isPointerType(parameterType)
-            && !typeUtils.isNullPointer(parameterType)
-          || typeUtils.isBuiltinType(argumentType)
-            && !typeUtils.isPointerType(argumentType)
-            && !typeUtils.isNullPointer(argumentType)
-            && typeUtils.isPointerType(parameterType)
-        ) {
-          reportError(statement.currentFile, node.arguments[i], `type ${typeUtils.getBuiltinNameByType(argumentType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(parameterType)}`, error.TYPE_MISMATCH)
-        }
-      }
+    const { hasSizeParameter, newArgument } = formatArgument(signature, node.arguments)
+    if (hasSizeParameter) {
+      return ts.visitNode(statement.context.factory.createCallExpression(
+        node.expression,
+        node.typeArguments,
+        [
+          ...newArgument
+        ]
+      ), visitor)
     }
   }
 

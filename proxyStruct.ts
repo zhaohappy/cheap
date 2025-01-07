@@ -30,7 +30,7 @@ function proxyArray(address: pointer<CTypeEnum | Struct>, length: number, type: 
   const obj = {}
   obj[symbolStructAddress] = address
 
-  let size = sizeof(pointer ? CTypeEnum.pointer : type)
+  let size = reinterpret_cast<int32>(sizeof(pointer ? CTypeEnum.pointer : type))
 
   const proxy = new Proxy(obj, {
     get(target, propertyKey, receiver) {
@@ -41,17 +41,32 @@ function proxyArray(address: pointer<CTypeEnum | Struct>, length: number, type: 
 
       const index = toNumber(propertyKey)
 
-      assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + index * size).toString(16)}`)
+      if (defined(WASM_64)) {
+        assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + static_cast<int64>((index * size) as uint32)).toString(16)}`)
+      }
+      else {
+        assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + index * size).toString(16)}`)
+      }
 
       if (pointer) {
-        return CTypeEnumRead[CTypeEnum.pointer](target[symbolStructAddress] + index * size)
+        if (defined(WASM_64)) {
+          return CTypeEnumRead[CTypeEnum.pointer](target[symbolStructAddress] + static_cast<int64>((index * size) as uint32))
+        }
+        else {
+          return CTypeEnumRead[CTypeEnum.pointer](target[symbolStructAddress] + index * size)
+        }
       }
       else {
         if (is.func(type)) {
           return target[propertyKey]
         }
         else {
-          return CTypeEnumRead[type](target[symbolStructAddress] + index * size)
+          if (defined(WASM_64)) {
+            return CTypeEnumRead[type](target[symbolStructAddress] + static_cast<int64>((index * size) as uint32))
+          }
+          else {
+            return CTypeEnumRead[type](target[symbolStructAddress] + index * size)
+          }
         }
       }
     },
@@ -64,13 +79,23 @@ function proxyArray(address: pointer<CTypeEnum | Struct>, length: number, type: 
 
       const index = toNumber(propertyKey)
 
-      assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + index * size).toString(16)}`)
+      if (defined(WASM_64)) {
+        assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + static_cast<int64>((index * size) as uint32)).toString(16)}`)
+      }
+      else {
+        assert(index < length && index >= 0, `Out Of Bounds, address: ${(target[symbolStructAddress] + index * size).toString(16)}`)
+      }
 
       if (pointer) {
 
-        assert(is.number(newValue), 'value is not pointer')
+        assert(defined(WASM_64) ? is.bigint(newValue) : is.number(newValue), 'value is not pointer')
 
-        CTypeEnumWrite[CTypeEnum.pointer](target[symbolStructAddress] + index * size, newValue)
+        if (defined(WASM_64)) {
+          CTypeEnumWrite[CTypeEnum.pointer](target[symbolStructAddress] + static_cast<int64>((index * size) as uint32), newValue)
+        }
+        else {
+          CTypeEnumWrite[CTypeEnum.pointer](target[symbolStructAddress] + index * size, newValue)
+        }
         target[propertyKey] = newValue
       }
       else {
@@ -78,7 +103,8 @@ function proxyArray(address: pointer<CTypeEnum | Struct>, length: number, type: 
 
           assert(is.object(newValue) && Object.getPrototypeOf(newValue) == type.prototype, `value is not ${type.prototype.constructor.name}'s instance`)
 
-          const proxy = target[propertyKey] || (target[propertyKey] = proxyStruct(target[symbolStructAddress] + index * size, type))
+          const proxy = target[propertyKey] || (target[propertyKey] = proxyStruct(target[symbolStructAddress]
+            + (defined(WASM_64) ? static_cast<int64>((index * size) as uint32) : (index * size)), type))
           object.each(newValue, (value, key) => {
             proxy[key] = value
           })
@@ -87,8 +113,12 @@ function proxyArray(address: pointer<CTypeEnum | Struct>, length: number, type: 
         else {
 
           assert(is.number(newValue) || is.bigint(newValue), 'value is not number')
-
-          CTypeEnumWrite[type as uint8](target[symbolStructAddress] + index * size, newValue)
+          if (defined(WASM_64)) {
+            CTypeEnumWrite[type as uint8](target[symbolStructAddress] + static_cast<int64>((index * size) as uint32), newValue)
+          }
+          else {
+            CTypeEnumWrite[type as uint8](target[symbolStructAddress] + index * size, newValue)
+          }
           target[propertyKey] = newValue
         }
       }
@@ -115,7 +145,7 @@ export function proxyStruct<T>(address: pointer<void>, struct: (new () => T) | {
         const meta = findKeyMeta(prototype, (propertyKey as string).replace(/^\$+/, ''))
 
         if (meta) {
-          const address = target[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+          const address = target[symbolStructAddress] + (defined(WASM_64) ? static_cast<uint64>(meta[KeyMetaKey.BaseAddressOffset]) : meta[KeyMetaKey.BaseAddressOffset])
           if (meta[KeyMetaKey.Array]) {
             const t = target[propertyKey]
             t[symbolStructAddress] = address
@@ -150,7 +180,7 @@ export function proxyStruct<T>(address: pointer<void>, struct: (new () => T) | {
         assert(target[symbolStructAddress] !== nullptr, 'target address is null, maybe has freed')
         const meta = findKeyMeta(prototype, (propertyKey as string).replace(/^\$+/, ''))
         if (meta) {
-          const address = target[symbolStructAddress] + meta[KeyMetaKey.BaseAddressOffset]
+          const address = target[symbolStructAddress] + (defined(WASM_64) ? static_cast<uint64>(meta[KeyMetaKey.BaseAddressOffset]) : meta[KeyMetaKey.BaseAddressOffset])
           if (meta[KeyMetaKey.Array]) {
             const proxy = target[propertyKey] || proxyArray(address, meta[KeyMetaKey.ArrayLength], meta[KeyMetaKey.Type], meta[KeyMetaKey.Pointer])
             array.each(newValue, (value, key) => {
@@ -161,7 +191,7 @@ export function proxyStruct<T>(address: pointer<void>, struct: (new () => T) | {
           else {
             if (meta[KeyMetaKey.Pointer]) {
 
-              assert(is.number(newValue), `value is not pointer, struct: ${prototype.constructor.name}, name: ${propertyKey as string}`)
+              assert(defined(WASM_64) ? is.bigint(newValue) : is.number(newValue), `value is not pointer, struct: ${prototype.constructor.name}, name: ${propertyKey as string}`)
 
               CTypeEnumWrite[CTypeEnum.pointer](address, newValue)
               target[propertyKey] = newValue

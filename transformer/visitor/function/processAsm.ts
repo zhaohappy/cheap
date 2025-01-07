@@ -11,7 +11,7 @@ const input = '__cheap__transformer_tmp.wat'
 const output = '__cheap__transformer_tmp.wasm'
 
 
-export default function processAsm(template: ts.TemplateExpression | ts.NoSubstitutionTemplateLiteral, node: ts.TaggedTemplateExpression) {
+export default function processAsm(template: ts.TemplateExpression | ts.NoSubstitutionTemplateLiteral, node: ts.TaggedTemplateExpression, wasm64: boolean) {
 
   let text = ''
   let startPos = node.template.getStart()
@@ -48,11 +48,11 @@ export default function processAsm(template: ts.TemplateExpression | ts.NoSubsti
   const inputPath = `${distPath}${input}`
   const outputPath = `${distPath}${output}`
 
-  const cmd = `${statement.options.wat2wasm} ${inputPath} --enable-simd --enable-threads -o ${outputPath}`
+  const cmd = `${statement.options.wat2wasm} ${inputPath} --enable-all -o ${outputPath}`
 
   const source = `
     (module
-      (import "env" "memory" (memory 1 65536 shared))
+      (import "env" "memory" (memory${wasm64 ? ' i64 ' : ' '}1 65536 shared))
       ${text}
     )
   `
@@ -112,7 +112,7 @@ export default function processAsm(template: ts.TemplateExpression | ts.NoSubsti
           reportError(statement.currentFile, node, errorMessage, errorType.SYNTAX_ERROR, start, end)
         }
         errorMessage = `${message.split('error: ').pop()}`
-        line = +match[1] - 3
+        line = +match[1] - 4
       }
       else if (message) {
         errorMessage += `\n${message}`

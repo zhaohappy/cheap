@@ -31,7 +31,8 @@ export const enum CTypeEnum {
   atomic_uint64,
 
   bool,
-  atomic_bool
+  atomic_bool,
+  size
 }
 
 export const CTypeEnum2Bytes: Record<CTypeEnum, number> = {
@@ -53,7 +54,7 @@ export const CTypeEnum2Bytes: Record<CTypeEnum, number> = {
   [CTypeEnum.int64]: 8,
   [CTypeEnum.float]: 4,
   [CTypeEnum.double]: 8,
-  [CTypeEnum.pointer]: 4,
+  [CTypeEnum.pointer]: defined(WASM_64) ? 8 : 4,
   [CTypeEnum.null]: 4,
   [CTypeEnum.void]: 4,
 
@@ -61,7 +62,8 @@ export const CTypeEnum2Bytes: Record<CTypeEnum, number> = {
   [CTypeEnum.atomic_int64]: 8,
 
   [CTypeEnum.bool]: 1,
-  [CTypeEnum.atomic_bool]: 1
+  [CTypeEnum.atomic_bool]: 1,
+  [CTypeEnum.size]: defined(WASM_64) ? 8 : 4
 }
 
 export const CTypeEnumPointerShiftMap: Record<CTypeEnum, number> = {
@@ -83,14 +85,15 @@ export const CTypeEnumPointerShiftMap: Record<CTypeEnum, number> = {
   [CTypeEnum.int64]: 4,
   [CTypeEnum.float]: 2,
   [CTypeEnum.double]: 4,
-  [CTypeEnum.pointer]: 2,
+  [CTypeEnum.pointer]: defined(WASM_64) ? 3 : 2,
   [CTypeEnum.void]: 2,
   [CTypeEnum.null]: 2,
   [CTypeEnum.atomic_uint64]: 4,
   [CTypeEnum.atomic_int64]: 4,
 
   [CTypeEnum.bool]: 0,
-  [CTypeEnum.atomic_bool]: 0
+  [CTypeEnum.atomic_bool]: 0,
+  [CTypeEnum.size]: defined(WASM_64) ? 3 : 2
 }
 
 export const enum KeyMetaKey {
@@ -172,6 +175,8 @@ export type CTypeEnum2Type<T> =
   ? bool
   : T extends CTypeEnum.atomic_bool
   ? atomic_bool
+  : T extends CTypeEnum.size
+  ? size
   : never
 /* eslint-enable */
 

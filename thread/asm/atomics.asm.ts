@@ -1,3 +1,4 @@
+export default asm`
 (func $atomics_load8 (export "load8") (param $p0 i32) (result i32)
   (local.get $p0)
   (i32.atomic.load8_u)
@@ -237,3 +238,4 @@
   (local.get $p2)
   (memory.atomic.wait32)
 )
+`

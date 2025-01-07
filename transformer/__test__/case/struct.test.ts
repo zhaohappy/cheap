@@ -167,7 +167,7 @@ describe('struct', () => {
       }
 
       let p: pointer<TestA>
-      p.a[3] = 0
+      p.a[3] = reinterpret_cast<pointer<void>>(0)
     `
     const target = `
       ${symbolImport}
@@ -204,7 +204,7 @@ describe('struct', () => {
       }
 
       let p: pointer<TestA>
-      p.a[3][4] = 0
+      p.a[3][4] = reinterpret_cast<pointer<void>>(0)
       let b = p.a[2][1]
     `
     const target = `
@@ -599,7 +599,7 @@ describe('struct', () => {
       }
       (function (prototype) {
         var map = new Map();
-        map.set("a", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("a", { 0: ${CTypeEnum.int32}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
         definedMetaProperty(prototype, symbolStruct, true);
         definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
         definedMetaProperty(prototype, symbolStructLength, 4);
@@ -608,7 +608,7 @@ describe('struct', () => {
       let p1: pointer<TestA>;
       let p2: pointer<TestA>;
       let b = CTypeEnumRead[15](p1);
-      CTypeEnumWrite[15](p2, CTypeEnumRead[15](p1));
+      CTypeEnumWrite[${CTypeEnum.int32}](p2, CTypeEnumRead[15](p1));
     `
     check(source, target, {
       input
@@ -631,6 +631,79 @@ describe('struct', () => {
     `
     check(source, target, {
       input
+    })
+  })
+
+  test('struct property size', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: size
+      }
+      let a: pointer<TestA>
+      a.a = reinterpret_cast<size>(0)
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      class TestA {
+        a: size;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+        definedMetaProperty(prototype, symbolStructLength, 8);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(TestA.prototype);
+      let a: pointer<TestA>;
+      CTypeEnumWrite[${CTypeEnum.size}](a, 0n);
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('struct property bit int64', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: bit<size, 5>
+      }
+      let a: pointer<TestA>
+      a.a = 5
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      class TestA {
+        a: bit<size, 5>;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 1, 6: 5, 7: 0, 8: 59 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+        definedMetaProperty(prototype, symbolStructLength, 8);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(TestA.prototype);
+      let a: pointer<TestA>;
+      CTypeEnumWrite[${CTypeEnum.size}](a, (CTypeEnumRead[${CTypeEnum.size}](a) & ~31n) | ((5n & 31n) << 0n));
+    `
+    check(source, target, {
+      input,
+      output,
+      defined: {
+        WASM_64: true
+      }
     })
   })
 })

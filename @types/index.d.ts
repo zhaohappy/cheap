@@ -18,3 +18,5 @@ declare const ENABLE_THREADS: boolean
 declare const CHEAP_HEAP_INITIAL: number
 
 declare const ENV_WEBPACK: boolean
+
+declare const WASM_64: boolean

@@ -25,5 +25,10 @@ export default function structAccess<T>(address: pointer<void>, struct: new (...
     })
   }
 
-  return support.proxy ? proxyStruct(address, struct) : definedStruct(address, struct)
+  if (defined(WASM_64)) {
+    return proxyStruct(address, struct)
+  }
+  else {
+    return support.proxy ? proxyStruct(address, struct) : definedStruct(address, struct)
+  }
 }

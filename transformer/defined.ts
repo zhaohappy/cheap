@@ -23,6 +23,7 @@ export const BuiltinType = [
   'size',
   'void',
   'bool',
+  'size',
 
   'atomic_char',
   'atomic_uint8',
@@ -97,7 +98,8 @@ export const BuiltinUint = [
   'uint32',
   'atomic_uint32',
   'uint64',
-  'atomic_uint64'
+  'atomic_uint64',
+  'size'
 ]
 
 export const BuiltinBool = [
@@ -130,7 +132,8 @@ export const CTypeEnum2Type: Record<CTypeEnum, string> = {
   [CTypeEnum.atomic_uint64]: 'atomic_uint64',
   [CTypeEnum.atomic_int64]: 'atomic_int64',
   [CTypeEnum.bool]: 'bool',
-  [CTypeEnum.atomic_bool]: 'atomic_bool'
+  [CTypeEnum.atomic_bool]: 'atomic_bool',
+  [CTypeEnum.size]: 'size'
 }
 
 export const Type2CTypeEnum: Record<string, CTypeEnum> = {

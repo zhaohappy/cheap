@@ -15,8 +15,13 @@ import { TransformerOptions } from './type'
 import expressionStatementVisitor from './visitor/expressionStatementVisitor'
 import bigIntLiteralVisitor from './visitor/bigIntLiteralVisitor'
 import expressionVisitor from './visitor/expressionVisitor'
+import propertyDeclarationVisitor from './visitor/propertyDeclarationVisitor'
+import propertyAssignmentVisitor from './visitor/propertyAssignmentVisitor'
+import bindingElementVisitor from './visitor/bindingElementVisitor'
 import * as constant from './constant'
 import { getStructFileIdentifiers } from './struct'
+import * as typedef from '../typedef'
+import * as definedConstant from './defined'
 
 const DefaultDefined = {
   ENV_NODE: false,
@@ -27,7 +32,8 @@ const DefaultDefined = {
   CHEAP_HEAP_INITIAL: 256,
   ENABLE_SYNCHRONIZE_API: false,
   ENABLE_LOG_PATH: true,
-  ENV_WEBPACK: false
+  ENV_WEBPACK: false,
+  WASM_64: false,
 }
 
 export function before(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
@@ -82,6 +88,25 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
 
   constant.setPacketName(options.cheapPacketName ?? '@libmedia/cheap')
 
+  if (statement.cheapCompilerOptions.defined.WASM_64) {
+    typedef.CTypeEnum2Bytes[typedef.CTypeEnum.pointer] = 8
+    typedef.CTypeEnumPointerShiftMap[typedef.CTypeEnum.pointer] = 3
+    typedef.CTypeEnum2Bytes[typedef.CTypeEnum.size] = 8
+    typedef.CTypeEnumPointerShiftMap[typedef.CTypeEnum.size] = 3
+    definedConstant.BuiltinBigInt.push(constant.typeSize)
+    statement.cheapCompilerOptions.defined.BIGINT_LITERAL = true
+  }
+  else {
+    typedef.CTypeEnum2Bytes[typedef.CTypeEnum.pointer] = 4
+    typedef.CTypeEnumPointerShiftMap[typedef.CTypeEnum.pointer] = 3
+    typedef.CTypeEnum2Bytes[typedef.CTypeEnum.size] = 4
+    typedef.CTypeEnumPointerShiftMap[typedef.CTypeEnum.size] = 3
+    array.remove(definedConstant.BuiltinBigInt, constant.typeSize)
+    if (defined.BIGINT_LITERAL === false) {
+      statement.cheapCompilerOptions.defined.BIGINT_LITERAL = false
+    }
+  }
+
   return (context: ts.TransformationContext) => {
 
     statement.context = context
@@ -114,7 +139,16 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
       statement.start(file)
 
       statement.visitor = (node: ts.Node): ts.Node | ts.Node[] => {
-        if (ts.isBlock(node)) {
+        if (ts.isPropertyDeclaration(node)) {
+          return propertyDeclarationVisitor(node, statement.visitor)
+        }
+        else if (ts.isPropertyAssignment(node)) {
+          return propertyAssignmentVisitor(node, statement.visitor)
+        }
+        else if (ts.isBindingElement(node)) {
+          return bindingElementVisitor(node, statement.visitor)
+        }
+        else if (ts.isBlock(node)) {
           return blockVisitor(node, statement.visitor)
         }
         else if (ts.isIdentifier(node)) {
@@ -159,7 +193,6 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
 }
 
 export function after(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
-
   const excludes = is.array(options.exclude)
     ? options.exclude
     : (options.exclude
@@ -168,17 +201,13 @@ export function after(program: ts.Program, options: TransformerOptions = {}): ts
     )
 
   return (context: ts.TransformationContext) => {
-
     return (file: ts.SourceFile) => {
-
       if (excludes.some((exclude) => {
         return exclude.test(file.fileName)
       })) {
         return file
       }
-
       const visitor = (node: ts.Node): ts.Node | ts.Node[] => {
-
         return ts.visitEachChild(node, visitor, context)
       }
       return ts.visitEachChild(file, visitor, context)

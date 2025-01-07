@@ -782,4 +782,118 @@ describe('pointer array access', () => {
       input
     })
   })
+
+  test('pointer<struct>.array[x] wasm64', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: uint8
+        b: array<pointer<void>, 8>
+      }
+      let i = 0
+      let a: pointer<TestA>;
+      let b = a.b[i]
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      class TestA {
+        a: uint8;
+        b: array<pointer<void>, 8>;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: 1, 1: 1, 2: 1, 3: 1, 4: 8, 5: 0, 6: 0, 7: 8, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+        definedMetaProperty(prototype, symbolStructLength, 72);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(TestA.prototype);
+      let i = 0;
+      let a: pointer<TestA>;
+      let b = CTypeEnumRead[20](a + 8n + BigInt(8 * (i)));
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('pointer<pointer<uint8>>[x]', () => {
+    const source = `
+      let a: pointer<pointer<uint8>>;
+      let i = 0
+      let b = a[i - 1]
+    `
+    const target = `
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      let a: pointer<pointer<uint8>>;
+      let i = 0;
+      let b = CTypeEnumRead[${CTypeEnum.pointer}](a + ((i - 1) * 4));
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<pointer<uint8>>[x] wasm64', () => {
+    const source = `
+      let a: pointer<pointer<uint8>>;
+      let i = 0
+      let b = a[i - 1]
+    `
+    const target = `
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      let a: pointer<pointer<uint8>>;
+      let i = 0;
+      let b = CTypeEnumRead[${CTypeEnum.pointer}](a + (BigInt((i - 1)) * 8n));
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('pointer<pointer<uint8>>[x][x]', () => {
+    const source = `
+      let a: pointer<pointer<uint32>>;
+      let i = 0
+      let b = a[i - 1][i + 5]
+    `
+    const target = `
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      let a: pointer<pointer<uint32>>;
+      let i = 0;
+      let b = CTypeEnumRead[${CTypeEnum.uint32}](CTypeEnumRead[${CTypeEnum.pointer}](a + ((i - 1) * 4)) + ((i + 5) * 4));
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<pointer<uint8>>[x][x] wasm64', () => {
+    const source = `
+      let a: pointer<pointer<uint32>>;
+      let i = 0
+      let b = a[i - 1][i + 5]
+    `
+    const target = `
+      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      let a: pointer<pointer<uint32>>;
+      let i = 0;
+      let b = CTypeEnumRead[${CTypeEnum.uint32}](CTypeEnumRead[${CTypeEnum.pointer}](a + (BigInt((i - 1)) * 8n)) + (BigInt((i + 5)) * 4n));
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
 })

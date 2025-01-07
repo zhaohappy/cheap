@@ -3,7 +3,7 @@ import * as path from 'path'
 import { check, distPath } from '../transformer'
 import { CTypeEnum } from '../../../typedef'
 
-describe('args', () => {
+describe('atomic', () => {
 
   let input: string
   let output: string

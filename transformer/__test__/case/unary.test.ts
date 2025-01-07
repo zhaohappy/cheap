@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
 import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { CTypeEnum } from 'cheap/typedef'
 
 describe('unary', () => {
 
@@ -32,7 +33,55 @@ describe('unary', () => {
     })
   })
 
-  test('pointer<uint64>++', () => {
+  test('pointer<uint32>++', () => {
+    const source = `
+      let a: pointer<uint32>
+      a++
+    `
+    const target = `
+      let a: pointer<uint32>
+      a = a + 4
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<uint8>++ wasm64', () => {
+    const source = `
+      let a: pointer<uint8>
+      a++
+    `
+    const target = `
+      let a: pointer<uint8>
+      a = a + 1n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('pointer<uint32>++ wasm64', () => {
+    const source = `
+      let a: pointer<uint32>
+      a++
+    `
+    const target = `
+      let a: pointer<uint32>
+      a = a + 4n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('pointer<struct>.uint64++', () => {
     const source = `
       @struct
       class Test {
@@ -51,14 +100,14 @@ describe('unary', () => {
       }
       (function (prototype) {
         var map = new Map();
-        map.set("a", { 0: 10, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("a", { 0: ${CTypeEnum.uint64}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
         definedMetaProperty(prototype, symbolStruct, true);
         definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
         definedMetaProperty(prototype, symbolStructLength, 8);
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(Test.prototype);
       let a: pointer<Test>;
-      CTypeEnumWrite[10](a, CTypeEnumRead[10](a) + 1n);
+      CTypeEnumWrite[${CTypeEnum.uint64}](a, CTypeEnumRead[${CTypeEnum.uint64}](a) + 1n);
     `
     check(source, target, {
       input,
@@ -197,6 +246,77 @@ describe('unary', () => {
     `
     check(source, target, {
       input
+    })
+  })
+
+  test('pointer<struct>++', () => {
+    const source = `
+      @struct
+      class Test {
+        a: pointer<void>
+        b: size
+      }
+      let a: pointer<Test>
+      a++
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      class Test {
+        a: pointer<void>;
+        b: size;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+        definedMetaProperty(prototype, symbolStructLength, 8);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(Test.prototype);
+      let a: pointer<Test>;
+      a = a + 8;
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('pointer<struct>++ wasm64', () => {
+    const source = `
+      @struct
+      class Test {
+        a: pointer<void>
+        b: size
+      }
+      let a: pointer<Test>
+      a++
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      class Test {
+        a: pointer<void>;
+        b: size;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+        definedMetaProperty(prototype, symbolStructLength, 16);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(Test.prototype);
+      let a: pointer<Test>;
+      a = a + 16n;
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
     })
   })
 })

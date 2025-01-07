@@ -24,106 +24,119 @@
  */
 
 import { Uint8ArrayInterface } from 'common/io/interface'
-import { getHeapU8, getView } from '../../heap'
+import { getHeap, Memory } from '../../heap'
 import ArrayLikeInterface from 'common/interface/ArrayLike'
 
 export class SafeBufferView {
-  private pointer: pointer<uint8>
+  private pointer: pointer<void>
 
   private len: size
+
+  private view: DataView
 
   constructor(pointer: pointer<uint8>, len: size) {
     this.pointer = pointer
     this.len = len
+
+    if (defined(WASM_64)) {
+      assert(typeof pointer === 'bigint')
+    }
   }
 
   get byteLength() {
-    return this.len
+    return reinterpret_cast<double>(this.len) as number
   }
 
   get buffer() {
-    return getHeapU8().buffer
+    return getHeap
   }
 
   get byteOffset() {
-    return this.pointer
+    return defined(WASM_64) ? Number(this.pointer) : this.pointer
+  }
+
+  private getView() {
+    if (!this.view || this.view.buffer !== Memory.buffer) {
+      this.view = new DataView(getHeap(), defined(WASM_64) ? Number(this.pointer) : this.pointer, reinterpret_cast<double>(this.len))
+    }
+    return this.view
   }
 
   public getFloat32(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getFloat32(this.pointer + byteOffset, littleEndian)
+    return this.getView().getFloat32(byteOffset, littleEndian)
   }
 
   public getFloat64(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getFloat64(this.pointer + byteOffset, littleEndian)
+    return this.getView().getFloat64(byteOffset, littleEndian)
   }
 
   public getInt8(byteOffset: number): number {
-    return getView().getInt8(this.pointer + byteOffset)
+    return this.getView().getInt8(byteOffset)
   }
 
   public getInt16(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getInt16(this.pointer + byteOffset, littleEndian)
+    return this.getView().getInt16(byteOffset, littleEndian)
   }
 
   public getInt32(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getInt32(this.pointer + byteOffset, littleEndian)
+    return this.getView().getInt32(byteOffset, littleEndian)
   }
 
   public getUint8(byteOffset: number): number {
-    return getView().getUint8(this.pointer + byteOffset)
+    return this.getView().getUint8(byteOffset)
   }
 
   public getUint16(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getUint16(this.pointer + byteOffset, littleEndian)
+    return this.getView().getUint16(byteOffset, littleEndian)
   }
 
   public getUint32(byteOffset: number, littleEndian?: boolean): number {
-    return getView().getUint32(this.pointer + byteOffset, littleEndian)
+    return this.getView().getUint32(byteOffset, littleEndian)
   }
 
   public setFloat32(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setFloat32(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setFloat32(byteOffset, value, littleEndian)
   }
 
   public setFloat64(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setFloat64(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setFloat64(byteOffset, value, littleEndian)
   }
 
   public setInt8(byteOffset: number, value: number): void {
-    getView().setInt8(this.pointer + byteOffset, value)
+    this.getView().setInt8(byteOffset, value)
   }
 
   public setInt16(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setInt16(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setInt16(byteOffset, value, littleEndian)
   }
 
   public setInt32(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setInt32(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setInt32(byteOffset, value, littleEndian)
   }
 
   public setUint8(byteOffset: number, value: number): void {
-    getView().setUint8(this.pointer + byteOffset, value)
+    this.getView().setUint8(byteOffset, value)
   }
 
   public setUint16(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setUint16(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setUint16(byteOffset, value, littleEndian)
   }
 
   public setUint32(byteOffset: number, value: number, littleEndian?: boolean): void {
-    getView().setUint32(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setUint32(byteOffset, value, littleEndian)
   }
 
   public getBigInt64(byteOffset: number, littleEndian?: boolean): bigint {
-    return getView().getBigInt64(this.pointer + byteOffset, littleEndian)
+    return this.getView().getBigInt64(byteOffset, littleEndian)
   }
   public getBigUint64(byteOffset: number, littleEndian?: boolean): bigint {
-    return getView().getBigUint64(this.pointer + byteOffset, littleEndian)
+    return this.getView().getBigUint64(byteOffset, littleEndian)
   }
   public setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean) {
-    getView().setBigInt64(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setBigInt64(byteOffset, value, littleEndian)
   }
   public setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean) {
-    getView().setBigUint64(this.pointer + byteOffset, value, littleEndian)
+    this.getView().setBigUint64(byteOffset, value, littleEndian)
   }
 }
 
@@ -138,6 +151,10 @@ export default class SafeUint8Array extends ArrayLikeInterface implements Uint8A
     this.pointer = pointer
     this.len = len
 
+    if (defined(WASM_64)) {
+      assert(typeof pointer === 'bigint')
+    }
+
     return this.proxy as SafeUint8Array
   }
 
@@ -148,36 +165,36 @@ export default class SafeUint8Array extends ArrayLikeInterface implements Uint8A
     accessof(reinterpret_cast<pointer<uint8>>(this.pointer + index)) <- value
   }
 
-  public set(array: ArrayLike<number>, offset: number = 0) {
-    assert(offset + array.length <= this.len)
-    getHeapU8().set(array, this.pointer + offset)
+  public set(array: ArrayLike<number>, offset: uint32 = 0) {
+    assert(offset + array.length <= reinterpret_cast<int32>(this.len))
+    new Uint8Array(getHeap(), defined(WASM_64) ? Number(this.pointer) : this.pointer, reinterpret_cast<double>(this.len)).set(array, offset)
   }
 
-  public subarray(begin: number = 0, end?: number, safe?: boolean) {
+  public subarray(begin: uint32 = 0, end?: uint32, safe?: boolean) {
     if (safe) {
-      return new SafeUint8Array(reinterpret_cast<pointer<uint8>>(this.pointer + begin), (end ? end : this.len) - begin) as any as Uint8Array
+      return new SafeUint8Array(reinterpret_cast<pointer<uint8>>(this.pointer + begin), (end ? end : reinterpret_cast<double>(this.len)) - begin) as any as Uint8Array
     }
-    return getHeapU8().subarray(this.pointer + begin, this.pointer + (end ?? this.len))
+    return new Uint8Array(getHeap(), defined(WASM_64) ? Number(this.pointer + begin) : (this.pointer + begin), (end ?? reinterpret_cast<double>(this.len)) - begin)
   }
 
-  public slice(start: number = 0, end?: number) {
-    return getHeapU8().slice(this.pointer + start, this.pointer + (end ?? this.len))
+  public slice(start: uint32 = 0, end?: uint32) {
+    return new Uint8Array(getHeap(), defined(WASM_64) ? Number(this.pointer + start) : (this.pointer + start), (end ?? reinterpret_cast<double>(this.len)) - start).slice()
   }
 
   get length() {
-    return this.len
+    return reinterpret_cast<double>(this.len) as number
   }
 
   get byteLength() {
-    return this.len
+    return reinterpret_cast<double>(this.len) as number
   }
 
   get buffer() {
-    return getHeapU8().buffer
+    return getHeap()
   }
 
   get byteOffset() {
-    return this.pointer
+    return defined(WASM_64) ? Number(this.pointer) : this.pointer
   }
 
   get view() {

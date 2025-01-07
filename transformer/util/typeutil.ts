@@ -190,7 +190,7 @@ export function isPointerType(type: ts.Type) {
     return false
   }
 
-  if (isAnyPointer(type) || isMultiPointer(type)) {
+  if (isAnyPointer(type) || isMultiPointer(type) || isNullPointer(type)) {
     return true
   }
   if (type.aliasSymbol) {
@@ -203,6 +203,29 @@ export function isPointerType(type: ts.Type) {
     const value = getSymbolTypeValue(type.getProperty(constant.levelProperty))
     if (value != null) {
       return value > 0
+    }
+  }
+  return false
+}
+
+export function isSizeType(type: ts.Type, union: boolean = false) {
+  if (!type) {
+    return false
+  }
+  if (type.aliasSymbol) {
+    return type.aliasSymbol.escapedName === constant.typeSize
+  }
+  else if (type.isIntersection()) {
+    const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
+    if (value === constant.typeSize) {
+      return true
+    }
+  }
+  else if (union && type.isUnion()) {
+    for (let i = 0; i < type.types.length; i++) {
+      if (isSizeType(type.types[i])) {
+        return true
+      }
     }
   }
   return false

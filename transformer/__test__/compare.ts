@@ -38,6 +38,9 @@ function compareNode(node1: ts.Node, node2: ts.Node) {
   if (ts.isStringLiteral(node1) && ts.isStringLiteral(node2) && node1.text !== node2.text) {
     return false
   }
+  if (ts.isBigIntLiteral(node1) && ts.isBigIntLiteral(node2) && node1.text !== node2.text) {
+    return false
+  }
   return true
 }
 

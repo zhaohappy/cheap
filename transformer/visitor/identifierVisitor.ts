@@ -4,6 +4,7 @@ import statement, { StageStatus } from '../statement'
 import { CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import { CTypeEnum } from '../../typedef'
 import * as is from 'common/util/is'
+import * as nodeUtil from '../util/nodeutil'
 
 export default function (node: ts.Identifier, visitor: ts.Visitor): ts.Node | ts.Node[] {
   if ((statement.lookupStage(StageStatus.Parameter) || statement.lookupStage(StageStatus.VariableDeclaration))
@@ -37,7 +38,12 @@ export default function (node: ts.Identifier, visitor: ts.Visitor): ts.Node | ts
       || statement.getCurrentStage()?.stage === StageStatus.SingleArrowRight && !ts.isTypeReferenceNode(parent)
   )
   ) {
-    return statement.context.factory.createNumericLiteral(0)
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+      return nodeUtil.createBitInt(0)
+    }
+    else {
+      return statement.context.factory.createNumericLiteral(0)
+    }
   }
   else if (is.number(Type2CTypeEnum[node.escapedText as string])
     && !statement.lookupLocal(node.escapedText as string)

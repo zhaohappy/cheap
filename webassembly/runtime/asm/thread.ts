@@ -4,6 +4,7 @@ import { base64ToUint8Array } from 'common/util/base64'
 import * as logger from 'common/util/logger'
 
 import asm from './thread.asm'
+import asm64 from './thread64.asm'
 import { Mutex } from '../../../thread/mutex'
 import { Cond } from '../../../thread/cond'
 import { Timespec } from '../semaphore'
@@ -20,7 +21,7 @@ export function isSupport() {
   return support
 }
 
-export function init(memory: WebAssembly.Memory, initial: int32, maximum: int32, override: (
+export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint32, override: (
   data: {
     wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32,
     wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32,
@@ -32,9 +33,9 @@ export function init(memory: WebAssembly.Memory, initial: int32, maximum: int32,
   }
 ) => void) {
   try {
-    if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) {
-      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asm), {
-        shared: true,
+    if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer || defined(WASM_64)) {
+      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+        shared: defined(WASM_64) ? (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) : true,
         initial,
         maximum
       })

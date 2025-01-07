@@ -11,7 +11,54 @@ import * as typeUtils from '../util/typeutil'
 import * as constant from '../constant'
 import { KeyMetaExt, StructType } from '../struct'
 import getStructMeta from '../function/getStructMeta'
+import { BuiltinBigInt, CTypeEnum2Type } from '../defined'
 
+function createPlusExpress(tree: ts.Node, right: ts.Node) {
+  // 合并 a + 2 + 3
+  if (ts.isBinaryExpression(tree)
+    && tree.operatorToken.kind === ts.SyntaxKind.PlusToken
+    && (ts.isNumericLiteral(tree.right) || nodeUtils.isBigIntNode(tree.right)
+      || ts.isNumericLiteral(tree.left) || nodeUtils.isBigIntNode(tree.left)
+    )
+    && (ts.isNumericLiteral(right) || nodeUtils.isBigIntNode(right))
+  ) {
+    if (ts.isNumericLiteral(tree.right)) {
+      return statement.context.factory.createBinaryExpression(
+        tree.left,
+        ts.SyntaxKind.PlusToken,
+        statement.context.factory.createNumericLiteral((+tree.right.text) + (+(right as ts.NumericLiteral).text))
+      )
+    }
+    else if (nodeUtils.isBigIntNode(tree.right)) {
+      return statement.context.factory.createBinaryExpression(
+        tree.left,
+        ts.SyntaxKind.PlusToken,
+        nodeUtils.createBitInt(Number(nodeUtils.getBigIntValue(tree.right as ts.BigIntLiteral)
+              + nodeUtils.getBigIntValue(right as ts.BigIntLiteral)))
+      )
+    }
+    else if (ts.isNumericLiteral(tree.left)) {
+      return statement.context.factory.createBinaryExpression(
+        statement.context.factory.createNumericLiteral((+tree.left.text) + (+(right as ts.NumericLiteral).text)),
+        ts.SyntaxKind.PlusToken,
+        tree.right
+      )
+    }
+    else if (nodeUtils.isBigIntNode(tree.left)) {
+      return statement.context.factory.createBinaryExpression(
+        nodeUtils.createBitInt(Number(nodeUtils.getBigIntValue(tree.left as ts.BigIntLiteral)
+              + nodeUtils.getBigIntValue(right as ts.BigIntLiteral))),
+        ts.SyntaxKind.PlusToken,
+        tree.right
+      )
+    }
+  }
+  return statement.context.factory.createBinaryExpression(
+    tree as ts.Expression,
+    ts.SyntaxKind.PlusToken,
+    nodeUtils.createPointerOperand(right as ts.Expression)
+  )
+}
 
 function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
   if (meta[KeyMetaKey.Pointer]) {
@@ -23,9 +70,9 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
       undefined,
       [
         meta[KeyMetaKey.BaseAddressOffset]
-          ? nodeUtils.createPlusExpress(
+          ? createPlusExpress(
             tree as ts.Expression,
-            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+            nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
           )
           : tree as ts.Expression
       ]
@@ -41,9 +88,9 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
       undefined,
       [
         meta[KeyMetaKey.BaseAddressOffset]
-          ? nodeUtils.createPlusExpress(
+          ? createPlusExpress(
             tree as ts.Expression,
-            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+            nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
           )
           : tree as ts.Expression
       ]
@@ -51,15 +98,27 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
 
     if (meta[KeyMetaKey.BitField] && !statement.lookupStage(StageStatus.AddressOf)) {
       const shift = CTypeEnum2Bytes[meta[KeyMetaKey.Type] as number] * 8 - meta[KeyMetaKey.BaseBitOffset] - meta[KeyMetaKey.BitFieldLength]
+      let isBigInt = array.has(BuiltinBigInt, CTypeEnum2Type[meta[KeyMetaKey.Type]])
+      if (statement.cheapCompilerOptions.defined.WASM_64) {
+        if (meta[KeyMetaKey.Type] === CTypeEnum.pointer
+          || meta[KeyMetaKey.Type] === CTypeEnum.size
+        ) {
+          isBigInt = true
+        }
+      }
       const mask = Math.pow(2, meta[KeyMetaKey.BitFieldLength]) - 1
       tree = statement.context.factory.createBinaryExpression(
         statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
           tree as ts.Expression,
           ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-          statement.context.factory.createNumericLiteral(shift)
+          isBigInt
+            ? nodeUtils.createBitInt(shift)
+            : statement.context.factory.createNumericLiteral(shift)
         )),
         ts.SyntaxKind.AmpersandToken,
-        statement.context.factory.createNumericLiteral(mask)
+        isBigInt
+          ? nodeUtils.createBitInt(shift)
+          : statement.context.factory.createNumericLiteral(mask)
       )
     }
 
@@ -91,9 +150,9 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
       }
       const args = [
         meta[KeyMetaKey.BaseAddressOffset]
-          ? nodeUtils.createPlusExpress(
+          ? createPlusExpress(
             tree as ts.Expression,
-            statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+            nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
           )
           : tree as ts.Expression,
         key
@@ -183,18 +242,18 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
                     undefined,
                     [
                       meta[KeyMetaKey.BaseAddressOffset]
-                        ? nodeUtils.createPlusExpress(
+                        ? createPlusExpress(
                           tree,
-                          statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+                          nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
                         )
                         : tree as ts.Expression
                     ]
                   )
                 }
                 else if (meta[KeyMetaKey.BaseAddressOffset]) {
-                  tree = nodeUtils.createPlusExpress(
+                  tree = createPlusExpress(
                     tree as ts.Expression,
-                    statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+                    nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
                   )
                 }
               }
@@ -202,20 +261,20 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             }
             else if (ts.isCallExpression(next)) {
               if (ts.isNumericLiteral(next.arguments[0]) && +next.arguments[0].text !== 0) {
-                tree = nodeUtils.createPlusExpress(
+                tree = createPlusExpress(
                   tree as ts.Expression,
-                  statement.context.factory.createNumericLiteral(+next.arguments[0].text * struct.length)
+                  nodeUtils.createPointerOperand(+next.arguments[0].text * struct.length)
                 )
               }
               else if (!ts.isNumericLiteral(next.arguments[0])) {
                 tree = statement.context.factory.createBinaryExpression(
                   tree as ts.Expression,
                   ts.SyntaxKind.PlusToken,
-                  statement.context.factory.createBinaryExpression(
+                  nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                     next.arguments[0],
                     ts.SyntaxKind.AsteriskToken,
                     statement.context.factory.createNumericLiteral(struct.length)
-                  )
+                  ))
                 )
               }
               lastIsIndexOf = true
@@ -223,20 +282,20 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             }
             else if (ts.isElementAccessExpression(next)) {
               if (ts.isNumericLiteral(next.argumentExpression) && +next.argumentExpression.text !== 0) {
-                tree = nodeUtils.createPlusExpress(
+                tree = createPlusExpress(
                   tree as ts.Expression,
-                  statement.context.factory.createNumericLiteral(+next.argumentExpression.text * struct.length)
+                  nodeUtils.createPointerOperand(+next.argumentExpression.text * struct.length)
                 )
               }
               else if (!ts.isNumericLiteral(next.argumentExpression)) {
                 tree = statement.context.factory.createBinaryExpression(
                   tree as ts.Expression,
                   ts.SyntaxKind.PlusToken,
-                  statement.context.factory.createBinaryExpression(
+                  nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                     next.argumentExpression,
                     ts.SyntaxKind.AsteriskToken,
                     statement.context.factory.createNumericLiteral(struct.length)
-                  )
+                  ))
                 )
               }
               lastIsIndexOf = true
@@ -249,20 +308,20 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             && ts.isElementAccessExpression(next)
           ) {
             if (ts.isNumericLiteral(next.argumentExpression) && +next.argumentExpression.text !== 0) {
-              tree = nodeUtils.createPlusExpress(
+              tree = createPlusExpress(
                 tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(+next.argumentExpression.text * CTypeEnum2Bytes[CTypeEnum.pointer])
+                nodeUtils.createPointerOperand(+next.argumentExpression.text * CTypeEnum2Bytes[CTypeEnum.pointer])
               )
             }
             else if (!ts.isNumericLiteral(next.argumentExpression)) {
               tree = statement.context.factory.createBinaryExpression(
                 tree as ts.Expression,
                 ts.SyntaxKind.PlusToken,
-                statement.context.factory.createBinaryExpression(
+                nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                   next.argumentExpression,
                   ts.SyntaxKind.AsteriskToken,
                   statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[CTypeEnum.pointer])
-                )
+                ))
               )
             }
 
@@ -301,20 +360,20 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             }
 
             if (ts.isNumericLiteral(next.arguments[0]) && +next.arguments[0].text !== 0) {
-              tree = nodeUtils.createPlusExpress(
+              tree = createPlusExpress(
                 tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(+next.arguments[0].text * step)
+                nodeUtils.createPointerOperand(+next.arguments[0].text * step)
               )
             }
             else if (!ts.isNumericLiteral(next.arguments[0])) {
               tree = statement.context.factory.createBinaryExpression(
                 tree as ts.Expression,
                 ts.SyntaxKind.PlusToken,
-                statement.context.factory.createBinaryExpression(
+                nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
                   next.arguments[0],
                   ts.SyntaxKind.AsteriskToken,
                   statement.context.factory.createNumericLiteral(step)
-                )
+                ))
               )
             }
             // 二级指针
@@ -359,18 +418,18 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
                 undefined,
                 [
                   meta[KeyMetaKey.BaseAddressOffset]
-                    ? nodeUtils.createPlusExpress(
+                    ? createPlusExpress(
                       tree,
-                      statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+                      nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
                     )
                     : tree as ts.Expression
                 ]
               )
             }
             else if (meta[KeyMetaKey.BaseAddressOffset]) {
-              tree = nodeUtils.createPlusExpress(
+              tree = createPlusExpress(
                 tree as ts.Expression,
-                statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset])
+                nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset])
               )
             }
             lastIsIndexOf = false

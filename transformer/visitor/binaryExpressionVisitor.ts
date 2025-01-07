@@ -10,7 +10,7 @@ import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
 import { getEqualsBinaryExpressionRight, isPointerNode } from '../util/nodeutil'
 import isMergeOperator from '../function/isMergeOperator'
 import mergeOperator2Operator from '../function/mergeOperator2Operator'
-import { BuiltinNumber } from '../defined'
+import { BuiltinBigInt, BuiltinNumber, CTypeEnum2Type } from '../defined'
 import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
 import { compute } from '../function/compute'
@@ -66,17 +66,32 @@ function generateWritePropertyNode(address: ts.Expression, value: ts.Expression,
     )
     const mask2 = (Math.pow(2, meta[KeyMetaKey.BitFieldLength]) - 1)
     const shift = len - meta[KeyMetaKey.BaseBitOffset] - meta[KeyMetaKey.BitFieldLength]
+    let isBigInt = array.has(BuiltinBigInt, CTypeEnum2Type[meta[KeyMetaKey.Type as number]])
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+      if (meta[KeyMetaKey.Type as number] === CTypeEnum.pointer
+        || meta[KeyMetaKey.Type as number] === CTypeEnum.size
+      ) {
+        isBigInt = true
+        if (meta[KeyMetaKey.Type as number] === CTypeEnum.size) {
+          value = nodeUtils.createPointerOperand(value)
+        }
+      }
+    }
 
     value = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
       value,
       ts.SyntaxKind.AmpersandToken,
-      statement.context.factory.createNumericLiteral(mask2)
+      isBigInt
+        ? nodeUtils.createBitInt(mask2)
+        : statement.context.factory.createNumericLiteral(mask2)
     ))
 
     value = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
       value,
       ts.SyntaxKind.LessThanLessThanToken,
-      statement.context.factory.createNumericLiteral(shift)
+      isBigInt
+        ? nodeUtils.createBitInt(shift)
+        : statement.context.factory.createNumericLiteral(shift)
     ))
 
     oldValue = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
@@ -84,7 +99,9 @@ function generateWritePropertyNode(address: ts.Expression, value: ts.Expression,
       ts.SyntaxKind.AmpersandToken,
       statement.context.factory.createPrefixUnaryExpression(
         ts.SyntaxKind.TildeToken,
-        statement.context.factory.createNumericLiteral(mask1)
+        isBigInt
+          ? nodeUtils.createBitInt(mask1)
+          : statement.context.factory.createNumericLiteral(mask1)
       )
     ))
 
@@ -152,7 +169,7 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
             [
               left as ts.Expression,
               right,
-              statement.context.factory.createNumericLiteral(struct.length)
+              nodeUtils.createPointerOperand(struct.length)
             ]
           )
         }
@@ -227,7 +244,7 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
           [
             left,
             right,
-            statement.context.factory.createNumericLiteral(struct.length)
+            nodeUtils.createPointerOperand(struct.length)
           ]
         )
       }
@@ -242,7 +259,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   const rightType = statement.typeChecker.getTypeAtLocation(node.right)
 
   if (typeUtils.isPointerType(leftType)
-      && typeUtils.isBuiltinType(rightType)
+      && (typeUtils.isBuiltinType(rightType) || rightType.flags & ts.TypeFlags.NumberLike)
       && !typeUtils.isPointerType(rightType)
       && !typeUtils.isNullPointer(rightType)
     || typeUtils.isBuiltinType(leftType)
@@ -250,7 +267,8 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
       && !typeUtils.isNullPointer(leftType)
       && typeUtils.isPointerType(rightType)
   ) {
-    reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(leftType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(rightType)}`, error.TYPE_MISMATCH)
+    reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(leftType) || 'number'} is not assignable to value of type ${typeUtils.getBuiltinNameByType(rightType) || 'number'}`, error.TYPE_MISMATCH)
+    return node
   }
 
   if (ts.isIdentifier(node.left) && ts.isIdentifier(node.right)) {
@@ -291,12 +309,12 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
                   ? statement.context.factory.createBinaryExpression(
                     addr.left,
                     ts.SyntaxKind.PlusToken,
-                    statement.context.factory.createNumericLiteral((meta[KeyMetaKey.BaseAddressOffset] + base) + (+addr.right.text))
+                    nodeUtils.createPointerOperand((meta[KeyMetaKey.BaseAddressOffset] + base) + (+addr.right.text))
                   )
                   : statement.context.factory.createBinaryExpression(
                     addr,
                     ts.SyntaxKind.PlusToken,
-                    statement.context.factory.createNumericLiteral(meta[KeyMetaKey.BaseAddressOffset] + base)
+                    nodeUtils.createPointerOperand(meta[KeyMetaKey.BaseAddressOffset] + base)
                   ),
                 ele.initializer,
                 meta
@@ -381,7 +399,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             [
               address as ts.Expression,
               valueAddress as ts.Expression,
-              statement.context.factory.createNumericLiteral(struct.length)
+              nodeUtils.createPointerOperand(struct.length)
             ]
           )
         }
@@ -402,6 +420,9 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
           )
         ) {
           let newValue = visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+          if (typeUtils.isSizeType(type1)) {
+            newValue = nodeUtils.createPointerOperand(newValue)
+          }
 
           if (ts.isPropertyAccessExpression(node.left)) {
             const type = statement.typeChecker.getTypeAtLocation(node.left.expression)
@@ -440,6 +461,20 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
       }
     }
 
+    if (typeUtils.isSizeType(leftType)
+      && !isAllSizeOrPointer(node.right)
+    ) {
+      if (ts.isNumericLiteral(node.right)) {
+        return statement.context.factory.createBinaryExpression(
+          ts.visitNode(node.left, statement.visitor) as ts.Expression,
+          node.operatorToken,
+          nodeUtils.createPointerOperand(ts.visitNode(node.right, statement.visitor) as ts.Expression)
+        )
+      }
+      reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(leftType) || 'number'} is not assignable to value of type ${typeUtils.getBuiltinNameByType(rightType) || 'number'}`, error.TYPE_MISMATCH)
+      return node
+    }
+
     return statement.context.factory.createBinaryExpression(
       visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
       ts.SyntaxKind.EqualsToken,
@@ -448,8 +483,41 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   }
 }
 
+function isAllSizeOrPointer(node: ts.Expression) {
+  if (ts.isBinaryExpression(node)) {
+    if (!isAllSizeOrPointer(node.left)) {
+      return false
+    }
+    return isAllSizeOrPointer(node.right)
+  }
+  else if (ts.isParenthesizedExpression(node)) {
+    return isAllSizeOrPointer(node.expression)
+  }
+  const type = statement.typeChecker.getTypeAtLocation(node)
+  if (typeUtils.isSizeType(type) || typeUtils.isPointerType(type)) {
+    return true
+  }
+  return false
+}
 
-export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
+function hasSizeNode(node: ts.Expression) {
+  if (ts.isBinaryExpression(node)) {
+    if (hasSizeNode(node.left)) {
+      return true
+    }
+    return hasSizeNode(node.right)
+  }
+  else if (ts.isParenthesizedExpression(node)) {
+    return hasSizeNode(node.expression)
+  }
+  const type = statement.typeChecker.getTypeAtLocation(node)
+  if (typeUtils.isSizeType(type)) {
+    return true
+  }
+  return false
+}
+
+function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
   /**
    * 将多个等号变成逗号运算符
    */
@@ -499,16 +567,53 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
   ) {
     return singleArrowVisitor(node, visitor)
   }
+  // size 运算
+  else if ((hasSizeNode(node.right) || hasSizeNode(node.left))
+    && node.operatorToken.kind !== ts.SyntaxKind.AmpersandAmpersandToken
+    && node.operatorToken.kind !== ts.SyntaxKind.BarBarToken
+    && node.operatorToken.kind !== ts.SyntaxKind.GreaterThanToken
+    && node.operatorToken.kind !== ts.SyntaxKind.GreaterThanEqualsToken
+    && node.operatorToken.kind !== ts.SyntaxKind.LessThanToken
+    && node.operatorToken.kind !== ts.SyntaxKind.LessThanEqualsToken
+  ) {
+    if (hasSizeNode(node.left) && !isAllSizeOrPointer(node.right)) {
+      if (ts.isNumericLiteral(node.right) && (!node.parent || !ts.isBinaryExpression(node.parent))) {
+        return statement.context.factory.createBinaryExpression(
+          ts.visitNode(node.left, statement.visitor) as ts.Expression,
+          node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+            ? ts.SyntaxKind.GreaterThanGreaterThanToken
+            : node.operatorToken.kind,
+          nodeUtils.createPointerOperand(node.right)
+        )
+      }
+      reportError(statement.currentFile, node, 'size type in binary expression must convert to other base type')
+      return node
+    }
+
+    if (!isAllSizeOrPointer(node.left) && hasSizeNode(node.right)) {
+      if (ts.isNumericLiteral(node.left) && (!node.parent || !ts.isBinaryExpression(node.parent))) {
+        return statement.context.factory.createBinaryExpression(
+          nodeUtils.createPointerOperand(node.left),
+          node.operatorToken,
+          ts.visitNode(node.right, statement.visitor) as ts.Expression
+        )
+      }
+      reportError(statement.currentFile, node, 'size type in binary expression must convert to other base type')
+      return node
+    }
+  }
   // 指针加减运算
-  else if ((node.operatorToken.kind === ts.SyntaxKind.PlusToken || node.operatorToken.kind === ts.SyntaxKind.MinusToken)
+  else if ((node.operatorToken.kind === ts.SyntaxKind.PlusToken
+    || node.operatorToken.kind === ts.SyntaxKind.MinusToken
+  )
     && !statement.lookupStage(StageStatus.PointerPlusMinusIgnore)
   ) {
-    const type1 = statement.typeChecker.getTypeAtLocation(node.left)
-    const type2 = statement.typeChecker.getTypeAtLocation(node.right)
+    const type1 = nodeUtils.getTypeAtLocation(node.left)
+    const type2 = nodeUtils.getTypeAtLocation(node.right)
 
     if (typeUtils.isPointerType(type1)
       && (ts.isNumericLiteral(node.right)
-        || type2.flags & ts.TypeFlags.Number
+        || type2.flags & ts.TypeFlags.NumberLike
         || array.has(BuiltinNumber, typeUtils.getBuiltinNameByType(type2))
       )
     ) {
@@ -529,20 +634,27 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
         return statement.context.factory.createBinaryExpression(
           visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
           node.operatorToken.kind,
-          ts.isNumericLiteral(node.right)
-            ? statement.context.factory.createNumericLiteral(+right.text * step)
+          ts.isNumericLiteral(right)
+            ? nodeUtils.createPointerOperand(+right.text * step)
             : statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
-              right,
+              nodeUtils.createPointerOperand(right),
               ts.SyntaxKind.AsteriskToken,
-              statement.context.factory.createNumericLiteral(step)
+              nodeUtils.createPointerOperand(step)
             ))
         )
       }
+      else if (statement.cheapCompilerOptions.defined.WASM_64) {
+        const right = visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        return statement.context.factory.createBinaryExpression(
+          visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+          node.operatorToken.kind,
+          nodeUtils.createPointerOperand(right)
+        )
+      }
     }
-
     else if (typeUtils.isPointerType(type2)
       && (ts.isNumericLiteral(node.left)
-        || type1.flags & ts.TypeFlags.Number
+        || type1.flags & ts.TypeFlags.NumberLike
         || array.has(BuiltinNumber, type1.aliasSymbol?.escapedName)
       )
     ) {
@@ -557,16 +669,24 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
       }
 
       if (step > 1) {
-        const left = visitorRight(node.left, visitor, node.operatorToken.kind) as ts.NumericLiteral
+        const left = visitorRight(node.left, visitor, node.operatorToken.kind) as ts.Expression
 
         return statement.context.factory.createBinaryExpression(
-          ts.isNumericLiteral(node.right)
-            ? statement.context.factory.createNumericLiteral(+left.text * step)
+          ts.isNumericLiteral(left)
+            ? nodeUtils.createPointerOperand(+left.text * step)
             : statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
-              left,
+              nodeUtils.createPointerOperand(left),
               ts.SyntaxKind.AsteriskToken,
-              statement.context.factory.createNumericLiteral(step)
+              nodeUtils.createPointerOperand(step)
             )),
+          node.operatorToken.kind,
+          visitorLeft(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        )
+      }
+      else if (statement.cheapCompilerOptions.defined.WASM_64) {
+        const left = visitorRight(node.left, visitor, node.operatorToken.kind) as ts.NumericLiteral
+        return statement.context.factory.createBinaryExpression(
+          nodeUtils.createPointerOperand(left),
           node.operatorToken.kind,
           visitorLeft(node.right, visitor, node.operatorToken.kind) as ts.Expression
         )
@@ -586,8 +706,25 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
         }
         if (step > 1) {
           if (step & (step - 1)) {
-            return statement.context.factory.createBinaryExpression(
-              statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+              return statement.context.factory.createCallExpression(
+                statement.context.factory.createIdentifier('Number'),
+                undefined,
+                [
+                  statement.context.factory.createBinaryExpression(
+                    statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
+                      visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+                      node.operatorToken.kind,
+                      visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+                    )),
+                    ts.SyntaxKind.SlashToken,
+                    nodeUtils.createBitInt(step)
+                  )
+                ]
+              )
+            }
+            else {
+              return statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
                 statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
                   visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
                   node.operatorToken.kind,
@@ -595,10 +732,8 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
                 )),
                 ts.SyntaxKind.SlashToken,
                 statement.context.factory.createNumericLiteral(step)
-              )),
-              ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-              statement.context.factory.createNumericLiteral(0)
-            )
+              ))
+            }
           }
           else {
             let exponent = 0
@@ -606,16 +741,46 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
               exponent++
               step >>>= 1
             }
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+              return statement.context.factory.createCallExpression(
+                statement.context.factory.createIdentifier('Number'),
+                undefined,
+                [
+                  statement.context.factory.createBinaryExpression(
+                    statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
+                      visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+                      node.operatorToken.kind,
+                      visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+                    )),
+                    ts.SyntaxKind.GreaterThanGreaterThanToken,
+                    nodeUtils.createBitInt(exponent)
+                  )
+                ]
+              )
+            }
             return statement.context.factory.createBinaryExpression(
               statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(
                 visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
                 node.operatorToken.kind,
                 visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
               )),
-              ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+              ts.SyntaxKind.GreaterThanGreaterThanToken,
               statement.context.factory.createNumericLiteral(exponent)
             )
           }
+        }
+        else if (statement.cheapCompilerOptions.defined.WASM_64) {
+          return statement.context.factory.createCallExpression(
+            statement.context.factory.createIdentifier('Number'),
+            undefined,
+            [
+              statement.context.factory.createBinaryExpression(
+                visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+                node.operatorToken.kind,
+                visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+              )
+            ]
+          )
         }
       }
       else {
@@ -624,6 +789,30 @@ export function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node 
     }
   }
 
+  if (statement.cheapCompilerOptions.defined.WASM_64) {
+    const type1 = statement.typeChecker.getTypeAtLocation(node.left)
+    if (typeUtils.isPointerType(type1)
+      && (!ts.isIdentifier(node.right)
+        || node.right.escapedText === constant.enumPointer
+          && !statement.lookupLocal(constant.enumPointer)
+      )
+    ) {
+      if (node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+        || node.operatorToken.kind === ts.SyntaxKind.PercentToken
+      ) {
+        const right = visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        return statement.context.factory.createBinaryExpression(
+          visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+          node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+            ? ts.SyntaxKind.GreaterThanGreaterThanToken
+            : node.operatorToken.kind,
+          ts.isNumericLiteral(right)
+            ? nodeUtils.createPointerOperand(+right.text)
+            : nodeUtils.createPointerOperand(right)
+        )
+      }
+    }
+  }
   return ts.visitEachChild(node, visitor, statement.context)
 }
 
@@ -633,6 +822,12 @@ function computeVisitor(node: ts.BinaryExpression): ts.Node {
       const r = compute(+node.left.text, +node.right.text, node.operatorToken.kind)
       if (is.number(r)) {
         return statement.context.factory.createNumericLiteral(r)
+      }
+    }
+    if (nodeUtils.isBigIntNode(node.left) && nodeUtils.isBigIntNode(node.right)) {
+      const r = compute(nodeUtils.getBigIntValue(node.left as any), nodeUtils.getBigIntValue(node.right as any), node.operatorToken.kind)
+      if (is.bigint(r)) {
+        return statement.context.factory.createBigIntLiteral(r.toString() + 'n')
       }
     }
     if (node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
@@ -676,5 +871,6 @@ function computeVisitor(node: ts.BinaryExpression): ts.Node {
 
 export default function (node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   let result = handle(node, visitor)
-  return ts.isBinaryExpression(result) ? computeVisitor(result) : result
+  result = ts.isBinaryExpression(result) ? computeVisitor(result) : result
+  return result
 }

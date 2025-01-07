@@ -234,6 +234,21 @@ describe('sizeof', () => {
     })
   })
 
+  test('sizeof(double) wasm64', () => {
+    const source = `
+      let a = sizeof(double)
+    `
+    const target = `
+      let a = 8n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
   test('sizeof(pointer<void>)', () => {
     const source = `
       let a = sizeof(typeptr)
@@ -243,6 +258,48 @@ describe('sizeof', () => {
     `
     check(source, target, {
       input
+    })
+  })
+
+  test('sizeof(pointer<void>) wasm64', () => {
+    const source = `
+      let a = sizeof(typeptr)
+    `
+    const target = `
+      let a = 8n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('sizeof(size)', () => {
+    const source = `
+      let a = sizeof(size)
+    `
+    const target = `
+      let a = 4
+    `
+    check(source, target, {
+      input
+    })
+  })
+
+  test('sizeof(size) wasm64', () => {
+    const source = `
+      let a = sizeof(size)
+    `
+    const target = `
+      let a = 8n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
     })
   })
 

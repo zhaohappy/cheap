@@ -17,15 +17,15 @@ export default function (node: ts.UnaryExpression, visitor: ts.Visitor): ts.Node
 
     let step = 1
 
-    if (typeUtils.isPointerType(type)) {
-      if (typeUtils.isPointerBuiltinType(type)) {
-        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
-      }
-      else if (typeUtils.isPointerStructType(type)) {
-        const struct = typeUtils.getPointerStructByType(type)
-        step = struct.length
-      }
-    }
+    // if (typeUtils.isPointerType(type)) {
+    //   if (typeUtils.isPointerBuiltinType(type)) {
+    //     step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
+    //   }
+    //   else if (typeUtils.isPointerStructType(type)) {
+    //     const struct = typeUtils.getPointerStructByType(type)
+    //     step = struct.length
+    //   }
+    // }
 
     const stepNode = array.has(BuiltinBigInt, type.aliasSymbol?.escapedName as string)
       ? statement.context.factory.createBigIntLiteral({
@@ -93,15 +93,15 @@ export default function (node: ts.UnaryExpression, visitor: ts.Visitor): ts.Node
 
     let step = 1
 
-    if (typeUtils.isPointerType(type)) {
-      if (typeUtils.isPointerBuiltinType(type)) {
-        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
-      }
-      else if (typeUtils.isPointerStructType(type)) {
-        const struct = typeUtils.getPointerStructByType(type)
-        step = struct.length
-      }
-    }
+    // if (typeUtils.isPointerType(type)) {
+    //   if (typeUtils.isPointerBuiltinType(type)) {
+    //     step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
+    //   }
+    //   else if (typeUtils.isPointerStructType(type)) {
+    //     const struct = typeUtils.getPointerStructByType(type)
+    //     step = struct.length
+    //   }
+    // }
 
     const stepNode = array.has(BuiltinBigInt, typeUtils.getBuiltinNameByType(type))
       ? statement.context.factory.createBigIntLiteral({

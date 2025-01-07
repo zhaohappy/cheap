@@ -91,10 +91,6 @@ class CheapPlugin {
         ];
       }
       compiler.options.resolveLoader.modules.push(path.resolve(__dirname, '../loader'));
-      compiler.options.resolveLoader.alias = {
-        'asm-with-simd': path.resolve(__dirname, '../../asm/simd-loader.js'),
-        'asm-with-pthread': path.resolve(__dirname, '../../asm/pthread-loader.js'),
-      };
 
       if (!compiler.options.module.rules) {
         compiler.options.module.rules = [];
@@ -138,6 +134,21 @@ class CheapPlugin {
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName
                 });
+                const after = transformer.after(program, {
+                  projectPath: me.options.projectPath,
+                  exclude: me.options.exclude || /__test__/,
+                  reportError: (message) => {
+                    me.reportError(message);
+                  },
+                  defined: {
+                    ENV_NODE: me.options.env === 'node',
+                    ENV_WEBPACK: true,
+                    ...me.options.defined
+                  },
+                  tmpPath: me.options.tmpPath || compiler.options.output.path,
+                  wat2wasm: wat2wasmPath,
+                  cheapPacketName: me.options.cheapPacketName
+                });
                 const afterDeclarations = transformer.afterDeclarations(program, {
                   projectPath: me.options.projectPath,
                   exclude: me.options.exclude || /__test__/,
@@ -161,6 +172,14 @@ class CheapPlugin {
                 else {
                   result.before.push(before);
                 }
+                if (!result.after) {
+                  result.after = [
+                    after
+                  ];
+                }
+                else {
+                  result.after.push(after);
+                }
                 if (!result.afterDeclarations) {
                   result.afterDeclarations = [
                     afterDeclarations
@@ -174,19 +193,6 @@ class CheapPlugin {
             }
           });
         }
-      });
-
-      compiler.options.module.rules.push({
-        test: /\.asm$/,
-        use: [
-          {
-            loader: path.resolve(__dirname, '../../asm/process-loader.js'),
-            options: {
-              tmpPath: me.options.tmpPath || compiler.options.output.path,
-              wat2wasm: wat2wasmPath
-            }
-          }
-        ]
       });
 
       if (compiler.options.plugins) {
