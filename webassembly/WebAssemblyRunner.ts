@@ -30,7 +30,7 @@ import { SELF } from 'common/util/constant'
 import sourceLoad from 'common/function/sourceLoad'
 
 export type WebAssemblyRunnerOptions = {
-  imports?: Record<string, Record<string, WebAssembly.ImportValue>>,
+  imports?: Record<string, Record<string, WebAssembly.ImportValue>>
   exportMap?: Record<string, string>
   importMap?: Record<string, string>
   envKey?: string

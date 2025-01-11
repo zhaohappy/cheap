@@ -266,8 +266,6 @@ export function createThreadFromClass<T, U extends any[]>(
           worker.onmessage = handler
         }
 
-        worker.onmessage = handler
-
         worker.postMessage({
           type: 'init',
           data: {
@@ -484,8 +482,6 @@ export function createThreadFromFunction<T extends any[], U extends any>(
           worker.onmessage = handler
         }
 
-        worker.onmessage = handler
-
         worker.postMessage({
           type: 'init',
           data: {
@@ -691,8 +687,6 @@ export function createThreadFromModule<T extends Object>(
         else {
           worker.onmessage = handler
         }
-
-        worker.onmessage = handler
 
         worker.postMessage({
           type: 'init',
