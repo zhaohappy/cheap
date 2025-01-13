@@ -144,23 +144,13 @@ function writePointer<T>(pointer: pointer<void>, value: pointer<T>) {
 function readSize(pointer: pointer<void>): size {
   assert(pointer, 'Out Of Bounds, address: 0')
   assert(getAllocator().isAlloc(pointer), `address ${pointer} is not alloc`)
-  if (defined(WASM_64)) {
-    return getView().getBigUint64(pointer, littleEndian) as unknown as size
-  }
-  else {
-    return getView().getUint32(pointer, littleEndian) as size
-  }
+  return getView().getUint32(pointer, littleEndian) as size
 }
 
 function writeSize(pointer: pointer<void>, value: size) {
   assert(pointer, 'Out Of Bounds, address: 0')
   assert(getAllocator().isAlloc(pointer), `address ${pointer} is not alloc`)
-  if (defined(WASM_64)) {
-    getView().setBigUint64(pointer, reinterpret_cast<bigint>(size), littleEndian)
-  }
-  else {
-    getView().setUint32(pointer, value, littleEndian)
-  }
+  getView().setUint32(pointer, value, littleEndian)
 }
 
 export default function init(getAllocator_: () => AllocatorInterface, getView_: () => DataView) {

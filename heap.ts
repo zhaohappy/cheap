@@ -308,13 +308,15 @@ export async function initThread(options: {
   disableAsm?: boolean
   id?: int32
 }) {
-  initCtypeEnumImpl(
-    () => {
-      return Allocator
-    },
-    getView
-  )
-  initAtomics(getAtomicsBuffer)
+  if (!defined(WASM_64)) {
+    initCtypeEnumImpl(
+      () => {
+        return Allocator
+      },
+      getView
+    )
+    initAtomics(getAtomicsBuffer)
+  }
 
   Memory = options.memory
 
@@ -421,13 +423,15 @@ export async function initThread(options: {
  * 主线程初始化
  */
 export function initMain() {
-  initCtypeEnumImpl(
-    () => {
-      return Allocator
-    },
-    getView
-  )
-  initAtomics(getAtomicsBuffer)
+  if (!defined(WASM_64)) {
+    initCtypeEnumImpl(
+      () => {
+        return Allocator
+      },
+      getView
+    )
+    initAtomics(getAtomicsBuffer)
+  }
 
   Memory = SELF.CHeap?.Memory ? SELF.CHeap.Memory : new WebAssembly.Memory({
     initial: reinterpret_cast<size>(config.HEAP_INITIAL),
