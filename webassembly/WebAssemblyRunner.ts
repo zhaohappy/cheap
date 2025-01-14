@@ -469,6 +469,7 @@ export default class WebAssemblyRunner {
           }
         }
         else {
+          // @ts-ignore
           WebAssemblyRunnerWorkerUrl = `importScripts('${new URL('./WebAssemblyRunnerWorker.js', import.meta.url)}');`
           if (this.childImports) {
             childImports = `importScripts('${this.childImports}');`
