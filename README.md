@@ -557,8 +557,8 @@ emcc -O3 xx.c
 
 ```javascript
 
-import compile from 'cheap/webassembly/compiler'
-import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
+import compile from '@libmedia/cheap/webassembly/compiler'
+import WebAssemblyRunner from '@libmedia/cheap/webassembly/WebAssemblyRunner'
 
 // resource 可以存入 indexDB 里面，下一次直接取出来用，不用在进行网络请求和编译了
 const resource = await compile(
@@ -1044,8 +1044,8 @@ interface SharedPtr<T> {
 ##### 在线程之间传递智能指针
 
 ```typescript
-import { deTransferableSharedPtr } from 'cheap/std/smartPtr/SharedPtr'
-import { createThreadFromFunction } from 'cheap/thread/thread'
+import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
+import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'
 
 @struct
 class MyStruct {

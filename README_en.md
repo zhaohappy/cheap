@@ -553,8 +553,8 @@ After getting the wasm output, you can use it under cheap
 
 ```javascript
 
-import compile from 'cheap/webassembly/compiler'
-import WebAssemblyRunner from 'cheap/webassembly/WebAssemblyRunner'
+import compile from '@libmedia/cheap/webassembly/compiler'
+import WebAssemblyRunner from '@libmedia/cheap/webassembly/WebAssemblyRunner'
 
 // The resource can be stored in indexDB and taken out directly for use next time without having to perform network requests and compilation.
 const resource = await compile(
@@ -1020,8 +1020,8 @@ interface SharedPtr<T> {
 ##### Passing Smart Pointer between thread
 
 ```typescript
-import { deTransferableSharedPtr } from 'cheap/std/smartPtr/SharedPtr'
-import { createThreadFromFunction } from 'cheap/thread/thread'
+import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
+import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'
 
 @struct
 class MyStruct {
