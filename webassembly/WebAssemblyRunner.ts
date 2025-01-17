@@ -575,7 +575,7 @@ export default class WebAssemblyRunner {
       atomicAsmOverride = true
       this.overrideAtomic()
     }
-    this.instance = new WebAssembly.Instance(this.resource.module, this.imports)
+    this.instance = await WebAssembly.instantiate(this.resource.module, this.imports)
 
     this.initRunTime()
 
