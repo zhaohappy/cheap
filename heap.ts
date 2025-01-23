@@ -321,30 +321,43 @@ export async function initThread(options: {
   Memory = options.memory
 
   if (!options.disableAsm || defined(WASM_64)) {
-    // @ts-ignore
-    if (typeof BigInt === 'function' && BigInt !== Number
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-      || defined(WASM_64)
-    ) {
+    if (defined(ENV_NODE)) {
       memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
-    if (config.USE_THREADS
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-      || defined(WASM_64)
-    ) {
-      atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    else {
+      // @ts-ignore
+      if (typeof BigInt === 'function' && BigInt !== Number
+        && (
+          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+          || os.ios && browser.checkVersion(os.version, '15', true)
+          || browser.newEdge
+        )
+        || defined(WASM_64)
+      ) {
+        memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
+    }
+    
+    if (defined(ENV_NODE)) {
+      if (config.USE_THREADS || defined(WASM_64)) {
+        atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
+    }
+    else {
+      if (config.USE_THREADS
+        && (
+          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+          || os.ios && browser.checkVersion(os.version, '15', true)
+          || browser.newEdge
+        )
+        || defined(WASM_64)
+      ) {
+        atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
     }
   }
 
@@ -444,31 +457,43 @@ export function initMain() {
   })
 
   if (!defined(DEBUG) && defined(ENABLE_THREADS) || defined(WASM_64)) {
-    // @ts-ignore
-    if (typeof BigInt === 'function' && BigInt !== Number
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-      || defined(WASM_64)
-    ) {
+    if (defined(ENV_NODE)) {
       memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
-    if (config.USE_THREADS
-      && defined(ENABLE_THREADS)
-      && (
-        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
-        || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
-        || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
-        || os.ios && browser.checkVersion(os.version, '15', true)
-        || browser.newEdge
-      )
-      || defined(WASM_64)
-    ) {
-      atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+    else {
+      // @ts-ignore
+      if (typeof BigInt === 'function' && BigInt !== Number
+        && (
+          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+          || os.ios && browser.checkVersion(os.version, '15', true)
+          || browser.newEdge
+        )
+        || defined(WASM_64)
+      ) {
+        memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
+    }
+    if (defined(ENV_NODE)) {
+      if (config.USE_THREADS && defined(ENABLE_THREADS) || defined(WASM_64)) {
+        atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
+    }
+    else {
+      if (config.USE_THREADS
+        && defined(ENABLE_THREADS)
+        && (
+          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+          || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
+          || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
+          || os.ios && browser.checkVersion(os.version, '15', true)
+          || browser.newEdge
+        )
+        || defined(WASM_64)
+      ) {
+        atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
     }
   }
 
