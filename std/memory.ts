@@ -1,5 +1,4 @@
-import { getHeapU8, Allocator, getHeapU16, getHeap8, getHeapU32,
-  getHeap16, getHeap32, getHeapU64, getHeap64, getHeapF32, getHeapF64,
+import { getHeapU8, Allocator,
   getHeap
 } from '../heap'
 import * as text from 'common/util/text'
@@ -63,111 +62,61 @@ export function mapSafeUint8Array(src: pointer<void>, n: size): SafeUint8Array {
 export function mapUint8Array(src: pointer<void>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Uint8Array(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
-  }
-  else {
-    return getHeapU8().subarray(src, src + n)
-  }
+  return new Uint8Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
 }
 
 export function mapInt8Array(src: pointer<int8>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Int8Array(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
-  }
-  else {
-    return getHeap8().subarray(src, src + n)
-  }
+  return new Int8Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
 }
 
 export function mapUint16Array(src: pointer<uint16>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Uint16Array(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
-  }
-  else {
-    return getHeapU16().subarray(src >>> 1, (src >>> reinterpret_cast<size>(1)) + n)
-  }
+  return new Uint16Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), static_cast<double>(n))
 }
 
 export function mapInt16Array(src: pointer<int16>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Int16Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeap16().subarray(src >>> 1, (src >>> reinterpret_cast<size>(1)) + n)
-  }
+  return new Int16Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapUint32Array(src: pointer<uint32>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Uint32Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeapU32().subarray(src >>> 2, (src >>> reinterpret_cast<size>(2)) + n)
-  }
+  return new Uint32Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapInt32Array(src: pointer<int32>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Int32Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeap32().subarray(src >>> 2, (src >>> reinterpret_cast<size>(2)) + n)
-  }
+  return new Int32Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapUint64Array(src: pointer<uint64>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new BigUint64Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeapU64().subarray(src >>> 3, (src >>> reinterpret_cast<size>(3)) + n)
-  }
+  return new BigUint64Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapInt64Array(src: pointer<int64>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new BigInt64Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeap64().subarray(src >>> 3, (src >>> reinterpret_cast<size>(3)) + n)
-  }
+  return new BigInt64Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapFloat32Array(src: pointer<float>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Float32Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeapF32().subarray(src >>> 2, (src >>> reinterpret_cast<size>(2)) + n)
-  }
+  return new Float32Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function mapFloat64Array(src: pointer<double>, n: size) {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  if (defined(WASM_64)) {
-    return new Float64Array(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
-  }
-  else {
-    return getHeapF64().subarray(src >>> 3, (src >>> reinterpret_cast<size>(3)) + n)
-  }
+  return new Float64Array<ArrayBufferLike>(getHeap(), reinterpret_cast<double>(src), reinterpret_cast<double>(n))
 }
 
 export function readCString(pointer: pointer<char>, max?: uint32) {

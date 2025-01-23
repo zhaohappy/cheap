@@ -558,12 +558,12 @@ export default class WebAssemblyRunner {
       object.extend(this.options.imports, imports)
     }
     if (!defined(DEBUG)
-      && isWorker()
-      && !threadAsm.wasmThreadProxy
       && threadAsm.isSupport()
       && this.resource.threadModule
     ) {
-      threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+      if (!threadAsm.wasmThreadProxy) {
+        threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+      }
       object.extend(this.imports.env, pthread)
     }
     if (!libcAsm.wasmThreadProxy
@@ -610,8 +610,10 @@ export default class WebAssemblyRunner {
     if (is.object(imports)) {
       object.extend(this.options.imports, imports)
     }
-    if (!defined(DEBUG) && !threadAsm.wasmThreadProxy && threadAsm.isSupport()) {
-      threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+    if (!defined(DEBUG) && threadAsm.isSupport()) {
+      if (!threadAsm.wasmThreadProxy) {
+        threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+      }
       object.extend(this.imports.env, pthread)
     }
     if (!atomicAsmOverride && atomicAsm.isSupport()) {

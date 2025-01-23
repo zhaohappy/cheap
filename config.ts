@@ -3,10 +3,16 @@ import { SELF } from 'common/util/constant'
 import browser from 'common/util/browser'
 import os from 'common/util/os'
 
+const ENV: {
+  CHEAP_DISABLE_THREAD: boolean
+  CHEAP_HEAP_INITIAL: number
+  CHEAP_HEAP_MAXIMUM: number
+} = defined(ENV_NODE) ? process.env : SELF
+
 /**
  * 是否使用多线程
  */
-export const USE_THREADS = defined(ENABLE_THREADS) && (support.thread || defined(ENV_NODE)) && (SELF as any).CHEAP_DISABLE_THREAD !== true
+export const USE_THREADS = defined(ENABLE_THREADS) && (support.thread || defined(ENV_NODE)) && !ENV.CHEAP_DISABLE_THREAD
 
 /**
  * 栈地址对齐
@@ -27,13 +33,13 @@ export const HEAP_OFFSET = 1024
 /**
  * 堆初始大小
  */
-export const HEAP_INITIAL: uint32 = ((SELF as any).CHEAP_HEAP_INITIAL ?? defined(CHEAP_HEAP_INITIAL))
+export const HEAP_INITIAL: uint32 = (ENV.CHEAP_HEAP_INITIAL ?? defined(CHEAP_HEAP_INITIAL))
 
 /**
  * 堆最大大小
  * ios safari 16 以下 对最大值有限制，太大分配不出来
  */
-export const HEAP_MAXIMUM: uint32 = (SELF as any).CHEAP_HEAP_MAXIMUM
+export const HEAP_MAXIMUM: uint32 = ENV.CHEAP_HEAP_MAXIMUM
   ?? (USE_THREADS && (os.ios && !browser.checkVersion(os.version, '17', true))
     ? 8192
     : (defined(WASM_64)

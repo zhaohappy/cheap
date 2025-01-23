@@ -153,89 +153,44 @@ export function getHeap() {
   return Memory.buffer
 }
 
-export function getHeapU8() {
+export let getHeapU8: () => Uint8Array
+export let getView: () => DataView
+export let getAtomicsBuffer: (type: atomictype) => AtomicsBuffer
+
+function getHeapU8_() {
   if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return HeapU8
 }
 
-export function getHeap8() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return Heap8
-}
-
-export function getHeapU16() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return HeapU16
-}
-
-export function getHeap16() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return Heap16
-}
-
-export function getHeapU32() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return HeapU32
-}
-
-export function getHeap32() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return Heap32
-}
-
-export function getHeap64() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return Heap64
-}
-
-export function getHeapU64() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return HeapU64
-}
-
-export function getHeapF32() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return HeapFloat32
-}
-
-export function getHeapF64() {
-  if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
-    updateHeap(Memory.buffer)
-  }
-  return HeapFloat64
-}
-
-export function getView() {
+export function getView_() {
   if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return view
 }
 
-export function getAtomicsBuffer(type: atomictype) {
+export function getAtomicsBuffer_(type: atomictype) {
   if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
     updateHeap(Memory.buffer)
   }
   return AtomicBufferMap[type as number]
 }
+
+function initView() {
+  if (config.USE_THREADS) {
+    getHeapU8 = getHeapU8_
+    getView = getView_
+    getAtomicsBuffer = getAtomicsBuffer_
+  }
+  else {
+    getHeapU8 = () => HeapU8
+    getView = () => view
+    getAtomicsBuffer = (type: atomictype) => AtomicBufferMap[type as number]
+  }
+}
+
 
 function setAllocator(a: AllocatorInterface) {
   if (!defined(WASM_64)) {
@@ -308,6 +263,7 @@ export async function initThread(options: {
   disableAsm?: boolean
   id?: int32
 }) {
+  initView()
   if (!defined(WASM_64)) {
     initCtypeEnumImpl(
       () => {
@@ -339,15 +295,12 @@ export async function initThread(options: {
         memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
       }
     }
-    
+
     if (defined(ENV_NODE)) {
-      if (config.USE_THREADS || defined(WASM_64)) {
-        atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
-      }
+      atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
     else {
-      if (config.USE_THREADS
-        && (
+      if ((
           browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
           || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
           || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
@@ -436,6 +389,7 @@ export async function initThread(options: {
  * 主线程初始化
  */
 export function initMain() {
+  initView()
   if (!defined(WASM_64)) {
     initCtypeEnumImpl(
       () => {
@@ -458,7 +412,9 @@ export function initMain() {
 
   if (!defined(DEBUG) && defined(ENABLE_THREADS) || defined(WASM_64)) {
     if (defined(ENV_NODE)) {
-      memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      if (config.USE_THREADS || defined(WASM_64)) {
+        memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
+      }
     }
     else {
       // @ts-ignore
@@ -470,6 +426,7 @@ export function initMain() {
           || os.ios && browser.checkVersion(os.version, '15', true)
           || browser.newEdge
         )
+        && config.USE_THREADS
         || defined(WASM_64)
       ) {
         memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
