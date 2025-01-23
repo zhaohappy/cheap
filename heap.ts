@@ -114,18 +114,6 @@ let HeapU32: Uint32Array = null
 let HeapU64: BigUint64Array = null
 
 /**
- * 32 位浮点数
- * float
- */
-let HeapFloat32: Float32Array = null
-
-/**
- * 64 位浮点数
- * double
- */
-let HeapFloat64: Float64Array = null
-
-/**
  * 堆访问器
  */
 let view: DataView = null
@@ -221,9 +209,6 @@ function updateHeap(heap: ArrayBuffer | SharedArrayBuffer) {
     HeapU16 = new Uint16Array(heap)
     HeapU32 = new Uint32Array(heap)
     HeapU64 = new BigUint64Array(heap)
-
-    HeapFloat32 = new Float32Array(heap)
-    HeapFloat64 = new Float64Array(heap)
 
     view = new DataView(heap)
 
