@@ -286,12 +286,12 @@ export async function initThread(options: {
     }
     else {
       if ((
-          browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
+        browser.chrome && browser.checkVersion(browser.majorVersion, '85', true)
           || browser.firefox && browser.checkVersion(browser.majorVersion, '78', true)
           || browser.safari && browser.checkVersion(browser.majorVersion, '15', true)
           || os.ios && browser.checkVersion(os.version, '15', true)
           || browser.newEdge
-        )
+      )
         || defined(WASM_64)
       ) {
         atomicsAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
