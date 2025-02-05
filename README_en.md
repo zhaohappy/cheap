@@ -630,6 +630,105 @@ async function joinThread<T>(thread: Thread<{}>): Promise<T>
 
 ```
 
+##### 编译配置
+
+Multi-Threads programming requires you to configure worker processing according to your own compilation and packaging tools. The following is an example:
+
+First, we need to create a separate ts file ```worker.ts``` as the entry point of the worker
+
+```javascript
+import task from './task'
+import runThread from '@libmedia/cheap/thread/runThread'
+runThread(task)
+```
+
+Then use it in the main file:
+
+###### vite
+
+```javascript
+
+import task from './task'
+import worker from './worker?worker'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  worker
+).run()
+```
+
+###### webpack
+```javascript
+
+import task from './task'
+import worker from 'worker-loader!./worker'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  worker
+).run()
+```
+
+###### node
+```javascript
+
+import task from './task'
+import { Worker } from 'worker_threads'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  () => new Worker(require.resolve('./worker'))
+).run()
+```
+
+If you use vite, you need to add the following configuration for the worker:
+
+
+```javascript
+
+import { defineConfig } from 'vite';
+import typescript from '@rollup/plugin-typescript';
+const transformer = require('@libmedia/cheap/build/transformer');
+
+export default defineConfig({
+  ...
+  worker: {
+    plugins: () => {
+      return [
+        typescript({
+          ...
+          transformers: {
+            before: [
+              {
+                type: 'program',
+                factory: (program) => {
+                  return transformer.before(program);
+                }
+              }
+            ]
+          }
+          ...
+        }),
+      ]
+    }
+  }
+  ...
+});
+```
+
+###### Use Multi-Threads in webpack
+
+If you are using webpack to build your project, it is recommended to use a webpack plugin for compilation. This approach simplifies enabling multi-threading, as it eliminates the need to manually create a separate worker entry file. Additionally, the multi-threaded code is not split into standalone files during compilation. Instead, workers are dynamically created at runtime through code generation.
+
+```javascript
+
+import task from './task'
+
+const pipeline = await createThreadFromFunction(
+  task
+).run()
+```
+
 ##### Thread Synchronization
 
 cheap supports thread synchronization methods such as atomic operations, locks, condition variables, and semaphores.

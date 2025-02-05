@@ -634,6 +634,105 @@ async function joinThread<T>(thread: Thread<{}>): Promise<T>
 
 ```
 
+##### 编译配置
+
+多线程编程需要你根据自己的编译打包工具配置 worker 处理，下面举个例子:
+
+首先我们需要单独建一个 ts 文件 ```worker.ts``` 作为 worker 的入口
+
+```javascript
+import task from './task'
+import runThread from '@libmedia/cheap/thread/runThread'
+runThread(task)
+```
+
+然后在主文件中使用:
+
+###### vite
+
+```javascript
+
+import task from './task'
+import worker from './worker?worker'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  worker
+).run()
+```
+
+###### webpack
+```javascript
+
+import task from './task'
+import worker from 'worker-loader!./worker'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  worker
+).run()
+```
+
+###### node
+```javascript
+
+import task from './task'
+import { Worker } from 'worker_threads'
+
+const pipeline = await createThreadFromFunction(
+  task,
+  () => new Worker(require.resolve('./worker'))
+).run()
+```
+
+如果你使用 vite 进行打包，针对 worker 需要添加配置如下:
+
+
+```javascript
+
+import { defineConfig } from 'vite';
+import typescript from '@rollup/plugin-typescript';
+const transformer = require('@libmedia/cheap/build/transformer');
+
+export default defineConfig({
+  ...
+  worker: {
+    plugins: () => {
+      return [
+        typescript({
+          ...
+          transformers: {
+            before: [
+              {
+                type: 'program',
+                factory: (program) => {
+                  return transformer.before(program);
+                }
+              }
+            ]
+          }
+          ...
+        }),
+      ]
+    }
+  }
+  ...
+});
+```
+
+###### webpack 中使用多线程
+
+如果你是使用的 webpack 来构建项目，推荐使用 webpack 插件来编译，这样开启多线程更加简单，不需要单独写一个 worker 的入口文件；并且多线程的代码不会单独分成独立的文件，运行时通过动态生成代码来创建 worker。
+
+```javascript
+
+import task from './task'
+
+const pipeline = await createThreadFromFunction(
+  task
+).run()
+```
+
 ##### 线程同步
 
 cheap 支持原子操作、锁、条件变量、信号量等线程同步方法。
