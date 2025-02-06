@@ -25,7 +25,7 @@ export default class ASMRunner {
     })
   }
 
-  public call(name: string, ...args: (number | bigint)[]) {
+  public invoke(name: string, ...args: (number | bigint)[]) {
     if (this.runner.exports[name]) {
       return (this.runner.exports[name] as Function).apply(null, args)
     }

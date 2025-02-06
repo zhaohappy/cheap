@@ -571,7 +571,7 @@ const runner = new WebAssemblyRunner(resource)
 await runner.run()
 
 // 然后就可以调用 wasm 导出的函数了
-runner.call('func_a', 0)
+runner.invoke('func_a', 0)
 
 
 ```

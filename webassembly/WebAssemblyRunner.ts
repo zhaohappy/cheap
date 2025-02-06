@@ -657,7 +657,7 @@ export default class WebAssemblyRunner {
    * @param func 方法名
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
-  public call<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): T  {
+  public invoke<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): T  {
     if (!this.asm) {
       return -1 as T
     }
@@ -687,12 +687,12 @@ export default class WebAssemblyRunner {
    * @param func 方法名
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
-  public async callAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T>  {
+  public async invokeAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T>  {
     if (!this.asm) {
       return -1 as T
     }
     if (!support.jspi) {
-      return this.call<T>(func, ...args)
+      return this.invoke<T>(func, ...args)
     }
 
     let call: Function
