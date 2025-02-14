@@ -14,17 +14,17 @@ import BufferWriter from 'common/io/BufferWriter'
 import nearestPowerOf2 from 'common/math/nearestPowerOf2'
 
 export interface WebAssemblyResource {
-  tableSize?: number
-  tableAlign?: number
-  dataSize?: number
-  dataAlign?: number
-  bssSize?: number
-  initFuncs?: string[]
+  tableSize: number
+  tableAlign: number
+  dataSize: number
+  dataAlign: number
+  bssSize: number
+  initFuncs: string[]
   module: WebAssembly.Module
-  buffer?: ArrayBuffer
+  buffer: ArrayBuffer
   threadModule?: {
     module: WebAssembly.Module
-    initFuncs?: string[]
+    initFuncs: string[]
   }
   /**
    * 提前创建好的 worker pool
@@ -513,7 +513,13 @@ export default async function compile(source: WebAssemblySource, options: Compil
   if (options.child) {
     return {
       module,
-      initFuncs: options.initFuncs || []
+      initFuncs: options.initFuncs || [],
+      tableSize: 0,
+      tableAlign: tableAlign || 0,
+      dataSize: 1,
+      dataAlign: dataAlign ? Math.max(nearestPowerOf2(dataAlign), 8) : 8,
+      bssSize: 0,
+      buffer
     }
   }
 
@@ -525,6 +531,6 @@ export default async function compile(source: WebAssemblySource, options: Compil
     dataAlign: dataAlign ? Math.max(nearestPowerOf2(dataAlign), 8) : 8,
     bssSize: bssSize || 0,
     initFuncs: options.initFuncs || [],
-    buffer: buffer
+    buffer
   }
 }
