@@ -1170,11 +1170,10 @@ const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).
 - 目前有一个项目[libmedia](https://github.com/zhaohappy/libmedia) 使用 cheap 进行开发，如果你想学习 cheap 如何用来开发，可以参考这个项目的使用方法和设计模式。
 - [cheap-example](https://github.com/zhaohappy/cheap-example) 是一些使用 cheap 的简单例子。
 
-### 注意
+### 参考
 
-cheap 目前还在研发阶段，尚未在生产环境使用，可能存在一些 bug，请谨慎使用。
-
-目前测试过的 wasm 模块都是从 emscripten 编译而来，cheap 中的 wasm runtime 也是针对 C/C++ 的，其他语言如 Rust 编译来的可能需要自己追加一些导入函数。至于其他带有 GC 的语言则不能使用。
+1. 一个基于跳表的 [malloc 算法](https://github.com/codemix/malloc) cheap 再其基础上修改作为内部的 malloc 算法；
+2. mutex 算法基于 [mozilla-spidermonkey](https://github.com/mozilla-spidermonkey/js-lock-and-condition)
 
 ### 开源协议
 

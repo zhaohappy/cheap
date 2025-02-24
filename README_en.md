@@ -1151,6 +1151,11 @@ cheap is still in the research and development stage and has not yet been used i
 
 The wasm modules tested so far are all compiled from emscripten. The wasm runtime in cheap is also for C/C++. Those compiled from other languages ​​such as Rust may need to add some imported functions. As for other languages with GC, it cannot be used.
 
+### References
+
+1. A skip-list-based [malloc algorithm](https://github.com/codemix/malloc) cheap modified it as the internal malloc algorithm;
+2. The mutex algorithm is based on [mozilla-spidermonkey](https://github.com/mozilla-spidermonkey/js-lock-and-condition)
+
 ### License
 
 [MIT](https://opensource.org/licenses/MIT)
