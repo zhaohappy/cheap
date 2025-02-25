@@ -1118,6 +1118,8 @@ interface SharedPtr<T> {
 
 ##### Passing Smart Pointer between thread
 
+Since data is copied between workers in javascript, the behavior of passing smart pointers between different threads is confusing. It is recommended that data structures that need to be frequently passed between different threads using raw pointers, you can use an object pool to manage them.
+
 ```typescript
 import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
 import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'

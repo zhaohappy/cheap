@@ -1142,6 +1142,8 @@ interface SharedPtr<T> {
 
 ##### 在线程之间传递智能指针
 
+由于 worker 之间传递数据是拷贝的，导致在不同线程之间传递智能指针的行为比较怪异，建议需要在不同线程之间频繁传递的数据结构使用裸指针来编写，自己写一个对象池来管理。
+
 ```typescript
 import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
 import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'
@@ -1172,7 +1174,7 @@ const thread = await createThreadFromFunction(worker).transfer(transfer.buffer).
 
 ### 参考
 
-1. 一个基于跳表的 [malloc 算法](https://github.com/codemix/malloc) cheap 再其基础上修改作为内部的 malloc 算法；
+1. 一个基于跳表的 [malloc 算法](https://github.com/codemix/malloc) cheap 在其基础上修改作为内部的 malloc 算法；
 2. mutex 算法基于 [mozilla-spidermonkey](https://github.com/mozilla-spidermonkey/js-lock-and-condition)
 
 ### 开源协议
