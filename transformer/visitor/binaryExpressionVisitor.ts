@@ -826,8 +826,19 @@ function computeVisitor(node: ts.BinaryExpression): ts.Node {
     }
     if (nodeUtils.isBigIntNode(node.left) && nodeUtils.isBigIntNode(node.right)) {
       const r = compute(nodeUtils.getBigIntValue(node.left as any), nodeUtils.getBigIntValue(node.right as any), node.operatorToken.kind)
-      if (is.bigint(r)) {
-        return statement.context.factory.createBigIntLiteral(r.toString() + 'n')
+      if (is.bigint(r) && r <= Number.MAX_SAFE_INTEGER && r >= Number.MIN_SAFE_INTEGER) {
+        if (statement.cheapCompilerOptions.defined.BIGINT_LITERAL) {
+          return statement.context.factory.createBigIntLiteral(r.toString() + 'n')
+        }
+        else {
+          return statement.context.factory.createCallExpression(
+            statement.context.factory.createIdentifier('BigInt'),
+            undefined,
+            [
+              statement.context.factory.createNumericLiteral(r.toString())
+            ]
+          )
+        }
       }
     }
     if (node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
