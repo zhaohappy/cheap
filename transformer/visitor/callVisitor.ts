@@ -116,8 +116,10 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
     if (ts.isIdentifier(node.typeName) && node.typeName.symbol) {
       // @ts-ignore
       const type = statement.typeChecker.getTypeOfSymbol(node.typeName.symbol)
-      if (typeUtils.isBuiltinType(type)) {
-        args.push(statement.context.factory.createNumericLiteral(typeUtils.getBuiltinByType(type)))
+      // @ts-ignore
+      if (typeUtils.isBuiltinType(type, node.typeName.symbol?.valueDeclaration)) {
+        // @ts-ignore
+        args.push(statement.context.factory.createNumericLiteral(typeUtils.getBuiltinByType(type,  node.typeName.symbol?.valueDeclaration)))
       }
       else if (type.aliasSymbol) {
         const name = type.aliasSymbol.escapedName as string
@@ -334,20 +336,20 @@ function accessStruct(pointer: ts.Node, struct: Struct) {
   }
 }
 
-function getTypeSize(nameType: ts.Type) {
+function getTypeSize(nameType: ts.Type, node: ts.Node) {
   if (typeUtils.isStructType(nameType)) {
     const struct = typeUtils.getStructByType(nameType)
     if (struct) {
       return struct.length
     }
   }
-  else if (typeUtils.isBuiltinType(nameType)) {
-    return CTypeEnum2Bytes[typeUtils.getBuiltinByType(nameType)]
+  else if (typeUtils.isBuiltinType(nameType, node)) {
+    return CTypeEnum2Bytes[typeUtils.getBuiltinByType(nameType, node)]
   }
   else if (nameType.aliasSymbol) {
     const type = nameType.aliasSymbol.escapedName as string
     if (type === constant.typeArray && nameType.aliasTypeArguments[1]?.isNumberLiteral()) {
-      return getTypeSize(nameType.aliasTypeArguments[0]) * nameType.aliasTypeArguments[1].value
+      return getTypeSize(nameType.aliasTypeArguments[0], null) * nameType.aliasTypeArguments[1].value
     }
     else if (type === constant.typeBit && nameType.aliasTypeArguments[1]?.isNumberLiteral()) {
       return nameType.aliasTypeArguments[1].value
@@ -364,14 +366,14 @@ function formatArgument(signature: ts.Signature, args: ts.NodeArray<ts.Expressio
       const argumentType = statement.typeChecker.getTypeAtLocation(args[i])
       const parameterType = statement.typeChecker.getTypeOfSymbol(signature.parameters[i])
 
-      if (typeUtils.isPointerType(argumentType)
-          && typeUtils.isBuiltinType(parameterType)
-          && !typeUtils.isPointerType(parameterType)
-          && !typeUtils.isNullPointer(parameterType)
-        || typeUtils.isBuiltinType(argumentType)
-          && !typeUtils.isPointerType(argumentType)
-          && !typeUtils.isNullPointer(argumentType)
-          && typeUtils.isPointerType(parameterType)
+      if (typeUtils.isPointerType(argumentType, args[i])
+          && typeUtils.isBuiltinType(parameterType, signature.parameters[i].valueDeclaration)
+          && !typeUtils.isPointerType(parameterType, signature.parameters[i].valueDeclaration)
+          && !typeUtils.isNullPointer(parameterType, signature.parameters[i].valueDeclaration)
+        || typeUtils.isBuiltinType(argumentType, args[i])
+          && !typeUtils.isPointerType(argumentType, args[i])
+          && !typeUtils.isNullPointer(argumentType, args[i])
+          && typeUtils.isPointerType(parameterType, signature.parameters[i].valueDeclaration)
       ) {
         reportError(statement.currentFile, args[i], `type ${typeUtils.getBuiltinNameByType(argumentType)} is not assignable to parameter of type ${typeUtils.getBuiltinNameByType(parameterType)}`, error.TYPE_MISMATCH)
       }
@@ -447,7 +449,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         }
 
         if (nodeUtils.isAtomicCallExpression(node)
-          && typeUtils.getPointerBuiltinByType(statement.typeChecker.getTypeAtLocation(node.arguments[0])) === CTypeEnum.atomic_bool
+          && typeUtils.getPointerBuiltinByType(statement.typeChecker.getTypeAtLocation(node.arguments[0]), node.arguments[0]) === CTypeEnum.atomic_bool
         ) {
           if (callName === 'load') {
             return ts.visitNode(statement.context.factory.createCallExpression(
@@ -552,7 +554,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       let nameType: ts.Type = statement.typeChecker.getTypeAtLocation(arg)
 
       if (nameType) {
-        const size = getTypeSize(nameType)
+        const size = getTypeSize(nameType, arg)
         if (size) {
           return nodeUtils.createPointerOperand(statement.context.factory.createNumericLiteral(size))
         }
@@ -598,7 +600,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       else if (ts.isPropertyAccessExpression(arg)
         || ts.isCallExpression(arg) && nodeUtils.isPointerIndexOfCall(arg)
         // pointer[x]
-        || ts.isElementAccessExpression(arg) && typeUtils.isPointerType(statement.typeChecker.getTypeAtLocation(arg.expression))
+        || ts.isElementAccessExpression(arg) && typeUtils.isPointerType(statement.typeChecker.getTypeAtLocation(arg.expression), arg.expression)
       ) {
         const newArg = ts.visitNode(arg, visitor) as ts.Expression
         if (ts.isCallExpression(newArg)
@@ -700,15 +702,15 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         let offset: ts.Expression
         let size = 0
         const type = statement.typeChecker.getTypeAtLocation(arg)
-        if (typeUtils.isBuiltinType(type)) {
-          size = CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)]
+        if (typeUtils.isBuiltinType(type, arg)) {
+          size = CTypeEnum2Bytes[typeUtils.getBuiltinByType(type, arg)]
         }
         else if (typeUtils.isStructType(type)) {
           const struct = typeUtils.getStructByType(type)
           size = struct.length
         }
         else if (typeUtils.isArrayType(type)) {
-          size = getTypeSize(type.aliasTypeArguments[0]) * (type.aliasTypeArguments[1] as ts.NumberLiteralType).value
+          size = getTypeSize(type.aliasTypeArguments[0], null) * (type.aliasTypeArguments[1] as ts.NumberLiteralType).value
         }
 
         if (!size) {
@@ -756,17 +758,17 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         return ts.visitNode(arg.arguments[0], visitor)
       }
       const type = nodeUtils.getPointerExpressionType(arg)
-      if (typeUtils.isPointerType(type)) {
+      if (typeUtils.isPointerType(type, arg)) {
         const newArg = ts.visitNode(arg, visitor) as ts.Expression
-        if (typeUtils.isPointerStructType(type)) {
-          const struct = typeUtils.getPointerStructByType(type)
+        if (typeUtils.isPointerStructType(type, arg)) {
+          const struct = typeUtils.getPointerStructByType(type, arg)
           return accessStruct(newArg, struct)
         }
-        else if (typeUtils.isPointerBuiltinType(type)) {
+        else if (typeUtils.isPointerBuiltinType(type, arg)) {
           return statement.context.factory.createCallExpression(
             statement.context.factory.createElementAccessExpression(
               statement.addMemoryImport(constant.ctypeEnumRead) as ts.Expression,
-              typeUtils.getPointerBuiltinByType(type)
+              typeUtils.getPointerBuiltinByType(type, arg)
             ),
             undefined,
             [
@@ -1203,7 +1205,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         }
         // size 和 pointer 转 number
         const sourceType = statement.typeChecker.getTypeAtLocation(node.arguments[0])
-        if ((typeUtils.isSizeType(sourceType) || typeUtils.isPointerType(sourceType))
+        if ((typeUtils.isSizeType(sourceType) || typeUtils.isPointerType(sourceType, node.arguments[0]))
           && !array.has(BuiltinBigInt, targetType)
           && targetType !== constant.typePointer
           && targetType !== constant.typeSize
@@ -1355,7 +1357,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           && type.symbol.valueDeclaration
           && ts.isClassDeclaration(type.symbol.valueDeclaration)
           && hasStruct(type.symbol)
-          || typeUtils.isBuiltinType(type)
+          || typeUtils.isBuiltinType(type, null)
 
         if (!isValid) {
           reportError(statement.currentFile, node, `invalid typeArguments, not found struct defined of ${node.typeArguments[0].typeName.escapedText} or ${node.typeArguments[0].typeName.escapedText} is not builtin type`, error.INVALID_OPERATE)
@@ -1381,12 +1383,12 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
   else if (ts.isPropertyAccessExpression(node.expression)) {
     if (callName === constant.indexOf) {
       const type = statement.typeChecker.getTypeAtLocation(node.expression.expression)
-      if (typeUtils.isPointerType(type) && node.arguments[0]) {
+      if (typeUtils.isPointerType(type, node.expression.expression) && node.arguments[0]) {
 
         let tree = ts.visitNode(node.expression.expression, visitor)
 
-        if (typeUtils.isPointerStructType(type)) {
-          const struct = typeUtils.getPointerStructByType(type)
+        if (typeUtils.isPointerStructType(type, node.expression.expression)) {
+          const struct = typeUtils.getPointerStructByType(type, node.expression.expression)
           if (struct) {
             let offset: ts.Expression = null
             if (ts.isNumericLiteral(node.arguments[0])) {
@@ -1410,8 +1412,8 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
             return accessStruct(tree, struct)
           }
         }
-        else if (typeUtils.isPointerBuiltinType(type)) {
-          const ctype = typeUtils.getPointerBuiltinByType(type)
+        else if (typeUtils.isPointerBuiltinType(type, node.expression.expression)) {
+          const ctype = typeUtils.getPointerBuiltinByType(type, node.expression.expression)
           const byteLength = CTypeEnum2Bytes[ctype]
           if (byteLength) {
 

@@ -142,7 +142,7 @@ declare const __LINE__: number
 // 当前文件
 declare const __FILE__: string
 
-declare const nullptr: nullptr
+declare const nullptr: any
 
 declare const typeptr: pointer<void>
 
@@ -218,9 +218,9 @@ declare type pointer<T> =
               : (
                 T extends void
                   ? {}
-                  : Partial<{
+                  : {
                     [K in keyof T]: T[K]
-                  }>
+                  }
               )
           )
       )

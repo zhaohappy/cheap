@@ -188,7 +188,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       while (next !== node) {
         const type = statement.typeChecker.getTypeAtLocation(root)
         if (lastIsIndexOf
-          || typeUtils.isPointerType(type)
+          || typeUtils.isPointerType(type, root)
           || typeUtils.isSmartPointerType(type)
           || type.aliasSymbol?.escapedName === constant.typeArray
         ) {
@@ -198,10 +198,10 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
               typeUtils.isSmartPointerType(type)
                 ? typeUtils.getSmartPointerStructByType(type)
                 : (
-                  typeUtils.isPointerType(type)
-                    ? typeUtils.getPointerStructByType(type)
+                  typeUtils.isPointerType(type, root)
+                    ? typeUtils.getPointerStructByType(type, root)
                     : (
-                      typeUtils.isPointerType(type.aliasTypeArguments[0])
+                      typeUtils.isPointerType(type.aliasTypeArguments[0], null)
                         ? null
                         : typeUtils.getStructByType(type.aliasTypeArguments[0])
                     )
@@ -303,8 +303,8 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             }
           }
           // [] 操作
-          else if ((type.aliasSymbol?.escapedName === constant.typeArray || typeUtils.isPointerType(type))
-            && typeUtils.isPointerType(type.aliasTypeArguments[0])
+          else if ((type.aliasSymbol?.escapedName === constant.typeArray || typeUtils.isPointerType(type, root))
+            && typeUtils.isPointerType(type.aliasTypeArguments[0], null)
             && ts.isElementAccessExpression(next)
           ) {
             if (ts.isNumericLiteral(next.argumentExpression) && +next.argumentExpression.text !== 0) {
@@ -338,14 +338,14 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             hasPointerIndex = true
           }
           // 指针的 indexOf
-          else if (typeUtils.isPointerType(type)
+          else if (typeUtils.isPointerType(type, root)
             && ts.isPropertyAccessExpression(next) && next.name.escapedText === constant.indexOf
             && ts.isCallExpression(next.parent)
           ) {
             next = next.parent as ts.CallExpression
 
             let step = 0
-            if (typeUtils.isPointerType(type.aliasTypeArguments[0])) {
+            if (typeUtils.isPointerType(type.aliasTypeArguments[0], null)) {
               step = CTypeEnum2Bytes[CTypeEnum.pointer]
             }
             else {
@@ -377,7 +377,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
               )
             }
             // 二级指针
-            if (typeUtils.isPointerType(type.aliasTypeArguments[0])) {
+            if (typeUtils.isPointerType(type.aliasTypeArguments[0], null)) {
               tree = statement.context.factory.createCallExpression(
                 statement.context.factory.createElementAccessExpression(
                   statement.addMemoryImport(constant.ctypeEnumRead) as ts.Expression,
@@ -447,7 +447,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       }
 
       const type = statement.typeChecker.getTypeAtLocation(root)
-      let struct = typeUtils.isPointerType(type) ? typeUtils.getPointerStructByType(type) : typeUtils.getStructByType(type)
+      let struct = typeUtils.isPointerType(type, root) ? typeUtils.getPointerStructByType(type, root) : typeUtils.getStructByType(type)
 
       if (!struct) {
         reportError(statement.currentFile, node, 'struct type mismatch')

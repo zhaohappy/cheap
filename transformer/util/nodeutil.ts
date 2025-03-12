@@ -20,7 +20,7 @@ export function isExpressionPointer(node: ts.PropertyAccessExpression | ts.Ident
 
   while (root && root !== node) {
     const type = statement.typeChecker.getTypeAtLocation(root)
-    if (typeUtils.isPointerType(type)) {
+    if (typeUtils.isPointerType(type, root)) {
       return true
     }
     root = root.parent
@@ -31,7 +31,7 @@ export function isExpressionPointer(node: ts.PropertyAccessExpression | ts.Ident
   }
 
   const type = statement.typeChecker.getTypeAtLocation(root)
-  if (typeUtils.isPointerType(type)) {
+  if (typeUtils.isPointerType(type, root)) {
     return true
   }
 
@@ -75,7 +75,7 @@ export function getSizeExpressionType(node: ts.Node) {
 export function getPointerExpressionType(node: ts.Node) {
   if (ts.isBinaryExpression(node)) {
     const type = statement.typeChecker.getTypeAtLocation(node.right)
-    if (typeUtils.isPointerType(type)) {
+    if (typeUtils.isPointerType(type, node.right)) {
       return type
     }
     return getPointerExpressionType(node.left)
@@ -91,12 +91,12 @@ export function isPointerNode(node: ts.Node) {
 
   // 检查表达式类型
   let type = statement.typeChecker.getTypeAtLocation(node)
-  if (typeUtils.isPointerType(type)) {
+  if (typeUtils.isPointerType(type, node)) {
     return true
   }
   // 检查二元操作符 (pointer 参与的运算结果为 pointer)
   type = getPointerExpressionType(node)
-  if (typeUtils.isPointerType(type)) {
+  if (typeUtils.isPointerType(type, node)) {
     return true
   }
 
@@ -182,7 +182,7 @@ export function getParseTreeNode(node: ts.Node, nodeTest?: (node: ts.Node) => bo
 export function isPointerIndexOfCall(node: ts.CallExpression) {
   if (ts.isPropertyAccessExpression(node.expression)) {
     const type = statement.typeChecker.getTypeAtLocation(node.expression.expression)
-    return typeUtils.isPointerType(type) && node.expression.name.escapedText === constant.indexOf
+    return typeUtils.isPointerType(type, node.expression.expression) && node.expression.name.escapedText === constant.indexOf
   }
   return false
 }
@@ -277,7 +277,7 @@ export function getBinaryBuiltinTypeName(node: ts.Expression | ts.Identifier) {
   else if (type.aliasSymbol && array.has(BuiltinType, type.aliasSymbol.escapedName as string)) {
     return type.aliasSymbol.escapedName as string
   }
-  else if (typeUtils.isPointerType(type)) {
+  else if (typeUtils.isPointerType(type, node)) {
     return statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32'
   }
 
@@ -579,4 +579,8 @@ export function getTypeAtLocation(node: ts.Node) {
     return getTypeAtLocation(node.expression)
   }
   return statement.typeChecker.getTypeAtLocation(node)
+}
+
+export function isNullPointerNode(node: ts.Node) {
+  return ts.isIdentifier(node) && node.escapedText === constant.typeNullptr
 }

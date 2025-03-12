@@ -12,10 +12,10 @@ export default function (node: ts.VariableDeclaration, visitor: ts.Visitor): ts.
   if (node.initializer && node.type && node.pos > -1) {
     const type = statement.typeChecker.getTypeAtLocation(node.type)
     const initType = statement.typeChecker.getTypeAtLocation(node.initializer)
-    if (typeUtils.isPointerType(type)
-      && (typeUtils.isBuiltinType(initType) || (initType.flags & ts.TypeFlags.NumberLike))
-      && !typeUtils.isPointerType(initType)
-      && !typeUtils.isNullPointer(initType)
+    if (typeUtils.isPointerType(type, null)
+      && (typeUtils.isBuiltinType(initType, node.initializer) || (initType.flags & ts.TypeFlags.NumberLike))
+      && !typeUtils.isPointerType(initType, node.initializer)
+      && !typeUtils.isNullPointer(initType, node.initializer)
     ) {
       reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(initType) || 'number'} is not assignable to variable declaration of type ${typeUtils.getBuiltinNameByType(type)}`, error.TYPE_MISMATCH)
     }

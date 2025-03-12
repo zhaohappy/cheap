@@ -260,7 +260,7 @@ export default class WebAssemblyRunner {
 
         const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
 
-        const threadDescriptor = malloc(sizeof(ThreadDescriptor))
+        const threadDescriptor = reinterpret_cast<pointer<ThreadDescriptor>>(malloc(sizeof(ThreadDescriptor)))
         memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
 
         this.childThreads.set(thread.id, {

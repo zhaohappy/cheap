@@ -10,10 +10,10 @@ export default function (node: ts.PropertyAssignment, visitor: ts.Visitor): ts.N
   if (node.initializer && node.pos > -1) {
     const type = statement.typeChecker.getTypeAtLocation(node.name)
     const initType = statement.typeChecker.getTypeAtLocation(node.initializer)
-    if (typeUtils.isPointerType(type)
-      && (typeUtils.isBuiltinType(initType) || initType.flags & ts.TypeFlags.NumberLike)
-      && !typeUtils.isPointerType(initType)
-      && !typeUtils.isNullPointer(initType)
+    if (typeUtils.isPointerType(type, node.name)
+      && (typeUtils.isBuiltinType(initType, node.initializer) || initType.flags & ts.TypeFlags.NumberLike)
+      && !typeUtils.isPointerType(initType, node.initializer)
+      && !typeUtils.isNullPointer(initType, node.initializer)
     ) {
       reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(initType) || 'number'} is not assignable to property assignment of type ${typeUtils.getBuiltinNameByType(type)}`, error.TYPE_MISMATCH)
       return node

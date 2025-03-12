@@ -138,7 +138,7 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
       const type1 = statement.typeChecker.getTypeAtLocation(node.left)
       const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand)
 
-      if (typeUtils.isTypeEquals(type1, type2) || typeUtils.isPointerType(type1) && typeUtils.isNullPointer(type2)) {
+      if (typeUtils.isTypeEquals(type1, node.left, type2, node.right.operand) || typeUtils.isPointerType(type1, node.left) && typeUtils.isNullPointer(type2, node.right.operand)) {
 
         let left = ts.visitNode(statement.context.factory.createCallExpression(
           statement.context.factory.createIdentifier(constant.addressof),
@@ -173,8 +173,8 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
             ]
           )
         }
-        else if (typeUtils.isBuiltinType(type1)) {
-          const type = typeUtils.getBuiltinByType(type1)
+        else if (typeUtils.isBuiltinType(type1, node.left)) {
+          const type = typeUtils.getBuiltinByType(type1, node.left)
           statement.pushStage(StageStatus.SingleArrowRight)
 
           const right = ts.visitNode(
@@ -215,7 +215,7 @@ function singleArrowVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.
       const type1 = statement.typeChecker.getTypeAtLocation(node.left)
       const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand)
 
-      if (typeUtils.isStructType(type1) && typeUtils.isTypeEquals(type1, type2)) {
+      if (typeUtils.isStructType(type1) && typeUtils.isTypeEquals(type1, node.left, type2, node.right.operand)) {
         const struct = typeUtils.getStructByType(type1)
 
         statement.pushStage(StageStatus.SingleArrowRight)
@@ -258,14 +258,14 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   const leftType = statement.typeChecker.getTypeAtLocation(node.left)
   const rightType = statement.typeChecker.getTypeAtLocation(node.right)
 
-  if (typeUtils.isPointerType(leftType)
-      && (typeUtils.isBuiltinType(rightType) || rightType.flags & ts.TypeFlags.NumberLike)
-      && !typeUtils.isPointerType(rightType)
-      && !typeUtils.isNullPointer(rightType)
-    || typeUtils.isBuiltinType(leftType)
-      && !typeUtils.isPointerType(leftType)
-      && !typeUtils.isNullPointer(leftType)
-      && typeUtils.isPointerType(rightType)
+  if (typeUtils.isPointerType(leftType, node.left)
+      && (typeUtils.isBuiltinType(rightType, node.right) || rightType.flags & ts.TypeFlags.NumberLike)
+      && !typeUtils.isPointerType(rightType, node.right)
+      && !typeUtils.isNullPointer(rightType, node.right)
+    || typeUtils.isBuiltinType(leftType, node.left)
+      && !typeUtils.isPointerType(leftType, node.left)
+      && !typeUtils.isNullPointer(leftType, node.left)
+      && typeUtils.isPointerType(rightType, node.right)
   ) {
     reportError(statement.currentFile, node, `type ${typeUtils.getBuiltinNameByType(leftType) || 'number'} is not assignable to value of type ${typeUtils.getBuiltinNameByType(rightType) || 'number'}`, error.TYPE_MISMATCH)
     return node
@@ -293,6 +293,10 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
       function each(base: number, struct: Struct, properties: ts.NodeArray<ts.ObjectLiteralElementLike>) {
         properties.forEach((ele) => {
           if (ts.isPropertyAssignment(ele) && ts.isIdentifier(ele.name)) {
+            if (!struct) {
+              reportError(statement.currentFile, ele, 'struct not found ')
+              return
+            }
             const meta = getStructMeta(struct, ele.name.escapedText as string)
             if (ts.isObjectLiteralExpression(ele.initializer) && meta.getTypeMeta) {
               each(
@@ -325,7 +329,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             }
           }
           else {
-            reportError(statement.currentFile, ele, 'struct found invalid property ')
+            reportError(statement.currentFile, ele, 'struct found invalid property')
           }
         })
       }
@@ -372,7 +376,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
           visitor
         ) as ts.Expression
         statement.popStage()
-        if (typeUtils.isStructType(type1) && typeUtils.isTypeEquals(type1, type2)
+        if (typeUtils.isStructType(type1) && typeUtils.isTypeEquals(type1, node.left, type2, node.right)
           || type1.aliasSymbol && (
             type1.aliasSymbol.escapedName === constant.typeStruct
             || (type1.aliasSymbol.escapedName === constant.typeUnion)
@@ -380,7 +384,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
           && type1.aliasTypeArguments
           && type2.aliasTypeArguments
           && hasStruct(type1.aliasTypeArguments[0].symbol)
-          && typeUtils.isTypeEquals(type1.aliasTypeArguments[0], type2.aliasTypeArguments[0])
+          && typeUtils.isTypeEquals(type1.aliasTypeArguments[0], null, type2.aliasTypeArguments[0], null)
         ) {
           const struct = typeUtils.getStructByType(type1)
           const valueAddress = ts.visitNode(
@@ -403,7 +407,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             ]
           )
         }
-        else if (typeUtils.isBuiltinType(type1)
+        else if (typeUtils.isBuiltinType(type1, node.left)
           || (type1.aliasSymbol
             && type1.aliasSymbol.escapedName === constant.typeBit
           )
@@ -428,7 +432,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             const type = statement.typeChecker.getTypeAtLocation(node.left.expression)
             const struct = typeUtils.getStructByType(type)
 
-            if (struct === null) {
+            if (struct == null) {
               reportError(statement.currentFile, node, `${node.left.expression.getText()} is not struct`)
               return node
             }
@@ -442,11 +446,11 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             return generateWritePropertyNode(address, newValue, meta)
           }
           else if (ts.isElementAccessExpression(node.left)) {
-            if (typeUtils.isBuiltinType(type1)) {
+            if (typeUtils.isBuiltinType(type1, node.left)) {
               return statement.context.factory.createCallExpression(
                 statement.context.factory.createElementAccessExpression(
                   statement.addMemoryImport(constant.ctypeEnumWrite) as ts.Expression,
-                  typeUtils.getBuiltinByType(type1)
+                  typeUtils.getBuiltinByType(type1, node.left)
                 ),
                 undefined,
                 [
@@ -494,7 +498,7 @@ function isAllSizeOrPointer(node: ts.Expression) {
     return isAllSizeOrPointer(node.expression)
   }
   const type = statement.typeChecker.getTypeAtLocation(node)
-  if (typeUtils.isSizeType(type) || typeUtils.isPointerType(type)) {
+  if (typeUtils.isSizeType(type) || typeUtils.isPointerType(type, node)) {
     return true
   }
   return false
@@ -611,7 +615,7 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
     const type1 = nodeUtils.getTypeAtLocation(node.left)
     const type2 = nodeUtils.getTypeAtLocation(node.right)
 
-    if (typeUtils.isPointerType(type1)
+    if (typeUtils.isPointerType(type1, node.left)
       && (ts.isNumericLiteral(node.right)
         || type2.flags & ts.TypeFlags.NumberLike
         || array.has(BuiltinNumber, typeUtils.getBuiltinNameByType(type2))
@@ -619,12 +623,12 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
     ) {
       let step = 1
 
-      if (typeUtils.isPointerStructType(type1)) {
-        const struct = typeUtils.getPointerStructByType(type1)
+      if (typeUtils.isPointerStructType(type1, node.left)) {
+        const struct = typeUtils.getPointerStructByType(type1, node.left)
         step = struct.length
       }
-      else if (typeUtils.isPointerBuiltinType(type1)) {
-        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type1)]
+      else if (typeUtils.isPointerBuiltinType(type1, node.left)) {
+        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type1, node.left)]
       }
 
       if (step > 1) {
@@ -652,7 +656,7 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
         )
       }
     }
-    else if (typeUtils.isPointerType(type2)
+    else if (typeUtils.isPointerType(type2, node.right)
       && (ts.isNumericLiteral(node.left)
         || type1.flags & ts.TypeFlags.NumberLike
         || array.has(BuiltinNumber, type1.aliasSymbol?.escapedName)
@@ -660,11 +664,11 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
     ) {
       let step = 1
 
-      if (typeUtils.isPointerBuiltinType(type2)) {
-        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type2)]
+      if (typeUtils.isPointerBuiltinType(type2, node.right)) {
+        step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type2, node.right)]
       }
-      else if (typeUtils.isPointerStructType(type2)) {
-        const struct = typeUtils.getPointerStructByType(type2)
+      else if (typeUtils.isPointerStructType(type2, node.right)) {
+        const struct = typeUtils.getPointerStructByType(type2, node.right)
         step = struct.length
       }
 
@@ -692,16 +696,16 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
         )
       }
     }
-    else if (typeUtils.isPointerType(type1) && typeUtils.isPointerType(type2)) {
-      if (node.operatorToken.kind === ts.SyntaxKind.MinusToken && typeUtils.isTypeEquals(type1, type2)) {
+    else if (typeUtils.isPointerType(type1, node.left) && typeUtils.isPointerType(type2, node.right)) {
+      if (node.operatorToken.kind === ts.SyntaxKind.MinusToken && typeUtils.isTypeEquals(type1, node.left, type2, node.right)) {
 
         let step = 1
 
-        if (typeUtils.isPointerBuiltinType(type1)) {
-          step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type1)]
+        if (typeUtils.isPointerBuiltinType(type1, node.left)) {
+          step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type1, node.left)]
         }
-        else if (typeUtils.isPointerStructType(type1)) {
-          const struct = typeUtils.getPointerStructByType(type1)
+        else if (typeUtils.isPointerStructType(type1, node.left)) {
+          const struct = typeUtils.getPointerStructByType(type1, node.left)
           step = struct.length
         }
         if (step > 1) {
@@ -791,7 +795,7 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
 
   if (statement.cheapCompilerOptions.defined.WASM_64) {
     const type1 = statement.typeChecker.getTypeAtLocation(node.left)
-    if (typeUtils.isPointerType(type1)
+    if (typeUtils.isPointerType(type1, node.left)
       && (!ts.isIdentifier(node.right)
         || node.right.escapedText === constant.enumPointer
           && !statement.lookupLocal(constant.enumPointer)

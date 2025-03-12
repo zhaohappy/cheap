@@ -107,16 +107,16 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
         )
       }
     }
-    else if (typeUtils.isBuiltinType(type)) {
+    else if (typeUtils.isBuiltinType(type, node)) {
 
       if (!(ts.isNumericLiteral(node.argumentExpression) && (+node.argumentExpression.text) === 0)) {
         tree = statement.context.factory.createBinaryExpression(
           tree as ts.Expression,
           ts.SyntaxKind.PlusToken,
           ts.isNumericLiteral(node.argumentExpression)
-            ? nodeUtils.createPointerOperand(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)] * (+node.argumentExpression.text))
+            ? nodeUtils.createPointerOperand(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type, node)] * (+node.argumentExpression.text))
             : nodeUtils.createPointerOperand(statement.context.factory.createBinaryExpression(
-              statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type)]),
+              statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[typeUtils.getBuiltinByType(type, node)]),
               ts.SyntaxKind.AsteriskToken,
               statement.context.factory.createParenthesizedExpression(node.argumentExpression)
             ))
@@ -126,7 +126,7 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
       return statement.context.factory.createCallExpression(
         statement.context.factory.createElementAccessExpression(
           statement.addMemoryImport(constant.ctypeEnumRead) as ts.Expression,
-          typeUtils.getBuiltinByType(type)
+          typeUtils.getBuiltinByType(type, node)
         ),
         undefined,
         [

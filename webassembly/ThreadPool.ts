@@ -40,7 +40,7 @@ export default class ThreadPool {
     return new Promise<TheadPoolEntry>((resolve, reject) => {
       const worker = new Worker(this.url)
       const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
-      const threadDescriptor: pointer<ThreadDescriptor> = malloc(sizeof(ThreadDescriptor))
+      const threadDescriptor = reinterpret_cast<pointer<ThreadDescriptor>>(malloc(sizeof(ThreadDescriptor)))
       memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
 
       threadDescriptor.status = PthreadStatus.STOP
@@ -53,7 +53,7 @@ export default class ThreadPool {
         const type = origin.type
         switch (type) {
           case 'ready':
-            const wait: pointer<ThreadWait> = stackPointer
+            const wait = reinterpret_cast<pointer<ThreadWait>>(stackPointer)
             memset(wait, 0, sizeof(ThreadWait))
             mutex.init(addressof(wait.mutex))
             cond.init(addressof(wait.cond))

@@ -20,17 +20,17 @@ export function isCompatibleType(type1: string, type2: string) {
   return type1 === type2
 }
 
-export function isTypeEquals(type1: ts.Type, type2: ts.Type) {
+export function isTypeEquals(type1: ts.Type, node1: ts.Node, type2: ts.Type, node2: ts.Node) {
 
-  if (isPointerType(type1) && isPointerType(type2)) {
+  if (isPointerType(type1, node1) && isPointerType(type2, node2)) {
     if (isAnyPointer(type1) || isAnyPointer(type2)) {
       return true
     }
-    return getFixTypeByType(type1) === getFixTypeByType(type2)
-      && getPointerLevelByType(type1) === getPointerLevelByType(type2)
+    return getFixTypeByType(type1, node1) === getFixTypeByType(type2, node2)
+      && getPointerLevelByType(type1, node1) === getPointerLevelByType(type2, node2)
   }
-  else if (isBuiltinType(type1) && isBuiltinType(type2)) {
-    return getBuiltinByType(type1) === getBuiltinByType(type2)
+  else if (isBuiltinType(type1, node1) && isBuiltinType(type2, node2)) {
+    return getBuiltinByType(type1, node1) === getBuiltinByType(type2, node2)
   }
   else if (isStructType(type1) && isStructType(type2)) {
     return getStructByType(type1) === getStructByType(type2)
@@ -52,7 +52,7 @@ export function isTypeEquals(type1: ts.Type, type2: ts.Type) {
     }
     if (type1.aliasTypeArguments?.length === type2.aliasTypeArguments?.length) {
       for (let i = 0; i < type1.aliasTypeArguments.length; i++) {
-        if (!isTypeEquals(type1.aliasTypeArguments[i], type2.aliasTypeArguments[i])) {
+        if (!isTypeEquals(type1.aliasTypeArguments[i], null, type2.aliasTypeArguments[i], null)) {
           return false
         }
       }
@@ -69,11 +69,11 @@ export function isTypeEquals(type1: ts.Type, type2: ts.Type) {
   return false
 }
 
-export function isBuiltinType(type: ts.Type) {
+export function isBuiltinType(type: ts.Type, node: ts.Node) {
   if (!type) {
     return false
   }
-  if (isPointerType(type)) {
+  if (isPointerType(type, node)) {
     return true
   }
   if  (type.aliasSymbol) {
@@ -93,14 +93,14 @@ export function isBuiltinType(type: ts.Type) {
   return false
 }
 
-export function isPointerBuiltinType(type: ts.Type) {
+export function isPointerBuiltinType(type: ts.Type, node: ts.Node) {
   if (!type) {
     return false
   }
-  return isPointerType(type)
+  return isPointerType(type, node)
     && (
-      type.aliasSymbol && type.aliasTypeArguments && isBuiltinType(type.aliasTypeArguments[0])
-      || !type.symbol && !type.aliasSymbol && !isPointerStructType(type)
+      type.aliasSymbol && type.aliasTypeArguments && isBuiltinType(type.aliasTypeArguments[0], null)
+      || !type.symbol && !type.aliasSymbol && !isPointerStructType(type, node)
     )
 }
 
@@ -171,9 +171,12 @@ export function isArrayType(type: ts.Type) {
     && type.aliasTypeArguments[1]?.isNumberLiteral()
 }
 
-export function isNullPointer(type: ts.Type) {
+export function isNullPointer(type: ts.Type, node: ts.Node) {
   if (type.aliasSymbol) {
     return type.aliasSymbol.escapedName === constant.typeNullptr
+  }
+  else if (node && ts.isIdentifier(node)) {
+    return node.escapedText === constant.typeNullptr
   }
   return false
 }
@@ -185,12 +188,12 @@ export function isMultiPointer(type: ts.Type) {
   return false
 }
 
-export function isPointerType(type: ts.Type) {
+export function isPointerType(type: ts.Type, node: ts.Node) {
   if (!type) {
     return false
   }
 
-  if (isAnyPointer(type) || isMultiPointer(type) || isNullPointer(type)) {
+  if (isAnyPointer(type) || isMultiPointer(type) || isNullPointer(type, node)) {
     return true
   }
   if (type.aliasSymbol) {
@@ -231,11 +234,11 @@ export function isSizeType(type: ts.Type, union: boolean = false) {
   return false
 }
 
-export function isPointerStructType(type: ts.Type) {
+export function isPointerStructType(type: ts.Type, node: ts.Node) {
   if (!type) {
     return false
   }
-  if (isPointerType(type)) {
+  if (isPointerType(type, node)) {
     if (isAnyPointer(type) || isMultiPointer(type)) {
       return false
     }
@@ -302,12 +305,12 @@ export function getStructByType(type: ts.Type) {
   }
 }
 
-export function getPointerStructByType(type: ts.Type) {
+export function getPointerStructByType(type: ts.Type, node: ts.Node) {
 
-  if (getPointerLevelByType(type) > 1) {
+  if (getPointerLevelByType(type, node) > 1) {
     return null
   }
-  return type.aliasSymbol && type.aliasTypeArguments && !isPointerType(type.aliasTypeArguments[0]) && getStructByType(type.aliasTypeArguments[0])
+  return type.aliasSymbol && type.aliasTypeArguments && !isPointerType(type.aliasTypeArguments[0], null) && getStructByType(type.aliasTypeArguments[0])
     || !type.symbol && !type.aliasSymbol && getStructByType(type)
 }
 
@@ -330,8 +333,8 @@ export function getBuiltinNameByType(type: ts.Type) {
   }
 }
 
-export function getBuiltinByType(type: ts.Type) {
-  if (isPointerType(type)) {
+export function getBuiltinByType(type: ts.Type, node: ts.Node) {
+  if (isPointerType(type, node)) {
     return CTypeEnum.pointer
   }
   const name = getBuiltinNameByType(type)
@@ -340,11 +343,11 @@ export function getBuiltinByType(type: ts.Type) {
   }
 }
 
-export function getPointerBuiltinByType(type: ts.Type) {
-  let builtinType = type.aliasSymbol && type.aliasTypeArguments && getBuiltinByType(type.aliasTypeArguments[0])
+export function getPointerBuiltinByType(type: ts.Type, node: ts.Node) {
+  let builtinType = type.aliasSymbol && type.aliasTypeArguments && getBuiltinByType(type.aliasTypeArguments[0], null)
   if (!is.number(builtinType) && !type.symbol && !type.aliasSymbol && type.isIntersection()) {
 
-    if (getPointerLevelByType(type) > 1) {
+    if (getPointerLevelByType(type, node) > 1) {
       return CTypeEnum.pointer
     }
 
@@ -359,10 +362,10 @@ export function getPointerBuiltinByType(type: ts.Type) {
   return builtinType
 }
 
-export function getFixTypeByType(type: ts.Type) {
-  if (isPointerType(type)) {
+export function getFixTypeByType(type: ts.Type, node: ts.Node) {
+  if (isPointerType(type, node)) {
     if (type.aliasSymbol && type.aliasTypeArguments) {
-      return getFixTypeByType(type.aliasTypeArguments[0])
+      return getFixTypeByType(type.aliasTypeArguments[0], null)
     }
     else {
       const value = getSymbolTypeValue(type.getProperty(constant.typeProperty))
@@ -377,13 +380,13 @@ export function getFixTypeByType(type: ts.Type) {
   else if (isStructType(type)) {
     return getStructByType(type)
   }
-  else if (isBuiltinType(type)) {
-    return getBuiltinByType(type)
+  else if (isBuiltinType(type, node)) {
+    return getBuiltinByType(type, node)
   }
 }
 
-export function getPointerLevelByType(type: ts.Type) {
-  if (isPointerType(type) && type.isIntersection()) {
+export function getPointerLevelByType(type: ts.Type, node: ts.Node) {
+  if (isPointerType(type, node) && type.isIntersection()) {
     const value = getSymbolTypeValue(type.getProperty(constant.levelProperty))
     if (value) {
       return value
