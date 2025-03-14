@@ -314,7 +314,7 @@ class MyStructB {
   a: MyStruct
   // 指向另一个结构体的指针
   b: pointer<MyStruct>
-  // 指向另一个结构体的二维指针
+  // 指向另一个结构体的二级指针
   c: pointer<pointer<MyStruct>>
 }
 
