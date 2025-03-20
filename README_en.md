@@ -137,6 +137,8 @@ export default {
 
 ```
 
+> vite uses esbuild to compile ts by default, but esbuild does not support transformers, so you need to use tsc to compile modules that use libmedia API. You can control which files are compiled by the typescript plugin using the transformer by setting the src configuration in the typescript plugin's tsconfig. It is recommended to put related files in a directory.
+
 #### webpack plugin
 
 Cheap currently has a webpack plugin. If your use webpack, it is recommended that you use it. The usage is as follows:
