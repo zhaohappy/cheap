@@ -90,6 +90,9 @@ export default defineConfig({
   ...
   plugins: [
     typescript({
+      // 配置使用的 tsconfig.json 配置文件
+      // include 中需要包含要处理的文件
+      tsconfig: './tsconfig.json',
       ...
       transformers: {
         before: [
@@ -118,6 +121,9 @@ export default {
   ...
   plugins: [
     typescript({
+      // 配置使用的 tsconfig.json 配置文件
+      // include 中需要包含要处理的文件
+      tsconfig: './tsconfig.json',
       ...
       transformers: {
         before: [
@@ -355,7 +361,7 @@ console.log(myStruct.b)
 unmake(myStruct)
 
 // 创建结构体指针（推荐使用，效率最高）
-let myStructPointer: pointer<MyStruct> = malloc(sizeof(MyStruct))
+let myStructPointer = reinterpret_cast<pointer<MyStruct>>(malloc(sizeof(MyStruct)))
 // 指针可以通过属性赋值
 myStructPointer.a = 0
 myStructPointer.b = 1

@@ -91,6 +91,9 @@ export default defineConfig({
   ...
   plugins: [
     typescript({
+      // configure the tsconfig.json configuration file used
+      // setting of "include" must to include the files need to compile
+      tsconfig: './tsconfig.json',
       ...
       transformers: {
         before: [
@@ -119,6 +122,9 @@ export default {
   ...
   plugins: [
     typescript({
+      // configure the tsconfig.json configuration file used
+      // setting of "include" must to include the files need to compile
+      tsconfig: './tsconfig.json',
       ...
       transformers: {
         before: [
@@ -353,7 +359,7 @@ console.log(myStruct.b)
 unmake(myStruct)
 
 // Create a struct pointer (recommended, most efficient)
-let myStructPointer: pointer<MyStruct> = malloc(sizeof(MyStruct))
+let myStructPointer = reinterpret_cast<pointer<MyStruct>>(malloc(sizeof(MyStruct)))
 // pointer can be assigned values through properties
 myStructPointer.a = 0
 myStructPointer.b = 1
