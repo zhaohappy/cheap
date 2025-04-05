@@ -142,7 +142,7 @@ export default {
 
 ```
 
-> vite 默认使用 esbuild 来编译 ts，但 esbuild 是不支持 transformer 的，所以需要使用 tsc 来编译使用到 libmedia API 的模块。你可以通过设置 typescript 插件的 tsconfig 中 src 配置来控制哪些文件经过 typescript 插件使用 transformer 来编译，建议将相关文件放到一个目录下。
+> vite 默认使用 esbuild 来编译 ts，但 esbuild 是不支持 transformer 的，所以需要使用 tsc 来编译使用到 cheap API 的模块。你可以通过设置 typescript 插件的 tsconfig 中 src 配置来控制哪些文件经过 typescript 插件使用 transformer 来编译，建议将相关文件放到一个目录下。
 
 #### webpack 插件
 
