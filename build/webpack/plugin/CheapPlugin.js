@@ -82,7 +82,7 @@ class CheapPlugin {
       if (!compiler.options.resolveLoader) {
         compiler.options.resolveLoader = {};
       }
-      if (compiler.options.resolveLoader.alias) {
+      if (!compiler.options.resolveLoader.alias) {
         compiler.options.resolveLoader.alias = {};
       }
       if (!compiler.options.resolveLoader.modules) {
