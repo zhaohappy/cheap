@@ -153,7 +153,6 @@ export default class AllocatorJS implements Allocator {
 
     return quadsToBytes(block) + this.heapOffset
   }
-
   /**
    * Allocate a given number of bytes and return the offset.
    * If allocation fails, returns 0.
@@ -173,7 +172,8 @@ export default class AllocatorJS implements Allocator {
 
     return address
   }
-  public calloc_(num: size, size: size): pointer<void> {
+
+  private calloc_(num: size, size: size): pointer<void> {
     let numberOfBytes = num * size
 
     if (numberOfBytes < MIN_FREEABLE_SIZE_IN_BYTES) {
@@ -193,7 +193,6 @@ export default class AllocatorJS implements Allocator {
 
     return address
   }
-
   public calloc(num: size, size: size): pointer<void> {
     if (this.shared) {
       lock(heapMutex, !defined(DEBUG))
@@ -209,7 +208,7 @@ export default class AllocatorJS implements Allocator {
     return address
   }
 
-  public realloc_(address: pointer<void>, size: size): pointer<void> {
+  private realloc_(address: pointer<void>, size: size): pointer<void> {
 
     if (address === nullptr) {
       return this.malloc_(size)
@@ -259,7 +258,6 @@ export default class AllocatorJS implements Allocator {
       return newAddress
     }
   }
-
   public realloc(address: pointer<void>, size: size): pointer<void> {
     if (this.shared) {
       lock(heapMutex, !defined(DEBUG))
@@ -275,7 +273,7 @@ export default class AllocatorJS implements Allocator {
     return address
   }
 
-  public alignedAlloc_(alignment: size, size: size): pointer<void> {
+  private alignedAlloc_(alignment: size, size: size): pointer<void> {
 
     assert(alignment >= 4, `alignment must not smaller then 4, but got ${alignment}`)
 
@@ -301,7 +299,6 @@ export default class AllocatorJS implements Allocator {
 
     return alignmentAddress
   }
-
   public alignedAlloc(alignment: size, size: size): pointer<void> {
     if (this.shared) {
       lock(heapMutex, !defined(DEBUG))
@@ -364,7 +361,6 @@ export default class AllocatorJS implements Allocator {
       insert(this.int32Array, block, blockSize, this.updates)
     }
   }
-
   /**
    * Free a number of bytes from the given address.
    */

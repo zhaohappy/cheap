@@ -209,7 +209,6 @@ export default class AllocatorJS64 implements Allocator {
 
     return quadsToBytes(block) + this.heapOffset
   }
-
   // @ts-ignore
   public malloc(size: size): pointer<void> {
     if (this.shared) {
@@ -224,7 +223,8 @@ export default class AllocatorJS64 implements Allocator {
 
     return address
   }
-  public calloc_(num: size, size: size): pointer<void> {
+
+  private calloc_(num: size, size: size): pointer<void> {
 
     let numberOfBytes = num * size
 
@@ -245,7 +245,6 @@ export default class AllocatorJS64 implements Allocator {
 
     return address
   }
-
   // @ts-ignore
   public calloc(num: size, size: size): pointer<void> {
     if (this.shared) {
@@ -261,7 +260,7 @@ export default class AllocatorJS64 implements Allocator {
     return address
   }
 
-  public realloc_(address: pointer<void>, size: size): pointer<void> {
+  private realloc_(address: pointer<void>, size: size): pointer<void> {
 
     if (address === reinterpret_cast<uint64>(nullptr)) {
       return this.malloc_(size)
@@ -310,7 +309,6 @@ export default class AllocatorJS64 implements Allocator {
       return newAddress
     }
   }
-
   // @ts-ignore
   public realloc(address: pointer<void>, size: size): pointer<void> {
     if (this.shared) {
@@ -326,7 +324,7 @@ export default class AllocatorJS64 implements Allocator {
     return address
   }
 
-  public alignedAlloc_(alignment: size, size: size): pointer<void> {
+  private alignedAlloc_(alignment: size, size: size): pointer<void> {
 
     assert(alignment >= 4n, `alignment must not smaller then 4, but got ${alignment}`)
 
@@ -351,7 +349,6 @@ export default class AllocatorJS64 implements Allocator {
 
     return alignmentAddress
   }
-
   // @ts-ignore
   public alignedAlloc(alignment: size, size: size): pointer<void> {
     if (this.shared) {
@@ -415,7 +412,6 @@ export default class AllocatorJS64 implements Allocator {
       insert(this.blockArray, block, blockSize, this.updates)
     }
   }
-
   // @ts-ignore
   public free(address: pointer<void>): void {
     if (this.shared) {
