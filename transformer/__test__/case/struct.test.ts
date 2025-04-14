@@ -700,10 +700,80 @@ describe('struct', () => {
     `
     check(source, target, {
       input,
-      output,
       defined: {
         WASM_64: true
       }
+    })
+  })
+
+  test('struct union', () => {
+    const source = `
+      @struct
+      class AVChannelLayout {
+        order: int32
+        nbChannels: int32
+        u: union<{
+          mask: uint64
+          map: pointer<void>
+        }>
+        opaque: pointer<void>
+      }
+      @struct
+      declare class TestA {
+        a: uint8
+        b: uint16
+        c: AVChannelLayout
+      }
+      let a: {
+        a: pointer<TestA>
+      }
+      let b = a.a.c.u.mask
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      import structAccess from "cheap/std/structAccess";
+      class AVChannelLayout {
+        order: int32;
+        nbChannels: int32;
+        u: union<{
+          mask: uint64;
+          map: pointer<void>;
+        }>;
+        opaque: pointer<void>;
+      }
+      (function (prototype) {
+        var map = new Map();
+        map.set("order", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("nbChannels", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("u", { 0: (function (prototype) {
+          var map = new Map();
+          map.set("mask", { 0: 10, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("map", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+          return prototype;
+        })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+        map.set("opaque", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 16, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+        definedMetaProperty(prototype, symbolStructLength, 24);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      })(AVChannelLayout.prototype);
+      declare class TestA {
+        a: uint8;
+        b: uint16;
+        c: AVChannelLayout;
+      }
+      let a: {
+        a: pointer<TestA>;
+      };
+      let b = structAccess(a.a + 16, AVChannelLayout, "u").mask;
+    `
+    check(source, target, {
+      input
     })
   })
 })

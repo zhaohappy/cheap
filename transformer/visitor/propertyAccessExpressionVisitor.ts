@@ -465,6 +465,15 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       tree = ts.visitNode(tree, visitor)
       statement.popStage()
 
+      if (ts.isCallExpression(tree)
+        && ts.isIdentifier(tree.expression)
+        && statement.isIdentifier(tree.expression, constant.structAccess, constant.structAccessPath)
+      ) {
+        return statement.context.factory.createPropertyAccessExpression(
+          tree,
+          node.name
+        )
+      }
       return handleMeta(node, tree, meta)
     }
   }
