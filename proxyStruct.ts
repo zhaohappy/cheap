@@ -250,6 +250,15 @@ export function proxyStruct<T>(address: pointer<void>, struct: (new () => T) | {
         target[propertyKey] = newValue
       }
       return true
+    },
+    getOwnPropertyDescriptor(target, key) {
+      return {
+        enumerable: true,
+        configurable: true
+      }
+    },
+    ownKeys(target) {
+      return Array.from(((target[symbolStructKeysMeta]) as Map<string, any>).keys())
     }
   })
 
