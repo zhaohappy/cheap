@@ -26,6 +26,7 @@
 import { Uint8ArrayInterface } from 'common/io/interface'
 import { getHeap, Memory } from '../../heap'
 import ArrayLikeInterface from 'common/interface/ArrayLike'
+import * as config from '../../config'
 
 export class SafeBufferView {
   private pointer: pointer<void>
@@ -171,7 +172,7 @@ export default class SafeUint8Array extends ArrayLikeInterface implements Uint8A
   }
 
   public subarray(begin: uint32 = 0, end?: uint32, safe?: boolean) {
-    if (safe) {
+    if (safe && !config.USE_THREADS) {
       return new SafeUint8Array(reinterpret_cast<pointer<uint8>>(this.pointer + begin), (end ? end : reinterpret_cast<double>(this.len)) - begin) as any as Uint8Array
     }
     return new Uint8Array(getHeap(), defined(WASM_64) ? Number(this.pointer + begin) : (this.pointer + begin), (end ?? reinterpret_cast<double>(this.len)) - begin)
