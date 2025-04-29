@@ -347,8 +347,8 @@ class MyStruct {
   b: uint32
 }
 
-// Create a struct instance, the second parameter can pass initialization data
-// The return of make is a js object use proxy
+// Create a struct instance, can pass initialization data
+// The return of make is a js object use Proxy
 // The getter and setter logic used every time when reading and writing properties
 const myStruct = make<MyStruct>({ a: 0, b: 0 })
 myStruct.a = 3
@@ -696,7 +696,7 @@ If you use vite, you need to add the following configuration for the worker:
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-const transformer = require('@libmedia/cheap/build/transformer');
+import transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...

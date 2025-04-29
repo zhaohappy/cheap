@@ -349,8 +349,8 @@ class MyStruct {
   b: uint32
 }
 
-// 创建结构体实例，第二个参数可以传递初始化数据
-// 返回的 myStruct 是一个 proxy 代理的 js 对象
+// 创建结构体实例，可以传递初始化数据
+// 返回的 myStruct 是一个 Proxy 代理的 js 对象
 // 每次读写属性时走的 getter 和 setter 逻辑
 const myStruct = make<MyStruct>({ a: 0, b: 0 })
 myStruct.a = 3
@@ -368,9 +368,11 @@ myStructPointer.b = 1
 // 取值
 console.log(myStructPointer.b)
 
+// 取结构体属性地址
 // pa 的类型为 pointer<int8>
 // 等于 C 中的 int8* pa = &myStructPointer->a
 const pa = addressof(myStructPointer.a)
+// 访问指针
 // 等于 C 中的 int8 va = *pa
 const va = accessof(pa)
 
@@ -698,7 +700,7 @@ const pipeline = await createThreadFromFunction(
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-const transformer = require('@libmedia/cheap/build/transformer');
+import transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...
