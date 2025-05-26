@@ -6,7 +6,7 @@ import { CTypeEnum } from '../typedef'
 import { CTypeEnumWrite } from '../ctypeEnumWrite'
 import SafeUint8Array from './buffer/SafeUint8Array'
 import * as config from '../config'
-import { CTypeEnumRead } from 'cheap/ctypeEnumRead'
+import { CTypeEnumRead } from '../ctypeEnumRead'
 
 export function memcpy(dst: anyptr, src: anyptr, size: size) {
   assert(dst && src, 'Out Of Bounds, address: 0')

@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
-import { CTypeEnum } from 'cheap/typedef'
+import { CTypeEnum } from '../../../typedef'
 
 describe('makeSharedPtr', () => {
 
