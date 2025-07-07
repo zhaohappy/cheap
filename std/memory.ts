@@ -125,6 +125,9 @@ export function readCString(pointer: pointer<char>, max?: uint32) {
   let stringLen = 0
   while (CTypeEnumRead[CTypeEnum.char](pointer++)) {
     stringLen++
+    if (max && stringLen >= max) {
+      break
+    }
   }
   const len = Math.min(stringLen, max ?? stringLen)
   return text.decode(mapUint8Array(pointer, len))
