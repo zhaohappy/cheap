@@ -147,7 +147,11 @@ export function proxyStruct<T>(address: pointer<void>, struct: (new () => T) | {
         if (meta) {
           const address = target[symbolStructAddress] + (defined(WASM_64) ? static_cast<uint64>(meta[KeyMetaKey.BaseAddressOffset]) : meta[KeyMetaKey.BaseAddressOffset])
           if (meta[KeyMetaKey.Array]) {
-            const t = target[propertyKey]
+            let t = target[propertyKey]
+            if (!t) {
+              t = proxyArray(address, meta[KeyMetaKey.ArrayLength], meta[KeyMetaKey.Type], meta[KeyMetaKey.Pointer])
+              target[propertyKey] = t
+            }
             t[symbolStructAddress] = address
             return t
           }

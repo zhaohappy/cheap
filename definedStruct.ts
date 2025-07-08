@@ -147,9 +147,15 @@ function definedArrayCTypeEnum(address: () => pointer<void>, length: number, typ
   return obj
 }
 
-function getArray(address: () => pointer<void>, target: Object, key: string) {
+function getArray(address: () => pointer<void>, target: Object, key: string, length: number, type: Struct | {} | CTypeEnum) {
   return function () {
-    const t = target[`__$__${key}`]
+    let t = target[`__$__${key}`]
+    if (!t) {
+      t = (is.func(type) || is.object(type))
+        ? definedArrayStruct(address, length, type)
+        : definedArrayCTypeEnum(address, length, type)
+      target[`__$__${key}`] = t
+    }
     t[symbolStructAddress] = address()
     return t
   }
@@ -206,7 +212,9 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                   }
                 },
                 obj,
-                key
+                key,
+                meta[KeyMetaKey.ArrayLength],
+                meta[KeyMetaKey.Type]
               ),
               setArrayCTypeEnum(
                 obj,
@@ -239,7 +247,9 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                     }
                   },
                   obj,
-                  key
+                  key,
+                  meta[KeyMetaKey.ArrayLength],
+                  meta[KeyMetaKey.Type]
                 ),
                 setArrayStruct(
                   obj,
@@ -271,7 +281,9 @@ export function definedStruct<T>(address: pointer<void>, struct: (new () => T) |
                     }
                   },
                   obj,
-                  key
+                  key,
+                  meta[KeyMetaKey.ArrayLength],
+                  meta[KeyMetaKey.Type]
                 ),
                 setArrayCTypeEnum(
                   obj,
