@@ -42,6 +42,16 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
       && nodeUtils.isPointerNode(node.expression)
   ) {
     const type = statement.typeChecker.getTypeAtLocation(node)
+    const expressionType = statement.typeChecker.getTypeAtLocation(node.expression)
+
+    if (typeUtils.isArrayType(expressionType) && ts.isNumericLiteral(node.argumentExpression)) {
+      const index = +node.argumentExpression.text
+      const max = +(expressionType.aliasTypeArguments[1] as ts.NumberLiteralType).value
+      if (index < 0 || index >= max) {
+        reportError(statement.currentFile, node, `type array access invalid index ${index}, range [0, ${max - 1}]`)
+        return node
+      }
+    }
 
     let tree = ts.visitNode(
       statement.context.factory.createCallExpression(

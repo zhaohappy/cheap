@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { check, distPath } from '../transformer'
+import { check, distPath, transform2AST } from '../transformer'
 import { definedMetaPropertyImport, symbolImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
@@ -775,5 +775,25 @@ describe('struct', () => {
     check(source, target, {
       input
     })
+  })
+
+  test('array access over length', () => {
+    const source = `
+      @struct
+      class TestA {
+        a: array<int8, 8>
+      }
+      let b: pointer<TestA>
+      let a = b.a[8]
+    `
+
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    transform2AST(source, {
+      input
+    })
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/type array access invalid index 8, range \[0, 7\]\n?$/))
+    consoleErrorSpy.mockRestore()
   })
 })
