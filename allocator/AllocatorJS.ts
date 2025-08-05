@@ -85,6 +85,8 @@ export default class AllocatorJS implements Allocator {
 
   private handles: ((buffer: ArrayBufferLike) => void)[]
 
+  private byteLength: number
+
   constructor(options: AllocatorJSOptions, init: boolean = true) {
     this.options = object.extend({
       growSize: 1 * 1024 * 1024,
@@ -97,6 +99,7 @@ export default class AllocatorJS implements Allocator {
       this.byteOffset = options.byteOffset ?? 0
       this.heapOffset = alignHeapOffset(this.byteOffset + quadsToBytes(MAX_HEIGHT), options.byteLength ?? this.buffer.byteLength)
       this.heapLength = alignHeapLength((options.byteLength ?? this.buffer.byteLength) - this.heapOffset)
+      this.byteLength = options.byteLength ?? this.buffer.byteLength
 
       this.int32Array = new Int32Array(this.buffer, this.heapOffset, bytesToQuads(static_cast<int32>(this.heapLength)))
       this.updates = new Int32Array(this.buffer, this.byteOffset, MAX_HEIGHT)
@@ -424,24 +427,40 @@ export default class AllocatorJS implements Allocator {
         let heapLength = 0
         let heapOffset = 0
 
-        if (this.options.onResize) {
-          const result = this.options.onResize(
-            this.int32Array,
-            this.int32Array.byteLength + align(Math.max(this.options.growSize, quadsToBytes(minimumSize)), ALIGNMENT_MASK)
-          )
-          byteOffset = result.byteOffset ?? 0
-          heapOffset = alignHeapOffset(byteOffset + quadsToBytes(MAX_HEIGHT), result.byteLength ?? result.buffer.byteLength)
-          heapLength = alignHeapLength((result.byteLength ?? result.buffer.byteLength) - heapOffset)
-          int32Array = new Int32Array(result.buffer, heapOffset, bytesToQuads(heapLength))
-          updates = new Int32Array(result.buffer, byteOffset, MAX_HEIGHT)
+        if (this.options.memory) {
+          this.options.memory.grow(reinterpret_cast<int32>(align(
+            Math.max(this.options.growSize, quadsToBytes(minimumSize)),
+            ALIGNMENT_MASK
+          ) >> 16))
+          byteOffset = this.byteOffset
+          heapOffset = this.heapOffset
+          heapLength = alignHeapLength(this.options.memory.buffer.byteLength - heapOffset)
+          int32Array = new Int32Array(this.options.memory.buffer, heapOffset, bytesToQuads(heapLength))
+          updates = new Int32Array(this.options.memory.buffer, byteOffset, MAX_HEIGHT)
+          this.byteLength = this.options.memory.buffer.byteLength
         }
         else {
-          const buffer = new ArrayBuffer(this.int32Array.length + bytesToQuads(this.options.growSize))
-          heapOffset = alignHeapOffset(byteOffset + quadsToBytes(MAX_HEIGHT), buffer.byteLength)
-          heapLength = alignHeapLength(buffer.byteLength - heapOffset)
-          int32Array = new Int32Array(buffer, heapOffset, bytesToQuads(heapLength))
-          int32Array.set(this.int32Array, 0)
-          updates = new Int32Array(buffer, byteOffset, MAX_HEIGHT)
+          if (this.options.onResize) {
+            const result = this.options.onResize(
+              this.int32Array,
+              this.int32Array.byteLength + align(Math.max(this.options.growSize, quadsToBytes(minimumSize)), ALIGNMENT_MASK)
+            )
+            byteOffset = result.byteOffset ?? 0
+            heapOffset = alignHeapOffset(byteOffset + quadsToBytes(MAX_HEIGHT), result.byteLength ?? result.buffer.byteLength)
+            heapLength = alignHeapLength((result.byteLength ?? result.buffer.byteLength) - heapOffset)
+            int32Array = new Int32Array(result.buffer, heapOffset, bytesToQuads(heapLength))
+            updates = new Int32Array(result.buffer, byteOffset, MAX_HEIGHT)
+            this.byteLength = result.byteLength ?? result.buffer.byteLength
+          }
+          else {
+            const buffer = new ArrayBuffer(this.int32Array.length + bytesToQuads(this.options.growSize))
+            heapOffset = alignHeapOffset(byteOffset + quadsToBytes(MAX_HEIGHT), buffer.byteLength)
+            heapLength = alignHeapLength(buffer.byteLength - heapOffset)
+            int32Array = new Int32Array(buffer, heapOffset, bytesToQuads(heapLength))
+            int32Array.set(this.int32Array, 0)
+            updates = new Int32Array(buffer, byteOffset, MAX_HEIGHT)
+            this.byteLength = buffer.byteLength
+          }
         }
 
         this.byteOffset = byteOffset
@@ -507,8 +526,11 @@ export default class AllocatorJS implements Allocator {
   }
 
   private checkBuffer() {
-    if (this.options.memory && this.options.memory.buffer !== this.buffer) {
+    if (this.options.memory
+      && this.byteLength !== this.options.memory.buffer.byteLength
+    ) {
       this.buffer = this.options.memory.buffer
+      this.byteLength = this.buffer.byteLength
       this.heapLength = alignHeapLength(this.buffer.byteLength - this.heapOffset)
       this.int32Array = new Int32Array(this.buffer, this.heapOffset, bytesToQuads(static_cast<int32>(this.heapLength)))
     }

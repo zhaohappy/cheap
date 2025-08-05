@@ -146,6 +146,7 @@ export function getHeap() {
 export let getHeapU8: () => Uint8Array
 export let getView: () => DataView
 export let getAtomicsBuffer: (type: atomictype) => AtomicsBuffer
+export let useResizableBuffer: boolean = false
 
 function getHeapU8_() {
   if (!defined(WASM_64) && defined(ENABLE_THREADS) && checkHeap()) {
@@ -169,7 +170,7 @@ export function getAtomicsBuffer_(type: atomictype) {
 }
 
 function initView() {
-  if (config.USE_THREADS) {
+  if (config.USE_THREADS && !useResizableBuffer) {
     getHeapU8 = getHeapU8_
     getView = getView_
     getAtomicsBuffer = getAtomicsBuffer_
@@ -184,7 +185,7 @@ function initView() {
 
 function setAllocator(a: AllocatorInterface) {
   if (!defined(WASM_64)) {
-    if (Allocator) {
+    if (Allocator && !useResizableBuffer) {
       Allocator.removeUpdateHandle(updateHeap)
     }
   }
@@ -195,7 +196,9 @@ function setAllocator(a: AllocatorInterface) {
   }
 
   if (!defined(WASM_64)) {
-    Allocator.addUpdateHandle(updateHeap)
+    if (!useResizableBuffer) {
+      Allocator.addUpdateHandle(updateHeap)
+    }
     updateHeap(Allocator.getBuffer())
   }
 }
@@ -250,6 +253,10 @@ export async function initThread(options: {
   disableAsm?: boolean
   id?: int32
 }) {
+  Memory = options.memory
+  // @ts-ignore
+  useResizableBuffer = !!Memory.buffer.growable
+
   initView()
   if (!defined(WASM_64)) {
     initCtypeEnumImpl(
@@ -261,9 +268,7 @@ export async function initThread(options: {
     initAtomics(getAtomicsBuffer)
   }
 
-  Memory = options.memory
-
-  if (!options.disableAsm || defined(WASM_64)) {
+  if (!options.disableAsm && !useResizableBuffer || defined(WASM_64)) {
     if (defined(ENV_NODE)) {
       memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
     }
@@ -318,14 +323,7 @@ export async function initThread(options: {
         memory: Memory,
         byteOffset: config.HEAP_OFFSET,
         maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
-        growAllowed: true,
-        onResize(old, need) {
-          Memory.grow((need - old.byteLength) >>> 16)
-          return {
-            buffer: Memory.buffer,
-            byteOffset: config.HEAP_OFFSET
-          }
-        }
+        growAllowed: true
       },
       false
     )
@@ -376,16 +374,6 @@ export async function initThread(options: {
  * 主线程初始化
  */
 export function initMain() {
-  initView()
-  if (!defined(WASM_64)) {
-    initCtypeEnumImpl(
-      () => {
-        return Allocator
-      },
-      getView
-    )
-    initAtomics(getAtomicsBuffer)
-  }
 
   Memory = SELF.CHeap?.Memory ? SELF.CHeap.Memory : new WebAssembly.Memory({
     initial: reinterpret_cast<size>(config.HEAP_INITIAL),
@@ -397,7 +385,27 @@ export function initMain() {
     index: defined(WASM_64) ? 'i64' : 'i32'
   })
 
-  if (!defined(DEBUG) && defined(ENABLE_THREADS) || defined(WASM_64)) {
+  // @ts-ignore
+  if (config.USE_THREADS && typeof Memory.toResizableBuffer === 'function' && !SELF.CHeap?.Memory) {
+    // @ts-ignore
+    Memory.toResizableBuffer()
+  }
+
+  // @ts-ignore
+  useResizableBuffer = !!Memory.buffer.growable
+
+  initView()
+  if (!defined(WASM_64)) {
+    initCtypeEnumImpl(
+      () => {
+        return Allocator
+      },
+      getView
+    )
+    initAtomics(getAtomicsBuffer)
+  }
+
+  if (!defined(DEBUG) && defined(ENABLE_THREADS) && !useResizableBuffer || defined(WASM_64)) {
     if (defined(ENV_NODE)) {
       if (config.USE_THREADS || defined(WASM_64)) {
         memoryAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM)
@@ -457,19 +465,14 @@ export function initMain() {
           memory: Memory,
           byteOffset: config.HEAP_OFFSET,
           maxHeapSize: config.HEAP_MAXIMUM * 64 * 1024,
-          growAllowed: true,
-          onResize(old, need) {
-            Memory.grow((need - old.byteLength) >>> 16)
-            return {
-              buffer: Memory.buffer,
-              byteOffset: config.HEAP_OFFSET
-            }
-          }
+          growAllowed: true
         })
     )
 
   if (!defined(WASM_64)) {
-    Allocator.addUpdateHandle(updateHeap)
+    if (!useResizableBuffer) {
+      Allocator.addUpdateHandle(updateHeap)
+    }
     updateHeap(Allocator.getBuffer())
   }
 

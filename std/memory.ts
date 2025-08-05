@@ -1,5 +1,6 @@
 import { getHeapU8, Allocator,
-  getHeap
+  getHeap,
+  useResizableBuffer
 } from '../heap'
 import * as text from 'common/util/text'
 import { CTypeEnum } from '../typedef'
@@ -56,7 +57,7 @@ export function memset(src: anyptr, c: uint8, n: size) {
 export function mapSafeUint8Array(src: pointer<void>, n: size): SafeUint8Array {
   assert(src, 'Out Of Bounds, address: 0')
   assert(Allocator.isAlloc(src), `src address ${src} is not alloc`)
-  return config.USE_THREADS ? mapUint8Array(src, n) as any as SafeUint8Array : new SafeUint8Array(reinterpret_cast<pointer<uint8>>(src), n)
+  return config.USE_THREADS || useResizableBuffer ? mapUint8Array(src, n) as any as SafeUint8Array : new SafeUint8Array(reinterpret_cast<pointer<uint8>>(src), n)
 }
 
 export function mapUint8Array(src: pointer<void>, n: size) {
