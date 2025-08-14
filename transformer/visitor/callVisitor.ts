@@ -300,12 +300,12 @@ function accessCType(pointer: ts.Node, type: CTypeEnum) {
 function accessStruct(pointer: ts.Node, struct: Struct) {
 
   const targetStruct = struct
-  let targetSymbol = targetStruct.symbol
+  let targetSymbol = targetStruct.symbol.deref()
   let targetPath = ''
 
   if (targetStruct.structType === StructType.INLINE_OBJECT) {
-    targetSymbol = targetStruct.definedClassParent.symbol
-    targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol)
+    targetSymbol = targetStruct.definedClassParent.symbol.deref()
+    targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref())
   }
 
   const targetSource = targetSymbol.valueDeclaration?.getSourceFile()
@@ -642,7 +642,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           const meta = getStructMeta(struct, newArg.name.escapedText as string)
 
           if (!meta) {
-            reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${newArg.name.escapedText}`)
+            reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${newArg.name.escapedText}`)
             return node
           }
 

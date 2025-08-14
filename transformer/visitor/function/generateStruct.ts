@@ -38,7 +38,7 @@ export default function generateStruct(struct: Struct) {
     let type: ts.PropertyAssignment | ts.GetAccessorDeclaration
     if (is.func(data.getTypeMeta)) {
       if (data.typeIdentifier) {
-        const targetSource = data.getTypeMeta()?.symbol.valueDeclaration.getSourceFile()
+        const targetSource = data.getTypeMeta()?.symbol.deref().valueDeclaration.getSourceFile()
         if (targetSource && targetSource.fileName !== statement.currentFile.fileName) {
           type = statement.context.factory.createPropertyAssignment(
             statement.context.factory.createNumericLiteral(KeyMetaKey.Type),

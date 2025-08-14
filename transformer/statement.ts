@@ -248,6 +248,19 @@ class Statement {
 
     this.popStack()
 
+    this.program = null
+    this.typeChecker = null
+    this.context = null
+    this.currentFile = null
+    this.visitor = null
+
+    this.memoryImports = []
+    this.symbolImports = []
+    this.stdImports = []
+    this.identifierImports = []
+    this.requires = []
+    this.stacks = []
+
     return newFile
   }
 

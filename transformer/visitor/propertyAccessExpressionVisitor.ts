@@ -127,12 +127,12 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
   else if (is.func(meta.getTypeMeta)) {
     const targetStruct = meta.getTypeMeta()
 
-    let targetSymbol = targetStruct.symbol
+    let targetSymbol = targetStruct.symbol.deref()
     let targetPath = ''
 
     if (targetStruct.structType === StructType.INLINE_OBJECT) {
-      targetSymbol = targetStruct.definedClassParent.symbol
-      targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol)
+      targetSymbol = targetStruct.definedClassParent.symbol.deref()
+      targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref())
     }
 
     const targetSource = targetSymbol.valueDeclaration?.getSourceFile()
@@ -218,7 +218,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
                 const meta = getStructMeta(struct, next.name.escapedText as string)
 
                 if (!meta) {
-                  reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${next.name.escapedText}`)
+                  reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${next.name.escapedText}`)
                   return node
                 }
 
@@ -405,7 +405,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
             const meta = getStructMeta(struct, next.name.escapedText as string)
 
             if (!meta) {
-              reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${next.name.escapedText}`)
+              reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${next.name.escapedText}`)
               return node
             }
 
@@ -457,7 +457,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       const meta = getStructMeta(struct, node.name.escapedText as string)
 
       if (!meta) {
-        reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${node.name.escapedText}`)
+        reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.name.escapedText}`)
         return node
       }
 
@@ -493,7 +493,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
       const meta = getStructMeta(struct, node.name.escapedText as string)
 
       if (!meta) {
-        reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${node.name.escapedText}`)
+        reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.name.escapedText}`)
         return node
       }
 

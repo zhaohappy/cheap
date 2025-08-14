@@ -43,6 +43,18 @@ export interface TransformerOptions {
    */
   wat2wasm?: string
 }
-export declare function before(program: ts.Program, options?: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
-export declare function after(program: ts.Program, options?: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
-export declare function afterDeclarations(program: ts.Program, options?: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+
+export declare function before(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function before(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function before(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export declare function before(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+
+export declare function after(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function after(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function after(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export declare function after(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+
+export declare function afterDeclarations(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function afterDeclarations(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export declare function afterDeclarations(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export declare function afterDeclarations(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>

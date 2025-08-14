@@ -19,9 +19,11 @@ import propertyDeclarationVisitor from './visitor/propertyDeclarationVisitor'
 import propertyAssignmentVisitor from './visitor/propertyAssignmentVisitor'
 import bindingElementVisitor from './visitor/bindingElementVisitor'
 import * as constant from './constant'
-import { getStructFileIdentifiers } from './struct'
+import { getStructFileIdentifiers, clearStructCache } from './struct'
 import * as typedef from '../typedef'
 import * as definedConstant from './defined'
+
+const createNumericLiteralSymbol = Symbol('createNumericLiteral')
 
 const DefaultDefined = {
   ENV_NODE: false,
@@ -33,10 +35,21 @@ const DefaultDefined = {
   ENABLE_SYNCHRONIZE_API: false,
   ENABLE_LOG_PATH: true,
   ENV_WEBPACK: false,
-  WASM_64: false,
+  WASM_64: false
 }
+export function before(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function before(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function before(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export function before(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function before(program: ts.Program, options?: TransformerOptions | (() => ts.Program), getProgram?: () => ts.Program): ts.TransformerFactory<ts.SourceFile> {
 
-export function before(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+  if (is.func(options)) {
+    getProgram = options
+    options = {}
+  }
+  if (!options) {
+    options = {}
+  }
 
   if (!options.projectPath) {
     options.projectPath = program.getCurrentDirectory()
@@ -72,11 +85,8 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
   }
   compilerOptions.defined = defined
 
-
   statement.options = options
   statement.cheapCompilerOptions = compilerOptions
-  statement.program = program
-  statement.typeChecker = program.getTypeChecker()
   statement.compilerOptions = program.getCompilerOptions()
 
   const excludes = is.array(options.exclude)
@@ -107,6 +117,8 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
     }
   }
 
+  clearStructCache()
+
   return (context: ts.TransformationContext) => {
 
     statement.context = context
@@ -116,16 +128,18 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
     statement.esModuleInterop = options.esModuleInterop
 
     const createNumericLiteral = context.factory.createNumericLiteral
-
-    // @ts-ignore
-    context.factory.createNumericLiteral = (value: string | number, numericLiteralFlags?: ts.TokenFlags) => {
-      if (is.number(value) && value < 0) {
-        return statement.context.factory.createPrefixUnaryExpression(
-          ts.SyntaxKind.MinusToken,
-          statement.context.factory.createNumericLiteral(Math.abs(value))
-        )
+    if (!createNumericLiteral[createNumericLiteralSymbol]) {
+      // @ts-ignore
+      context.factory.createNumericLiteral = (value: string | number, numericLiteralFlags?: ts.TokenFlags) => {
+        if (is.number(value) && value < 0) {
+          return statement.context.factory.createPrefixUnaryExpression(
+            ts.SyntaxKind.MinusToken,
+            statement.context.factory.createNumericLiteral(Math.abs(value))
+          )
+        }
+        return createNumericLiteral(value, numericLiteralFlags)
       }
-      return createNumericLiteral(value, numericLiteralFlags)
+      context.factory.createNumericLiteral[createNumericLiteralSymbol] = true
     }
 
     return (file: ts.SourceFile) => {
@@ -134,6 +148,15 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
         return exclude.test(file.fileName)
       })) {
         return file
+      }
+
+      if (getProgram) {
+        statement.program = getProgram()
+        statement.typeChecker = statement.program.getTypeChecker()
+      }
+      else {
+        statement.program = program
+        statement.typeChecker = program.getTypeChecker()
       }
 
       statement.start(file)
@@ -192,7 +215,20 @@ export function before(program: ts.Program, options: TransformerOptions = {}): t
   }
 }
 
-export function after(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+export function after(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function after(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function after(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export function after(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function after(program: ts.Program, options?: TransformerOptions | (() => ts.Program), getProgram?: () => ts.Program): ts.TransformerFactory<ts.SourceFile> {
+  
+  if (is.func(options)) {
+    getProgram = options
+    options = {}
+  }
+  if (!options) {
+    options = {}
+  }
+  
   const excludes = is.array(options.exclude)
     ? options.exclude
     : (options.exclude
@@ -215,7 +251,19 @@ export function after(program: ts.Program, options: TransformerOptions = {}): ts
   }
 }
 
-export function afterDeclarations(program: ts.Program, options: TransformerOptions = {}): ts.TransformerFactory<ts.SourceFile> {
+export function afterDeclarations(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function afterDeclarations(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function afterDeclarations(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
+export function afterDeclarations(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
+export function afterDeclarations(program: ts.Program, options?: TransformerOptions | (() => ts.Program), getProgram?: () => ts.Program): ts.TransformerFactory<ts.SourceFile> {
+
+  if (is.func(options)) {
+    getProgram = options
+    options = {}
+  }
+  if (!options) {
+    options = {}
+  }
 
   const excludes = is.array(options.exclude)
     ? options.exclude

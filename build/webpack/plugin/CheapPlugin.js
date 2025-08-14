@@ -75,10 +75,12 @@ class CheapPlugin {
 
     compiler.hooks.afterCompile.tapAsync('CheapPlugin', (compilation, callback) => {
       compilation.errors.push(...this.errors);
+      me.errors.length = 0
+      me.cache.clear()
       callback();
     });
 
-    compiler.hooks.beforeRun.tap('CheapPlugin', (compiler) => {
+    compiler.hooks.environment.tap('CheapPlugin', () => {
       if (!compiler.options.resolveLoader) {
         compiler.options.resolveLoader = {};
       }
@@ -117,7 +119,7 @@ class CheapPlugin {
                 };
               }
 
-              loader.options.getCustomTransformers = function (program) {
+              loader.options.getCustomTransformers = function (program, getProgram) {
                 const result = old(program) || {};
                 const before = transformer.before(program, {
                   projectPath: me.options.projectPath,
@@ -133,7 +135,7 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName
-                });
+                }, getProgram);
                 const after = transformer.after(program, {
                   projectPath: me.options.projectPath,
                   exclude: me.options.exclude || /__test__/,
@@ -148,7 +150,7 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName
-                });
+                }, getProgram);
                 const afterDeclarations = transformer.afterDeclarations(program, {
                   projectPath: me.options.projectPath,
                   exclude: me.options.exclude || /__test__/,
@@ -163,7 +165,7 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName
-                });
+                }, getProgram);
                 if (!result.before) {
                   result.before = [
                     before

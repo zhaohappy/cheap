@@ -11,7 +11,7 @@ export default function getStructMeta(struct: Struct, key: string) {
     if (meta) {
       return meta
     }
-    next = struct.parent
+    next = next.parent
   }
 
   return null

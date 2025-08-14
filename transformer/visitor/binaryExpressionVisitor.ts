@@ -440,7 +440,7 @@ function equalVisitor(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
             const meta = getStructMeta(struct, node.left.name.escapedText as string)
 
             if (!meta) {
-              reportError(statement.currentFile, node, `struct ${struct.symbol.escapedName} not has property ${node.left.name.escapedText}`)
+              reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.left.name.escapedText}`)
               return node
             }
             return generateWritePropertyNode(address, newValue, meta)

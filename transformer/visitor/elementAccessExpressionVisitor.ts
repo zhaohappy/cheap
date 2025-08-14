@@ -68,12 +68,12 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
 
       let targetStruct = typeUtils.getStructByType(type)
 
-      let targetSymbol = targetStruct.symbol
+      let targetSymbol = targetStruct.symbol.deref()
       let targetPath = ''
 
       if (targetStruct.structType === StructType.INLINE_OBJECT) {
-        targetSymbol = targetStruct.definedClassParent.symbol
-        targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol)
+        targetSymbol = targetStruct.definedClassParent.symbol.deref()
+        targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref())
       }
 
       if (!(ts.isNumericLiteral(node.argumentExpression) && (+node.argumentExpression.text) === 0)) {

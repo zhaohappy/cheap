@@ -18,36 +18,54 @@ export type KeyMetaExt = Omit<KeyMeta, 'getTypeMeta'> & {
   has: boolean
   typeIdentifier: string
   getTypeMeta?: () => Struct
-  symbol: ts.Symbol
+  symbol: WeakRef<ts.Symbol>
   name: string
+}
+
+class WeakRefPolyfill<T extends any> {
+  private _value: T
+  constructor(value: T) {
+    this._value = value
+  }
+  deref() {
+    return this._value
+  }
+  [Symbol.toStringTag]: 'WeakRef'
+}
+
+function createWeakRef(value: any) {
+  return typeof WeakRef === 'undefined' ? new WeakRefPolyfill(value) : new WeakRef(value)
 }
 
 export type Struct = {
   maxBaseTypeByteLength: number
   length: number
   meta: Map<string, KeyMetaExt>
-  symbol: ts.Symbol
+  symbol: WeakRef<ts.Symbol>
   parent?: Struct,
   structType: StructType
   definedClassParent?: Struct
-  inlineStructPathMap?: Map<ts.Symbol, string>
+  inlineStructPathMap?: WeakMap<ts.Symbol, string>
   name: string
 }
 
-const StructMap: Map<ts.Symbol, Struct> = new Map()
+const StructMap: WeakMap<ts.Symbol, Struct> = new WeakMap()
 const StructFileIdentifiers: Map<string, string[]> = new Map()
 
 const Stack: {
   struct: Struct
   treePath: string[]
-  inlineStructPathMap: Map<ts.Symbol, string>
+  inlineStructPathMap: WeakMap<ts.Symbol, string>
 }[] = []
 
 function addFileIdentifier(symbol: ts.Symbol) {
   if (symbol.valueDeclaration) {
     const fileName = symbol.valueDeclaration.getSourceFile().fileName
     if (StructFileIdentifiers.has(fileName)) {
-      StructFileIdentifiers.get(fileName).push(symbol.name)
+      const list = StructFileIdentifiers.get(fileName)
+      if (!array.has(list, symbol.name)) {
+        list.push(symbol.name)
+      }
     }
     else {
       StructFileIdentifiers.set(fileName, [symbol.name])
@@ -236,7 +254,7 @@ function analyzeType(type: ts.Type, data: KeyMetaExt) {
       if (struct) {
         data.has = true
         const stack = Stack[Stack.length - 1]
-        stack.inlineStructPathMap.set(struct.symbol, stack.treePath.join('.'))
+        stack.inlineStructPathMap.set(struct.symbol.deref(), stack.treePath.join('.'))
         data.getTypeMeta = () => {
           return struct
         }
@@ -261,7 +279,7 @@ function analyzeType(type: ts.Type, data: KeyMetaExt) {
       || isCUnion(type.symbol.valueDeclaration as ts.ClassDeclaration)
     )
   ) {
-    if (!data[KeyMetaKey.Pointer] && type.symbol === data.symbol) {
+    if (!data[KeyMetaKey.Pointer] && type.symbol === data.symbol.deref()) {
       data.has = false
     }
     else {
@@ -344,7 +362,7 @@ function getInlineStruct(type: ts.Type, structType: StructType) {
       maxBaseTypeByteLength: maxBaseTypeByteLength,
       length: length,
       meta: metaMap,
-      symbol: type.symbol,
+      symbol: createWeakRef(type.symbol),
       parent: null,
       structType: StructType.INLINE_OBJECT,
       definedClassParent: Stack[Stack.length - 1].struct,
@@ -376,18 +394,19 @@ function analyze(symbol: ts.Symbol) {
   const metaMap = new Map()
   const metaQueue = []
 
-  const inlineStructPathMap = new Map()
+  const inlineStructPathMap = new WeakMap()
   const struct = {
     maxBaseTypeByteLength: 0,
     length: 0,
     meta: null,
-    symbol: symbol,
+    symbol: createWeakRef(symbol),
     parent: null,
     structType: structType,
     name: symbol.name
   }
   const treePath = []
 
+  Stack.length = 0
   Stack.push({
     treePath,
     struct,
@@ -432,7 +451,7 @@ function analyze(symbol: ts.Symbol) {
           [KeyMetaKey.BaseBitOffset]: 0,
           has: false,
           typeIdentifier: '',
-          symbol,
+          symbol: createWeakRef(symbol),
           name: key as string
         }
 
@@ -515,4 +534,8 @@ export function hasStruct(symbol: ts.Symbol) {
 
 export function getStructFileIdentifiers(fileName: string) {
   return StructFileIdentifiers.get(fileName)
+}
+
+export function clearStructCache() {
+  StructFileIdentifiers.clear()
 }
