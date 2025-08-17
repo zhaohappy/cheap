@@ -220,7 +220,7 @@ export function after(program: ts.Program, getProgram: () => ts.Program): ts.Tra
 export function after(program: ts.Program, options: TransformerOptions): ts.TransformerFactory<ts.SourceFile>
 export function after(program: ts.Program, options: TransformerOptions, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>
 export function after(program: ts.Program, options?: TransformerOptions | (() => ts.Program), getProgram?: () => ts.Program): ts.TransformerFactory<ts.SourceFile> {
-  
+
   if (is.func(options)) {
     getProgram = options
     options = {}
@@ -228,7 +228,7 @@ export function after(program: ts.Program, options?: TransformerOptions | (() =>
   if (!options) {
     options = {}
   }
-  
+
   const excludes = is.array(options.exclude)
     ? options.exclude
     : (options.exclude
