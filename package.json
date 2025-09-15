@@ -1,6 +1,6 @@
 {
   "name": "@libmedia/cheap",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "一个多线程和高性能 wasm 开发库",
   "sideEffects": [
     "./heap.ts",
