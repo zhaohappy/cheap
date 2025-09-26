@@ -54,7 +54,10 @@ export function transform2AST(source: string, options: {
     defined: options.defined,
     tmpPath: distPath,
     wat2wasm: wat2wasmPath,
-    cheapPacketName: 'cheap'
+    cheapPacketName: 'cheap',
+    reportError(error) {
+      console.error(error.message)
+    }
   })
   const transformed = ts.transform(program.getSourceFile(options.input), [transformerBefore], compilerOptions)
 
