@@ -1,4 +1,5 @@
-import { CTypeEnum, CTypeEnum2Type } from './typedef'
+import type { CTypeEnum2Type } from './typedef'
+import { CTypeEnum } from './typedef'
 import * as object from 'common/util/object'
 
 type CTypeEnumRead = {

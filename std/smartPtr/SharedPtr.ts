@@ -1,5 +1,5 @@
 import isDef from 'common/function/isDef'
-import { CTypeEnum, Struct } from '../../typedef'
+import type { CTypeEnum, Struct } from '../../typedef'
 
 import * as is from 'common/util/is'
 import { symbolStruct, symbolStructAddress } from '../../symbol'
@@ -10,7 +10,7 @@ import * as stack from '../../stack'
 import { SELF } from 'common/util/constant'
 import isWorker from 'common/function/isWorker'
 import make from '../make'
-import { Data } from 'common/types/type'
+import type { Data } from 'common/types/type'
 import isPointer from '../function/isPointer'
 
 @struct

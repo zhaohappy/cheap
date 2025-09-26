@@ -1,4 +1,4 @@
-import { PromiseType, RemoveNeverProperties } from 'common/types/advanced'
+import type { PromiseType, RemoveNeverProperties } from 'common/types/advanced'
 import IPCPort from 'common/network/IPCPort'
 import NodeIPCPort from 'common/network/NodeIPCPort'
 import { Memory } from '../heap'

@@ -1,6 +1,6 @@
 import { memcpy } from '../../std/memory'
 import { CTypeEnumWrite } from '../../ctypeEnumWrite'
-import { CTypeEnum } from '../../typedef'
+import type { CTypeEnum } from '../../typedef'
 import * as is from 'common/util/is'
 import { CTypeEnumRead } from '../../ctypeEnumRead'
 import structAccess from '../structAccess'

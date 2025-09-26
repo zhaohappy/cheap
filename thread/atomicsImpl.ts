@@ -1,7 +1,7 @@
 import getTimestamp from 'common/function/getTimestamp'
 import nextTick from 'common/function/nextTick'
 import { override } from './atomics'
-import { AtomicsBuffer } from '../typedef'
+import type { AtomicsBuffer } from '../typedef'
 import * as config from '../config'
 import browser from 'common/util/browser'
 import support from 'common/util/support'

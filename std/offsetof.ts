@@ -1,5 +1,6 @@
 import { symbolStructKeysMeta } from '../symbol'
-import { KeyMeta, KeyMetaKey } from '../typedef'
+import type { KeyMeta} from '../typedef'
+import { KeyMetaKey } from '../typedef'
 
 export default function offsetof<T extends new(
   init?: Partial<{}>) => any>(

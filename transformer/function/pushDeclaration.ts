@@ -1,4 +1,4 @@
-import { DeclarationData } from '../type'
+import type { DeclarationData } from '../type'
 
 export default function pushDeclaration(keys: DeclarationData[], name: string, formatName: string) {
   for (let i = 0; i < keys.length; i++) {

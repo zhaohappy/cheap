@@ -4,7 +4,7 @@
  * 添加支持自动扩堆，支持多线程和 alignedAlloc
  */
 
-import Allocator from './Allocator'
+import type Allocator from './Allocator'
 import * as object from 'common/util/object'
 import * as array from 'common/util/array'
 import { lock, unlock } from '../thread/mutex'

@@ -1,6 +1,7 @@
 import * as is from 'common/util/is'
 import * as array from 'common/util/array'
-import { CTypeEnum, CTypeEnum2Bytes, KeyMeta, KeyMetaKey, Struct, Union } from './typedef'
+import type { KeyMeta, Struct, Union } from './typedef'
+import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from './typedef'
 import { symbolStruct, symbolStructKeysMeta,
   symbolStructLength, symbolStructMaxBaseTypeByteLength
 } from './symbol'

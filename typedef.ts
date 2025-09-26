@@ -1,4 +1,4 @@
-import { Data, TypeArray } from 'common/types/type'
+import type { Data, TypeArray } from 'common/types/type'
 
 export const enum CTypeEnum {
   null = 0,

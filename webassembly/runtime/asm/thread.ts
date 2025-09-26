@@ -5,9 +5,9 @@ import * as logger from 'common/util/logger'
 
 import asm from './thread.asm'
 import asm64 from './thread64.asm'
-import { Mutex } from '../../../thread/mutex'
-import { Cond } from '../../../thread/cond'
-import { Timespec } from '../semaphore'
+import type { Mutex } from '../../../thread/mutex'
+import type { Cond } from '../../../thread/cond'
+import type { Timespec } from '../semaphore'
 import * as wasmUtils from 'common/util/wasm'
 
 /**

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import * as semUtils from '../../thread/semaphore'
-import { Sem } from '../../thread/semaphore'
+import type { Sem } from '../../thread/semaphore'
 
 @struct
 export class Timespec {

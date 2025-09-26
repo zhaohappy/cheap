@@ -23,7 +23,7 @@
  *
  */
 
-import { Uint8ArrayInterface } from 'common/io/interface'
+import type { Uint8ArrayInterface } from 'common/io/interface'
 import { getHeap, Memory } from '../../heap'
 import ArrayLikeInterface from 'common/interface/ArrayLike'
 import * as config from '../../config'

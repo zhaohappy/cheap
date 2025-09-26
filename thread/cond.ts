@@ -4,7 +4,7 @@
 
 import * as mutexUtil from './mutex'
 import * as atomics from './atomics'
-import { Mutex } from './mutex'
+import type { Mutex } from './mutex'
 
 @struct
 export class Cond {

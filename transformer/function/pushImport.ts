@@ -1,4 +1,4 @@
-import { ImportData, RequireData } from '../type'
+import type { ImportData, RequireData } from '../type'
 
 export function pushImport(
   keys: ImportData[],

@@ -1,4 +1,4 @@
-import { ImportData } from '../../type'
+import type { ImportData } from '../../type'
 import statement from '../../statement'
 
 export default function addImportStatements(imports: ImportData[], path: string, updatedStatements: any[]) {

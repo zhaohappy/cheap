@@ -2,7 +2,7 @@ import isLittleEndian from 'common/function/isLittleEndian'
 import { CTypeEnum } from './typedef'
 import { override as readoverride} from './ctypeEnumRead'
 import { override as writeoverride} from './ctypeEnumWrite'
-import AllocatorInterface from './allocator/Allocator'
+import type AllocatorInterface from './allocator/Allocator'
 
 let getAllocator: () => AllocatorInterface
 let getView: () => DataView

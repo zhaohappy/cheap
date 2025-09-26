@@ -1,6 +1,6 @@
 import * as atomics from './atomics'
 import * as mutex from './mutex'
-import { Mutex } from './mutex'
+import type { Mutex } from './mutex'
 
 @struct
 export class Sem {

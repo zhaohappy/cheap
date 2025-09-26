@@ -1,6 +1,7 @@
 import { symbolStruct, symbolStructLength } from '../symbol'
 import * as is from 'common/util/is'
-import { CTypeEnum, CTypeEnum2Bytes, Struct } from '../typedef'
+import type { CTypeEnum, Struct } from '../typedef'
+import { CTypeEnum2Bytes } from '../typedef'
 
 export default function sizeof(type: CTypeEnum | Struct): size {
   if (is.number(type)) {

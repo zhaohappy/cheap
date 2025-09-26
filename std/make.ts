@@ -1,7 +1,7 @@
 import { memset } from './memory'
 import { symbolStruct } from '../symbol'
 import * as object from 'common/util/object'
-import { Data } from 'common/types/type'
+import type { Data } from 'common/types/type'
 import isDef from 'common/function/isDef'
 import structAccess from './structAccess'
 

@@ -1,6 +1,6 @@
 
-import { ThreadWait } from './thread'
-import WebAssemblyRunner from './WebAssemblyRunner'
+import type { ThreadWait } from './thread'
+import type WebAssemblyRunner from './WebAssemblyRunner'
 
 /* eslint-disable camelcase */
 export default function runThread() {
