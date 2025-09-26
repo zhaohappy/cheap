@@ -19,7 +19,7 @@ import { BuiltinTableSlot } from '../allocator/Table'
 
 import * as threadAsm from './runtime/asm/thread'
 import isWorker from 'common/function/isWorker'
-import type { ChildThread} from './thread'
+import type { ChildThread } from './thread'
 import { Pthread, PthreadFlags, PthreadStatus } from './thread'
 import { ThreadDescriptor } from './thread'
 import ThreadPool from './ThreadPool'
@@ -44,7 +44,7 @@ export type WebAssemblyRunnerOptions = {
 
 let Worker: new (url: string) => Worker = SELF.Worker
 if (defined(ENV_NODE)) {
-  const { Worker: Worker_} = require('worker_threads')
+  const { Worker: Worker_ } = require('worker_threads')
   Worker = Worker_
 }
 
@@ -233,11 +233,11 @@ export default class WebAssemblyRunner {
         }
       },
       'GOT.func': {
-        malloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.MALLOC)),
-        calloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.CALLOC)),
-        realloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.REALLOC)),
-        aligned_alloc: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.ALIGNED_ALLOC)),
-        free: new WebAssembly.Global({mutable: true, value: defined(WASM_64) ? 'i64' : 'i32'}, reinterpret_cast<pointer<void>>(BuiltinTableSlot.FREE))
+        malloc: new WebAssembly.Global({ mutable: true, value: defined(WASM_64) ? 'i64' : 'i32' }, reinterpret_cast<pointer<void>>(BuiltinTableSlot.MALLOC)),
+        calloc: new WebAssembly.Global({ mutable: true, value: defined(WASM_64) ? 'i64' : 'i32' }, reinterpret_cast<pointer<void>>(BuiltinTableSlot.CALLOC)),
+        realloc: new WebAssembly.Global({ mutable: true, value: defined(WASM_64) ? 'i64' : 'i32' }, reinterpret_cast<pointer<void>>(BuiltinTableSlot.REALLOC)),
+        aligned_alloc: new WebAssembly.Global({ mutable: true, value: defined(WASM_64) ? 'i64' : 'i32' }, reinterpret_cast<pointer<void>>(BuiltinTableSlot.ALIGNED_ALLOC)),
+        free: new WebAssembly.Global({ mutable: true, value: defined(WASM_64) ? 'i64' : 'i32' }, reinterpret_cast<pointer<void>>(BuiltinTableSlot.FREE))
       }
     }
 

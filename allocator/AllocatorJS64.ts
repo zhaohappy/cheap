@@ -651,7 +651,7 @@ function inspect(blockArray: BlockArray, byteOffset: int64): InspectionResult {
     }
     block += size + POINTER_OVERHEAD_IN_QUADS
   }
-  return { header, blocks, total: quadsToBytes(blockArray.length), used}
+  return { header, blocks, total: quadsToBytes(blockArray.length), used }
 }
 
 /**

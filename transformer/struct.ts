@@ -1,6 +1,6 @@
 import ts from 'typescript'
 import * as array from 'common/util/array'
-import type { KeyMeta} from '../typedef'
+import type { KeyMeta } from '../typedef'
 import { CTypeEnum, KeyMetaKey } from '../typedef'
 import { getMaxBaseTypeByteLength, getMaxTypeByteLength, layout } from '../cstruct'
 import { BuiltinType, Type2CTypeEnum } from './defined'

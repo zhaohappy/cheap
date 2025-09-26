@@ -4,7 +4,7 @@ import { definedStruct } from '../definedStruct'
 import support from 'common/util/support'
 import * as is from 'common/util/is'
 import * as keypath from 'common/util/keypath'
-import type { KeyMeta} from '../typedef'
+import type { KeyMeta } from '../typedef'
 import { KeyMetaKey } from '../typedef'
 
 /**

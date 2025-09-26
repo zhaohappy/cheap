@@ -1,4 +1,4 @@
-import type { ChildThread, Pthread} from './thread'
+import type { ChildThread, Pthread } from './thread'
 import { PthreadFlags, PthreadStatus, ThreadDescriptor, ThreadWait } from './thread'
 import * as config from '../config'
 import { memset } from '../std/memory'

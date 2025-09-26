@@ -1,6 +1,6 @@
 import type ts from 'typescript'
 import * as is from 'common/util/is'
-import type { Struct} from '../../struct'
+import type { Struct } from '../../struct'
 import { StructType } from '../../struct'
 import statement from '../../statement'
 import * as constant from '../../constant'

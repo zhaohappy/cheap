@@ -1,7 +1,7 @@
 import { base64ToUint8Array } from 'common/util/base64'
 import * as logger from 'common/util/logger'
-import { override as readoverride} from '../ctypeEnumRead'
-import { override as writeoverride} from '../ctypeEnumWrite'
+import { override as readoverride } from '../ctypeEnumRead'
+import { override as writeoverride } from '../ctypeEnumWrite'
 import * as wasmUtils from 'common/util/wasm'
 
 import asm from './memory.asm'
