@@ -30,13 +30,19 @@ export function malloc(length: size, algin: size = 1): pointer<void> {
 /**
  * 线程计数器地址
  */
-export const threadCounter: pointer<uint32> = SELF.CHeap?.threadCounter
-  ? SELF.CHeap.threadCounter
-  : reinterpret_cast<pointer<uint32>>(malloc(sizeof(uint32), sizeof(uint32)))
+export const threadCounter: pointer<uint32> = reinterpret_cast<pointer<uint32>>(malloc(sizeof(uint32), sizeof(uint32)))
 
 /**
  * 堆分配锁地址
  */
-export const heapMutex: pointer<Mutex> = SELF.CHeap?.heapMutex
-  ? SELF.CHeap.heapMutex
-  : reinterpret_cast<pointer<Mutex>>(malloc(sizeof(Mutex), sizeof(atomic_int32)))
+export const heapMutex: pointer<Mutex> = reinterpret_cast<pointer<Mutex>>(malloc(sizeof(Mutex), sizeof(atomic_int32)))
+
+/**
+ * 32 位唯一 id 生成地址
+ */
+export const uniqueCounter32: pointer<atomic_uint32> = reinterpret_cast<pointer<atomic_uint32>>(malloc(sizeof(atomic_uint32), sizeof(atomic_uint32)))
+
+/**
+ * 64 位唯一 id 生成地址
+ */
+export const uniqueCounter64: pointer<atomic_uint64> = reinterpret_cast<pointer<atomic_uint64>>(malloc(sizeof(atomic_uint64), sizeof(atomic_uint64)))

@@ -521,10 +521,7 @@ export function initMain() {
       StackSize,
       StackTop,
       StackPointer,
-      isMainThread: true,
-
-      threadCounter: staticData.threadCounter,
-      heapMutex: staticData.heapMutex
+      isMainThread: true
     }
   }
   isMainThread = true

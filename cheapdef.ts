@@ -641,8 +641,6 @@ declare interface Window {
     StackPointer?: WebAssembly.Global<keyof WebAssembly.ValueTypeMap>
     Config?: Record<string, any>
 
-    threadCounter?: pointer<void>
-    heapMutex?: pointer<void>
     isMainThread: boolean
   }
   __SELF_THREAD__: pointer<void>
