@@ -1,6 +1,6 @@
 {
   "name": "@libmedia/cheap",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "一个多线程和高性能 wasm 开发库",
   "sideEffects": [
     "./heap.ts",
@@ -197,6 +197,16 @@
       "import": "./dist/esm/std/function/isPointer.js",
       "require": "./dist/cjs/std/function/isPointer.js",
       "types": "./dist/esm/std/function/isPointer.d.ts"
+    },
+    "./std/function/getUniqueCounter32": {
+      "import": "./dist/esm/std/function/getUniqueCounter32.js",
+      "require": "./dist/cjs/std/function/getUniqueCounter32.js",
+      "types": "./dist/esm/std/function/getUniqueCounter32.d.ts"
+    },
+    "./std/function/getUniqueCounter64": {
+      "import": "./dist/esm/std/function/getUniqueCounter64.js",
+      "require": "./dist/cjs/std/function/getUniqueCounter64.js",
+      "types": "./dist/esm/std/function/getUniqueCounter64.d.ts"
     },
     "./std/smartPtr/SharedPtr": {
       "import": "./dist/esm/std/smartPtr/SharedPtr.js",
