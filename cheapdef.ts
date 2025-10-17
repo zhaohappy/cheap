@@ -413,7 +413,7 @@ declare function offsetof<T extends new (init?: Partial<{}>) => any>(
 declare function sizeof(type: any): size
 /**
  * - 任意指针之间转换
- * - uint32 和指针之间转换
+ * - size 和指针之间转换
  * - 任意 builtin 类型之间转换，只做编译时类型转换，运行时可能不安全（需要自己确保安全）
  *   - int8 -> int32 是安全的， int64 -> int32 是不安全的
  *   - uint8 -> int16 是安全的，uint8 -> int8 可能是不安全的
