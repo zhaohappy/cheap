@@ -27,6 +27,7 @@ const createNumericLiteralSymbol = Symbol('createNumericLiteral')
 
 const DefaultDefined = {
   ENV_NODE: false,
+  ENV_CSP: false,
   ENABLE_THREADS: true,
   ENABLE_THREADS_SPLIT: false,
   DEBUG: false,
@@ -82,6 +83,9 @@ export function before(program: ts.Program, options?: TransformerOptions | (() =
 
   if (options.defined) {
     object.extend(defined, options.defined)
+  }
+  if (defined.ENV_CSP) {
+    defined.ENABLE_THREADS_SPLIT = true
   }
   compilerOptions.defined = defined
 

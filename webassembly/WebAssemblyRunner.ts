@@ -42,7 +42,7 @@ export type WebAssemblyRunnerOptions = {
   threadDescriptor?: pointer<ThreadDescriptor>
 }
 
-let Worker: new (url: string) => Worker = SELF.Worker
+let Worker: new (url: string | URL) => Worker = SELF.Worker
 if (defined(ENV_NODE)) {
   const { Worker: Worker_ } = require('worker_threads')
   Worker = Worker_
@@ -97,7 +97,8 @@ export default class WebAssemblyRunner {
   private tableBase: pointer<void>
 
   private childImports: string
-  private childUrl: string
+  private childUrl: string | URL
+  private childImportUrl: URL
   private childBlob: Blob
 
   private childThreads: Map<int32, ChildThread>
@@ -299,6 +300,15 @@ export default class WebAssemblyRunner {
           worker.onmessage = handler
         }
 
+        if (this.childImportUrl) {
+          worker.postMessage({
+            type: 'import',
+            data: {
+              url: this.childImportUrl.href
+            }
+          })
+        }
+
         /**
          * postMessage 并不是同步的，而是在事件循环中处理的
          * 因此父线程不能被阻塞在当前的事件循环中，否则子线程无法成功运行
@@ -422,7 +432,7 @@ export default class WebAssemblyRunner {
   private createChildUrl() {
     if (defined(ENABLE_THREADS)) {
       let source = ''
-      if (defined(ENV_WEBPACK) && !defined(ENV_NODE)) {
+      if (defined(ENV_WEBPACK) && !defined(ENV_NODE) && !defined(ENV_CSP)) {
         // 保证打包工具包含下面的模块代码
         require('./runThread')
         const module = sourceLoad(require.resolve('./WebAssemblyRunner.ts'), {
@@ -460,7 +470,7 @@ export default class WebAssemblyRunner {
           runThread.default();
         `
       }
-      else {
+      else if (defined(ENV_NODE) || !defined(ENV_CSP)) {
         let WebAssemblyRunnerWorkerUrl = ''
         let childImports = ''
         let cheapPolyfillUrl = ''
@@ -499,6 +509,10 @@ export default class WebAssemblyRunner {
         if (!fs.existsSync(this.childUrl)) {
           fs.writeFileSync(this.childUrl, source)
         }
+      }
+      else if (defined(ENV_CSP)) {
+        this.childUrl = new URL('./threadEntry.js', import.meta.url)
+        this.childImportUrl = new URL('./WebAssemblyRunnerWorker.js', import.meta.url)
       }
       else {
         this.childBlob = new Blob([source], { type: 'text/javascript' })
@@ -595,7 +609,7 @@ export default class WebAssemblyRunner {
         count *= this.resource.enableThreadCountRate
       }
 
-      this.threadPool = new ThreadPool(count, this.childUrl)
+      this.threadPool = new ThreadPool(count, this.childUrl, this.childImportUrl)
       await this.threadPool.ready({
         tableSize: this.resource.tableSize,
         module: this.resource.threadModule.module,
@@ -759,12 +773,13 @@ export default class WebAssemblyRunner {
         const fs = require('fs')
         fs.unlinkSync(this.childUrl)
       }
-      else {
+      else if (is.string(this.childUrl)) {
         URL.revokeObjectURL(this.childUrl)
       }
       this.childUrl = null
     }
     this.childBlob = null
+    this.childImportUrl = null
     this.childReadyPromises.length = 0
 
     if (this.childThreads.size) {

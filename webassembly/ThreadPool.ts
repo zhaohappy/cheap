@@ -27,13 +27,15 @@ export default class ThreadPool {
 
   private count: number
 
-  private url: string
+  private url: string | URL
+  private childImportUrl: URL
 
   private childThreads: TheadPoolEntry[]
 
-  constructor(count: number, url: string) {
+  constructor(count: number, url: string | URL, childImportUrl?: URL) {
     this.count = count
     this.url = url
+    this.childImportUrl = childImportUrl
     this.childThreads = []
   }
 
@@ -73,6 +75,15 @@ export default class ThreadPool {
             })
             break
         }
+      }
+
+      if (this.childImportUrl) {
+        worker.postMessage({
+          type: 'import',
+          data: {
+            url: this.childImportUrl.href
+          }
+        })
       }
 
       worker.postMessage({

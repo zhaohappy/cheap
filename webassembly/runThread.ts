@@ -11,11 +11,12 @@ export default function runThread() {
     WebAssemblyRunnerClass = require('./WebAssemblyRunner.js').default
   }
   // @ts-ignore
-  else if (defined(ENV_WEBPACK) && __WebAssemblyRunner__) {
+  else if (typeof __WebAssemblyRunner__ === 'object') {
     // @ts-ignore
     WebAssemblyRunnerClass = __WebAssemblyRunner__.__WebAssemblyRunner__
   }
-  else {
+  // @ts-ignore
+  else if (typeof __CHeap_WebAssemblyRunner__ === 'object') {
     // @ts-ignore
     WebAssemblyRunnerClass = __CHeap_WebAssemblyRunner__.default
   }
@@ -96,6 +97,16 @@ export default function runThread() {
         run()
         break
       }
+
+      case 'import': {
+        if (defined(ENV_CSP)) {
+          // @ts-ignore
+          importScripts(data.url)
+          // @ts-ignore
+          WebAssemblyRunnerClass = __CHeap_WebAssemblyRunner__.default
+        }
+        break
+      }
     }
   }
 
@@ -106,4 +117,8 @@ export default function runThread() {
   else {
     parentPort.onmessage = handler
   }
+}
+
+if (defined(ENV_CSP)) {
+  runThread()
 }
