@@ -511,7 +511,9 @@ export default class WebAssemblyRunner {
         }
       }
       else if (defined(ENV_CSP)) {
+        // @ts-ignore
         this.childUrl = new URL('./threadEntry.js', import.meta.url)
+        // @ts-ignore
         this.childImportUrl = new URL('./WebAssemblyRunnerWorker.js', import.meta.url)
       }
       else {

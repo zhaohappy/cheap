@@ -252,7 +252,7 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
                 args.push(statement.context.factory.createCallExpression(
                   statement.context.factory.createPropertyAccessExpression(
                     statement.context.factory.createIdentifier('require'),
-                    statement.context.factory.createIdentifier('resolve')
+                    statement.context.factory.createIdentifier('resolveWeak')
                   ),
                   undefined,
                   [
