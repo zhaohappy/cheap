@@ -37,7 +37,7 @@ function getStruct(target: any, key: string, address: () => pointer<void>, struc
 
 function getCTypeEnumValue(address: () => pointer<void>, type: CTypeEnum) {
   return function () {
-    return  CTypeEnumRead[type](address())
+    return CTypeEnumRead[type](address())
   }
 }
 

@@ -76,7 +76,7 @@ export function isBuiltinType(type: ts.Type, node: ts.Node) {
   if (isPointerType(type, node)) {
     return true
   }
-  if  (type.aliasSymbol) {
+  if (type.aliasSymbol) {
     if (type.aliasSymbol.escapedName === constant.typeAnyptr
       || type.aliasSymbol.escapedName === constant.typeMultiPointer
     ) {
@@ -319,7 +319,7 @@ export function getSmartPointerStructByType(type: ts.Type) {
 }
 
 export function getBuiltinNameByType(type: ts.Type) {
-  if  (type.aliasSymbol) {
+  if (type.aliasSymbol) {
     return type.aliasSymbol.escapedName as string
   }
   if (type.isIntersection()) {

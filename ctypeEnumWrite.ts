@@ -6,7 +6,7 @@ type CTypeEnumWrite = {
   [key in CTypeEnum]: (pointer: pointer<void>, value: CTypeEnum2Type<key>) => void
 } & {
   fill: (dst: pointer<void>, value: uint8, size: size) => void,
-  copy: (dst: pointer<void>, src:  pointer<void>, size: size) => void,
+  copy: (dst: pointer<void>, src: pointer<void>, size: size) => void,
 }
 export const CTypeEnumWrite: CTypeEnumWrite = {
   [CTypeEnum.char]: function (pointer: pointer<void>, value: any): void {

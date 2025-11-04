@@ -50,7 +50,7 @@ type StageMap<T> = T extends StageStatus.CALL ? CallStage : StageBase
 
 class BlockStack {
 
-  type: BlockType  = BlockType.UNKNOWN
+  type: BlockType = BlockType.UNKNOWN
 
   topDeclaration: DeclarationData[] = []
   definedStruct: string[] = []

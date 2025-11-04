@@ -14,7 +14,7 @@ import definedMetaProperty from './function/definedMetaProperty'
  * @param target 
  * @returns 
  */
-export function getMaxBaseTypeByteLength(keysMeta:  Map<string, KeyMeta>) {
+export function getMaxBaseTypeByteLength(keysMeta: Map<string, KeyMeta>) {
 
   let max = 0
 
@@ -51,7 +51,7 @@ export function getMaxBaseTypeByteLength(keysMeta:  Map<string, KeyMeta>) {
  * @param target 
  * @returns 
  */
-export function getMaxTypeByteLength(keysMeta:  Map<string, KeyMeta>) {
+export function getMaxTypeByteLength(keysMeta: Map<string, KeyMeta>) {
 
   let max = 0
 

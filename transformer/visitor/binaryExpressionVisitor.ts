@@ -522,7 +522,7 @@ function hasSizeNode(node: ts.Expression) {
   return false
 }
 
-function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node  {
+function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
   /**
    * 将多个等号变成逗号运算符
    */

@@ -124,7 +124,7 @@ export default class WebAssemblyRunner {
     this.promisingMap = new Map()
 
     if (is.string(options.childImports)) {
-      this.childImports =  options.childImports
+      this.childImports = options.childImports
     }
     else if (is.object(options.childImports) && options.childImports instanceof Blob) {
       this.childImports = URL.createObjectURL(options.childImports)
@@ -674,7 +674,7 @@ export default class WebAssemblyRunner {
    * @param func 方法名
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
-  public invoke<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): T  {
+  public invoke<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): T {
     if (!this.asm) {
       return -1 as T
     }
@@ -704,7 +704,7 @@ export default class WebAssemblyRunner {
    * @param func 方法名
    * @param args 参数，只能是 number 和 bigint( 有浏览器版本要求， 建议 64 位数据使用指针传递） 类型，如果是其他类型参数使用指针传递
    */
-  public async invokeAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T>  {
+  public async invokeAsync<T extends number | bigint | void = void>(func: string, ...args: (number | bigint)[]): Promise<T> {
     if (!this.asm) {
       return -1 as T
     }

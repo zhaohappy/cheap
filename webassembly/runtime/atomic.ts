@@ -15,37 +15,37 @@ export let atomic_sub_i8 = function (p: pointer<atomic_int8>, value: int32) {
 
 export let atomic_and_i8 = function (p: pointer<atomic_int8>, value: int32) {
   // @ts-ignore
-  return atomics.and(p, value,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.and(p, value, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_or_i8 = function (p: pointer<atomic_int8>, value: int32) {
   // @ts-ignore
-  return atomics.or(p, value,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.or(p, value, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_xor_i8 = function (p: pointer<atomic_int8>, value: int32) {
   // @ts-ignore
-  return atomics.xor(p, value,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.xor(p, value, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_store_i8 = function (p: pointer<atomic_int8>, value: int32) {
   // @ts-ignore
-  return atomics.store(p, value,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.store(p, value, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_load_i8 = function (p: pointer<atomic_int8>) {
   // @ts-ignore
-  return atomics.load(p,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.load(p, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_compare_exchange_i8 = function (p: pointer<atomic_int8>, expectedValue: int32, replacementValue: int32) {
   // @ts-ignore
-  return atomics.compareExchange(p, expectedValue, replacementValue,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.compareExchange(p, expectedValue, replacementValue, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 export let atomic_exchange_i8 = function (p: pointer<atomic_int8>, value: int32) {
   // @ts-ignore
-  return atomics.exchange(p, value,  atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
+  return atomics.exchange(p, value, atomic_int8, CTypeEnumPointerShiftMap[atomic_int8])
 }
 
 
@@ -61,37 +61,37 @@ export let atomic_sub_i16 = function (p: pointer<atomic_int16>, value: int32) {
 
 export let atomic_and_i16 = function (p: pointer<atomic_int16>, value: int32) {
   // @ts-ignore
-  return atomics.and(p, value,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.and(p, value, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_or_i16 = function (p: pointer<atomic_int16>, value: int32) {
   // @ts-ignore
-  return atomics.or(p, value,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.or(p, value, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_xor_i16 = function (p: pointer<atomic_int16>, value: int32) {
   // @ts-ignore
-  return atomics.xor(p, value,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.xor(p, value, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_store_i16 = function (p: pointer<atomic_int16>, value: int32) {
   // @ts-ignore
-  return atomics.store(p, value,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.store(p, value, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_load_i16 = function (p: pointer<atomic_int16>) {
   // @ts-ignore
-  return atomics.load(p,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.load(p, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_compare_exchange_i16 = function (p: pointer<atomic_int16>, expectedValue: int32, replacementValue: int32) {
   // @ts-ignore
-  return atomics.compareExchange(p, expectedValue, replacementValue,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.compareExchange(p, expectedValue, replacementValue, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_exchange_i16 = function (p: pointer<atomic_int16>, value: int32) {
   // @ts-ignore
-  return atomics.exchange(p, value,  atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
+  return atomics.exchange(p, value, atomic_int16, CTypeEnumPointerShiftMap[atomic_int16])
 }
 
 export let atomic_add_i32 = function (p: pointer<atomic_int32>, value: int32) {
@@ -106,37 +106,37 @@ export let atomic_sub_i32 = function (p: pointer<atomic_int32>, value: int32) {
 
 export let atomic_and_i32 = function (p: pointer<atomic_int32>, value: int32) {
   // @ts-ignore
-  return atomics.and(p, value,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.and(p, value, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_or_i32 = function (p: pointer<atomic_int32>, value: int32) {
   // @ts-ignore
-  return atomics.or(p, value,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.or(p, value, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_xor_i32 = function (p: pointer<atomic_int32>, value: int32) {
   // @ts-ignore
-  return atomics.xor(p, value,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.xor(p, value, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_store_i32 = function (p: pointer<atomic_int32>, value: int32) {
   // @ts-ignore
-  return atomics.store(p, value,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.store(p, value, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_load_i32 = function (p: pointer<atomic_int32>) {
   // @ts-ignore
-  return atomics.load(p,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.load(p, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_compare_exchange_i32 = function (p: pointer<atomic_int32>, expectedValue: int32, replacementValue: int32) {
   // @ts-ignore
-  return atomics.compareExchange(p, expectedValue, replacementValue,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.compareExchange(p, expectedValue, replacementValue, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 export let atomic_exchange_i32 = function (p: pointer<atomic_int32>, value: int32) {
   // @ts-ignore
-  return atomics.exchange(p, value,  atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
+  return atomics.exchange(p, value, atomic_int32, CTypeEnumPointerShiftMap[atomic_int32])
 }
 
 

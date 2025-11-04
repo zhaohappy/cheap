@@ -121,7 +121,7 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
       // @ts-ignore
       if (typeUtils.isBuiltinType(type, node.typeName.symbol?.valueDeclaration)) {
         // @ts-ignore
-        args.push(statement.context.factory.createNumericLiteral(typeUtils.getBuiltinByType(type,  node.typeName.symbol?.valueDeclaration)))
+        args.push(statement.context.factory.createNumericLiteral(typeUtils.getBuiltinByType(type, node.typeName.symbol?.valueDeclaration)))
       }
       else if (type.aliasSymbol) {
         const name = type.aliasSymbol.escapedName as string

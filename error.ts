@@ -83,13 +83,13 @@ export const enum POSIXError {
   ELIBMAX,	/* Attempting to link in too many libs */
   ELIBEXEC,	/* Attempting to exec a shared library */
   ENOSYS,	/* Function not implemented */
-  ENMFILE,      /* No more files */
+  ENMFILE, /* No more files */
   ENOTEMPTY,	/* Directory not empty */
   ENAMETOOLONG,	/* File or path name too long */
   ELOOP,	/* Too many symbolic links */
   EOPNOTSUPP,	/* Operation not supported on transport endpoint */
   EPFNOSUPPORT, /* Protocol family not supported */
-  ECONNRESET,  /* Connection reset by peer */
+  ECONNRESET, /* Connection reset by peer */
   ENOBUFS,	/* No buffer space available */
   EAFNOSUPPORT, /* Address family not supported by protocol family */
   EPROTOTYPE,	/* Protocol wrong type for socket */
@@ -120,9 +120,9 @@ export const enum POSIXError {
   EDQUOT,
   ESTALE,
   ENOTSUP,		/* Not supported */
-  ENOMEDIUM,   /* No medium (in tape drive) */
-  ENOSHARE,    /* No such host or network path */
-  ECASECLASH,  /* Filename exists with different case */
+  ENOMEDIUM, /* No medium (in tape drive) */
+  ENOSHARE, /* No such host or network path */
+  ECASECLASH, /* Filename exists with different case */
   EILSEQ,
   EOVERFLOW,	/* Value too large for defined data type */
   EWOULDBLOCK = EAGAIN,	/* Operation would block */
