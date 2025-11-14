@@ -3,7 +3,6 @@
  * 导出在其他地方使用
  */
 
-import { SELF } from 'common/util/constant'
 import * as config from './config'
 import { Mutex } from './thread/mutex'
 

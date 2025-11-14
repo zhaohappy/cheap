@@ -1,7 +1,7 @@
 import { getHeapU8, Allocator,
   getHeap
 } from '../heap'
-import * as text from 'common/util/text'
+import { text } from '@libmedia/common'
 import { CTypeEnum } from '../typedef'
 import { CTypeEnumWrite } from '../ctypeEnumWrite'
 import SafeUint8Array from './buffer/SafeUint8Array'

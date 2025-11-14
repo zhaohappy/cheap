@@ -23,9 +23,9 @@
  *
  */
 
-import type { Uint8ArrayInterface } from 'common/io/interface'
+import type { Uint8ArrayInterface } from '@libmedia/common/io'
 import { getHeap, Memory } from '../../heap'
-import ArrayLikeInterface from 'common/interface/ArrayLike'
+import { ArrayLike as ArrayLikeInterface } from '@libmedia/common'
 import * as config from '../../config'
 
 export class SafeBufferView {

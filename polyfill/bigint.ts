@@ -1,7 +1,5 @@
-import i32Toi64 from 'common/function/i32Toi64'
-import i64Toi32 from 'common/function/i64Toi32'
-import { SELF } from 'common/util/constant'
-import * as is from 'common/util/is'
+import { SELF } from '@libmedia/common/constant'
+import { i32Toi64, i64Toi32, is } from '@libmedia/common'
 
 function uint32ToInt64(lowWord: number, highWord: number) {
   if (highWord >>> 31) {

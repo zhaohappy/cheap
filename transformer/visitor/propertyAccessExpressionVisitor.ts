@@ -1,7 +1,5 @@
 
 import ts from 'typescript'
-import * as is from 'common/util/is'
-import * as array from 'common/util/array'
 import statement, { StageStatus } from '../statement'
 import reportError from '../function/reportError'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from '../../typedef'
@@ -13,6 +11,7 @@ import type { KeyMetaExt } from '../struct'
 import { StructType } from '../struct'
 import getStructMeta from '../function/getStructMeta'
 import { BuiltinBigInt, CTypeEnum2Type } from '../defined'
+import { is, array } from '@libmedia/common'
 
 function createPlusExpress(tree: ts.Node, right: ts.Node) {
   // 合并 a + 2 + 3
@@ -140,11 +139,21 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
     if (targetSource) {
       let key: ts.Expression
       if (targetSource !== statement.currentFile) {
-        key = statement.addIdentifierImport(
-          targetSymbol.escapedName as string,
-          relativePath(statement.currentFile.fileName, targetSource.fileName),
-          !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(targetSymbol.escapedName)
-        )
+        // addressof(pointer.struct) 不需要导入
+        if (node.parent
+          && ts.isCallExpression(node.parent)
+          && ts.isIdentifier(node.parent.expression)
+          && node.parent.expression.escapedText === constant.addressof
+          && !statement.lookupFunc(constant.addressof)
+        ) {
+          key = statement.context.factory.createIdentifier('undefined')
+        }
+        else {
+          key = statement.addStructImport(
+            targetSymbol,
+            targetSource
+          )
+        }
       }
       else {
         key = statement.context.factory.createIdentifier(targetSymbol.escapedName as string)
@@ -162,7 +171,7 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
         args.push(statement.context.factory.createStringLiteral(targetPath))
       }
       return statement.context.factory.createCallExpression(
-        statement.addIdentifierImport(constant.structAccess, constant.structAccessPath, true),
+        statement.addIdentifierImport(constant.structAccess, constant.RootPath, false),
         undefined,
         args
       )
@@ -468,7 +477,7 @@ export default function (node: ts.PropertyAccessExpression, visitor: ts.Visitor)
 
       if (ts.isCallExpression(tree)
         && ts.isIdentifier(tree.expression)
-        && statement.isIdentifier(tree.expression, constant.structAccess, constant.structAccessPath)
+        && statement.isIdentifier(tree.expression, constant.structAccess, constant.structAccessPath, constant.RootPath)
       ) {
         return statement.context.factory.createPropertyAccessExpression(
           tree,

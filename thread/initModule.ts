@@ -1,8 +1,12 @@
-import IPCPort, { REQUEST } from 'common/network/IPCPort'
-import NodeIPCPort from 'common/network/NodeIPCPort'
-import { SELF } from 'common/util/constant'
-import * as is from 'common/util/is'
+import { SELF } from '@libmedia/common/constant'
+import { is } from '@libmedia/common'
 import { CHeapError } from '../error'
+
+import {
+  IPCPort,
+  REQUEST,
+  NodeIPCPort
+} from '@libmedia/common/network'
 
 let parentPort = SELF
 if (defined(ENV_NODE)) {

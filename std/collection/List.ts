@@ -1,9 +1,9 @@
 import { memcpy } from '../../std/memory'
 import { CTypeEnumWrite } from '../../ctypeEnumWrite'
 import type { CTypeEnum } from '../../typedef'
-import * as is from 'common/util/is'
+import { is } from '@libmedia/common'
 import { CTypeEnumRead } from '../../ctypeEnumRead'
-import structAccess from '../structAccess'
+import structAccess from '../mapStruct'
 import { symbolStructAddress } from '../../symbol'
 
 type ListNodeDepth = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

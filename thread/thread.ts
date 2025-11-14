@@ -1,14 +1,22 @@
-import type { PromiseType, RemoveNeverProperties } from 'common/types/advanced'
-import IPCPort from 'common/network/IPCPort'
-import NodeIPCPort from 'common/network/NodeIPCPort'
 import { Memory } from '../heap'
-import sourceLoad from 'common/function/sourceLoad'
 import * as config from '../config'
-import * as is from 'common/util/is'
-import { SELF } from 'common/util/constant'
-import generateUUID from 'common/function/generateUUID'
-import toString from 'common/function/toString'
-import align from 'common/math/align'
+
+import { SELF } from '@libmedia/common/constant'
+import { align } from '@libmedia/common/math'
+import sourceLoad from '@libmedia/common/sourceLoad'
+
+import {
+  is,
+  toString,
+  generateUUID,
+  type PromiseType,
+  type RemoveNeverProperties
+} from '@libmedia/common'
+
+import {
+  IPCPort,
+  NodeIPCPort
+} from '@libmedia/common/network'
 
 let Worker: new (url: string) => Worker = SELF.Worker
 let MessageChannel: new () => MessageChannel = SELF.MessageChannel
@@ -740,7 +748,7 @@ export function createThreadFromModule<T extends Object>(
     })
   }
   return {
-    run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain,
+    run: defined(ENABLE_THREADS) && ((config.USE_THREADS || options.dispatchToWorker) && !options.disableWorker) ? runInWorker : runInMain
   }
 }
 

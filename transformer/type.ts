@@ -1,4 +1,4 @@
-import type * as ts from 'typescript'
+import type ts from 'typescript'
 
 
 export interface ImportData {
@@ -25,6 +25,7 @@ export interface DeclarationData {
 export interface TransformerOptions {
   tmpPath?: string
   projectPath?: string
+  cheapSourcePath?: string
   formatIdentifier?: boolean
   exclude?: RegExp | RegExp[]
   defined?: Record<string, any>

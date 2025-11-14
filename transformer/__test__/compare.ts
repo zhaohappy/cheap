@@ -3,7 +3,7 @@ import ts from 'typescript'
 // TypeScript 编译选项
 const compilerOptions: ts.CompilerOptions = {
   target: ts.ScriptTarget.ESNext,
-  module: ts.ModuleKind.CommonJS,
+  module: ts.ModuleKind.CommonJS
 }
 
 let list: ts.Node[] = []

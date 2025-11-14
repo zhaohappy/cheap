@@ -1,6 +1,6 @@
 import type { CTypeEnum2Type } from './typedef'
 import { CTypeEnum } from './typedef'
-import * as object from 'common/util/object'
+import { object } from '@libmedia/common'
 
 type CTypeEnumWrite = {
   [key in CTypeEnum]: (pointer: pointer<void>, value: CTypeEnum2Type<key>) => void
@@ -98,7 +98,7 @@ export const CTypeEnumWrite: CTypeEnumWrite = {
   },
   'fill': function (dst: pointer<void>, src: pointer<void>, size: size): void {
     throw new Error('invalid operate')
-  },
+  }
 }
 
 export function override(funcs: Partial<CTypeEnumWrite>) {

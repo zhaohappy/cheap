@@ -1,13 +1,12 @@
 import ts from 'typescript'
-import * as array from 'common/util/array'
 import type { KeyMeta } from '../typedef'
 import { CTypeEnum, KeyMetaKey } from '../typedef'
 import { getMaxBaseTypeByteLength, getMaxTypeByteLength, layout } from '../cstruct'
 import { BuiltinType, Type2CTypeEnum } from './defined'
 import * as constant from './constant'
 import * as nodeUtil from './util/nodeutil'
-import * as object from 'common/util/object'
 import statement from './statement'
+import { object, array } from '@libmedia/common'
 
 export enum StructType {
   CSTRUCT,
@@ -250,7 +249,7 @@ function analyzeType(type: ts.Type, data: KeyMetaExt) {
     ) {
       const struct = getInlineStruct(
         type.aliasTypeArguments[0],
-        typeName === constant.typeUnion ? StructType.CUNION : StructType.CSTRUCT,
+        typeName === constant.typeUnion ? StructType.CUNION : StructType.CSTRUCT
       )
       if (struct) {
         data.has = true
@@ -505,7 +504,7 @@ function analyze(symbol: ts.Symbol) {
         maxBaseTypeByteLength: parentStruct.maxBaseTypeByteLength,
         length: parentStruct.length,
         meta: metaMap,
-        parent: parentStruct,
+        parent: parentStruct
       })
       StructMap.set(symbol, struct)
       addFileIdentifier(symbol)

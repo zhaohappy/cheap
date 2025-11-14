@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
 import { CTypeEnum, CTypeEnum2Bytes } from '../../../typedef'
-import { definedMetaPropertyImport, symbolImport } from './snippet'
+import { definedMetaPropertyImport, symbolImport, ctypeEnumReadImport } from './snippet'
 
 describe('binary', () => {
 
@@ -639,7 +639,7 @@ describe('binary', () => {
       }
     `
     const target = `
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       let totalSize: size
       const INT32_MAX: int32
       const sizes: pointer<size>

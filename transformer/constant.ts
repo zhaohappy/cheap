@@ -1,5 +1,3 @@
-
-
 export const accessof = 'accessof'
 export const addressof = 'addressof'
 export const offsetof = 'offsetof'
@@ -12,7 +10,7 @@ export const indexOf = 'indexOf'
 export const reinterpretCast = 'reinterpret_cast'
 export const sharedPtr = 'SharedPtr'
 
-export const structAccess = 'structAccess'
+export const structAccess = 'mapStruct'
 export const writePointer = 'writePointer'
 export const ctypeEnumWrite = 'CTypeEnumWrite'
 export const ctypeEnumRead = 'CTypeEnumRead'
@@ -88,6 +86,8 @@ export const symbolIsPointer = Symbol('symbolIsPointer')
 
 export let PACKET_NAME = ''
 
+export let RootPath = ''
+export let InternalPath = ''
 export let AllocatorPath = ''
 export let makePath = ''
 export let unmakePath = ''
@@ -104,6 +104,8 @@ export let cheapThreadPath = ''
 
 export function setPacketName(name: string) {
   PACKET_NAME = name
+  RootPath = PACKET_NAME
+  InternalPath = PACKET_NAME + '/internal'
   AllocatorPath = PACKET_NAME + '/heap'
   makePath = PACKET_NAME + '/std/make'
   unmakePath = PACKET_NAME + '/std/unmake'
@@ -113,7 +115,7 @@ export function setPacketName(name: string) {
   definedMetaPropertyPath = PACKET_NAME + '/function/definedMetaProperty'
   memoryPath = PACKET_NAME + '/std/memory'
   symbolPath = PACKET_NAME + '/symbol'
-  structAccessPath = PACKET_NAME + '/std/structAccess'
+  structAccessPath = PACKET_NAME + '/std/mapStruct'
   ctypeEnumReadPath = PACKET_NAME + '/ctypeEnumRead'
   ctypeEnumWritePath = PACKET_NAME + '/ctypeEnumWrite'
   cheapThreadPath = PACKET_NAME + '/thread/thread'

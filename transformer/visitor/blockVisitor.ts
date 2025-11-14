@@ -1,6 +1,6 @@
 
 import ts from 'typescript'
-import * as array from 'common/util/array'
+import { array } from '@libmedia/common'
 import statement, { BlockType } from '../statement'
 import * as nodeUtils from '../util/nodeutil'
 

@@ -1,9 +1,9 @@
 
 import ts from 'typescript'
-import * as array from 'common/util/array'
 import statement from '../statement'
 import { BuiltinDecorator } from '../defined'
 import * as nodeUtils from '../util/nodeutil'
+import { array } from '@libmedia/common'
 
 export default function (node: ts.Decorator, visitor: ts.Visitor): ts.Node {
   if (ts.isIdentifier(node.expression)) {

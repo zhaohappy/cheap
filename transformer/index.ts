@@ -1,7 +1,4 @@
 import ts from 'typescript'
-import * as is from 'common/util/is'
-import * as object from 'common/util/object'
-import * as array from 'common/util/array'
 import statement from './statement'
 import blockVisitor from './visitor/blockVisitor'
 import identifierVisitor from './visitor/identifierVisitor'
@@ -22,6 +19,8 @@ import * as constant from './constant'
 import { getStructFileIdentifiers, clearStructCache } from './struct'
 import * as typedef from '../typedef'
 import * as definedConstant from './defined'
+import { is, object, array } from '@libmedia/common'
+import path from 'path'
 
 const createNumericLiteralSymbol = Symbol('createNumericLiteral')
 
@@ -72,12 +71,19 @@ export function before(program: ts.Program, options?: TransformerOptions | (() =
   const configFile = configFileName && ts.readConfigFile(configFileName, ts.sys.readFile)
 
   let compilerOptions = {
-    defined: null
+    defined: {},
+    structPaths: {}
   }
 
   const defined = object.extend({}, DefaultDefined)
+  const structPaths = {}
   if (configFile?.config?.cheap) {
     object.extend(defined, configFile.config.cheap.defined || {})
+    if (configFile.config.cheap.structPaths) {
+      object.each(configFile.config.cheap.structPaths, (value, key) => {
+        structPaths[path.resolve(path.dirname(configFileName), key)] = value
+      })
+    }
     compilerOptions = object.extend(compilerOptions, configFile.config['cheap'] || {})
   }
 
@@ -88,6 +94,7 @@ export function before(program: ts.Program, options?: TransformerOptions | (() =
     defined.ENABLE_THREADS_SPLIT = true
   }
   compilerOptions.defined = defined
+  compilerOptions.structPaths = structPaths
 
   statement.options = options
   statement.cheapCompilerOptions = compilerOptions

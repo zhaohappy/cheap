@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import { mapUint8Array } from '../../std/memory'
-import * as text from 'common/util/text'
+import { text } from '@libmedia/common'
 
 const buffers = [null, [], []]
 

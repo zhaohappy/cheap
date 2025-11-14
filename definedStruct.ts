@@ -3,10 +3,7 @@ import { CTypeEnumWrite } from './ctypeEnumWrite'
 import { symbolStructAddress, symbolStructKeysMeta } from './symbol'
 import type { KeyMeta, Struct } from './typedef'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from './typedef'
-import * as is from 'common/util/is'
-import * as object from 'common/util/object'
-import toString from 'common/function/toString'
-import * as array from 'common/util/array'
+import { object, array, toString, is } from '@libmedia/common'
 
 function definedProperty(target: any, key: string, get: () => any, set: (v: any) => void) {
   Object.defineProperty(target, key, {

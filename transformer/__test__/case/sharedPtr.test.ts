@@ -2,6 +2,18 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
 
+import {
+  definedMetaPropertyImport,
+  symbolImport,
+  symbol2Import,
+  ctypeEnumReadImport,
+  ctypeEnumWriteImport,
+  mapStructImport,
+  makeImport,
+  makeSharedPtrImport,
+  memcpyImport
+} from './snippet'
+
 describe('sharedPtr', () => {
 
   let input: string
@@ -28,11 +40,11 @@ describe('sharedPtr', () => {
       b.a = 6
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: int8
       }
@@ -71,13 +83,13 @@ describe('sharedPtr', () => {
       b.b = c
     `
     const target = `
-      import { memcpy as memcpy } from "cheap/std/memory";
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta, symbolStructAddress as symbolStructAddress } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
-      import structAccess from "cheap/std/structAccess";
-      import make from "cheap/std/make";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${memcpyImport}
+      ${symbol2Import}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
+      ${mapStructImport}
+      ${makeImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: int8;
       }
@@ -103,14 +115,13 @@ describe('sharedPtr', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestB.prototype);
       let b = makeSharedPtr(TestB);
-      let a = structAccess(b.get() + 1, TestA);
+      let a = mapStruct(b.get() + 1, TestA);
       let c = make(TestA);
       CTypeEnumWrite[11](b.get() + 1, 6);
       memcpy(b.get() + 1, c[symbolStructAddress], 1);
     `
     check(source, target, {
-      input,
-      output
+      input
     })
   })
 
@@ -130,11 +141,11 @@ describe('sharedPtr', () => {
       b.b.a = 8
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: int8;
       }
@@ -183,10 +194,10 @@ describe('sharedPtr', () => {
       let a = addressof(b.b.a)
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
+      ${ctypeEnumReadImport}
       class TestA {
         a: int8;
       }

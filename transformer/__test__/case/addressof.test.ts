@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport, symbol2Import } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('addressof', () => {
@@ -74,7 +74,7 @@ describe('addressof', () => {
       let b = addressof(a)
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta, symbolStructAddress as symbolStructAddress } from "cheap/symbol";
+      ${symbol2Import}
       ${definedMetaPropertyImport}
       ${snippetClassTestABTarget}
       let a: TestA
@@ -268,7 +268,7 @@ describe('addressof', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       class TestA {
         a: uint8;
         b: union<{

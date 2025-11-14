@@ -134,7 +134,8 @@ class CheapPlugin {
                   },
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
-                  cheapPacketName: me.options.cheapPacketName
+                  cheapPacketName: me.options.cheapPacketName,
+                  cheapSourcePath: me.options.cheapSourcePath
                 }, getProgram);
                 const after = transformer.after(program, {
                   projectPath: me.options.projectPath,
@@ -149,7 +150,8 @@ class CheapPlugin {
                   },
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
-                  cheapPacketName: me.options.cheapPacketName
+                  cheapPacketName: me.options.cheapPacketName,
+                  cheapSourcePath: me.options.cheapSourcePath
                 }, getProgram);
                 const afterDeclarations = transformer.afterDeclarations(program, {
                   projectPath: me.options.projectPath,
@@ -164,7 +166,8 @@ class CheapPlugin {
                   },
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
-                  cheapPacketName: me.options.cheapPacketName
+                  cheapPacketName: me.options.cheapPacketName,
+                  cheapSourcePath: me.options.cheapSourcePath
                 }, getProgram);
                 if (!result.before) {
                   result.before = [
@@ -268,7 +271,6 @@ class CheapPlugin {
               }
             });
             if (needHandle) {
-
               const needAddModules = [];
               const needAddModulesCache = new Map();
               const currentDeps = handleModulesDeps.get(handleModule);

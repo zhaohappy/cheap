@@ -3,7 +3,7 @@ import * as constant from '../constant'
 import { CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import { CTypeEnum } from '../../typedef'
 import { getStruct, hasStruct } from '../struct'
-import * as is from 'common/util/is'
+import { is } from '@libmedia/common'
 
 export function isCompatibleType(type1: string, type2: string) {
   if (type1 === constant.typePointer && type2 === constant.typeAnyptr

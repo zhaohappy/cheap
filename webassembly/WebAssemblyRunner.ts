@@ -1,9 +1,5 @@
 /* eslint-disable camelcase */
 
-import * as object from 'common/util/object'
-import * as array from 'common/util/array'
-import * as logger from 'common/util/logger'
-import * as is from 'common/util/is'
 import { Memory, StackPointer, Table, allocThreadId, StackTop } from '../heap'
 import { memcpy, memset } from '../std/memory'
 import { fd_fdstat_get, fd_write, abort, random_get, clock_time_get, clock_res_get, environ_get, environ_sizes_get } from './runtime/clib'
@@ -18,17 +14,17 @@ import * as libcAsm from './runtime/asm/libc'
 import { BuiltinTableSlot } from '../allocator/Table'
 
 import * as threadAsm from './runtime/asm/thread'
-import isWorker from 'common/function/isWorker'
 import type { ChildThread } from './thread'
 import { Pthread, PthreadFlags, PthreadStatus } from './thread'
 import { ThreadDescriptor } from './thread'
 import ThreadPool from './ThreadPool'
 import * as cond from '../thread/cond'
 import * as mutex from '../thread/mutex'
-import support from 'common/util/support'
 import runThread from './runThread'
-import { SELF } from 'common/util/constant'
-import sourceLoad from 'common/function/sourceLoad'
+
+import { SELF } from '@libmedia/common/constant'
+import sourceLoad from '@libmedia/common/sourceLoad'
+import { is, object, support, array, logger } from '@libmedia/common'
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>

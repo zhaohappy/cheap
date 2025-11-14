@@ -1,4 +1,4 @@
-import * as is from 'common/util/is'
+import { is } from '@libmedia/common'
 import initClass from './initClass'
 import initFunction from './initFunction'
 import initModule from './initModule'

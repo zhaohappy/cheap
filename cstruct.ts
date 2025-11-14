@@ -1,12 +1,11 @@
-import * as is from 'common/util/is'
-import * as array from 'common/util/array'
 import type { KeyMeta, Struct, Union } from './typedef'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from './typedef'
 import { symbolStruct, symbolStructKeysMeta,
   symbolStructLength, symbolStructMaxBaseTypeByteLength
 } from './symbol'
-import isLittleEndian from 'common/function/isLittleEndian'
 import definedMetaProperty from './function/definedMetaProperty'
+
+import { isLittleEndian, is, array } from '@libmedia/common'
 
 /**
  * 获取结构体最大基本类型的长度

@@ -6,7 +6,7 @@ import * as config from '../../config'
 
 import { Table } from '../../heap'
 import * as atomics from '../../thread/atomics'
-import { SELF } from 'common/util/constant'
+import { SELF } from '@libmedia/common/constant'
 import type { Mutex } from '../../thread/mutex'
 import type { Cond } from '../../thread/cond'
 import type { Timespec } from './semaphore'

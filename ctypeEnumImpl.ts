@@ -1,8 +1,8 @@
-import isLittleEndian from 'common/function/isLittleEndian'
 import { CTypeEnum } from './typedef'
 import { override as readoverride } from './ctypeEnumRead'
 import { override as writeoverride } from './ctypeEnumWrite'
 import type AllocatorInterface from './allocator/Allocator'
+import { isLittleEndian } from '@libmedia/common'
 
 let getAllocator: () => AllocatorInterface
 let getView: () => DataView
@@ -223,6 +223,6 @@ export default function init(getAllocator_: () => AllocatorInterface, getView_: 
     [CTypeEnum.atomic_bool]: ((pointer: pointer<void>, value: bool) => {
       write8(pointer, value ? 1 : 0)
     }) as any,
-    [CTypeEnum.size]: writeSize,
+    [CTypeEnum.size]: writeSize
   })
 }

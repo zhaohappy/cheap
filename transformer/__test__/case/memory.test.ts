@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { CTypeEnum } from '../../../typedef'
+import { allocatorImport } from './snippet'
 
 describe('identifier', () => {
 
@@ -23,7 +23,7 @@ describe('identifier', () => {
       let b = malloc(4)
     `
     const target = `
-      import { Allocator as Allocator } from 'cheap/heap'
+      ${allocatorImport}
       let b = Allocator.malloc(4)
     `
     check(source, target, {
@@ -54,7 +54,7 @@ describe('identifier', () => {
       let b = calloc(4, 4)
     `
     const target = `
-      import { Allocator as Allocator } from 'cheap/heap'
+      ${allocatorImport}
       let b = Allocator.calloc(4, 4)
     `
     check(source, target, {
@@ -68,7 +68,7 @@ describe('identifier', () => {
       let b = realloc(p, 4)
     `
     const target = `
-      import { Allocator as Allocator } from 'cheap/heap'
+      ${allocatorImport}
       let p: pointer<void>
       let b = Allocator.realloc(p, 4)
     `
@@ -82,7 +82,7 @@ describe('identifier', () => {
       let b = aligned_alloc(8, 4)
     `
     const target = `
-      import { Allocator as Allocator } from 'cheap/heap'
+      ${allocatorImport}
       let b = Allocator.alignedAlloc(8, 4)
     `
     check(source, target, {
@@ -96,7 +96,7 @@ describe('identifier', () => {
       free(p)
     `
     const target = `
-      import { Allocator as Allocator } from 'cheap/heap'
+      ${allocatorImport}
       let p: pointer<void>
       Allocator.free(p)
     `

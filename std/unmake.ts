@@ -1,7 +1,7 @@
 import { symbolStruct, symbolStructAddress } from '../symbol'
 import { revokeProxyStruct } from '../proxyStruct'
 import { revokeDefinedStruct } from '../definedStruct'
-import support from 'common/util/support'
+import { support } from '@libmedia/common'
 
 /**
  * 销毁一个 struct 实例，调用 make 创建的对象必须调用 unmake，否则内存泄漏

@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport, mapStructImport, memcpyImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('signal arrow', () => {
@@ -209,10 +209,10 @@ describe('signal arrow', () => {
       a[2] <- b[2]
     `
     const target = `
-      import { memcpy as memcpy } from "cheap/std/memory";
+      ${memcpyImport}
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -249,10 +249,10 @@ describe('signal arrow', () => {
       a[2] = b[2]
     `
     const target = `
-      import { memcpy as memcpy } from "cheap/std/memory";
+      ${memcpyImport}
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -292,8 +292,8 @@ describe('signal arrow', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8
         b: float

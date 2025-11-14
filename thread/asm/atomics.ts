@@ -1,6 +1,4 @@
-import { base64ToUint8Array } from 'common/util/base64'
-import * as logger from 'common/util/logger'
-import * as wasmUtils from 'common/util/wasm'
+import { base64, logger, wasm as wasmUtils } from '@libmedia/common'
 
 import asm from './atomics.asm'
 import asm64 from './atomics64.asm'
@@ -22,7 +20,7 @@ export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint3
   }
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer || defined(WASM_64)) {
-      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+      const wasm = wasmUtils.setMemoryMeta(base64.base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
         shared: defined(WASM_64)
           ? (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer)
           : true,
@@ -30,7 +28,7 @@ export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint3
         maximum
       })
 
-      instance = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
+      instance = new WebAssembly.Instance(new WebAssembly.Module(wasm as BufferSource), {
         env: {
           memory
         }

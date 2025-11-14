@@ -3,7 +3,7 @@ import { execSync } from 'child_process'
 import statement from '../../statement'
 import ts from 'typescript'
 import reportError from '../../function/reportError'
-import * as array from 'common/util/array'
+import { array } from '@libmedia/common'
 import * as errorType from '../../error'
 import * as fs from 'fs'
 

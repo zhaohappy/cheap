@@ -1,12 +1,15 @@
-import { base64ToUint8Array } from 'common/util/base64'
-import * as logger from 'common/util/logger'
 import { override as readoverride } from '../ctypeEnumRead'
 import { override as writeoverride } from '../ctypeEnumWrite'
-import * as wasmUtils from 'common/util/wasm'
 
 import asm from './memory.asm'
 import asm64 from './memory64.asm'
 import { CTypeEnum } from '../typedef'
+
+import {
+  base64,
+  logger,
+  wasm as wasmUtils
+} from '@libmedia/common'
 
 /**
  * WebAssembly runtime 实例
@@ -22,13 +25,13 @@ export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint3
     return
   }
   try {
-    const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+    const wasm = wasmUtils.setMemoryMeta(base64.base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
       shared: typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer,
       initial,
       maximum
     })
 
-    instance = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
+    instance = new WebAssembly.Instance(new WebAssembly.Module(wasm as BufferSource), {
       env: {
         memory
       }

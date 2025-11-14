@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
+import { makeImport, symbolImport, definedMetaPropertyImport } from './snippet'
 
 describe('make', () => {
 
@@ -26,9 +27,9 @@ describe('make', () => {
       let b = make<TestA>()
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
-      import make from "cheap/std/make"
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeImport}
       class TestA {
         a: int8
       }

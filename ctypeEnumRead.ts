@@ -1,6 +1,6 @@
 import type { CTypeEnum2Type } from './typedef'
 import { CTypeEnum } from './typedef'
-import * as object from 'common/util/object'
+import { object } from '@libmedia/common'
 
 type CTypeEnumRead = {
   [key in CTypeEnum]: (pointer: pointer<void>) => CTypeEnum2Type<key>
@@ -90,7 +90,7 @@ export const CTypeEnumRead: CTypeEnumRead = {
   },
   [CTypeEnum.size]: function (pointer: pointer<void>) {
     throw new Error('unimplemented')
-  },
+  }
 }
 
 export function override(funcs: Partial<CTypeEnumRead>) {

@@ -1,13 +1,11 @@
 /* eslint-disable camelcase */
 
-import { base64ToUint8Array } from 'common/util/base64'
-import * as logger from 'common/util/logger'
-
 import asm from './libc.asm'
 import asm64 from './libc64.asm'
-import * as wasmUtils from 'common/util/wasm'
 import { BuiltinTableSlot } from '../../../allocator/Table'
 import { Table } from '../../../heap'
+
+import { base64, wasm as wasmUtils, logger } from '@libmedia/common'
 
 /**
  * WebAssembly runtime 实例
@@ -22,13 +20,13 @@ export function isSupport() {
 
 export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint32) {
   try {
-    const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+    const wasm = wasmUtils.setMemoryMeta(base64.base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
       shared: typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer,
       initial,
       maximum
     })
 
-    wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
+    wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm as BufferSource), {
       env: {
         memory,
         malloc: function (size: size) {

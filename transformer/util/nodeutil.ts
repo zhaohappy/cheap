@@ -2,10 +2,9 @@ import ts from 'typescript'
 import * as constant from '../constant'
 import statement from '../statement'
 import * as typeUtils from './typeutil'
-import * as array from 'common/util/array'
 import { AtomicCall, BuiltinBigInt, BuiltinFloat, BuiltinType, BuiltinUint } from '../defined'
 import { atomicsPath } from '../constant'
-import * as is from 'common/util/is'
+import { is, array } from '@libmedia/common'
 
 export function getEqualsBinaryExpressionRight(node: ts.BinaryExpression) {
   if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {

@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport, mapStructImport, ctypeEnumWriteImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('property access', () => {
@@ -364,10 +364,10 @@ describe('property access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       ${snippetClassTestABTarget}
       let a: pointer<TestB>;
-      let b = structAccess(a, TestA)
+      let b = mapStruct(a, TestA)
     `
     check(source, target, {
       input
@@ -564,7 +564,7 @@ describe('property access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8;
         b: struct<{
@@ -591,7 +591,7 @@ describe('property access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let p: pointer<TestA>;
-      let a = structAccess(p + 2, TestA, "b");
+      let a = mapStruct(p + 2, TestA, "b");
     `
     check(source, target, {
       input
@@ -617,7 +617,7 @@ describe('property access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8;
         b: struct<{
@@ -656,7 +656,7 @@ describe('property access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let p: pointer<TestA>;
-      let a = structAccess(p + 4, TestA, "b.b");
+      let a = mapStruct(p + 4, TestA, "b.b");
     `
     check(source, target, {
       input
@@ -679,7 +679,7 @@ describe('property access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8;
         b: array<struct<{
@@ -706,7 +706,7 @@ describe('property access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let p: pointer<TestA>;
-      let a = structAccess(p + 2 + 16, TestA, "b");
+      let a = mapStruct(p + 2 + 16, TestA, "b");
     `
     check(source, target, {
       input
@@ -727,8 +727,8 @@ describe('property access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: bool
       }

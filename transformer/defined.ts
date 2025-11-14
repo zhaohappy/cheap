@@ -1,7 +1,6 @@
-import * as array from 'common/util/array'
-import * as object from 'common/util/object'
 import { CTypeEnum } from '..//typedef'
 import * as constant from './constant'
+import { object, array } from '@libmedia/common'
 
 export const BuiltinType = [
   'i32',

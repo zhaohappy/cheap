@@ -1,5 +1,5 @@
 
-import { SELF } from 'common/util/constant'
+import { SELF } from '@libmedia/common/constant'
 
 function load(
   typedArray: Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array,

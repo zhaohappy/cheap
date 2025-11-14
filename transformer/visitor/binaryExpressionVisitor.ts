@@ -1,7 +1,6 @@
 
 import ts from 'typescript'
-import * as is from 'common/util/is'
-import * as array from 'common/util/array'
+import { is, array } from '@libmedia/common'
 import statement, { StageStatus } from '../statement'
 import reportError from '../function/reportError'
 import type { KeyMetaExt, Struct } from '../struct'

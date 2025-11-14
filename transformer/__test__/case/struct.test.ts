@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
-import { definedMetaPropertyImport, symbolImport } from './snippet'
+import { definedMetaPropertyImport, symbolImport, ctypeEnumReadImport, ctypeEnumWriteImport, mapStructImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('struct', () => {
@@ -172,8 +172,8 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: array<pointer<uint8>, 8>;
         b: uint8;
@@ -210,8 +210,8 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: array<array<pointer<uint8>, 8>, 8>;
         b: uint8;
@@ -396,7 +396,7 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       type LevelDepth = [
         never,
         0,
@@ -584,8 +584,8 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       const enum A {
         A,
         B
@@ -646,8 +646,8 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: size;
       }
@@ -682,8 +682,8 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: bit<size, 5>;
       }
@@ -732,7 +732,7 @@ describe('struct', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class AVChannelLayout {
         order: int32;
         nbChannels: int32;
@@ -770,7 +770,7 @@ describe('struct', () => {
       let a: {
         a: pointer<TestA>;
       };
-      let b = structAccess(a.a + 16, AVChannelLayout, "u").mask;
+      let b = mapStruct(a.a + 16, AVChannelLayout, "u").mask;
     `
     check(source, target, {
       input

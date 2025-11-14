@@ -1,15 +1,14 @@
 import type ts from 'typescript'
-import * as is from 'common/util/is'
+import { is } from '@libmedia/common'
 import type { Struct } from '../../struct'
 import { StructType } from '../../struct'
 import statement from '../../statement'
 import * as constant from '../../constant'
-import relativePath from '../../function/relativePath'
 import { KeyMetaKey } from '../../../typedef'
 
 export default function generateStruct(struct: Struct) {
 
-  const definedMetaProperty = statement.addIdentifierImport(constant.definedMetaProperty, constant.definedMetaPropertyPath, true)
+  const definedMetaProperty = statement.addIdentifierImport(constant.definedMetaProperty, constant.InternalPath, false)
   const symbolStruct = statement.addSymbolImport(constant.symbolStruct)
   const symbolStructMaxBaseTypeByteLength = statement.addSymbolImport(constant.symbolStructMaxBaseTypeByteLength)
   const symbolStructLength = statement.addSymbolImport(constant.symbolStructLength)
@@ -39,14 +38,14 @@ export default function generateStruct(struct: Struct) {
     let type: ts.PropertyAssignment | ts.GetAccessorDeclaration
     if (is.func(data.getTypeMeta)) {
       if (data.typeIdentifier) {
-        const targetSource = data.getTypeMeta()?.symbol.deref().valueDeclaration.getSourceFile()
+        const targetSymbol = data.getTypeMeta()?.symbol.deref()
+        const targetSource = targetSymbol?.valueDeclaration.getSourceFile()
         if (targetSource && targetSource.fileName !== statement.currentFile.fileName) {
           type = statement.context.factory.createPropertyAssignment(
             statement.context.factory.createNumericLiteral(KeyMetaKey.Type),
-            statement.addIdentifierImport(
-              data.typeIdentifier,
-              relativePath(statement.currentFile.fileName, targetSource.fileName),
-              !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(data.typeIdentifier as ts.__String)
+            statement.addStructImport(
+              targetSymbol,
+              targetSource
             )
           )
         }

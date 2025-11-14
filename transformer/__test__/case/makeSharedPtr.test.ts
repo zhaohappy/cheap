@@ -2,6 +2,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
 import { CTypeEnum } from '../../../typedef'
+import {
+  definedMetaPropertyImport,
+  symbolImport,
+  makeSharedPtrImport
+} from './snippet'
 
 describe('makeSharedPtr', () => {
 
@@ -27,9 +32,9 @@ describe('makeSharedPtr', () => {
       let b = make_shared_ptr<TestA>()
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty"
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
       class TestA {
         a: int8
       }
@@ -57,9 +62,9 @@ describe('makeSharedPtr', () => {
       let b = make_shared_ptr<TestA>({a: 0})
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty"
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${makeSharedPtrImport}
       class TestA {
         a: int8
       }
@@ -83,7 +88,7 @@ describe('makeSharedPtr', () => {
       let b = make_shared_ptr<uint32>()
     `
     const target = `
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
+      ${makeSharedPtrImport}
       let b = makeSharedPtr(${CTypeEnum.uint32})
     `
     check(source, target, {
@@ -96,7 +101,7 @@ describe('makeSharedPtr', () => {
       let b = make_shared_ptr<uint32>(3)
     `
     const target = `
-      import { makeSharedPtr as makeSharedPtr } from "cheap/std/smartPtr/SharedPtr";
+      ${makeSharedPtrImport}
       let b = makeSharedPtr(3, ${CTypeEnum.uint32})
     `
     check(source, target, {

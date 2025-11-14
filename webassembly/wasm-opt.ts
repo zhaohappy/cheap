@@ -1,9 +1,7 @@
 import * as fs from 'fs'
-import IOReader from 'common/io/IOReaderSync'
-import IOWriter from 'common/io/IOWriterSync'
-import { IOError } from 'common/io/error'
-import { ExternalKind, readSleb128, readUleb128, SectionId, writeUleb128, DYlinkType } from 'common/util/wasm'
-import BufferWriter from 'common/io/BufferWriter'
+
+import { wasm } from '@libmedia/common'
+import { IOReaderSync as IOReader, IOError, IOWriterSync as IOWriter, BufferWriter } from '@libmedia/common/io'
 
 const args = process.argv.slice(2)
 
@@ -75,7 +73,7 @@ function analyze() {
     tableSize: 0,
     tableAlign: 0,
     dataPrefixSize: 0,
-    data: null,
+    data: null
   }
 
   const ioReader = createReader()
@@ -85,15 +83,15 @@ function analyze() {
     while (true) {
       const sectionId = ioReader.readUint8()
 
-      const size = readUleb128(ioReader)
+      const size = wasm.readUleb128(ioReader)
 
       const now = ioReader.getPos()
 
-      if (sectionId === SectionId.Data) {
+      if (sectionId === wasm.SectionId.Data) {
         const now = ioReader.getPos()
-        const count = readUleb128(ioReader)
+        const count = wasm.readUleb128(ioReader)
         if (count === 1) {
-          readUleb128(ioReader)
+          wasm.readUleb128(ioReader)
           while (true) {
             const byte = ioReader.readUint8()
             if (byte === 0x0b) {
@@ -101,48 +99,48 @@ function analyze() {
             }
           }
           options.dataPrefixSize = Number(ioReader.getPos() - now)
-          options.dataSize = readUleb128(ioReader)
+          options.dataSize = wasm.readUleb128(ioReader)
           options.data = ioReader.readBuffer(options.dataSize)
         }
       }
-      else if (sectionId === SectionId.Import) {
-        let count = readUleb128(ioReader)
+      else if (sectionId === wasm.SectionId.Import) {
+        let count = wasm.readUleb128(ioReader)
         let counter = 0
 
         while (count--) {
-          const moduleLen = readUleb128(ioReader)
+          const moduleLen = wasm.readUleb128(ioReader)
           ioReader.readBuffer(moduleLen)
-          const fieldLen = readUleb128(ioReader)
+          const fieldLen = wasm.readUleb128(ioReader)
           ioReader.readBuffer(fieldLen)
 
           const externalKind = ioReader.readUint8()
 
           switch (externalKind) {
-            case ExternalKind.Function: {
-              readUleb128(ioReader)
+            case wasm.ExternalKind.Function: {
+              wasm.readUleb128(ioReader)
               break
             }
-            case ExternalKind.Global: {
-              readSleb128(ioReader)
-              readUleb128(ioReader)
+            case wasm.ExternalKind.Global: {
+              wasm.readSleb128(ioReader)
+              wasm.readUleb128(ioReader)
               break
             }
-            case ExternalKind.Memory: {
-              let flags = readUleb128(ioReader)
-              readUleb128(ioReader)
+            case wasm.ExternalKind.Memory: {
+              let flags = wasm.readUleb128(ioReader)
+              wasm.readUleb128(ioReader)
               if (flags & 0x01) {
-                readUleb128(ioReader)
+                wasm.readUleb128(ioReader)
               }
               counter++
               break
             }
-            case ExternalKind.Table: {
-              readSleb128(ioReader)
-              const flags = readUleb128(ioReader)
-              const initial = readUleb128(ioReader)
+            case wasm.ExternalKind.Table: {
+              wasm.readSleb128(ioReader)
+              const flags = wasm.readUleb128(ioReader)
+              const initial = wasm.readUleb128(ioReader)
               options.tableSize = initial
               if (flags & 0x01) {
-                readUleb128(ioReader)
+                wasm.readUleb128(ioReader)
               }
               counter++
               break
@@ -154,14 +152,14 @@ function analyze() {
           }
         }
       }
-      else if (sectionId === SectionId.Custom) {
-        const nameLen = readUleb128(ioReader)
+      else if (sectionId === wasm.SectionId.Custom) {
+        const nameLen = wasm.readUleb128(ioReader)
         const name = ioReader.readString(nameLen)
         if (name === 'dylink.0') {
-          readUleb128(ioReader)
-          options.dataAlign = readUleb128(ioReader)
-          readUleb128(ioReader)
-          options.tableAlign = readUleb128(ioReader)
+          wasm.readUleb128(ioReader)
+          options.dataAlign = wasm.readUleb128(ioReader)
+          wasm.readUleb128(ioReader)
+          options.tableAlign = wasm.readUleb128(ioReader)
         }
       }
       const remainingLength = size - Number(ioReader.getPos() - now)
@@ -239,24 +237,24 @@ function optimize() {
   if (options.dataSize || options.tableSize) {
 
     let bufferWriter = new BufferWriter(new Uint8Array(30))
-    writeUleb128(bufferWriter, options.dataSize)
-    writeUleb128(bufferWriter, options.dataAlign)
-    writeUleb128(bufferWriter, options.tableSize)
-    writeUleb128(bufferWriter, options.tableAlign)
+    wasm.writeUleb128(bufferWriter, options.dataSize)
+    wasm.writeUleb128(bufferWriter, options.dataAlign)
+    wasm.writeUleb128(bufferWriter, options.tableSize)
+    wasm.writeUleb128(bufferWriter, options.tableAlign)
 
     const content = bufferWriter.getWroteBuffer()
     bufferWriter = new BufferWriter(new Uint8Array(30))
 
-    writeUleb128(bufferWriter, 8)
+    wasm.writeUleb128(bufferWriter, 8)
     bufferWriter.writeString('dylink.0')
 
-    bufferWriter.writeUint8(DYlinkType.MEMORY)
+    bufferWriter.writeUint8(wasm.DYlinkType.MEMORY)
 
-    writeUleb128(bufferWriter, content.length)
+    wasm.writeUleb128(bufferWriter, content.length)
     bufferWriter.writeBuffer(content)
 
-    ioWriter.writeUint8(SectionId.Custom)
-    writeUleb128(ioWriter, bufferWriter.getWroteBuffer().length)
+    ioWriter.writeUint8(wasm.SectionId.Custom)
+    wasm.writeUleb128(ioWriter, bufferWriter.getWroteBuffer().length)
     ioWriter.writeBuffer(bufferWriter.getWroteBuffer())
   }
 
@@ -264,15 +262,15 @@ function optimize() {
     while (true) {
       const sectionId = ioReader.readUint8()
 
-      const size = readUleb128(ioReader)
+      const size = wasm.readUleb128(ioReader)
 
       const now = ioReader.getPos()
 
-      if (sectionId === SectionId.Data && options.dataSize && command.bss) {
+      if (sectionId === wasm.SectionId.Data && options.dataSize && command.bss) {
         ioWriter.writeUint8(sectionId)
-        writeUleb128(ioWriter, options.dataPrefixSize + uleb128Len(bss.data.length) + bss.data.length)
-        writeUleb128(ioWriter, readUleb128(ioReader))
-        writeUleb128(ioWriter, readUleb128(ioReader))
+        wasm.writeUleb128(ioWriter, options.dataPrefixSize + uleb128Len(bss.data.length) + bss.data.length)
+        wasm.writeUleb128(ioWriter, wasm.readUleb128(ioReader))
+        wasm.writeUleb128(ioWriter, wasm.readUleb128(ioReader))
         while (true) {
           const byte = ioReader.readUint8()
           ioWriter.writeUint8(byte)
@@ -280,26 +278,26 @@ function optimize() {
             break
           }
         }
-        const dataSize = readUleb128(ioReader)
+        const dataSize = wasm.readUleb128(ioReader)
         ioReader.skip(dataSize)
-        writeUleb128(ioWriter, bss.data.length)
+        wasm.writeUleb128(ioWriter, bss.data.length)
         ioWriter.writeBuffer(bss.data)
       }
-      else if (sectionId === SectionId.Custom && options.dataSize && command.bss) {
-        const nameLen = readUleb128(ioReader)
+      else if (sectionId === wasm.SectionId.Custom && options.dataSize && command.bss) {
+        const nameLen = wasm.readUleb128(ioReader)
         const name = ioReader.readString(nameLen)
         if (name === 'dylink.0') {
           ioReader.skip(size - Number(ioReader.getPos() - now))
           continue
         }
         ioWriter.writeUint8(sectionId)
-        writeUleb128(ioWriter, size)
-        writeUleb128(ioWriter, nameLen)
+        wasm.writeUleb128(ioWriter, size)
+        wasm.writeUleb128(ioWriter, nameLen)
         ioWriter.writeString(name)
       }
       else {
         ioWriter.writeUint8(sectionId)
-        writeUleb128(ioWriter, size)
+        wasm.writeUleb128(ioWriter, size)
       }
 
       const remainingLength = size - Number(ioReader.getPos() - now)

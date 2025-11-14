@@ -1,4 +1,3 @@
-
 import ts from 'typescript'
 import statement from '../statement'
 import reportError from '../function/reportError'
@@ -94,11 +93,21 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
       if (targetSource) {
         let key: ts.Expression
         if (targetSource !== statement.currentFile) {
-          key = statement.addIdentifierImport(
-            targetSymbol.escapedName as string,
-            relativePath(statement.currentFile.fileName, targetSource.fileName),
-            !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(targetSymbol.escapedName)
-          )
+          // addressof(array[]) 不需要导入
+          if (node.parent
+            && ts.isCallExpression(node.parent)
+            && ts.isIdentifier(node.parent.expression)
+            && node.parent.expression.escapedText === constant.addressof
+            && !statement.lookupFunc(constant.addressof)
+          ) {
+            key = statement.context.factory.createIdentifier('undefined')
+          }
+          else {
+            key = statement.addStructImport(
+              targetSymbol,
+              targetSource
+            )
+          }
         }
         else {
           key = statement.context.factory.createIdentifier(targetSymbol.escapedName as string)
@@ -111,7 +120,7 @@ export default function (node: ts.ElementAccessExpression, visitor: ts.Visitor):
           args.push(statement.context.factory.createStringLiteral(targetPath))
         }
         return statement.context.factory.createCallExpression(
-          statement.addIdentifierImport(constant.structAccess, constant.structAccessPath, true),
+          statement.addIdentifierImport(constant.structAccess, constant.RootPath, false),
           undefined,
           args
         )

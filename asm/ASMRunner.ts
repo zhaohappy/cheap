@@ -1,9 +1,12 @@
 
-import { base64ToUint8Array } from 'common/util/base64'
-import * as logger from 'common/util/logger'
-import * as wasmUtils from 'common/util/wasm'
 import { Memory } from '../heap'
 import * as config from '../config'
+
+import {
+  base64,
+  logger,
+  wasm as wasmUtils
+} from '@libmedia/common'
 
 export default class ASMRunner {
 
@@ -12,12 +15,12 @@ export default class ASMRunner {
   private wasm: Uint8Array
 
   constructor(asmBase64: string) {
-    this.wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(asmBase64), {
+    this.wasm = wasmUtils.setMemoryMeta(base64.base64ToUint8Array(asmBase64), {
       shared: config.USE_THREADS && defined(ENABLE_THREADS),
       initial: config.HEAP_INITIAL,
       maximum: config.HEAP_MAXIMUM
     })
-    const module = new WebAssembly.Module(this.wasm)
+    const module = new WebAssembly.Module(this.wasm as BufferSource)
     this.runner = new WebAssembly.Instance(module, {
       env: {
         memory: Memory

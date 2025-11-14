@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
+import { symbolImport, definedMetaPropertyImport } from './snippet'
 
 describe('addressof', () => {
 
@@ -72,8 +73,8 @@ describe('addressof', () => {
       let c = offsetof(TestB, 'c')
     `
     const target = `
-      import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-      import definedMetaProperty from "cheap/function/definedMetaProperty";
+      ${symbolImport}
+      ${definedMetaPropertyImport}
       ${snippetClassTestABTarget}
       let b = 0
       let c = 20

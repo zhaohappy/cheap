@@ -3,10 +3,8 @@ import { CTypeEnumWrite } from './ctypeEnumWrite'
 import { symbolStructAddress, symbolStructKeysMeta, symbolStructProxyRevoke } from './symbol'
 import type { KeyMeta, Struct } from './typedef'
 import { CTypeEnum, CTypeEnum2Bytes, KeyMetaKey } from './typedef'
-import * as is from 'common/util/is'
-import * as object from 'common/util/object'
-import * as array from 'common/util/array'
-import toNumber from 'common/function/toNumber'
+
+import { toNumber, array, object, is } from '@libmedia/common'
 
 const ObjectPro = Object.getPrototypeOf({})
 

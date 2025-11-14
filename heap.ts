@@ -1,10 +1,9 @@
-import isWorker from 'common/function/isWorker'
 import type AllocatorInterface from './allocator/Allocator'
 import AllocatorJS from './allocator/AllocatorJS'
 import type { MemoryOperator } from './allocator/AllocatorJS64'
 import AllocatorJS64 from './allocator/AllocatorJS64'
 import { WebassemblyTable } from './allocator/Table'
-import { SELF } from 'common/util/constant'
+import { SELF } from '@libmedia/common/constant'
 import type { AtomicsBuffer } from './typedef'
 import { CTypeEnum } from './typedef'
 import * as config from './config'
@@ -13,9 +12,7 @@ import initAtomics from './thread/atomicsImpl'
 import * as memoryAsm from './asm/memory'
 import * as atomicsAsm from './thread/asm/atomics'
 import initCtypeEnumImpl from './ctypeEnumImpl'
-import isAudioWorklet from 'common/function/isAudioWorklet'
-import browser from 'common/util/browser'
-import os from 'common/util/os'
+import { isWorker, isAudioWorklet, browser, os } from '@libmedia/common'
 
 /**
  * 线程 id

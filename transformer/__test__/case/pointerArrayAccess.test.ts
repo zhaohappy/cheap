@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport, mapStructImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('pointer array access', () => {
@@ -125,7 +125,7 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -140,7 +140,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let a: pointer<TestA>;
-      let b = structAccess(a + 24, TestA);
+      let b = mapStruct(a + 24, TestA);
     `
     check(source, target, {
       input
@@ -161,7 +161,7 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -176,7 +176,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let a: pointer<TestA>;
-      let b = structAccess(a + 24, TestA);
+      let b = mapStruct(a + 24, TestA);
     `
     check(source, target, {
       input
@@ -198,8 +198,8 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import structAccess from "cheap/std/structAccess";
+      ${ctypeEnumReadImport}
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -215,7 +215,7 @@ describe('pointer array access', () => {
       })(TestA.prototype);
       let a: pointer<TestA>;
       let b: pointer<TestA>;
-      let b = structAccess(a + (CTypeEnumRead[2](b) * 8), TestA);
+      let b = mapStruct(a + (CTypeEnumRead[2](b) * 8), TestA);
     `
     check(source, target, {
       input
@@ -236,8 +236,8 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import structAccess from "cheap/std/structAccess";
+      ${ctypeEnumReadImport}
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -252,7 +252,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let a: pointer<pointer<TestA>>;
-      let b = structAccess(CTypeEnumRead[20](a + 12) + 24, TestA);
+      let b = mapStruct(CTypeEnumRead[20](a + 12) + 24, TestA);
     `
     check(source, target, {
       input
@@ -272,8 +272,8 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import structAccess from "cheap/std/structAccess";
+      ${ctypeEnumReadImport}
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -288,7 +288,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let a: pointer<pointer<TestA>>;
-      let b = structAccess(CTypeEnumRead[20](a + 12) + 40, TestA);
+      let b = mapStruct(CTypeEnumRead[20](a + 12) + 40, TestA);
     `
     check(source, target, {
       input
@@ -308,8 +308,8 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import structAccess from "cheap/std/structAccess";
+      ${ctypeEnumReadImport}
+      ${mapStructImport}
       class TestA {
         a: uint8
         b: float
@@ -324,7 +324,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let a: pointer<pointer<TestA>>;
-      let b = structAccess(CTypeEnumRead[20](a + 12) + 40, TestA);
+      let b = mapStruct(CTypeEnumRead[20](a + 12) + 40, TestA);
     `
     check(source, target, {
       input
@@ -348,7 +348,7 @@ describe('pointer array access', () => {
       ${symbolImport}
       ${definedMetaPropertyImport}
       ${ctypeEnumReadImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8;
         b: pointer<struct<{
@@ -375,7 +375,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let p: pointer<TestA>;
-      let a = structAccess(CTypeEnumRead[20](p + 4) + 16, TestA, "b");
+      let a = mapStruct(CTypeEnumRead[20](p + 4) + 16, TestA, "b");
     `
     check(source, target, {
       input
@@ -399,7 +399,7 @@ describe('pointer array access', () => {
       ${symbolImport}
       ${definedMetaPropertyImport}
       ${ctypeEnumReadImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       class TestA {
         a: uint8;
         b: pointer<struct<{
@@ -426,7 +426,7 @@ describe('pointer array access', () => {
         definedMetaProperty(prototype, symbolStructKeysMeta, map);
       })(TestA.prototype);
       let p: pointer<TestA>;
-      let a = structAccess(CTypeEnumRead[20](p + 4) + 16, TestA, "b");
+      let a = mapStruct(CTypeEnumRead[20](p + 4) + 16, TestA, "b");
     `
     check(source, target, {
       input
@@ -797,7 +797,7 @@ describe('pointer array access', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       class TestA {
         a: uint8;
         b: array<pointer<void>, 8>;
@@ -830,7 +830,7 @@ describe('pointer array access', () => {
       let b = a[i - 1]
     `
     const target = `
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       let a: pointer<pointer<uint8>>;
       let i = 0;
       let b = CTypeEnumRead[${CTypeEnum.pointer}](a + ((i - 1) * 4));
@@ -847,7 +847,7 @@ describe('pointer array access', () => {
       let b = a[i - 1]
     `
     const target = `
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       let a: pointer<pointer<uint8>>;
       let i = 0;
       let b = CTypeEnumRead[${CTypeEnum.pointer}](a + (BigInt((i - 1)) * 8n));
@@ -867,7 +867,7 @@ describe('pointer array access', () => {
       let b = a[i - 1][i + 5]
     `
     const target = `
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       let a: pointer<pointer<uint32>>;
       let i = 0;
       let b = CTypeEnumRead[${CTypeEnum.uint32}](CTypeEnumRead[${CTypeEnum.pointer}](a + ((i - 1) * 4)) + ((i + 5) * 4));
@@ -884,7 +884,7 @@ describe('pointer array access', () => {
       let b = a[i - 1][i + 5]
     `
     const target = `
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
+      ${ctypeEnumReadImport}
       let a: pointer<pointer<uint32>>;
       let i = 0;
       let b = CTypeEnumRead[${CTypeEnum.uint32}](CTypeEnumRead[${CTypeEnum.pointer}](a + (BigInt((i - 1)) * 8n)) + (BigInt((i + 5)) * 4n));

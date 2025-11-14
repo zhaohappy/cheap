@@ -10,7 +10,7 @@
       "name": "Jest Debug",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest",
       "stopOnEntry": false,
-      "args": ["--runInBand", "--env=jsdom", "${fileBasename}"],
+      "args": ["--runInBand", "--env=node", "${fileBasename}"],
       "runtimeArgs": [
         "--inspect-brk"
       ],

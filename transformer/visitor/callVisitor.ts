@@ -1,8 +1,6 @@
 
 import type { Expression } from 'typescript'
 import ts from 'typescript'
-import * as is from 'common/util/is'
-import * as array from 'common/util/array'
 import statement from '../statement'
 import { BuiltinBigInt, BuiltinBool, BuiltinFloat, BuiltinNumber, BuiltinUint, CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import reportError from '../function/reportError'
@@ -11,13 +9,13 @@ import type { Struct } from '../struct'
 import { StructType, hasStruct } from '../struct'
 import { isPointerNode } from '../util/nodeutil'
 import relativePath from '../function/relativePath'
-import isDef from 'common/function/isDef'
 import * as constant from '../constant'
 import * as nodeUtils from '../util/nodeutil'
 import * as typeUtils from '../util/typeutil'
-import toString from 'common/function/toString'
 import getStructMeta from '../function/getStructMeta'
 import * as error from '../error'
+
+import { is, array, isDef, toString } from '@libmedia/common'
 
 function definedReplace(name: string, node: ts.Node) {
   if (name === constant.LINE || name === constant.LINE_2) {
@@ -131,10 +129,9 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
         let key: ts.Expression
         const targetSource = type.symbol.valueDeclaration?.getSourceFile()
         if (targetSource !== statement.currentFile) {
-          key = statement.addIdentifierImport(
-            type.symbol.escapedName as string,
-            relativePath(statement.currentFile.fileName, targetSource.fileName),
-            !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(type.symbol.escapedName)
+          key = statement.addStructImport(
+            type.symbol,
+            targetSource
           )
         }
         else {
@@ -181,9 +178,14 @@ function addArgs(args: ts.Node[], node: ts.Node, call: ts.CallExpression) {
               const callType = statement.typeChecker.getTypeAtLocation(call.expression)
               const callPath = callType?.symbol?.valueDeclaration?.getSourceFile().fileName
 
+              let cheapThreadPath = constant.cheapThreadPath
+              if (statement.options.cheapSourcePath) {
+                cheapThreadPath = statement.options.cheapSourcePath + cheapThreadPath.replace(constant.PACKET_NAME, '')
+              }
+
               if (statement.cheapCompilerOptions.defined.ENABLE_THREADS
                 && statement.cheapCompilerOptions.defined.ENABLE_THREADS_SPLIT
-                && callPath.indexOf(constant.cheapThreadPath) >= 0
+                && (callPath.indexOf(cheapThreadPath) >= 0)
                 && (
                   callType.symbol.escapedName === constant.createThreadFromClass
                     || callType.symbol.escapedName === constant.createThreadFromFunction
@@ -314,10 +316,9 @@ function accessStruct(pointer: ts.Node, struct: Struct) {
   if (targetSource) {
     let key: ts.Expression
     if (targetSource !== statement.currentFile) {
-      key = statement.addIdentifierImport(
-        targetSymbol.escapedName as string,
-        relativePath(statement.currentFile.fileName, targetSource.fileName),
-        !statement.typeChecker.getSymbolAtLocation(targetSource).exports?.has(targetSymbol.escapedName)
+      key = statement.addStructImport(
+        targetSymbol,
+        targetSource
       )
     }
     else {
@@ -331,7 +332,7 @@ function accessStruct(pointer: ts.Node, struct: Struct) {
       args.push(statement.context.factory.createStringLiteral(targetPath))
     }
     return statement.context.factory.createCallExpression(
-      statement.addIdentifierImport(constant.structAccess, constant.structAccessPath, true),
+      statement.addIdentifierImport(constant.structAccess, constant.RootPath, false),
       undefined,
       args
     )
@@ -562,7 +563,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         }
         else {
           return statement.context.factory.createCallExpression(
-            statement.addIdentifierImport(constant.sizeof, constant.sizeofPath, true),
+            statement.addIdentifierImport(constant.sizeof, constant.RootPath, false),
             undefined,
             node.arguments
           )
@@ -577,10 +578,10 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           // addressof(CTypeEnumRead[type](p))
           || ts.isElementAccessExpression(arg.expression)
             && (ts.isIdentifier(arg.expression.expression) || ts.isPropertyAccessExpression(arg.expression.expression))
-            && statement.isIdentifier(arg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
+            && statement.isIdentifier(arg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath, constant.InternalPath)
           // addressof(structAccess(p, A))
           || (ts.isIdentifier(arg.expression) || ts.isPropertyAccessExpression(arg.expression))
-            && statement.isIdentifier(arg.expression, constant.structAccess, constant.structAccessPath)
+            && statement.isIdentifier(arg.expression, constant.structAccess, constant.structAccessPath, constant.RootPath)
         )
       ) {
         return ts.visitNode(arg.arguments[0], visitor)
@@ -607,9 +608,9 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         const newArg = ts.visitNode(arg, visitor) as ts.Expression
         if (ts.isCallExpression(newArg)
           && (ts.isIdentifier(newArg.expression)
-              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath)
+              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath, constant.RootPath)
             || ts.isPropertyAccessExpression(newArg.expression)
-              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath)
+              && statement.isIdentifier(newArg.expression, constant.structAccess, constant.structAccessPath, constant.RootPath)
           )
         ) {
           return newArg.arguments[0]
@@ -617,9 +618,9 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
         else if (ts.isCallExpression(newArg)
           && ts.isElementAccessExpression(newArg.expression)
           && (ts.isIdentifier(newArg.expression.expression)
-              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
+              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath, constant.InternalPath)
             || ts.isPropertyAccessExpression(newArg.expression.expression)
-              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath)
+              && statement.isIdentifier(newArg.expression.expression, constant.ctypeEnumRead, constant.ctypeEnumReadPath, constant.InternalPath)
           )
         ) {
           return newArg.arguments[0]
@@ -859,7 +860,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
               exp = statement.context.factory.createCallExpression(
                 statement.context.factory.createPropertyAccessExpression(
                   statement.context.factory.createIdentifier('BigInt'),
-                  statement.context.factory.createIdentifier('asUintN'),
+                  statement.context.factory.createIdentifier('asUintN')
                 ),
                 undefined,
                 [
@@ -872,7 +873,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
               exp = statement.context.factory.createCallExpression(
                 statement.context.factory.createPropertyAccessExpression(
                   statement.context.factory.createIdentifier('BigInt'),
-                  statement.context.factory.createIdentifier('asIntN'),
+                  statement.context.factory.createIdentifier('asIntN')
                 ),
                 undefined,
                 [
@@ -1038,7 +1039,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createPropertyAccessExpression(
               statement.context.factory.createIdentifier('Math'),
-              statement.context.factory.createIdentifier('floor'),
+              statement.context.factory.createIdentifier('floor')
             ),
             undefined,
             [
@@ -1089,7 +1090,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createPropertyAccessExpression(
               statement.context.factory.createIdentifier('BigInt'),
-              statement.context.factory.createIdentifier('asIntN'),
+              statement.context.factory.createIdentifier('asIntN')
             ),
             undefined,
             [
@@ -1103,7 +1104,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
           exp = statement.context.factory.createCallExpression(
             statement.context.factory.createPropertyAccessExpression(
               statement.context.factory.createIdentifier('BigInt'),
-              statement.context.factory.createIdentifier('asUintN'),
+              statement.context.factory.createIdentifier('asUintN')
             ),
             undefined,
             [
@@ -1250,7 +1251,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
-            statement.addIdentifierImport(constant.Allocator, constant.AllocatorPath, false),
+            statement.addIdentifierImport(constant.Allocator, constant.InternalPath, false),
             statement.context.factory.createIdentifier(constant.malloc)
           ),
           undefined,
@@ -1264,7 +1265,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
-            statement.addIdentifierImport(constant.Allocator, constant.AllocatorPath, false),
+            statement.addIdentifierImport(constant.Allocator, constant.InternalPath, false),
             statement.context.factory.createIdentifier(constant.calloc)
           ),
           undefined,
@@ -1278,7 +1279,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
-            statement.addIdentifierImport(constant.Allocator, constant.AllocatorPath, false),
+            statement.addIdentifierImport(constant.Allocator, constant.InternalPath, false),
             statement.context.factory.createIdentifier(constant.realloc)
           ),
           undefined,
@@ -1292,7 +1293,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
-            statement.addIdentifierImport(constant.Allocator, constant.AllocatorPath, false),
+            statement.addIdentifierImport(constant.Allocator, constant.InternalPath, false),
             statement.context.factory.createIdentifier('alignedAlloc')
           ),
           undefined,
@@ -1306,7 +1307,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       return ts.visitNode(
         statement.context.factory.createCallExpression(
           statement.context.factory.createPropertyAccessExpression(
-            statement.addIdentifierImport(constant.Allocator, constant.AllocatorPath, false),
+            statement.addIdentifierImport(constant.Allocator, constant.InternalPath, false),
             statement.context.factory.createIdentifier(constant.free)
           ),
           undefined,
@@ -1338,7 +1339,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       }
       const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
-        statement.addIdentifierImport(constant.make, constant.makePath, true),
+        statement.addIdentifierImport(constant.make, constant.RootPath, false),
         undefined,
         tree.arguments
       )
@@ -1368,7 +1369,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
       }
       const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
-        statement.addIdentifierImport(constant.makeSharedPtrImportName, constant.makeSharedPtrPath, false),
+        statement.addIdentifierImport(constant.makeSharedPtrImportName, constant.InternalPath, false),
         undefined,
         tree.arguments
       )
@@ -1376,7 +1377,7 @@ export default function (node: ts.CallExpression, visitor: ts.Visitor): ts.Node 
     else if (callName === constant.unmake && !statement.lookupFunc(constant.unmake)) {
       const tree = ts.visitEachChild(node, statement.visitor, statement.context)
       return statement.context.factory.createCallExpression(
-        statement.addIdentifierImport(constant.unmake, constant.unmakePath, true),
+        statement.addIdentifierImport(constant.unmake, constant.RootPath, false),
         undefined,
         tree.arguments
       )

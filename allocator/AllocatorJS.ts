@@ -5,11 +5,14 @@
  */
 
 import type Allocator from './Allocator'
-import * as object from 'common/util/object'
-import * as array from 'common/util/array'
 import { lock, unlock } from '../thread/mutex'
 import { heapMutex } from '../staticData'
-import * as logger from 'common/util/logger'
+
+import {
+  object,
+  array,
+  logger
+} from '@libmedia/common'
 
 const ALIGNMENT_IN_BYTES = 8
 const ALIGNMENT_MASK = ALIGNMENT_IN_BYTES - 1

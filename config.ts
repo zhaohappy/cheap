@@ -1,7 +1,5 @@
-import support from 'common/util/support'
-import { SELF } from 'common/util/constant'
-import browser from 'common/util/browser'
-import os from 'common/util/os'
+import { SELF } from '@libmedia/common/constant'
+import { support, browser, os } from '@libmedia/common'
 
 const ENV: {
   CHEAP_DISABLE_THREAD: boolean

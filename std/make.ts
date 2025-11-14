@@ -1,9 +1,12 @@
 import { memset } from './memory'
 import { symbolStruct } from '../symbol'
-import * as object from 'common/util/object'
-import type { Data } from 'common/types/type'
-import isDef from 'common/function/isDef'
-import structAccess from './structAccess'
+import structAccess from './mapStruct'
+
+import {
+  isDef,
+  object,
+  type Data
+} from '@libmedia/common'
 
 /**
  * 创建一个 struct 实例

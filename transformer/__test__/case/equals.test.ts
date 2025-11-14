@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath, transform2AST } from '../transformer'
 import { CTypeEnum, CTypeEnum2Bytes } from '../../../typedef'
-import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, ctypeEnumWriteImport, definedMetaPropertyImport, symbolImport, mapStructImport, memcpyImport } from './snippet'
 
 describe('equals', () => {
 
@@ -473,12 +473,12 @@ describe('equals', () => {
       p1.b.b = p2.b.b
     `
     const target = `
-      import { memcpy as memcpy } from "cheap/std/memory";
+      ${memcpyImport}
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${mapStructImport}
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: union<{
@@ -537,8 +537,8 @@ describe('equals', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: union<{
@@ -607,8 +607,8 @@ describe('equals', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: union<{
@@ -668,8 +668,8 @@ describe('equals', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import { CTypeEnumRead as CTypeEnumRead } from "cheap/ctypeEnumRead";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${ctypeEnumReadImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: union<{
@@ -726,8 +726,8 @@ describe('equals', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${mapStructImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: struct<{
@@ -789,8 +789,8 @@ describe('equals', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
-      import { CTypeEnumWrite as CTypeEnumWrite } from "cheap/ctypeEnumWrite";
+      ${mapStructImport}
+      ${ctypeEnumWriteImport}
       class TestA {
         a: uint8;
         b: struct<{

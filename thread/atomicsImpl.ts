@@ -1,10 +1,13 @@
-import getTimestamp from 'common/function/getTimestamp'
-import nextTick from 'common/function/nextTick'
 import { override } from './atomics'
 import type { AtomicsBuffer } from '../typedef'
 import * as config from '../config'
-import browser from 'common/util/browser'
-import support from 'common/util/support'
+
+import {
+  getTimestamp,
+  nextTick,
+  browser,
+  support
+} from '@libmedia/common'
 
 let getAtomicsBuffer: (type: atomictype) => AtomicsBuffer
 
@@ -320,7 +323,7 @@ async function waitTimeoutAsync(address: pointer<atomic_int32>, value: int32, ti
   }
 }
 
-export default function init(getAtomicsBuffer_: (type: atomictype) => AtomicsBuffer,) {
+export default function init(getAtomicsBuffer_: (type: atomictype) => AtomicsBuffer) {
 
   getAtomicsBuffer = getAtomicsBuffer_
 

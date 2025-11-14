@@ -1,11 +1,10 @@
 import { symbolStruct, symbolStructKeysMeta } from '../symbol'
 import { proxyStruct } from '../proxyStruct'
 import { definedStruct } from '../definedStruct'
-import support from 'common/util/support'
-import * as is from 'common/util/is'
-import * as keypath from 'common/util/keypath'
 import type { KeyMeta } from '../typedef'
 import { KeyMetaKey } from '../typedef'
+
+import { support, is, keypath } from '@libmedia/common'
 
 /**
  * 访问 struct 指针
@@ -14,7 +13,7 @@ import { KeyMetaKey } from '../typedef'
  * @param address
  * @returns
  */
-export default function structAccess<T>(address: pointer<void>, struct: new (...args: any[]) => T): T {
+export default function mapStruct<T>(address: pointer<void>, struct: new (...args: any[]) => T): T {
 
   assert(struct.prototype[symbolStruct], 'cannot reinterpret cast struct because of not defined')
 

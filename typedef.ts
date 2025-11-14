@@ -1,4 +1,4 @@
-import type { Data, TypeArray } from 'common/types/type'
+import type { Data, TypeArray } from '@libmedia/common'
 
 export const enum CTypeEnum {
   null = 0,

@@ -4,7 +4,7 @@
 
 import { POSIXError } from '../error'
 import * as atomics from './atomics'
-import isWorker from 'common/function/isWorker'
+import { isWorker } from '@libmedia/common'
 
 @struct
 export class Mutex {

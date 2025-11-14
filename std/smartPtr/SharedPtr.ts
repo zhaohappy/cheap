@@ -1,17 +1,21 @@
-import isDef from 'common/function/isDef'
 import type { CTypeEnum, Struct } from '../../typedef'
 
-import * as is from 'common/util/is'
 import { symbolStruct, symbolStructAddress } from '../../symbol'
 import { CTypeEnumWrite } from '../../ctypeEnumWrite'
 import * as atomic from '../../thread/atomics'
 import { mapUint8Array, memcpyFromUint8Array } from '../memory'
 import * as stack from '../../stack'
-import { SELF } from 'common/util/constant'
-import isWorker from 'common/function/isWorker'
 import make from '../make'
-import type { Data } from 'common/types/type'
 import isPointer from '../function/isPointer'
+
+import {
+  isDef,
+  is,
+  isWorker,
+  type Data
+} from '@libmedia/common'
+
+import { SELF } from '@libmedia/common/constant'
 
 @struct
 class SharedPtrStruct<T> {

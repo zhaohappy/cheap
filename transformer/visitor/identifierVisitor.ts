@@ -3,8 +3,8 @@ import ts from 'typescript'
 import statement, { StageStatus } from '../statement'
 import { CTypeEnum2Type, Type2CTypeEnum } from '../defined'
 import { CTypeEnum } from '../../typedef'
-import * as is from 'common/util/is'
 import * as nodeUtil from '../util/nodeutil'
+import { is } from '@libmedia/common'
 
 export default function (node: ts.Identifier, visitor: ts.Visitor): ts.Node | ts.Node[] {
   if ((statement.lookupStage(StageStatus.Parameter) || statement.lookupStage(StageStatus.VariableDeclaration))

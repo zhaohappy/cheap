@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { definedMetaPropertyImport, symbolImport } from './snippet'
+import { definedMetaPropertyImport, symbolImport, sizeofImport } from './snippet'
 
 describe('sizeof', () => {
 
@@ -379,7 +379,7 @@ describe('sizeof', () => {
       }
     `
     const target = `
-      import sizeof from 'cheap/std/sizeof'
+      ${sizeofImport}
       function test<T>(a: T) {
         let size = sizeof(a)
       }
@@ -398,8 +398,8 @@ describe('sizeof', () => {
   `
 
   const classTestTarget = `
-    import { symbolStruct as symbolStruct, symbolStructMaxBaseTypeByteLength as symbolStructMaxBaseTypeByteLength, symbolStructLength as symbolStructLength, symbolStructKeysMeta as symbolStructKeysMeta } from "cheap/symbol";
-    import definedMetaProperty from "cheap/function/definedMetaProperty";
+    ${symbolImport}
+    ${definedMetaPropertyImport}
     class Test {
       a: uint8;
       b: float;

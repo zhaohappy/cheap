@@ -1,4 +1,4 @@
-import { SELF } from 'common/util/constant'
+import { SELF } from '@libmedia/common/constant'
 
 let parentPort = SELF
 if (defined(ENV_NODE)) {

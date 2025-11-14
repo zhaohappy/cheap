@@ -14,8 +14,16 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "cheap/*": ["./*"],
-      "common/*": ["../common/*"]
+      "@libmedia/cheap": ["./*"],
+      "@libmedia/common": ["../common"],
+      "@libmedia/common/io": ["../common/io"],
+      "@libmedia/common/network": ["../common/network"],
+      "@libmedia/common/math": ["../common/math"],
+      "@libmedia/common/sourceLoad": ["../common/function/sourceLoad"],
+      "@libmedia/common/constant": ["../common/util/constant"],
+      "@libmedia/common/support": ["../common/util/support"],
+      "@libmedia/common/browser": ["../common/util/browser"],
+      "@libmedia/common/os": ["../common/util/os"]
     },
     "typeRoots": [
       "./node_modules/@types",

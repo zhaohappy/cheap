@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { check, distPath } from '../transformer'
-import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport } from './snippet'
+import { ctypeEnumReadImport, definedMetaPropertyImport, symbolImport, mapStructImport } from './snippet'
 import { CTypeEnum } from '../../../typedef'
 
 describe('accessof', () => {
@@ -441,10 +441,10 @@ describe('accessof', () => {
     const target = `
       ${symbolImport}
       ${definedMetaPropertyImport}
-      import structAccess from "cheap/std/structAccess";
+      ${mapStructImport}
       ${snippetClassTestABTarget}
       let a: pointer<TestA>
-      let b = structAccess(a, TestA)
+      let b = mapStruct(a, TestA)
     `
     check(source, target, {
       input

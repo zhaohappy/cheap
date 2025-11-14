@@ -1,14 +1,12 @@
 /* eslint-disable camelcase */
 
-import { base64ToUint8Array } from 'common/util/base64'
-import * as logger from 'common/util/logger'
-
 import asm from './thread.asm'
 import asm64 from './thread64.asm'
 import type { Mutex } from '../../../thread/mutex'
 import type { Cond } from '../../../thread/cond'
 import type { Timespec } from '../semaphore'
-import * as wasmUtils from 'common/util/wasm'
+
+import { base64, wasm as wasmUtils, logger } from '@libmedia/common'
 
 /**
  * WebAssembly runtime 实例
@@ -34,13 +32,13 @@ export function init(memory: WebAssembly.Memory, initial: uint32, maximum: uint3
 ) => void) {
   try {
     if (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer || defined(WASM_64)) {
-      const wasm = wasmUtils.setMemoryMeta(base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
+      const wasm = wasmUtils.setMemoryMeta(base64.base64ToUint8Array(defined(WASM_64) ? asm64 : asm), {
         shared: defined(WASM_64) ? (typeof SharedArrayBuffer === 'function' && memory.buffer instanceof SharedArrayBuffer) : true,
         initial,
         maximum
       })
 
-      wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm), {
+      wasmThreadProxy = new WebAssembly.Instance(new WebAssembly.Module(wasm as BufferSource), {
         env: {
           memory
         }

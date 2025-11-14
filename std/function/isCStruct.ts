@@ -1,5 +1,5 @@
 import { symbolStructAddress } from '../../symbol'
-import * as object from 'common/util/object'
+import { object } from '@libmedia/common'
 
 /**
  * 判断是否是 CStruct

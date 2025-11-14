@@ -1,5 +1,5 @@
 import { symbolStruct, symbolStructLength } from '../symbol'
-import * as is from 'common/util/is'
+import { is } from '@libmedia/common'
 import type { CTypeEnum, Struct } from '../typedef'
 import { CTypeEnum2Bytes } from '../typedef'
 

@@ -1,13 +1,11 @@
 
 import ts from 'typescript'
 import statement from '../statement'
-import * as array from 'common/util/array'
 import { isPointerNode } from '../util/nodeutil'
 import reportError from '../function/reportError'
 import { BuiltinBigInt } from '../defined'
-import toString from 'common/function/toString'
 import * as typeUtils from '../util/typeutil'
-import { CTypeEnum2Bytes } from '../../typedef'
+import { toString, array } from '@libmedia/common'
 
 export default function (node: ts.UnaryExpression, visitor: ts.Visitor): ts.Node {
 
