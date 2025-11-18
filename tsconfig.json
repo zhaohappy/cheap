@@ -15,12 +15,12 @@
     "baseUrl": "./",
     "paths": {
       "@libmedia/cheap": ["./*"],
-      "@libmedia/common": ["../common/index"],
-      "@libmedia/common/io": ["../common/io/index"],
-      "@libmedia/common/network": ["../common/network/index"],
-      "@libmedia/common/math": ["../common/math/index"],
-      "@libmedia/common/sourceLoad": ["../common/function/sourceLoad"],
-      "@libmedia/common/constant": ["../common/util/constant"]
+      "@libmedia/common": ["../common/src"],
+      "@libmedia/common/io": ["../common/src/io"],
+      "@libmedia/common/network": ["../common/src/network"],
+      "@libmedia/common/math": ["../common/src/math"],
+      "@libmedia/common/sourceLoad": ["../common/src/function/sourceLoad"],
+      "@libmedia/common/constant": ["../common/src/util/constant"]
     },
     "typeRoots": [
       "./node_modules/@types",
@@ -36,9 +36,9 @@
     "allowJs": true
   },
   "include": [
-    "./**/*.ts",
+    "./src/**/*.ts",
     "@types/index.d.ts",
-    "../common/types/*.ts",
+    "../common/src/types/*.ts",
   ],
   "exclude": [
     "*.test.ts",

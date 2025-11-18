@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es2015",
+    "paths": {
+      "@libmedia/common": ["../common/src"],
+      "@libmedia/common/io": ["../common/src/io"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+    ],
+    "types": [
+      "node",
+      "jest"
+    ],
+    "lib": [
+      "dom",
+      "ESNext"
+    ]
+  },
+  "include": [
+    "./src/transformer/index.ts",
+    "./src/webassembly/wasm-opt.ts"
+  ],
+  "exclude": [
+    "*.test.ts",
+    "__test__",
+    "/node_modules/**",
+    "**/dist",
+  ]
+}

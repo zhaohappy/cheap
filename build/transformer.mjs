@@ -1,1 +1,7444 @@
-import*as e from"os";import*as t from"path";import*as r from"child_process";import*as n from"fs";import*as i from"url";import*as a from"typescript";var o={409:(e,t,r)=>{var n=r(89624),i=Error,a=n("".replace),o=String(new i("zxcasd").stack),s=/\n\s*at [^:]*:[^\n]*/,c=s.test(o);e.exports=function(e,t){if(c&&"string"==typeof e&&!i.prepareStackTrace)for(;t--;)e=a(e,s,"");return e}},446:(e,t,r)=>{var n=r(56453);e.exports=n},767:(e,t,r)=>{var n=r(8377),i=r(89096),a=n("keys");e.exports=function(e){return a[e]||(a[e]=i(e))}},1178:(e,t,r)=>{r.d(t,{f:()=>S});var n=r(48852);const i="\0SLASH"+Math.random()+"\0",a="\0OPEN"+Math.random()+"\0",o="\0CLOSE"+Math.random()+"\0",s="\0COMMA"+Math.random()+"\0",c="\0PERIOD"+Math.random()+"\0",l=new RegExp(i,"g"),u=new RegExp(a,"g"),f=new RegExp(o,"g"),p=new RegExp(s,"g"),d=new RegExp(c,"g"),y=/\\\\/g,h=/\\{/g,x=/\\}/g,m=/\\,/g,A=/\\./g;function g(e){return isNaN(e)?e.charCodeAt(0):parseInt(e,10)}function v(e){return e.replace(l,"\\").replace(u,"{").replace(f,"}").replace(p,",").replace(d,".")}function T(e){if(!e)return[""];const t=[],r=(0,n.l)("{","}",e);if(!r)return e.split(",");const{pre:i,body:a,post:o}=r,s=i.split(",");s[s.length-1]+="{"+a+"}";const c=T(o);return o.length&&(s[s.length-1]+=c.shift(),s.push.apply(s,c)),t.push.apply(t,s),t}function S(e){return e?("{}"===e.slice(0,2)&&(e="\\{\\}"+e.slice(2)),I(function(e){return e.replace(y,i).replace(h,a).replace(x,o).replace(m,s).replace(A,c)}(e),!0).map(v)):[]}function E(e){return"{"+e+"}"}function b(e){return/^-?0\d/.test(e)}function k(e,t){return e<=t}function N(e,t){return e>=t}function I(e,t){const r=[],i=(0,n.l)("{","}",e);if(!i)return[e];const a=i.pre,s=i.post.length?I(i.post,!1):[""];if(/\$$/.test(i.pre))for(let e=0;e<s.length;e++){const t=a+"{"+i.body+"}"+s[e];r.push(t)}else{const n=/^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(i.body),c=/^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(i.body),l=n||c,u=i.body.indexOf(",")>=0;if(!l&&!u)return i.post.match(/,(?!,).*\}/)?I(e=i.pre+"{"+i.body+o+i.post):[e];let f,p;if(l)f=i.body.split(/\.\./);else if(f=T(i.body),1===f.length&&void 0!==f[0]&&(f=I(f[0],!1).map(E),1===f.length))return s.map((e=>i.pre+f[0]+e));if(l&&void 0!==f[0]&&void 0!==f[1]){const e=g(f[0]),t=g(f[1]),r=Math.max(f[0].length,f[1].length);let n=3===f.length&&void 0!==f[2]?Math.abs(g(f[2])):1,i=k;t<e&&(n*=-1,i=N);const a=f.some(b);p=[];for(let o=e;i(o,t);o+=n){let e;if(c)e=String.fromCharCode(o),"\\"===e&&(e="");else if(e=String(o),a){const t=r-e.length;if(t>0){const r=new Array(t+1).join("0");e=o<0?"-"+r+e.slice(1):r+e}}p.push(e)}}else{p=[];for(let e=0;e<f.length;e++)p.push.apply(p,I(f[e],!1))}for(let e=0;e<p.length;e++)for(let n=0;n<s.length;n++){const i=a+p[e]+s[n];(!t||l||i)&&r.push(i)}}return r}},1193:(e,t,r)=>{r(79847)},1329:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(55701),o=r(89624),s=r(51219),c=r(73012),l=r(39559),u=r(81767),f=r(95497),p=r(53457),d=r(66415),y=r(33437),h=r(27041),x=r(42391),m=r(57884),A=r(20272),g=r(8472),v=r(62456),T=r(51602),S=r(64221),E=r(80347),b=r(77097),k=r(24089),N=r(34877),I=r(87632),C=r(28626),P=r(8377),L=r(767),O=r(84061),w=r(89096),F=r(25563),K=r(72855),_=r(9815),B=r(26842),M=r(3975),D=r(16437),j=r(63637).forEach,$=L("hidden"),z="Symbol",R="prototype",W=D.set,q=D.getterFor(z),G=Object[R],Y=i.Symbol,U=Y&&Y[R],V=i.RangeError,Q=i.TypeError,H=i.QObject,J=E.f,Z=b.f,X=T.f,ee=N.f,te=o([].push),re=P("symbols"),ne=P("op-symbols"),ie=P("wks"),ae=!H||!H[R]||!H[R].findChild,oe=function(e,t,r){var n=J(G,t);n&&delete G[t],Z(e,t,r),n&&e!==G&&Z(G,t,n)},se=c&&u((function(){return 7!==A(Z({},"a",{get:function(){return Z(this,"a",{value:7}).a}})).a}))?oe:Z,ce=function(e,t){var r=re[e]=A(U);return W(r,{type:z,tag:e,description:t}),c||(r.description=t),r},le=function(e,t,r){e===G&&le(ne,t,r),d(e);var n=h(t);return d(r),f(re,n)?(r.enumerable?(f(e,$)&&e[$][n]&&(e[$][n]=!1),r=A(r,{enumerable:m(0,!1)})):(f(e,$)||Z(e,$,m(1,A(null))),e[$][n]=!0),se(e,n,r)):Z(e,n,r)},ue=function(e,t){d(e);var r=y(t),n=g(r).concat(ye(r));return j(n,(function(t){c&&!a(fe,r,t)||le(e,t,r[t])})),e},fe=function(e){var t=h(e),r=a(ee,this,t);return!(this===G&&f(re,t)&&!f(ne,t))&&(!(r||!f(this,t)||!f(re,t)||f(this,$)&&this[$][t])||r)},pe=function(e,t){var r=y(e),n=h(t);if(r!==G||!f(re,n)||f(ne,n)){var i=J(r,n);return!i||!f(re,n)||f(r,$)&&r[$][n]||(i.enumerable=!0),i}},de=function(e){var t=X(y(e)),r=[];return j(t,(function(e){f(re,e)||f(O,e)||te(r,e)})),r},ye=function(e){var t=e===G,r=X(t?ne:y(e)),n=[];return j(r,(function(e){!f(re,e)||t&&!f(G,e)||te(n,re[e])})),n};l||(I(U=(Y=function(){if(p(U,this))throw new Q("Symbol is not a constructor");var e=arguments.length&&void 0!==arguments[0]?x(arguments[0]):void 0,t=w(e),r=function(e){var n=void 0===this?i:this;n===G&&a(r,ne,e),f(n,$)&&f(n[$],t)&&(n[$][t]=!1);var o=m(1,e);try{se(n,t,o)}catch(e){if(!(e instanceof V))throw e;oe(n,t,o)}};return c&&ae&&se(G,t,{configurable:!0,set:r}),ce(t,e)})[R],"toString",(function(){return q(this).tag})),I(Y,"withoutSetter",(function(e){return ce(w(e),e)})),N.f=fe,b.f=le,k.f=ue,E.f=pe,v.f=T.f=de,S.f=ye,K.f=function(e){return ce(F(e),e)},c&&(C(U,"description",{configurable:!0,get:function(){return q(this).description}}),s||I(G,"propertyIsEnumerable",fe,{unsafe:!0}))),n({global:!0,constructor:!0,wrap:!0,forced:!l,sham:!l},{Symbol:Y}),j(g(ie),(function(e){_(e)})),n({target:z,stat:!0,forced:!l},{useSetter:function(){ae=!0},useSimple:function(){ae=!1}}),n({target:"Object",stat:!0,forced:!l,sham:!c},{create:function(e,t){return void 0===t?A(e):ue(A(e),t)},defineProperty:le,defineProperties:ue,getOwnPropertyDescriptor:pe}),n({target:"Object",stat:!0,forced:!l},{getOwnPropertyNames:de}),B(),M(Y,z),O[$]=!0},1800:(e,t,r)=>{var n=r(89624);e.exports=n([].slice)},1949:(e,t,r)=>{var n=r(89624),i=r(58352),a=r(35021),o=r(76280),s=r(42391),c=n([].push);e.exports=function(e){if(a(e))return e;if(i(e)){for(var t=e.length,r=[],n=0;n<t;n++){var l=e[n];"string"==typeof l?c(r,l):"number"!=typeof l&&"Number"!==o(l)&&"String"!==o(l)||c(r,s(l))}var u=r.length,f=!0;return function(e,t){if(f)return f=!1,t;if(i(this))return t;for(var n=0;n<u;n++)if(r[n]===e)return t}}}},2080:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(12521);function i(e,t){let r=n.default.relative(n.default.dirname(e),t);return r=r.replace(/(\.d)?\.[t|j]s$/,""),n.default.isAbsolute(r)||/\.\.\//.test(r)?r:"./"+r}},2710:(e,t,r)=>{r(80043),r(71768),r(99627),r(38826),r(22239),r(17286),r(27249),r(36124),r(89239),r(58940);var n=r(72071);e.exports=n.Promise},3382:(e,t,r)=>{r.d(t,{$N:()=>f,Zp:()=>p,gH:()=>u});var n=r(50442),i=r.n(n),a=r(23339),o=r.n(a),s=(r(8465),r(23581)),c=r(55312),l=r(78686);function u(e){let t=0;return i()(e).call(e,(e=>{if(e[1])s.i[20]>t&&(t=s.i[20]);else if(l.is.func(e.getTypeMeta)){const r=e.getTypeMeta();r.maxBaseTypeByteLength>t&&(t=r.maxBaseTypeByteLength)}else l.is.func(e[0])?e[0][c.dc]>t&&(t=e[0][c.dc]):s.i[e[0]]>t&&(t=s.i[e[0]])})),t}function f(e){let t=0;return i()(e).call(e,(e=>{if(e[1])s.i[20]>t&&(t=s.i[20]);else if(l.is.func(e.getTypeMeta)){const r=e.getTypeMeta();r.length>t&&(t=r.length)}else l.is.func(e[0])?e[0][c.g7]>t&&(t=e[0][c.g7]):s.i[e[0]]>t&&(t=s.i[e[0]])})),t}function p(e,t,r,n=0){let i=0,a=0,o=n;for(e&&t&&l.YO.each(e,(e=>{const r=t.get(e);let u=0,f=0;if(r[1])u=s.i[20],f=s.i[20];else if(l.is.func(r.getTypeMeta)){const e=r.getTypeMeta();u=e.maxBaseTypeByteLength,f=e.length}else if(l.is.func(r[0]))u=r[0].prototype[c.dc],f=r[0].prototype[c.g7];else{if(r[5]&&r[0]===i&&a>=r[6])return r[7]=o,r[8]=8*s.i[i]-a,a-=r[6],0===r[6]&&(r[6]=a,i=0,a=0),(0,l.cm)()&&(r[8]=8*s.i[i]-r[8]-r[6]),!0;u=s.i[r[0]],f=s.i[r[0]]}for(;n%u!=0;)n++;r[7]=n,r[5]?(i=r[0],r[8]=0,a=8*s.i[i]-r[6],(0,l.cm)()&&(r[8]=8*s.i[i]-r[6])):(i=0,a=0),o=n,n+=r[3]?f*r[4]:f}));n%r!=0;)n++;return n}new(o())},3784:(e,t,r)=>{r(56418);var n=r(42244);e.exports=n("Array","splice")},3872:(e,t,r)=>{var n=r(81767);e.exports=!n((function(){var e=function(){}.bind();return"function"!=typeof e||e.hasOwnProperty("prototype")}))},3975:(e,t,r)=>{var n=r(48388),i=r(77097).f,a=r(35411),o=r(95497),s=r(50179),c=r(25563)("toStringTag");e.exports=function(e,t,r,l){var u=r?e:e&&e.prototype;u&&(o(u,c)||i(u,c,{configurable:!0,value:t}),l&&!n&&a(u,"toString",s))}},4995:(e,t,r)=>{r(63856),r(79843),r(66582)},5029:(e,t,r)=>{e.exports=r(64267)},5391:(e,t,r)=>{r(93142),r(20071)},5463:(e,t,r)=>{r(28789)},5661:(e,t,r)=>{Math.pow(2,32)},5759:(e,t,r)=>{r(9815)("metadataKey")},5765:(e,t,r)=>{var n=r(89838),i=r(39559),a=r(81767),o=r(64221),s=r(76157);n({target:"Object",stat:!0,forced:!i||a((function(){o.f(1)}))},{getOwnPropertySymbols:function(e){var t=o.f;return t?t(s(e)):[]}})},5788:(e,t,r)=>{var n=r(81767);e.exports=n((function(){if("function"==typeof ArrayBuffer){var e=new ArrayBuffer(8);Object.isExtensible(e)&&Object.defineProperty(e,"a",{value:8})}}))},5828:(e,t,r)=>{r(9815)("asyncIterator")},5884:(e,t,r)=>{var n=r(82563),i=r(17095);class a{constructor(e,t){(0,n.A)(this,"type",void 0),(0,n.A)(this,"phase",void 0),(0,n.A)(this,"ns",void 0),(0,n.A)(this,"target",void 0),(0,n.A)(this,"originalEvent",void 0),(0,n.A)(this,"isPrevented",void 0),(0,n.A)(this,"isStopped",void 0),(0,n.A)(this,"listener",void 0),this.type=e,this.phase=a.PHASE_CURRENT,t&&(this.originalEvent=t)}preventDefault(){const e=this;if(!e.isPrevented){const{originalEvent:t}=e;t&&t.preventDefault(),e.isPrevented=i.rT}return e}stopPropagation(){const e=this;if(!e.isStopped){const{originalEvent:t}=e;t&&t.stopPropagation(),e.isStopped=i.rT}return e}prevent(){return this.preventDefault()}stop(){return this.stopPropagation()}}(0,n.A)(a,"PHASE_CURRENT",0),(0,n.A)(a,"PHASE_UPWARD",1),(0,n.A)(a,"PHASE_DOWNWARD",i.Cy)},5959:(e,t,r)=>{e.exports=r(29609)},6001:(e,t,r)=>{var n=r(58184),i=Object.defineProperty;e.exports=function(e,t){try{i(n,e,{value:t,configurable:!0,writable:!0})}catch(r){n[e]=t}return t}},6059:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(50850),o=r(23811),s=r(59255),c=r(69508);n({target:"Promise",stat:!0,forced:r(88849)},{all:function(e){var t=this,r=o.f(t),n=r.resolve,l=r.reject,u=s((function(){var r=a(t.resolve),o=[],s=0,u=1;c(e,(function(e){var a=s++,c=!1;u++,i(r,t,e).then((function(e){c||(c=!0,o[a]=e,--u||n(o))}),l)})),--u||n(o)}));return u.error&&l(u.value),r.promise}})},6268:(e,t,r)=>{r.d(t,{A:()=>l});var n=r(50442),i=r.n(n),a=r(78686),o=r(85961),s=r(80807),c=r(52788);function l(e){const t=s.Ay.addIdentifierImport(c.K5,c.dB,!1),r=s.Ay.addSymbolImport(c.Og),n=s.Ay.addSymbolImport(c.dc),u=s.Ay.addSymbolImport(c.g7),f=s.Ay.addSymbolImport(c.JY),p=[];p.push(s.Ay.context.factory.createVariableStatement(void 0,s.Ay.context.factory.createVariableDeclarationList([s.Ay.context.factory.createVariableDeclaration(s.Ay.context.factory.createIdentifier("map"),void 0,void 0,s.Ay.context.factory.createNewExpression(s.Ay.context.factory.createIdentifier("Map"),void 0,[]))])));const d=e.meta;return i()(d).call(d,((e,t)=>{let r;if(a.is.func(e.getTypeMeta))if(e.typeIdentifier){var n;const t=null===(n=e.getTypeMeta())||void 0===n?void 0:n.symbol.deref(),i=null==t?void 0:t.valueDeclaration.getSourceFile();r=i&&i.fileName!==s.Ay.currentFile.fileName?s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(0),s.Ay.addStructImport(t,i)):s.Ay.hasStruct(e.typeIdentifier)?s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(0),s.Ay.context.factory.createIdentifier(e.typeIdentifier)):s.Ay.context.factory.createGetAccessorDeclaration(void 0,s.Ay.context.factory.createNumericLiteral(0),[],void 0,s.Ay.context.factory.createBlock([s.Ay.context.factory.createReturnStatement(s.Ay.context.factory.createIdentifier(e.typeIdentifier))],!1))}else{const t=e.getTypeMeta();if(!t||t.structType!==o.cj.INLINE_OBJECT)return!0;{const e=l(t);e.push(s.Ay.context.factory.createReturnStatement(s.Ay.context.factory.createIdentifier(c.bF))),r=s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(0),s.Ay.context.factory.createCallExpression(s.Ay.context.factory.createParenthesizedExpression(s.Ay.context.factory.createFunctionExpression(void 0,void 0,void 0,void 0,[s.Ay.context.factory.createParameterDeclaration(void 0,void 0,s.Ay.context.factory.createIdentifier(c.bF))],void 0,s.Ay.context.factory.createBlock(e,!0))),void 0,[s.Ay.context.factory.createObjectLiteralExpression()]))}}else r=s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(0),s.Ay.context.factory.createNumericLiteral(e[0]));p.push(s.Ay.context.factory.createExpressionStatement(s.Ay.context.factory.createCallExpression(s.Ay.context.factory.createPropertyAccessExpression(s.Ay.context.factory.createIdentifier("map"),s.Ay.context.factory.createIdentifier("set")),void 0,[s.Ay.context.factory.createStringLiteral(t),s.Ay.context.factory.createObjectLiteralExpression([r,s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(1),s.Ay.context.factory.createNumericLiteral(e[1])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(2),s.Ay.context.factory.createNumericLiteral(e[2])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(3),s.Ay.context.factory.createNumericLiteral(e[3])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(4),s.Ay.context.factory.createNumericLiteral(e[4])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(5),s.Ay.context.factory.createNumericLiteral(e[5])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(6),s.Ay.context.factory.createNumericLiteral(e[6])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(7),s.Ay.context.factory.createNumericLiteral(e[7])),s.Ay.context.factory.createPropertyAssignment(s.Ay.context.factory.createNumericLiteral(8),s.Ay.context.factory.createNumericLiteral(e[8]))])])))})),p.push(s.Ay.context.factory.createExpressionStatement(s.Ay.context.factory.createCallExpression(t,void 0,[s.Ay.context.factory.createIdentifier(c.bF),r,s.Ay.context.factory.createTrue()]))),p.push(s.Ay.context.factory.createExpressionStatement(s.Ay.context.factory.createCallExpression(t,void 0,[s.Ay.context.factory.createIdentifier(c.bF),n,s.Ay.context.factory.createNumericLiteral(e.maxBaseTypeByteLength)]))),p.push(s.Ay.context.factory.createExpressionStatement(s.Ay.context.factory.createCallExpression(t,void 0,[s.Ay.context.factory.createIdentifier(c.bF),u,s.Ay.context.factory.createNumericLiteral(e.length)]))),p.push(s.Ay.context.factory.createExpressionStatement(s.Ay.context.factory.createCallExpression(t,void 0,[s.Ay.context.factory.createIdentifier(c.bF),f,s.Ay.context.factory.createIdentifier("map")]))),p}},6455:(e,t,r)=>{var n,i,a=r(58184),o=r(29855),s=a.process,c=a.Deno,l=s&&s.versions||c&&c.version,u=l&&l.v8;u&&(i=(n=u.split("."))[0]>0&&n[0]<4?1:+(n[0]+n[1])),!i&&o&&(!(n=o.match(/Edge\/(\d+)/))||n[1]>=74)&&(n=o.match(/Chrome\/(\d+)/))&&(i=+n[1]),e.exports=i},6716:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(81918),i=r(446);function a(e){return a="function"==typeof n&&"symbol"==typeof i?function(e){return typeof e}:function(e){return e&&"function"==typeof n&&e.constructor===n&&e!==n.prototype?"symbol":typeof e},a(e)}},6728:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(23712);let i;function a(){if((0,n.A)(i))return i;const e=new ArrayBuffer(2);return new DataView(e).setInt16(0,256,!0),i=256===new Int16Array(e)[0],i}},7312:(e,t,r)=>{r(9815)("matcher")},7849:(e,t,r)=>{var n,i,a=r(42399),o=r.n(a),s=r(65573);const c=("object"==typeof navigator&&navigator.userAgent||"").toLocaleLowerCase();let l="unknown",u="";o()(c).call(c,"intel")>-1?l="intel":o()(c).call(c,"amd")>-1&&(l="amd"),"apple"===s.A.vendor&&o()(n=s.A.renderer).call(n,"m1")>-1&&(l="apple",u="m1"),"apple"===s.A.vendor&&o()(i=s.A.renderer).call(i,"m2")>-1&&(l="apple",u="m2")},7914:(e,t,r)=>{var n,i=r(49136),a=r(58184),o=r(89624),s=r(11151),c=r(89059),l=r(43116),u=r(38705),f=r(22890),p=r(16437).enforce,d=r(81767),y=r(79046),h=Object,x=Array.isArray,m=h.isExtensible,A=h.isFrozen,g=h.isSealed,v=h.freeze,T=h.seal,S=!a.ActiveXObject&&"ActiveXObject"in a,E=function(e){return function(){return e(this,arguments.length?arguments[0]:void 0)}},b=l("WeakMap",E,u),k=b.prototype,N=o(k.set);if(y)if(S){n=u.getConstructor(E,"WeakMap",!0),c.enable();var I=o(k.delete),C=o(k.has),P=o(k.get);s(k,{delete:function(e){if(f(e)&&!m(e)){var t=p(this);return t.frozen||(t.frozen=new n),I(this,e)||t.frozen.delete(e)}return I(this,e)},has:function(e){if(f(e)&&!m(e)){var t=p(this);return t.frozen||(t.frozen=new n),C(this,e)||t.frozen.has(e)}return C(this,e)},get:function(e){if(f(e)&&!m(e)){var t=p(this);return t.frozen||(t.frozen=new n),C(this,e)?P(this,e):t.frozen.get(e)}return P(this,e)},set:function(e,t){if(f(e)&&!m(e)){var r=p(this);r.frozen||(r.frozen=new n),C(this,e)?N(this,e,t):r.frozen.set(e,t)}else N(this,e,t);return this}})}else i&&d((function(){var e=v([]);return N(new b,e,1),!A(e)}))&&s(k,{set:function(e,t){var r;return x(e)&&(A(e)?r=v:g(e)&&(r=T)),N(this,e,t),r&&r(e),this}})},8116:(t,r,n)=>{var i,a;t.exports=(i={default:()=>e.default},a={},n.d(a,i),a)},8377:(e,t,r)=>{var n=r(48069);e.exports=function(e,t){return n[e]||(n[e]=t||{})}},8465:(e,t,r)=>{r(78563)},8472:(e,t,r)=>{var n=r(71836),i=r(96959);e.exports=Object.keys||function(e){return n(e,i)}},8606:(e,t,r)=>{e.exports=r(52056)},8836:(e,t,r)=>{var n=r(89624),i=r(81767),a=r(41725),o=RangeError,s=isFinite,c=Math.abs,l=Date.prototype,u=l.toISOString,f=n(l.getTime),p=n(l.getUTCDate),d=n(l.getUTCFullYear),y=n(l.getUTCHours),h=n(l.getUTCMilliseconds),x=n(l.getUTCMinutes),m=n(l.getUTCMonth),A=n(l.getUTCSeconds);e.exports=i((function(){return"0385-07-25T07:06:39.999Z"!==u.call(new Date(-50000000000001))}))||!i((function(){u.call(new Date(NaN))}))?function(){if(!s(f(this)))throw new o("Invalid time value");var e=this,t=d(e),r=h(e),n=t<0?"-":t>9999?"+":"";return n+a(c(t),n?6:4,0)+"-"+a(m(e)+1,2,0)+"-"+a(p(e),2,0)+"T"+a(y(e),2,0)+":"+a(x(e),2,0)+":"+a(A(e),2,0)+"."+a(r,3,0)+"Z"}:u},8883:(e,t,r)=>{r(9815)("species")},9002:(e,t,r)=>{e.exports=r(89619)},9105:(e,t,r)=>{e.exports=r(59627)},9135:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(17095);function i(e,t){return e!=n.Cq&&e.toString?e.toString():t!==n.ZH?t:n.u1}},9538:(e,t,r)=>{e.exports=r(55564)},9610:(e,t,r)=>{var n=r(25857);r(92833),e.exports=n},9760:e=>{e.exports={CSSRuleList:0,CSSStyleDeclaration:0,CSSValueList:0,ClientRectList:0,DOMRectList:0,DOMStringList:0,DOMTokenList:1,DataTransferItemList:0,FileList:0,HTMLAllCollection:0,HTMLCollection:0,HTMLFormElement:0,HTMLSelectElement:0,MediaList:0,MimeTypeArray:0,NamedNodeMap:0,NodeList:1,PaintRequestList:0,Plugin:0,PluginArray:0,SVGLengthList:0,SVGNumberList:0,SVGPathSegList:0,SVGPointList:0,SVGStringList:0,SVGTransformList:0,SourceBufferList:0,StyleSheetList:0,TextTrackCueList:0,TextTrackList:0,TouchList:0}},9815:(e,t,r)=>{var n=r(72071),i=r(95497),a=r(72855),o=r(77097).f;e.exports=function(e){var t=n.Symbol||(n.Symbol={});i(t,e)||o(t,e,{value:a.f(e)})}},10015:(e,t,r)=>{var n=r(86927),i=r(89624),a=r(62456),o=r(64221),s=r(66415),c=i([].concat);e.exports=n("Reflect","ownKeys")||function(e){var t=a.f(s(e)),r=o.f;return r?c(t,r(e)):t}},10152:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(85089).clear;n({global:!0,bind:!0,enumerable:!0,forced:i.clearImmediate!==a},{clearImmediate:a})},10587:(e,t,r)=>{var n=r(90394);e.exports=n},10642:(e,t,r)=>{e.exports=r(87808)},10696:(e,t,r)=>{var n,i=r(89838),a=r(95948),o=r(80347).f,s=r(36086),c=r(42391),l=r(78887),u=r(61726),f=r(21780),p=r(51219),d=a("".slice),y=Math.min,h=f("startsWith");i({target:"String",proto:!0,forced:!(!p&&!h&&(n=o(String.prototype,"startsWith"),n&&!n.writable)||h)},{startsWith:function(e){var t=c(u(this));l(e);var r=s(y(arguments.length>1?arguments[1]:void 0,t.length)),n=c(e);return d(t,r,r+n.length)===n}})},10958:(e,t,r)=>{r(42399),r(1193),r(49497),r(5463),r(22608),r(79843),r(17247),r(66582),r(90012)},11104:(e,t,r)=>{r(42399);var n=r(66582);const i={};n.each(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"],((e,t)=>{i[e]=t}))},11151:(e,t,r)=>{var n=r(87632);e.exports=function(e,t,r){for(var i in t)r&&r.unsafe&&e[i]?e[i]=t[i]:n(e,i,t[i],r);return e}},11387:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(79843),i=r(17095);function a(e,t){return n.numeric(e)?+e:t!==i.ZH?t:0}},11437:(e,t,r)=>{var n=r(81767),i=r(25563),a=r(6455),o=i("species");e.exports=function(e){return a>=51||!n((function(){var t=[];return(t.constructor={})[o]=function(){return{foo:1}},1!==t[e](Boolean).foo}))}},12473:(e,t,r)=>{r.d(t,{A:()=>c});var n=r(42399),i=r.n(n),a=r(66582);const o=[["harmony",/harmonyos ([\d_.]+)/],["harmony",/openharmony ([\d_.]+)/],["iphone",/iphone os ([\d_.]+)/],["ipad",/ipad; cpu os ([\d_.]+)/],["itouch",/itouch; cpu os ([\d_.]+)/],["android",/android ([\d_.]+)/],["wp",/windows phone ([\d_.]+)/],["windows",/windows nt ([\d_.]+)/],["linux",/linux/],["mac",/mac os x ([\d_.]+)/]],s=function(e){let t,r;return(0,a.each)(o,(n=>{let i=n[1].exec(e);if(i)return t=n[0],r=i[1],r&&(r=r.replace(/_/g,".")),!1})),{name:t||"",version:r||"",mobile:i()(e).call(e,"mobile")>-1}}(("object"==typeof navigator&&navigator.userAgent||"").toLowerCase());s.name&&(s[s.name]=!0,{iphone:1,ipad:1,itouch:1}[s.name]&&(s.ios=!0));const c=s},12475:(e,t,r)=>{var n=r(98052);e.exports=n},12521:(e,r,n)=>{var i,a;e.exports=(i={default:()=>t.default,dirname:()=>t.dirname},a={},n.d(a,i),a)},12720:(e,t,r)=>{r.d(t,{f:()=>n});const n=e=>{if("string"!=typeof e)throw new TypeError("invalid pattern");if(e.length>65536)throw new TypeError("pattern is too long")}},12959:(e,t,r)=>{var n=r(89624),i=r(74371),a=r(42391),o=r(61726),s=n("".charAt),c=n("".charCodeAt),l=n("".slice),u=function(e){return function(t,r){var n,u,f=a(o(t)),p=i(r),d=f.length;return p<0||p>=d?e?"":void 0:(n=c(f,p))<55296||n>56319||p+1===d||(u=c(f,p+1))<56320||u>57343?e?s(f,p):n:e?l(f,p,p+2):u-56320+(n-55296<<10)+65536}};e.exports={codeAt:u(!1),charAt:u(!0)}},13247:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(56600)(i.setTimeout,!0);n({global:!0,bind:!0,forced:i.setTimeout!==a},{setTimeout:a})},13332:(e,t,r)=>{var n=r(81767),i=r(22890),a=r(76280),o=r(5788),s=Object.isExtensible,c=n((function(){s(1)}));e.exports=c||o?function(e){return!!i(e)&&(!o||"ArrayBuffer"!==a(e))&&(!s||s(e))}:s},13518:(e,t,r)=>{r(9815)("matchAll")},13567:(e,t,r)=>{var n=r(60522),i=r(22890),a=r(61726),o=r(18810);e.exports=Object.setPrototypeOf||("__proto__"in{}?function(){var e,t=!1,r={};try{(e=n(Object.prototype,"__proto__","set"))(r,[]),t=r instanceof Array}catch(e){}return function(r,n){return a(r),o(n),i(r)?(t?e(r,n):r.__proto__=n,r):r}}():void 0)},13695:(e,t,r)=>{r(87334),r(98722),r(62643),r(12473)},13817:e=>{e.exports=function(e,t){return{value:e,done:t}}},14468:(e,t,r)=>{var n=r(89838),i=r(88119);n({global:!0,forced:parseInt!==i},{parseInt:i})},14739:(e,t,r)=>{r(43116)("Map",(function(e){return function(){return e(this,arguments.length?arguments[0]:void 0)}}),r(28050))},14813:(e,t,r)=>{var n=r(22890);e.exports=function(e){return n(e)||null===e}},15201:e=>{var t=function(){this.head=null,this.tail=null};t.prototype={add:function(e){var t={item:e,next:null},r=this.tail;r?r.next=t:this.head=t,this.tail=t},get:function(){var e=this.head;if(e)return null===(this.head=e.next)&&(this.tail=null),e.item}},e.exports=t},15405:(e,t,r)=>{e.exports=r(50751)},15460:(e,t,r)=>{r.d(t,{A:()=>p});var n=r(23339),i=r.n(n),a=r(50442),o=r.n(a),s=r(92983),c=r.n(s),l=r(74093),u=r(12521),f=r(95998);function p(e,t,r,n){var a;const s=new(i());return o()(a=e.statements).call(a,(a=>{if(l.default.isImportDeclaration(a)){const d=u.default.extname(a.moduleSpecifier.text);if(!d||".ts"===d){const u=a.moduleSpecifier.text.split("!").pop(),d=(0,f.A)(t,e.fileName,u);if(d){const e=s.get(d)||{map:new(i()),specifier:u};if(a.importClause&&l.default.isImportClause(a.importClause)){if(a.importClause.isTypeOnly||a.importClause.phaseModifier===l.default.SyntaxKind.TypeKeyword)return;var p;a.importClause.name&&l.default.isIdentifier(a.importClause.name)&&(c()(e).set("default",a.importClause.name.escapedText),n.set(a.importClause.name.escapedText,r.getSymbolAtLocation(a.importClause.name))),a.importClause.namedBindings&&(l.default.isNamedImports(a.importClause.namedBindings)?o()(p=a.importClause.namedBindings.elements).call(p,(t=>{t.isTypeOnly||(t.propertyName&&l.default.isIdentifier(t.propertyName)?(c()(e).set(t.propertyName.escapedText,t.name.escapedText),n.set(t.propertyName.escapedText,r.getSymbolAtLocation(t.propertyName))):(c()(e).set(t.name.escapedText,t.name.escapedText),n.set(t.name.escapedText,r.getSymbolAtLocation(t.name))))})):l.default.isNamespaceImport(a.importClause.namedBindings)&&c()(e).set("all",a.importClause.namedBindings.name.escapedText))}s.set(d,e)}}}})),s}},15748:(e,t,r)=>{var n=r(53457),i=r(76832),a=Array.prototype;e.exports=function(e){var t=e.slice;return e===a||n(a,e)&&t===a.slice?i:t}},15967:(e,t,r)=>{var n=r(58184),i=r(22890),a=n.document,o=i(a)&&i(a.createElement);e.exports=function(e){return o?a.createElement(e):{}}},15970:(e,t,r)=>{e.exports=r(31788)},15973:()=>{let e,t;const r="object"==typeof navigator&&navigator.userAgent||"";e=r.match(/NetType\/\w+/)?r.match(/NetType\/\w+/)[0]:"NetType/other",e=e.toLowerCase().replace("nettype/","");const n={ethernet:"ethernet",wifi:"wifi","5g":"5g","4g":"4g","3g":"3g","3gnet":"3g","2g":"2g","slow-2g":"2g"};if(t=n[e],!t&&"object"==typeof navigator){let e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;e&&(t=n[e.type],t||(t=n[e.effectiveType]))}t||(t="unknown")},16040:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(51219),o=r(74150),s=r(35021),c=r(94914),l=r(17307),u=r(13567),f=r(3975),p=r(35411),d=r(87632),y=r(25563),h=r(77221),x=r(27569),m=o.PROPER,A=o.CONFIGURABLE,g=x.IteratorPrototype,v=x.BUGGY_SAFARI_ITERATORS,T=y("iterator"),S="keys",E="values",b="entries",k=function(){return this};e.exports=function(e,t,r,o,y,x,N){c(r,t,o);var I,C,P,L=function(e){if(e===y&&_)return _;if(!v&&e&&e in F)return F[e];switch(e){case S:case E:case b:return function(){return new r(this,e)}}return function(){return new r(this)}},O=t+" Iterator",w=!1,F=e.prototype,K=F[T]||F["@@iterator"]||y&&F[y],_=!v&&K||L(y),B="Array"===t&&F.entries||K;if(B&&(I=l(B.call(new e)))!==Object.prototype&&I.next&&(a||l(I)===g||(u?u(I,g):s(I[T])||d(I,T,k)),f(I,O,!0,!0),a&&(h[O]=k)),m&&y===E&&K&&K.name!==E&&(!a&&A?p(F,"name",E):(w=!0,_=function(){return i(K,this)})),y)if(C={values:L(E),keys:x?_:L(S),entries:L(b)},N)for(P in C)(v||w||!(P in F))&&d(F,P,C[P]);else n({target:t,proto:!0,forced:v||w},C);return a&&!N||F[T]===_||d(F,T,_,{name:y}),h[t]=_,C}},16437:(e,t,r)=>{var n,i,a,o=r(79046),s=r(58184),c=r(22890),l=r(35411),u=r(95497),f=r(48069),p=r(767),d=r(84061),y="Object already initialized",h=s.TypeError,x=s.WeakMap;if(o||f.state){var m=f.state||(f.state=new x);m.get=m.get,m.has=m.has,m.set=m.set,n=function(e,t){if(m.has(e))throw new h(y);return t.facade=e,m.set(e,t),t},i=function(e){return m.get(e)||{}},a=function(e){return m.has(e)}}else{var A=p("state");d[A]=!0,n=function(e,t){if(u(e,A))throw new h(y);return t.facade=e,l(e,A,t),t},i=function(e){return u(e,A)?e[A]:{}},a=function(e){return u(e,A)}}e.exports={set:n,get:i,has:a,enforce:function(e){return a(e)?i(e):n(e,{})},getterFor:function(e){return function(t){var r;if(!c(t)||(r=i(t)).type!==e)throw new h("Incompatible receiver, "+e+" required");return r}}}},16516:(e,t,r)=>{r(46e3);var n=r(72071);e.exports=n.Object.keys},16523:(e,t,r)=>{var n=r(81767),i=r(57884);e.exports=!n((function(){var e=new Error("a");return!("stack"in e)||(Object.defineProperty(e,"stack",i(1,7)),7!==e.stack)}))},16561:(e,t,r)=>{r.d(t,{A:()=>u});var n=r(9105),i=r.n(n),a=r(74093),o=r(80807),s=r(52788),c=r(43095),l=r(6268);function u(e,t){var r;const n=o.Ay.typeChecker.getTypeAtLocation(e),u=c.pj(n);if(u&&(!e.modifiers||!i()(r=e.modifiers).call(r,(e=>e.kind===a.default.SyntaxKind.DeclareKeyword)))){const r=e.name.escapedText;o.Ay.hasStruct(r)||o.Ay.addStruct(r);const n=[a.default.visitEachChild(e,t,o.Ay.context),o.Ay.context.factory.createExpressionStatement(o.Ay.context.factory.createCallExpression(o.Ay.context.factory.createParenthesizedExpression(o.Ay.context.factory.createFunctionExpression(void 0,void 0,void 0,void 0,[o.Ay.context.factory.createParameterDeclaration(void 0,void 0,o.Ay.context.factory.createIdentifier(s.bF))],void 0,o.Ay.context.factory.createBlock((0,l.A)(u),!0))),void 0,[o.Ay.context.factory.createPropertyAccessExpression(o.Ay.context.factory.createIdentifier(r),o.Ay.context.factory.createIdentifier("prototype"))]))],i=o.Ay.getDeclaration(r);return i&&n.push(o.Ay.context.factory.createExpressionStatement(o.Ay.context.factory.createBinaryExpression(o.Ay.context.factory.createIdentifier(i.formatName),a.default.SyntaxKind.EqualsToken,o.Ay.context.factory.createIdentifier(i.name)))),n}return a.default.visitEachChild(e,t,o.Ay.context)}},16610:(e,t,r)=>{var n=r(53457),i=r(19270),a=Array.prototype;e.exports=function(e){var t=e.indexOf;return e===a||n(a,e)&&t===a.indexOf?i:t}},16788:(e,t,r)=>{var n=r(53457),i=r(59992),a=Array.prototype;e.exports=function(e){var t=e.sort;return e===a||n(a,e)&&t===a.sort?i:t}},16870:(e,t,r)=>{var n=r(55701),i=r(35021),a=r(22890),o=TypeError;e.exports=function(e,t){var r,s;if("string"===t&&i(r=e.toString)&&!a(s=n(r,e)))return s;if(i(r=e.valueOf)&&!a(s=n(r,e)))return s;if("string"!==t&&i(r=e.toString)&&!a(s=n(r,e)))return s;throw new o("Can't convert object to primitive value")}},17095:(e,t,r)=>{r.d(t,{Cq:()=>l,Cy:()=>f,Ml:()=>m,W8:()=>c,ZG:()=>y,ZH:()=>u,aV:()=>p,jf:()=>h,rT:()=>s,s0:()=>d,u1:()=>A,x7:()=>x});var n=r(29777),i=r.n(n),a=r(34386),o=r.n(a);const s=!0,c=!1,l=null,u=void 0,f=-1,p="undefined",d="function",y=".",h=typeof window!==p?window:u,x=(typeof document!==p&&document,typeof i()!==p?i():typeof r.g!==p&&r.g,typeof self!==p&&self,function(){}),m=(o()({}),o()([])),A=""},17247:(e,t,r)=>{r(1193),r(79843),r(66582)},17275:(e,t,r)=>{r.d(t,{AI:()=>O,AK:()=>B,F7:()=>b,H3:()=>D,IE:()=>k,KU:()=>N,KZ:()=>T,LZ:()=>d,Og:()=>E,U_:()=>x,XC:()=>I,ZV:()=>S,bk:()=>_,ez:()=>g,gF:()=>y,hS:()=>w,i$:()=>m,n1:()=>K,nI:()=>A,nP:()=>L,p:()=>F,pg:()=>M,u9:()=>C});var n=r(9538),i=r.n(n),a=r(42399),o=r.n(a),s=r(74093),c=r(52788),l=r(80807),u=r(43095),f=r(35491),p=r(78686);function d(e){return s.default.isBinaryExpression(e)&&e.operatorToken.kind===s.default.SyntaxKind.EqualsToken?d(e.right):e}function y(e){let t=k(e);for(;t&&t!==e;){const e=l.Ay.typeChecker.getTypeAtLocation(t);if(u.IQ(e,t))return!0;t=t.parent}if(!t)return!1;const r=l.Ay.typeChecker.getTypeAtLocation(t);return!!u.IQ(r,t)}function h(e){let t=k(e);for(;t&&t!==e;){const e=l.Ay.typeChecker.getTypeAtLocation(t);if(u.Fl(e))return!0;t=t.parent}if(!t)return!1;const r=l.Ay.typeChecker.getTypeAtLocation(t);return!!u.Fl(r)}function x(e){if(s.default.isBinaryExpression(e)){const t=l.Ay.typeChecker.getTypeAtLocation(e.right);return u.IQ(t,e.right)?t:x(e.left)}return l.Ay.typeChecker.getTypeAtLocation(e)}function m(e){if(s.default.isBinaryExpression(e)&&e.operatorToken.kind===s.default.SyntaxKind.EqualsToken)return m(e.left)||m(e.right);let t=l.Ay.typeChecker.getTypeAtLocation(e);return!!u.IQ(t,e)||(t=x(e),!!u.IQ(t,e)||(s.default.isPropertyAccessExpression(e)?y(e):s.default.isElementAccessExpression(e)&&s.default.isPropertyAccessExpression(e.expression)?y(e.expression):!!s.default.isElementAccessExpression(e)&&m(e.expression)))}function A(e){let t=l.Ay.typeChecker.getTypeAtLocation(e);return!!u.Fl(t)||(s.default.isPropertyAccessExpression(e)?h(e):s.default.isElementAccessExpression(e)&&s.default.isPropertyAccessExpression(e.expression)?h(e.expression):!!s.default.isElementAccessExpression(e)&&A(e.expression))}function g(e){for(function(e){return e.kind===s.default.SyntaxKind.JSDocTypedefTag||e.kind===s.default.SyntaxKind.JSDocCallbackTag||e.kind===s.default.SyntaxKind.JSDocEnumTag}(e)&&(e=e.parent.parent);;){if(!(e=e.parent))return;switch(e.kind){case s.default.SyntaxKind.SourceFile:case s.default.SyntaxKind.MethodDeclaration:case s.default.SyntaxKind.MethodSignature:case s.default.SyntaxKind.FunctionDeclaration:case s.default.SyntaxKind.FunctionExpression:case s.default.SyntaxKind.GetAccessor:case s.default.SyntaxKind.SetAccessor:case s.default.SyntaxKind.ClassDeclaration:case s.default.SyntaxKind.InterfaceDeclaration:case s.default.SyntaxKind.EnumDeclaration:case s.default.SyntaxKind.ModuleDeclaration:return e}}}function v(e){return!(i()(e)&s.default.NodeFlags.Synthesized)}function T(e,t){if(null==e||v(e))return e;for(e=s.default.getOriginalNode(e);e;){if(v(e))return!t||t(e)?e:void 0;e=s.default.getOriginalNode(e)}}function S(e){if(s.default.isPropertyAccessExpression(e.expression)){const t=l.Ay.typeChecker.getTypeAtLocation(e.expression.expression);return u.IQ(t,e.expression.expression)&&e.expression.name.escapedText===c.qh}return!1}function E(e){return s.default.isElementAccessExpression(e)&&m(e.expression)}function b(e){return s.default.isElementAccessExpression(e)&&A(e.expression)}function k(e){return s.default.isPropertyAccessExpression(e)||s.default.isCallExpression(e)||s.default.isElementAccessExpression(e)?k(e.expression):e}function N(e,t){const r=e.declarations;if(null!=r&&r.length)for(let e=0;e<r.length;e++){var n;const i=r[e];if((s.default.isFunctionDeclaration(i)||s.default.isMethodDeclaration(i))&&i.parameters&&null!==(n=i.parameters[t])&&void 0!==n&&n.initializer)return i.parameters[t].initializer}}function I(e,t){return s.default.visitNode(e,(function e(r){if(s.default.isParenthesizedExpression(r))return s.default.visitNode(r.expression,e);if(s.default.isPrefixUnaryExpression(r))return r.operator!==s.default.SyntaxKind.ExclamationToken||!s.default.visitNode(r.operand,e);if(s.default.isBinaryExpression(r)){const t=s.default.visitNode(r.left,e),n=s.default.visitNode(r.right,e);return r.operatorToken.kind===s.default.SyntaxKind.AmpersandAmpersandToken?t&&n:r.operatorToken.kind!==s.default.SyntaxKind.BarBarToken||t||n}{const e=s.default.visitNode(r,t);return e.kind===s.default.SyntaxKind.TrueKeyword||e.kind!==s.default.SyntaxKind.FalseKeyword&&(s.default.isNumericLiteral(e)?0!=+e.text:!s.default.isStringLiteral(e)||""!==e.text)}}))}function C(e){if(!e)return"";const t=l.Ay.typeChecker.getTypeAtLocation(e);if(u.sV(t))return l.Ay.cheapCompilerOptions.defined.WASM_64?"uint64":"uint32";if(t.aliasSymbol&&p.YO.has(f.w7,t.aliasSymbol.escapedName))return t.aliasSymbol.escapedName;if(u.IQ(t,e))return l.Ay.cheapCompilerOptions.defined.WASM_64?"uint64":"uint32";if(e.kind===s.default.SyntaxKind.TrueKeyword||e.kind===s.default.SyntaxKind.FalseKeyword)return"bool";if(s.default.isBinaryExpression(e)){const t=C(e.left),r=C(e.right);return p.YO.has(f.YI,t)?t:p.YO.has(f.YI,r)?r:p.YO.has(f.D,t)?e.operatorToken.kind===s.default.SyntaxKind.MinusToken?"int64":t:p.YO.has(f.D,r)?e.operatorToken.kind===s.default.SyntaxKind.MinusToken?"int64":r:e.operatorToken.kind===s.default.SyntaxKind.MinusToken?"int32":"uint32"}if(i()(t)&s.default.TypeFlags.BigInt||i()(t)&s.default.TypeFlags.BigIntLiteral){if(i()(t)&s.default.TypeFlags.BigIntLiteral&&e.parent&&s.default.isPrefixUnaryExpression(e.parent)&&e.parent.operator===s.default.SyntaxKind.MinusToken)return"int64";if(i()(t)&s.default.TypeFlags.BigInt&&s.default.isCallExpression(e)&&e.arguments[0]){const t=C(e.arguments[0]);if(!p.YO.has(f.aO,t))return"int64"}return"uint64"}if(i()(t)&s.default.TypeFlags.Enum||i()(t)&s.default.TypeFlags.EnumLiteral)return"int32";if(i()(t)&s.default.TypeFlags.Number||i()(t)&s.default.TypeFlags.NumberLiteral){if(i()(t)&s.default.TypeFlags.NumberLiteral){var r;if(o()(r=t.value+"").call(r,".")>-1)return"double";if(e.parent&&s.default.isPrefixUnaryExpression(e.parent)&&e.parent.operator===s.default.SyntaxKind.MinusToken)return"int32";if(i()(t)&s.default.TypeFlags.Number&&s.default.isCallExpression(e)&&e.arguments[0]){const t=C(e.arguments[0]);if(!p.YO.has(f.aO,t))return"int32"}return"uint32"}return"double"}if(t.isUnion())for(let e=0;e<t.types.length;e++)if(t.types[e].aliasSymbol&&p.YO.has(f.w7,t.types[e].aliasSymbol.escapedName))return t.types[e].aliasSymbol.escapedName;return""}function P(e,t){var r;if(null!==(r=e.members)&&void 0!==r&&r.length)for(let r=0;r<e.members.length;r++)if(s.default.isMethodDeclaration(e.members[r])&&s.default.isIdentifier(e.members[r].name)&&e.members[r].name.escapedText===t)return e.members[r];if(e.heritageClauses)for(let r=0;r<e.heritageClauses.length;r++){const n=e.heritageClauses[r].types;for(let e=0;e<n.length;e++)if(s.default.isExpressionWithTypeArguments(n[e])){const r=l.Ay.typeChecker.getTypeAtLocation(n[e].expression);if(null!=r&&r.symbol&&r.symbol.valueDeclaration&&(s.default.isClassDeclaration(r.symbol.valueDeclaration)||s.default.isInterfaceDeclaration(r.symbol.valueDeclaration))){const e=P(r.symbol.valueDeclaration,t);if(e)return e}}}}function L(e){if(!e)return!1;if(e.modifiers)for(let t=0;t<e.modifiers.length;t++){const r=e.modifiers[t];if(s.default.isDecorator(r)&&s.default.isIdentifier(r.expression)&&r.expression.escapedText===c.xH)return!0}if(e.name&&s.default.isIdentifier(e.name)&&s.default.isClassDeclaration(e.parent)&&e.parent.heritageClauses)for(let t=0;t<e.parent.heritageClauses.length;t++)for(let t=0;t<e.parent.heritageClauses.length;t++){const r=e.parent.heritageClauses[t].types;for(let t=0;t<r.length;t++)if(s.default.isExpressionWithTypeArguments(r[t])){const n=l.Ay.typeChecker.getTypeAtLocation(r[t].expression);if(null!=n&&n.symbol&&n.symbol.valueDeclaration&&(s.default.isClassDeclaration(n.symbol.valueDeclaration)||s.default.isInterfaceDeclaration(n.symbol.valueDeclaration))){const t=P(n.symbol.valueDeclaration,e.name.escapedText);if(t)return L(t)}}}return!1}function O(e){const t=s.default.isPropertyAccessExpression(e.expression)?e.expression.name.escapedText:s.default.isIdentifier(e.expression)?e.expression.escapedText:"";if(!p.YO.has(f.kj,t))return!1;const r=l.Ay.typeChecker.getSymbolAtLocation(e.expression).valueDeclaration.getSourceFile();return new RegExp(`${c.y1}\\.ts$`).test(r.fileName)}function w(e){return s.default.isParenthesizedExpression(e)?s.default.visitNode(e.expression,w):s.default.isPrefixUnaryExpression(e)?s.default.visitNode(e.operand,w):s.default.isBinaryExpression(e)?!!s.default.visitNode(e.left,w)&&s.default.visitNode(e.right,w):!!(s.default.isCallExpression(e)&&s.default.isIdentifier(e.expression)&&e.expression.escapedText===c.sw||e.kind===s.default.SyntaxKind.TrueKeyword||e.kind===s.default.SyntaxKind.FalseKeyword)}function F(e){return s.default.isParenthesizedExpression(e)?s.default.visitNode(e.expression,F):s.default.isPrefixUnaryExpression(e)?s.default.visitNode(e.operand,F):s.default.isBinaryExpression(e)?s.default.visitNode(e.left,F)||s.default.visitNode(e.right,F):!(!s.default.isCallExpression(e)||!s.default.isIdentifier(e.expression)||e.expression.escapedText!==c.sw)}function K(e){return l.Ay.cheapCompilerOptions.defined.BIGINT_LITERAL?l.Ay.context.factory.createBigIntLiteral(e+"n"):l.Ay.context.factory.createCallExpression(l.Ay.context.factory.createIdentifier("BigInt"),void 0,[l.Ay.context.factory.createNumericLiteral(e)])}function _(e){if(p.is.number(e))return l.Ay.cheapCompilerOptions.defined.WASM_64?K(e):l.Ay.context.factory.createNumericLiteral(e);if(s.default.isNumericLiteral(e))return l.Ay.cheapCompilerOptions.defined.WASM_64?K(+e.text):e;if(B(e)){const t=M(e);return l.Ay.cheapCompilerOptions.defined.WASM_64?K(Number(t)):l.Ay.context.factory.createNumericLiteral(Number(t))}{const t=C(e);return!l.Ay.cheapCompilerOptions.defined.WASM_64||t&&(p.YO.has(f.D,t)||t===c.E9)?e:l.Ay.context.factory.createCallExpression(l.Ay.context.factory.createIdentifier("BigInt"),void 0,[e])}}function B(e){return s.default.isBigIntLiteral(e)||s.default.isCallExpression(e)&&s.default.isIdentifier(e.expression)&&"BigInt"===e.expression.escapedText&&1===e.arguments.length&&s.default.isNumericLiteral(e.arguments[0])}function M(e){return s.default.isBigIntLiteral(e)?BigInt(e.text.substring(0,e.text.length-1)):BigInt(e.arguments[0].text)}function D(e){return e.pos>=0?l.Ay.typeChecker.getTypeAtLocation(e):s.default.isParenthesizedExpression(e)?D(e.expression):l.Ay.typeChecker.getTypeAtLocation(e)}},17286:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(50850),o=r(86927),s=r(23811),c=r(59255),l=r(69508),u=r(88849),f="No one promise resolved";n({target:"Promise",stat:!0,forced:u},{any:function(e){var t=this,r=o("AggregateError"),n=s.f(t),u=n.resolve,p=n.reject,d=c((function(){var n=a(t.resolve),o=[],s=0,c=1,d=!1;l(e,(function(e){var a=s++,l=!1;c++,i(n,t,e).then((function(e){l||d||(d=!0,u(e))}),(function(e){l||d||(l=!0,o[a]=e,--c||p(new r(o,f)))}))})),--c||p(new r(o,f))}));return d.error&&p(d.value),n.promise}})},17307:(e,t,r)=>{var n=r(95497),i=r(35021),a=r(76157),o=r(767),s=r(89803),c=o("IE_PROTO"),l=Object,u=l.prototype;e.exports=s?l.getPrototypeOf:function(e){var t=a(e);if(n(t,c))return t[c];var r=t.constructor;return i(r)&&t instanceof r?r.prototype:t instanceof l?u:null}},17347:(e,t,r)=>{var n=r(64548);e.exports=n},17428:e=>{var t=TypeError;e.exports=function(e,r){if(e<r)throw new t("Not enough arguments");return e}},17489:(e,t,r)=>{var n=r(89838),i=r(53457),a=r(17307),o=r(13567),s=r(66436),c=r(20272),l=r(35411),u=r(57884),f=r(89736),p=r(69491),d=r(69508),y=r(70371),h=r(25563)("toStringTag"),x=Error,m=[].push,A=function(e,t){var r,n=i(g,this);o?r=o(new x,n?a(this):g):(r=n?this:c(g),l(r,h,"Error")),void 0!==t&&l(r,"message",y(t)),p(r,A,r.stack,1),arguments.length>2&&f(r,arguments[2]);var s=[];return d(e,m,{that:s}),l(r,"errors",s),r};o?o(A,x):s(A,x,{name:!0});var g=A.prototype=c(x.prototype,{constructor:u(1,A),message:u(1,""),name:u(1,"AggregateError")});n({global:!0,constructor:!0,arity:2},{AggregateError:A})},18153:(e,t,r)=>{r(97939),r(30599),r(99627),r(47224),r(97749);var n=r(72855);e.exports=n.f("toStringTag")},18192:(e,t,r)=>{var n=r(29855);e.exports=/(?:ipad|iphone|ipod).*applewebkit/i.test(n)},18802:(e,t,r)=>{r(79843)},18810:(e,t,r)=>{var n=r(14813),i=String,a=TypeError;e.exports=function(e){if(n(e))return e;throw new a("Can't set "+i(e)+" as a prototype")}},18811:(e,t,r)=>{e.exports=r(24537)},19270:(e,t,r)=>{r(50036);var n=r(42244);e.exports=n("Array","indexOf")},20071:(e,t,r)=>{e.exports=r(79197)},20171:(e,t,r)=>{var n=r(86236);r(64105),r(26426),r(28323),r(70905),e.exports=n},20272:(e,t,r)=>{var n,i=r(66415),a=r(24089),o=r(96959),s=r(84061),c=r(60821),l=r(15967),u=r(767),f="prototype",p="script",d=u("IE_PROTO"),y=function(){},h=function(e){return"<"+p+">"+e+"</"+p+">"},x=function(e){e.write(h("")),e.close();var t=e.parentWindow.Object;return e=null,t},m=function(){try{n=new ActiveXObject("htmlfile")}catch(e){}var e,t,r;m="undefined"!=typeof document?document.domain&&n?x(n):(t=l("iframe"),r="java"+p+":",t.style.display="none",c.appendChild(t),t.src=String(r),(e=t.contentWindow.document).open(),e.write(h("document.F=Object")),e.close(),e.F):x(n);for(var i=o.length;i--;)delete m[f][o[i]];return m()};s[d]=!0,e.exports=Object.create||function(e,t){var r;return null!==e?(y[f]=i(e),r=new y,y[f]=null,r[d]=e):r=m(),void 0===t?r:a.f(r,t)}},20388:(e,t,r)=>{r(7914)},21061:(e,t,r)=>{var n=r(74371),i=r(42391),a=r(61726),o=RangeError;e.exports=function(e){var t=i(a(this)),r="",s=n(e);if(s<0||s===1/0)throw new o("Wrong number of repetitions");for(;s>0;(s>>>=1)&&(t+=t))1&s&&(r+=t);return r}},21241:(e,t,r)=>{var n=r(9135),i=r(17095);/common/.test((0,n.A)(i.x7))&&(!i.jf||!1!==i.jf.DEBUG)||i.jf&&i.jf.DEBUG},21473:(e,t,r)=>{r.d(t,{i:()=>n});const n=(e,{windowsPathsNoEscape:t=!1,magicalBraces:r=!1}={})=>r?t?e.replace(/[?*()[\]{}]/g,"[$&]"):e.replace(/[?*()[\]\\{}]/g,"\\$&"):t?e.replace(/[?*()[\]]/g,"[$&]"):e.replace(/[?*()[\]\\]/g,"\\$&")},21727:()=>{},21780:(e,t,r)=>{var n=r(25563)("match");e.exports=function(e){var t=/./;try{"/./"[e](t)}catch(r){try{return t[n]=!1,"/./"[e](t)}catch(e){}}return!1}},21951:e=>{var t=String;e.exports=function(e){try{return t(e)}catch(e){return"Object"}}},22005:(e,t,r)=>{var n=r(29855).match(/firefox\/(\d+)/i);e.exports=!!n&&+n[1]},22239:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(50850),o=r(23811),s=r(59255),c=r(69508);n({target:"Promise",stat:!0,forced:r(88849)},{allSettled:function(e){var t=this,r=o.f(t),n=r.resolve,l=r.reject,u=s((function(){var r=a(t.resolve),o=[],s=0,l=1;c(e,(function(e){var a=s++,c=!1;l++,i(r,t,e).then((function(e){c||(c=!0,o[a]={status:"fulfilled",value:e},--l||n(o))}),(function(e){c||(c=!0,o[a]={status:"rejected",reason:e},--l||n(o))}))})),--l||n(o)}));return u.error&&l(u.value),r.promise}})},22403:(e,t,r)=>{r(14468);var n=r(72071);e.exports=n.parseInt},22608:(e,t,r)=>{r(23198)},22890:(e,t,r)=>{var n=r(35021);e.exports=function(e){return"object"==typeof e?null!==e:n(e)}},22998:(e,t,r)=>{var n=r(89838),i=r(63637).some;n({target:"Array",proto:!0,forced:!r(62830)("some")},{some:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0)}})},23198:(e,t,r)=>{var n=r(75191);e.exports=n},23339:(e,t,r)=>{e.exports=r(9610)},23581:(e,t,r)=>{r.d(t,{_:()=>i,i:()=>n});const n={2:1,3:1,4:1,5:1,6:2,7:2,8:4,9:4,10:8,11:1,12:1,13:2,14:2,15:4,16:4,17:8,18:4,19:8,20:4,0:4,1:4,22:8,21:8,23:1,24:1,25:4},i={2:0,3:0,4:0,5:0,6:1,7:1,8:2,9:2,10:4,11:0,12:0,13:1,14:1,15:2,16:2,17:4,18:2,19:4,20:2,1:2,0:2,22:4,21:4,23:0,24:0,25:2}},23712:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(17095);function i(e){return e!==n.ZH}},23811:(e,t,r)=>{r(50850),TypeError},24089:(e,t,r)=>{var n=r(73012),i=r(92518),a=r(77097),o=r(66415),s=r(33437),c=r(8472);t.f=n&&!i?Object.defineProperties:function(e,t){o(e);for(var r,n=s(t),i=c(t),l=i.length,u=0;l>u;)a.f(e,r=i[u++],n[r]);return e}},24537:(e,t,r)=>{var n=r(15748);e.exports=n},24691:(e,t,r)=>{var n=r(83105),i=r(33437),a=r(74371),o=r(32606),s=r(62830),c=Math.min,l=[].lastIndexOf,u=!!l&&1/[1].lastIndexOf(1,-0)<0,f=s("lastIndexOf"),p=u||!f;e.exports=p?function(e){if(u)return n(l,this,arguments)||0;var t=i(this),r=o(t);if(0===r)return-1;var s=r-1;for(arguments.length>1&&(s=c(s,a(arguments[1]))),s<0&&(s=r+s);s>=0;s--)if(s in t&&t[s]===e)return s||0;return-1}:l},24840:(e,t,r)=>{r(84140),r(97228);var n=r(72855);e.exports=n.f("toPrimitive")},25081:(e,t,r)=>{r(20071)},25563:(e,t,r)=>{var n=r(58184),i=r(8377),a=r(95497),o=r(89096),s=r(39559),c=r(26440),l=n.Symbol,u=i("wks"),f=c?l.for||l:l&&l.withoutSetter||o;e.exports=function(e){return a(u,e)||(u[e]=s&&a(l,e)?l[e]:f("Symbol."+e)),u[e]}},25680:(e,t,r)=>{var n=r(87413);e.exports=n},25857:(e,t,r)=>{r(71768),r(67337),r(68696),r(99627),r(58940);var n=r(72071);e.exports=n.Map},26336:(e,t,r)=>{r.d(t,{_N:()=>n,jc:()=>a,lh:()=>i});const n=1e4,i=2e4,a=3e4},26426:(e,t,r)=>{r(69257)},26440:(e,t,r)=>{var n=r(39559);e.exports=n&&!Symbol.sham&&"symbol"==typeof Symbol.iterator},26644:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(74093),i=r(80807),a=r(43095),o=r(17275);function s(e,t){if(e.initializer&&e.pos>-1){const t=i.Ay.typeChecker.getTypeAtLocation(e.name);if(a.sV(t,!0))return i.Ay.context.factory.createBindingElement(e.dotDotDotToken,e.propertyName,e.name,n.default.visitNode(o.bk(e.initializer),i.Ay.visitor))}return n.default.visitEachChild(e,t,i.Ay.context)}},26838:(e,t,r)=>{var n=r(89838),i=r(63637).map;n({target:"Array",proto:!0,forced:!r(11437)("map")},{map:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0)}})},26842:(e,t,r)=>{var n=r(55701),i=r(86927),a=r(25563),o=r(87632);e.exports=function(){var e=i("Symbol"),t=e&&e.prototype,r=t&&t.valueOf,s=a("toPrimitive");t&&!t[s]&&o(t,s,(function(e){return n(r,this)}),{arity:1})}},26942:(e,t,r)=>{r(29643),r(41630);var n=r(72071),i=r(83105);n.JSON||(n.JSON={stringify:JSON.stringify}),e.exports=function(e,t,r){return i(n.JSON.stringify,null,arguments)}},27041:(e,t,r)=>{var n=r(62113),i=r(84845);e.exports=function(e){var t=n(e,"string");return i(t)?t:t+""}},27249:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(83105),o=r(1800),s=r(23811),c=r(50850),l=r(59255),u=i.Promise,f=!1;n({target:"Promise",stat:!0,forced:!u||!u.try||l((function(){u.try((function(e){f=8===e}),8)})).error||!f},{try:function(e){var t=arguments.length>1?o(arguments,1):[],r=s.f(this),n=l((function(){return a(c(e),void 0,t)}));return(n.error?r.reject:r.resolve)(n.value),r.promise}})},27447:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(6716),i=r(83601);function a(e,t){if("object"!=(0,n.A)(e)||!e)return e;var r=e[i];if(void 0!==r){var a=r.call(e,t||"default");if("object"!=(0,n.A)(a))return a;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}},27564:(e,t,r)=>{var n,i,a,o,s=r(89838),c=r(51219),l=r(78809),u=r(58184),f=r(72071),p=r(55701),d=r(87632),y=r(13567),h=r(3975),x=r(65977),m=r(50850),A=r(35021),g=r(22890),v=r(79535),T=r(94797),S=r(85089).set,E=r(66715),b=r(44125),k=r(59255),N=r(15201),I=r(16437),C=r(32542),P=r(74652),L=r(23811),O="Promise",w=P.CONSTRUCTOR,F=P.REJECTION_EVENT,K=P.SUBCLASSING,_=I.getterFor(O),B=I.set,M=C&&C.prototype,D=C,j=M,$=u.TypeError,z=u.document,R=u.process,W=L.f,q=W,G=!!(z&&z.createEvent&&u.dispatchEvent),Y="unhandledrejection",U=function(e){var t;return!(!g(e)||!A(t=e.then))&&t},V=function(e,t){var r,n,i,a=t.value,o=1===t.state,s=o?e.ok:e.fail,c=e.resolve,l=e.reject,u=e.domain;try{s?(o||(2===t.rejection&&X(t),t.rejection=1),!0===s?r=a:(u&&u.enter(),r=s(a),u&&(u.exit(),i=!0)),r===e.promise?l(new $("Promise-chain cycle")):(n=U(r))?p(n,r,c,l):c(r)):l(a)}catch(e){u&&!i&&u.exit(),l(e)}},Q=function(e,t){e.notified||(e.notified=!0,E((function(){for(var r,n=e.reactions;r=n.get();)V(r,e);e.notified=!1,t&&!e.rejection&&J(e)})))},H=function(e,t,r){var n,i;G?((n=z.createEvent("Event")).promise=t,n.reason=r,n.initEvent(e,!1,!0),u.dispatchEvent(n)):n={promise:t,reason:r},!F&&(i=u["on"+e])?i(n):e===Y&&b("Unhandled promise rejection",r)},J=function(e){p(S,u,(function(){var t,r=e.facade,n=e.value;if(Z(e)&&(t=k((function(){l?R.emit("unhandledRejection",n,r):H(Y,r,n)})),e.rejection=l||Z(e)?2:1,t.error))throw t.value}))},Z=function(e){return 1!==e.rejection&&!e.parent},X=function(e){p(S,u,(function(){var t=e.facade;l?R.emit("rejectionHandled",t):H("rejectionhandled",t,e.value)}))},ee=function(e,t,r){return function(n){e(t,n,r)}},te=function(e,t,r){e.done||(e.done=!0,r&&(e=r),e.value=t,e.state=2,Q(e,!0))},re=function(e,t,r){if(!e.done){e.done=!0,r&&(e=r);try{if(e.facade===t)throw new $("Promise can't be resolved itself");var n=U(t);n?E((function(){var r={done:!1};try{p(n,t,ee(re,r,e),ee(te,r,e))}catch(t){te(r,t,e)}})):(e.value=t,e.state=1,Q(e,!1))}catch(t){te({done:!1},t,e)}}};if(w&&(j=(D=function(e){v(this,j),m(e),p(n,this);var t=_(this);try{e(ee(re,t),ee(te,t))}catch(e){te(t,e)}}).prototype,(n=function(e){B(this,{type:O,done:!1,notified:!1,parent:!1,reactions:new N,rejection:!1,state:0,value:null})}).prototype=d(j,"then",(function(e,t){var r=_(this),n=W(T(this,D));return r.parent=!0,n.ok=!A(e)||e,n.fail=A(t)&&t,n.domain=l?R.domain:void 0,0===r.state?r.reactions.add(n):E((function(){V(n,r)})),n.promise})),i=function(){var e=new n,t=_(e);this.promise=e,this.resolve=ee(re,t),this.reject=ee(te,t)},L.f=W=function(e){return e===D||e===a?new i(e):q(e)},!c&&A(C)&&M!==Object.prototype)){o=M.then,K||d(M,"then",(function(e,t){var r=this;return new D((function(e,t){p(o,r,e,t)})).then(e,t)}),{unsafe:!0});try{delete M.constructor}catch(e){}y&&y(M,j)}s({global:!0,constructor:!0,wrap:!0,forced:w},{Promise:D}),a=f.Promise,h(D,O,!1,!0),x(O)},27568:(e,t,r)=>{r(89838)({target:"Symbol",stat:!0,forced:!0},{isWellKnownSymbol:r(48448)})},27569:(e,t,r)=>{var n,i,a,o=r(81767),s=r(35021),c=r(22890),l=r(20272),u=r(17307),f=r(87632),p=r(25563),d=r(51219),y=p("iterator"),h=!1;[].keys&&("next"in(a=[].keys())?(i=u(u(a)))!==Object.prototype&&(n=i):h=!0),!c(n)||o((function(){var e={};return n[y].call(e)!==e}))?n={}:d&&(n=l(n)),s(n[y])||f(n,y,(function(){return this})),e.exports={IteratorPrototype:n,BUGGY_SAFARI_ITERATORS:h}},28035:(e,t,r)=>{r(21727);var n=r(32354);e.exports=n},28050:(e,t,r)=>{var n=r(20272),i=r(28626),a=r(11151),o=r(97960),s=r(79535),c=r(91485),l=r(69508),u=r(16040),f=r(13817),p=r(65977),d=r(73012),y=r(89059).fastKey,h=r(16437),x=h.set,m=h.getterFor;e.exports={getConstructor:function(e,t,r,u){var f=e((function(e,i){s(e,p),x(e,{type:t,index:n(null),first:null,last:null,size:0}),d||(e.size=0),c(i)||l(i,e[u],{that:e,AS_ENTRIES:r})})),p=f.prototype,h=m(t),A=function(e,t,r){var n,i,a=h(e),o=g(e,t);return o?o.value=r:(a.last=o={index:i=y(t,!0),key:t,value:r,previous:n=a.last,next:null,removed:!1},a.first||(a.first=o),n&&(n.next=o),d?a.size++:e.size++,"F"!==i&&(a.index[i]=o)),e},g=function(e,t){var r,n=h(e),i=y(t);if("F"!==i)return n.index[i];for(r=n.first;r;r=r.next)if(r.key===t)return r};return a(p,{clear:function(){for(var e=h(this),t=e.first;t;)t.removed=!0,t.previous&&(t.previous=t.previous.next=null),t=t.next;e.first=e.last=null,e.index=n(null),d?e.size=0:this.size=0},delete:function(e){var t=this,r=h(t),n=g(t,e);if(n){var i=n.next,a=n.previous;delete r.index[n.index],n.removed=!0,a&&(a.next=i),i&&(i.previous=a),r.first===n&&(r.first=i),r.last===n&&(r.last=a),d?r.size--:t.size--}return!!n},forEach:function(e){for(var t,r=h(this),n=o(e,arguments.length>1?arguments[1]:void 0);t=t?t.next:r.first;)for(n(t.value,t.key,this);t&&t.removed;)t=t.previous},has:function(e){return!!g(this,e)}}),a(p,r?{get:function(e){var t=g(this,e);return t&&t.value},set:function(e,t){return A(this,0===e?0:e,t)}}:{add:function(e){return A(this,e=0===e?0:e,e)}}),d&&i(p,"size",{configurable:!0,get:function(){return h(this).size}}),f},setStrong:function(e,t,r){var n=t+" Iterator",i=m(t),a=m(n);u(e,t,(function(e,t){x(this,{type:n,target:e,state:i(e),kind:t,last:null})}),(function(){for(var e=a(this),t=e.kind,r=e.last;r&&r.removed;)r=r.previous;return e.target&&(e.last=r=r?r.next:e.state.first)?f("keys"===t?r.key:"values"===t?r.value:[r.key,r.value],!1):(e.target=null,f(void 0,!0))}),r?"entries":"values",!r,!0),p(t)}}},28106:(e,t,r)=>{r(71768),r(99627);var n=r(42244);e.exports=n("Array","entries")},28323:(e,t,r)=>{r(76324)},28338:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(6716),i=r(27447);function a(e){var t=(0,i.A)(e,"string");return"symbol"==(0,n.A)(t)?t:t+""}},28626:(e,t,r)=>{var n=r(77097);e.exports=function(e,t,r){return n.f(e,t,r)}},28789:(e,t,r)=>{var n=r(90216);e.exports=n},29074:(e,t,r)=>{var n=r(89838),i=r(89624),a=r(58352),o=i([].reverse),s=[1,2];n({target:"Array",proto:!0,forced:String(s)===String(s.reverse())},{reverse:function(){return a(this)&&(this.length=this.length),o(this)}})},29609:(e,t,r)=>{var n=r(38430);e.exports=n},29643:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(76157),o=r(62113),s=r(8836),c=r(76280);n({target:"Date",proto:!0,forced:r(81767)((function(){return null!==new Date(NaN).toJSON()||1!==i(Date.prototype.toJSON,{toISOString:function(){return 1}})}))},{toJSON:function(e){var t=a(this),r=o(t,"number");return"number"!=typeof r||isFinite(r)?"toISOString"in t||"Date"!==c(t)?t.toISOString():i(s,t):null}})},29777:(e,t,r)=>{e.exports=r(55421)},29855:(e,t,r)=>{var n=r(58184).navigator,i=n&&n.userAgent;e.exports=i?String(i):""},30530:(e,t,r)=>{var n=r(89624),i=r(35021),a=r(48069),o=n(Function.toString);i(a.inspectSource)||(a.inspectSource=function(e){return o(e)}),e.exports=a.inspectSource},30599:()=>{},30785:(e,t,r)=>{r(89838)({target:"Number",stat:!0,nonConfigurable:!0,nonWritable:!0},{MAX_SAFE_INTEGER:9007199254740991})},31265:(e,t,r)=>{r(9815)("search")},31431:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(74093);function i(e){return e===n.default.SyntaxKind.PlusEqualsToken||e===n.default.SyntaxKind.MinusEqualsToken||e===n.default.SyntaxKind.AsteriskEqualsToken||e===n.default.SyntaxKind.AsteriskAsteriskEqualsToken||e===n.default.SyntaxKind.SlashEqualsToken||e===n.default.SyntaxKind.PercentEqualsToken||e===n.default.SyntaxKind.LessThanLessThanEqualsToken||e===n.default.SyntaxKind.GreaterThanGreaterThanEqualsToken||e===n.default.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken||e===n.default.SyntaxKind.AmpersandEqualsToken||e===n.default.SyntaxKind.BarEqualsToken||e===n.default.SyntaxKind.CaretEqualsToken}},31472:(e,t,r)=>{r(84718)},31519:(e,t,r)=>{e.exports=r(49745)},31638:(e,t,r)=>{r(89838)({target:"Symbol",stat:!0},{isRegisteredSymbol:r(47874)})},31788:(e,t,r)=>{var n=r(22403);e.exports=n},31928:(e,t,r)=>{var n=r(88217);e.exports=n},32105:(e,t,r)=>{var n=r(55701),i=r(50850),a=r(66415),o=r(21951),s=r(80283),c=TypeError;e.exports=function(e,t){var r=arguments.length<2?s(e):t;if(i(r))return a(n(r,e));throw new c(o(e)+" is not iterable")}},32342:(e,t,r)=>{r(71768),r(99627),r(20388);var n=r(72071);e.exports=n.WeakMap},32354:(e,t,r)=>{var n=r(55701),i=r(95497),a=r(53457),o=r(95397),s=r(79827),c=RegExp.prototype;e.exports=o.correct?function(e){return e.flags}:function(e){return o.correct||!a(c,e)||i(e,"flags")?e.flags:n(s,e)}},32542:(e,t,r)=>{var n=r(58184);e.exports=n.Promise},32606:(e,t,r)=>{var n=r(36086);e.exports=function(e){return n(e.length)}},32841:(e,t,r)=>{var n=r(33437),i=r(84418),a=r(32606),o=function(e){return function(t,r,o){var s=n(t),c=a(s);if(0===c)return!e&&-1;var l,u=i(o,c);if(e&&r!=r){for(;c>u;)if((l=s[u++])!=l)return!0}else for(;c>u;u++)if((e||u in s)&&s[u]===r)return e||u||0;return!e&&-1}};e.exports={includes:o(!0),indexOf:o(!1)}},32951:(e,t,r)=>{var n=r(16788);e.exports=n},33437:(e,t,r)=>{var n=r(53063),i=r(61726);e.exports=function(e){return n(i(e))}},33668:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(79843),i=r(17095);function a(e,t,r){if(n.func(e))return n.array(r)?e.apply(t,r):t!==i.ZH?e.call(t,r):r!==i.ZH?e(r):e()}},34026:(e,t,r)=>{var n=r(74150).PROPER,i=r(81767),a=r(98276);e.exports=function(e){return i((function(){return!!a[e]()||"​᠎"!=="​᠎"[e]()||n&&a[e].name!==e}))}},34067:(e,t,r)=>{r(89838)({target:"Symbol",stat:!0,name:"isWellKnownSymbol",forced:!0},{isWellKnown:r(48448)})},34279:(e,t,r)=>{var n=r(89838),i=r(55701),a=r(50850),o=r(23811),s=r(59255),c=r(69508);n({target:"Promise",stat:!0,forced:r(88849)},{race:function(e){var t=this,r=o.f(t),n=r.reject,l=s((function(){var o=a(t.resolve);c(e,(function(e){i(o,t,e).then(r.resolve,n)}))}));return l.error&&n(l.value),r.promise}})},34386:(e,t,r)=>{e.exports=r(80064)},34676:(e,t,r)=>{var n=r(81767),i=r(35021),a=/#|\.prototype\./,o=function(e,t){var r=c[s(e)];return r===u||r!==l&&(i(t)?n(t):!!t)},s=o.normalize=function(e){return String(e).replace(a,".").toLowerCase()},c=o.data={},l=o.NATIVE="N",u=o.POLYFILL="P";e.exports=o},34877:(e,t)=>{var r={}.propertyIsEnumerable,n=Object.getOwnPropertyDescriptor,i=n&&!r.call({1:2},1);t.f=i?function(e){var t=n(this,e);return!!t&&t.enumerable}:r},35021:e=>{var t="object"==typeof document&&document.all;e.exports=void 0===t&&void 0!==t?function(e){return"function"==typeof e||e===t}:function(e){return"function"==typeof e}},35398:(e,t,r)=>{var n=r(66415),i=r(22890),a=r(23811);e.exports=function(e,t){if(n(e),i(t)&&t.constructor===e)return t;var r=a.f(e);return(0,r.resolve)(t),r.promise}},35411:(e,t,r)=>{var n=r(73012),i=r(77097),a=r(57884);e.exports=n?function(e,t,r){return i.f(e,t,a(1,r))}:function(e,t,r){return e[t]=r,e}},35491:(e,t,r)=>{r.d(t,{$I:()=>p,Be:()=>y,D:()=>l,YI:()=>c,aO:()=>u,d1:()=>d,kj:()=>s,lo:()=>o,uA:()=>f,w7:()=>a});var n=r(52788),i=r(78686);const a=["i32","i64","f32","f64","uint8","uint16","uint32","uint64","int8","int16","int32","int64","float","float64","double","char","size","void","bool","size","atomic_char","atomic_uint8","atomic_uint16","atomic_uint32","atomic_int8","atomic_int16","atomic_int32","atomic_int64","atomic_uint64","atomic_bool"],o=[n.lh,n.H7,n.OE,n.My,n.Fx,n.Rf,n.Jp,n.HY,n.xH],s=["add","sub","and","or","xor","store","load","compareExchange","exchange"],c=["float","float64","double","f32","f64"],l=["i64","int64","uint64","atomic_int64","atomic_uint64"],u=["uint8","atomic_uint8","uint16","atomic_uint16","uint32","atomic_uint32","uint64","atomic_uint64","size"],f=["bool","atomic_bool"],p={2:"uint8",3:"atomic_uint8",4:"char",5:"atomic_char",6:"uint16",7:"atomic_uint16",8:"uint32",9:"atomic_uint32",10:"uint64",11:"int8",12:"atomic_int8",13:"int16",14:"atomic_int16",15:"int32",16:"atomic_int32",17:"int64",18:"float",19:"double",20:"pointer",1:"void",0:"nullptr",22:"atomic_uint64",21:"atomic_int64",23:"bool",24:"atomic_bool",25:"size"},d={typeptr:20,i32:15,i64:17,f32:18,f64:19};i.Ik.each(p,((e,t)=>{d[e]=+t}));const y=i.YO.exclude(i.YO.exclude(i.YO.exclude(a,c),l),f)},35634:(e,t,r)=>{var n=r(89838),i=r(51026).trim;n({target:"String",proto:!0,forced:r(34026)("trim")},{trim:function(){return i(this)}})},35651:(e,t,r)=>{var n=r(26942);e.exports=n},35814:(e,t,n)=>{var i,a;e.exports=(i={execSync:()=>r.execSync},a={},n.d(a,i),a)},35879:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(12521),i=r(66887);function a(e){return"undefined"!=typeof __dirname?__dirname:(0,n.dirname)((0,i.fileURLToPath)(e))}},35945:(e,t,r)=>{var n=r(89838),i=r(89624),a=Date,o=i(a.prototype.getTime);n({target:"Date",stat:!0},{now:function(){return o(new a)}})},36086:(e,t,r)=>{var n=r(74371),i=Math.min;e.exports=function(e){var t=n(e);return t>0?i(t,9007199254740991):0}},36124:(e,t,r)=>{var n=r(89838),i=r(23811);n({target:"Promise",stat:!0},{withResolvers:function(){var e=i.f(this);return{promise:e.promise,resolve:e.resolve,reject:e.reject}}})},36163:(e,t,r)=>{var n=r(89838),i=r(49136),a=r(81767),o=r(22890),s=r(89059).onFreeze,c=Object.freeze;n({target:"Object",stat:!0,forced:a((function(){c(1)})),sham:!i},{freeze:function(e){return c&&o(e)?c(s(e)):e}})},36771:(e,t,r)=>{var n=r(63637).forEach,i=r(62830)("forEach");e.exports=i?[].forEach:function(e){return n(this,e,arguments.length>1?arguments[1]:void 0)}},37579:(e,t,r)=>{var n=r(55701),i=r(66415),a=r(46998);e.exports=function(e,t,r){var o,s;i(e);try{if(!(o=a(e,"return"))){if("throw"===t)throw r;return r}o=n(o,e)}catch(e){s=!0,o=e}if("throw"===t)throw r;if(s)throw o;return i(o),r}},37804:(e,t,r)=>{r(22998);var n=r(42244);e.exports=n("Array","some")},37809:(e,t,r)=>{var n=r(89838),i=r(23811);n({target:"Promise",stat:!0,forced:r(74652)},{reject:function(e){var t=i.f(this);return(0,t.reject)(e),t.promise}})},38350:(e,t,r)=>{r(79843),r(99937),r(66582),r(90012)},38430:(e,t,r)=>{r(42366);var n=r(72071);e.exports=n.Number.isNaN},38507:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(11387);function i(e,t,r=!1){const i=t.split("."),a=e.split(".");for(let e=0;e<a.length;e++){if(r&&e==a.length-1&&(0,n.A)(a[e])>=(0,n.A)(i[e]))return a.length>=i.length;if((0,n.A)(a[e])>(0,n.A)(i[e]))return!0;if((0,n.A)(a[e])<(0,n.A)(i[e]))return!1;if(e===i.length-1&&e===a.length-1)return r;if(e===i.length-1)return!0;if(e===a.length-1)return!1}return!0}},38524:(e,t,r)=>{r(9815)("customMatcher")},38705:(e,t,r)=>{var n=r(89624),i=r(11151),a=r(89059).getWeakData,o=r(79535),s=r(66415),c=r(91485),l=r(22890),u=r(69508),f=r(63637),p=r(95497),d=r(16437),y=d.set,h=d.getterFor,x=f.find,m=f.findIndex,A=n([].splice),g=0,v=function(e){return e.frozen||(e.frozen=new T)},T=function(){this.entries=[]},S=function(e,t){return x(e.entries,(function(e){return e[0]===t}))};T.prototype={get:function(e){var t=S(this,e);if(t)return t[1]},has:function(e){return!!S(this,e)},set:function(e,t){var r=S(this,e);r?r[1]=t:this.entries.push([e,t])},delete:function(e){var t=m(this.entries,(function(t){return t[0]===e}));return~t&&A(this.entries,t,1),!!~t}},e.exports={getConstructor:function(e,t,r,n){var f=e((function(e,i){o(e,d),y(e,{type:t,id:g++,frozen:null}),c(i)||u(i,e[n],{that:e,AS_ENTRIES:r})})),d=f.prototype,x=h(t),m=function(e,t,r){var n=x(e),i=a(s(t),!0);return!0===i?v(n).set(t,r):i[n.id]=r,e};return i(d,{delete:function(e){var t=x(this);if(!l(e))return!1;var r=a(e);return!0===r?v(t).delete(e):r&&p(r,t.id)&&delete r[t.id]},has:function(e){var t=x(this);if(!l(e))return!1;var r=a(e);return!0===r?v(t).has(e):r&&p(r,t.id)}}),i(d,r?{get:function(e){var t=x(this);if(l(e)){var r=a(e);if(!0===r)return v(t).get(e);if(r)return r[t.id]}},set:function(e,t){return m(this,e,t)}}:{add:function(e){return m(this,e,!0)}}),f}}},38826:(e,t,r)=>{r(27564),r(6059),r(97851),r(34279),r(37809),r(44752)},39133:(e,t,r)=>{r(68161);var n=r(72071).Object,i=e.exports=function(e,t,r){return n.defineProperty(e,t,r)};n.defineProperty.sham&&(i.sham=!0)},39559:(e,t,r)=>{var n=r(6455),i=r(81767),a=r(58184).String;e.exports=!!Object.getOwnPropertySymbols&&!i((function(){var e=Symbol("symbol detection");return!a(e)||!(Object(e)instanceof Symbol)||!Symbol.sham&&n&&n<41}))},39663:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(56600)(i.setInterval,!0);n({global:!0,bind:!0,forced:i.setInterval!==a},{setInterval:a})},40300:(e,t,r)=>{var n=r(29855);e.exports=/web0s(?!.*chrome)/i.test(n)},40317:e=>{var t=Math.ceil,r=Math.floor;e.exports=Math.trunc||function(e){var n=+e;return(n>0?r:t)(n)}},40339:(e,t,r)=>{r(76713),r(79843),r(66582),r(5884),r(90012),r(83022),r(87523),r(33668),r(17095)},40665:(e,t,r)=>{r(89838)({target:"Symbol",stat:!0,name:"isRegisteredSymbol"},{isRegistered:r(47874)})},40803:(e,t,r)=>{var n=r(48388),i=r(35021),a=r(76280),o=r(25563)("toStringTag"),s=Object,c="Arguments"===a(function(){return arguments}());e.exports=n?a:function(e){var t,r,n;return void 0===e?"Undefined":null===e?"Null":"string"==typeof(r=function(e,t){try{return e[t]}catch(e){}}(t=s(e),o))?r:c?a(t):"Object"===(n=a(t))&&i(t.callee)?"Arguments":n}},40946:(e,t,r)=>{r.d(t,{A:()=>x});var n=r(74093),i=r(80807),a=r(88431),o=r(23581),s=r(17275),c=r(43095),l=r(52788),u=r(85961),f=r(56567),p=r(35491),d=r(78686);function y(e,t){if(n.default.isBinaryExpression(e)&&e.operatorToken.kind===n.default.SyntaxKind.PlusToken&&(n.default.isNumericLiteral(e.right)||s.AK(e.right)||n.default.isNumericLiteral(e.left)||s.AK(e.left))&&(n.default.isNumericLiteral(t)||s.AK(t))){if(n.default.isNumericLiteral(e.right))return i.Ay.context.factory.createBinaryExpression(e.left,n.default.SyntaxKind.PlusToken,i.Ay.context.factory.createNumericLiteral(+e.right.text+ +t.text));if(s.AK(e.right))return i.Ay.context.factory.createBinaryExpression(e.left,n.default.SyntaxKind.PlusToken,s.n1(Number(s.pg(e.right)+s.pg(t))));if(n.default.isNumericLiteral(e.left))return i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createNumericLiteral(+e.left.text+ +t.text),n.default.SyntaxKind.PlusToken,e.right);if(s.AK(e.left))return i.Ay.context.factory.createBinaryExpression(s.n1(Number(s.pg(e.left)+s.pg(t))),n.default.SyntaxKind.PlusToken,e.right)}return i.Ay.context.factory.createBinaryExpression(e,n.default.SyntaxKind.PlusToken,s.bk(t))}function h(e,t,r){if(r[1])return i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),20),void 0,[r[7]?y(t,s.bk(r[7])):t]);if(d.is.number(r[0])&&!d.is.func(r.getTypeMeta)){if(t=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),r[0]),void 0,[r[7]?y(t,s.bk(r[7])):t]),r[5]&&!i.Ay.lookupStage(i.T0.AddressOf)){const e=8*o.i[r[0]]-r[8]-r[6];let a=d.YO.has(p.D,p.$I[r[0]]);i.Ay.cheapCompilerOptions.defined.WASM_64&&(20!==r[0]&&25!==r[0]||(a=!0));const c=Math.pow(2,r[6])-1;t=i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createParenthesizedExpression(i.Ay.context.factory.createBinaryExpression(t,n.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,a?s.n1(e):i.Ay.context.factory.createNumericLiteral(e))),n.default.SyntaxKind.AmpersandToken,a?s.n1(e):i.Ay.context.factory.createNumericLiteral(c))}return t}if(!d.is.func(r.getTypeMeta))return(0,a.A)(i.Ay.currentFile,e,"struct type mismatch"),e;{var c;const a=r.getTypeMeta();let o=a.symbol.deref(),f="";a.structType===u.cj.INLINE_OBJECT&&(o=a.definedClassParent.symbol.deref(),f=a.definedClassParent.inlineStructPathMap.get(a.symbol.deref()));const p=null===(c=o.valueDeclaration)||void 0===c?void 0:c.getSourceFile();if(p){let a;a=p!==i.Ay.currentFile?e.parent&&n.default.isCallExpression(e.parent)&&n.default.isIdentifier(e.parent.expression)&&e.parent.expression.escapedText===l.Yq&&!i.Ay.lookupFunc(l.Yq)?i.Ay.context.factory.createIdentifier("undefined"):i.Ay.addStructImport(o,p):i.Ay.context.factory.createIdentifier(o.escapedName);const c=[r[7]?y(t,s.bk(r[7])):t,a];return f&&c.push(i.Ay.context.factory.createStringLiteral(f)),i.Ay.context.factory.createCallExpression(i.Ay.addIdentifierImport(l.CF,l.Gl,!1),void 0,c)}}}function x(e,t){var r;if(!s.i$(e)||d.YO.has(l.G9,e.name.escapedText)&&s.nI(e.expression)){if(s.nI(e)){var u;const r=i.Ay.typeChecker.getTypeAtLocation(e.expression);if(c.Fl(r)&&n.default.isIdentifier(e.name)&&!d.YO.has(l.G9,e.name.escapedText)&&1===(null===(u=r.aliasTypeArguments)||void 0===u?void 0:u.length)){const o=c.pj(r);if(!o)return(0,a.A)(i.Ay.currentFile,e,"struct type mismatch"),e;const s=(0,f.A)(o,e.name.escapedText);if(!s)return(0,a.A)(i.Ay.currentFile,e,`struct ${o.symbol.deref().escapedName} not has property ${e.name.escapedText}`),e;let l=n.default.visitNode(e.expression,t);return l=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createPropertyAccessExpression(l,i.Ay.context.factory.createIdentifier("get")),void 0,[]),h(e,l,s)}}}else if((null===(r=i.Ay.getCurrentStage())||void 0===r?void 0:r.stage)!==i.T0.EqualLeft){let r=s.IE(e),u=r,d=r.parent,m=!1,A=s.i$(r);for(;d!==e;){var p;const t=i.Ay.typeChecker.getTypeAtLocation(r);if(m||c.IQ(t,r)||c.Fl(t)||(null===(p=t.aliasSymbol)||void 0===p?void 0:p.escapedName)===l.Qi){var x;let p=m?c.pj(t):c.Fl(t)?c.dW(t):c.IQ(t,r)?c.K4(t,r):c.IQ(t.aliasTypeArguments[0],null)?null:c.pj(t.aliasTypeArguments[0]);if(p)if(n.default.isPropertyAccessExpression(d)){if(n.default.isCallExpression(d.parent)){d=d.parent;continue}{const r=(0,f.A)(p,d.name.escapedText);if(!r)return(0,a.A)(i.Ay.currentFile,e,`struct ${p.symbol.deref().escapedName} not has property ${d.name.escapedText}`),e;c.Fl(t)&&(u=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createPropertyAccessExpression(u,i.Ay.context.factory.createIdentifier("get")),void 0,[])),r[1]&&!r[3]?u=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),20),void 0,[r[7]?y(u,s.bk(r[7])):u]):r[7]&&(u=y(u,s.bk(r[7])))}m=!1}else n.default.isCallExpression(d)?(n.default.isNumericLiteral(d.arguments[0])&&0!=+d.arguments[0].text?u=y(u,s.bk(+d.arguments[0].text*p.length)):n.default.isNumericLiteral(d.arguments[0])||(u=i.Ay.context.factory.createBinaryExpression(u,n.default.SyntaxKind.PlusToken,s.bk(i.Ay.context.factory.createBinaryExpression(d.arguments[0],n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createNumericLiteral(p.length))))),m=!0,A=!0):n.default.isElementAccessExpression(d)&&(n.default.isNumericLiteral(d.argumentExpression)&&0!=+d.argumentExpression.text?u=y(u,s.bk(+d.argumentExpression.text*p.length)):n.default.isNumericLiteral(d.argumentExpression)||(u=i.Ay.context.factory.createBinaryExpression(u,n.default.SyntaxKind.PlusToken,s.bk(i.Ay.context.factory.createBinaryExpression(d.argumentExpression,n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createNumericLiteral(p.length))))),m=!0,A=!0);else if(((null===(x=t.aliasSymbol)||void 0===x?void 0:x.escapedName)===l.Qi||c.IQ(t,r))&&c.IQ(t.aliasTypeArguments[0],null)&&n.default.isElementAccessExpression(d))n.default.isNumericLiteral(d.argumentExpression)&&0!=+d.argumentExpression.text?u=y(u,s.bk(+d.argumentExpression.text*o.i[20])):n.default.isNumericLiteral(d.argumentExpression)||(u=i.Ay.context.factory.createBinaryExpression(u,n.default.SyntaxKind.PlusToken,s.bk(i.Ay.context.factory.createBinaryExpression(d.argumentExpression,n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createNumericLiteral(o.i[20]))))),u=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),20),void 0,[u]),A=!0;else{if(!(c.IQ(t,r)&&n.default.isPropertyAccessExpression(d)&&d.name.escapedText===l.qh&&n.default.isCallExpression(d.parent)))return(0,a.A)(i.Ay.currentFile,e,"invalid pointer operate"),e;{d=d.parent;let r=0;if(c.IQ(t.aliasTypeArguments[0],null))r=o.i[20];else{const n=c.pj(t.aliasTypeArguments[0]);if(!n)return(0,a.A)(i.Ay.currentFile,e,"the pointer type only allowed in builtin type or struct type"),e;r=n.length}n.default.isNumericLiteral(d.arguments[0])&&0!=+d.arguments[0].text?u=y(u,s.bk(+d.arguments[0].text*r)):n.default.isNumericLiteral(d.arguments[0])||(u=i.Ay.context.factory.createBinaryExpression(u,n.default.SyntaxKind.PlusToken,s.bk(i.Ay.context.factory.createBinaryExpression(d.arguments[0],n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createNumericLiteral(r))))),c.IQ(t.aliasTypeArguments[0],null)&&(u=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),20),void 0,[u])),m=!0,A=!0}}}else{let r=c.pj(t);if(r&&A&&n.default.isPropertyAccessExpression(d)){const t=(0,f.A)(r,d.name.escapedText);if(!t)return(0,a.A)(i.Ay.currentFile,e,`struct ${r.symbol.deref().escapedName} not has property ${d.name.escapedText}`),e;t[1]&&!t[3]?u=i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(l.d7),20),void 0,[t[7]?y(u,s.bk(t[7])):u]):t[7]&&(u=y(u,s.bk(t[7]))),m=!1}else u=d}r=d,d=d.parent}if(!s.i$(r)&&!A)return e;const g=i.Ay.typeChecker.getTypeAtLocation(r);let v=c.IQ(g,r)?c.K4(g,r):c.pj(g);if(!v)return(0,a.A)(i.Ay.currentFile,e,"struct type mismatch"),e;const T=(0,f.A)(v,e.name.escapedText);return T?(i.Ay.pushStage(i.T0.PointerPlusMinusIgnore),u=n.default.visitNode(u,t),i.Ay.popStage(),n.default.isCallExpression(u)&&n.default.isIdentifier(u.expression)&&i.Ay.isIdentifier(u.expression,l.CF,l._s,l.Gl)?i.Ay.context.factory.createPropertyAccessExpression(u,e.name):h(e,u,T)):((0,a.A)(i.Ay.currentFile,e,`struct ${v.symbol.deref().escapedName} not has property ${e.name.escapedText}`),e)}return n.default.visitEachChild(e,t,i.Ay.context)}},41450:(e,t,r)=>{e.exports=r(81460)},41630:(e,t,r)=>{var n=r(89838),i=r(86927),a=r(83105),o=r(55701),s=r(89624),c=r(81767),l=r(35021),u=r(84845),f=r(1800),p=r(1949),d=r(39559),y=String,h=i("JSON","stringify"),x=s(/./.exec),m=s("".charAt),A=s("".charCodeAt),g=s("".replace),v=s(1.1.toString),T=/[\uD800-\uDFFF]/g,S=/^[\uD800-\uDBFF]$/,E=/^[\uDC00-\uDFFF]$/,b=!d||c((function(){var e=i("Symbol")("stringify detection");return"[null]"!==h([e])||"{}"!==h({a:e})||"{}"!==h(Object(e))})),k=c((function(){return'"\\udf06\\ud834"'!==h("\udf06\ud834")||'"\\udead"'!==h("\udead")})),N=function(e,t){var r=f(arguments),n=p(t);if(l(n)||void 0!==e&&!u(e))return r[1]=function(e,t){if(l(n)&&(t=o(n,this,y(e),t)),!u(t))return t},a(h,null,r)},I=function(e,t,r){var n=m(r,t-1),i=m(r,t+1);return x(S,e)&&!x(E,i)||x(E,e)&&!x(S,n)?"\\u"+v(A(e,0),16):e};h&&n({target:"JSON",stat:!0,arity:3,forced:b||k},{stringify:function(e,t,r){var n=f(arguments),i=a(b?N:h,null,n);return k&&"string"==typeof i?g(i,T,I):i}})},41725:(e,t,r)=>{var n=r(89624),i=r(36086),a=r(42391),o=r(21061),s=r(61726),c=n(o),l=n("".slice),u=Math.ceil,f=function(e){return function(t,r,n){var o,f,p=a(s(t)),d=i(r),y=p.length,h=void 0===n?" ":a(n);return d<=y||""===h?p:((f=c(h,u((o=d-y)/h.length))).length>o&&(f=l(f,0,o)),e?p+f:f+p)}};e.exports={start:f(!1),end:f(!0)}},41900:(e,t,r)=>{r(79843),r(66582),r(90012),r(70575)},42244:(e,t,r)=>{var n=r(58184),i=r(72071);e.exports=function(e,t){var r=i[e+"Prototype"],a=r&&r[t];if(a)return a;var o=n[e],s=o&&o.prototype;return s&&s[t]}},42366:(e,t,r)=>{r(89838)({target:"Number",stat:!0},{isNaN:function(e){return e!=e}})},42391:(e,t,r)=>{var n=r(40803),i=String;e.exports=function(e){if("Symbol"===n(e))throw new TypeError("Cannot convert a Symbol value to a string");return i(e)}},42399:(e,t,r)=>{e.exports=r(43109)},42452:()=>{},42888:(e,t,r)=>{var n=r(73012),i=r(77097),a=r(57884);e.exports=function(e,t,r){n?i.f(e,t,a(0,r)):e[t]=r}},42957:(e,t,r)=>{r.d(t,{A:()=>f});var n=r(9538),i=r.n(n),a=r(74093),o=r(80807),s=r(43095),c=r(17275),l=r(88431),u=r(26336);function f(e,t){if(e.initializer&&e.pos>-1){const t=o.Ay.typeChecker.getTypeAtLocation(e.name),r=o.Ay.typeChecker.getTypeAtLocation(e.initializer);if(s.IQ(t,e.name)&&(s.cX(r,e.initializer)||i()(r)&a.default.TypeFlags.NumberLike)&&!s.IQ(r,e.initializer)&&!s.Tp(r,e.initializer))return(0,l.A)(o.Ay.currentFile,e,`type ${s.OQ(r)||"number"} is not assignable to property assignment of type ${s.OQ(t)}`,u._N),e;if(s.sV(t,!0))return o.Ay.context.factory.createPropertyAssignment(e.name,a.default.visitNode(c.bk(e.initializer),o.Ay.visitor))}return a.default.visitEachChild(e,t,o.Ay.context)}},43095:(e,t,r)=>{r.d(t,{Fl:()=>I,IQ:()=>x,K4:()=>v,L:()=>E,O4:()=>f,OQ:()=>S,T7:()=>u,Tp:()=>y,_L:()=>d,bE:()=>A,cX:()=>l,dW:()=>T,pj:()=>g,qZ:()=>b,sV:()=>m,yY:()=>c});var n=r(74093),i=r(52788),a=r(35491),o=r(85961),s=r(78686);function c(e,t,r,n){if(x(e,t)&&x(r,n))return!(!p(e)&&!p(r))||k(e,t)===k(r,n)&&N(e,t)===N(r,n);if(l(e,t)&&l(r,n))return E(e,t)===E(r,n);if(f(e)&&f(r))return g(e)===g(r);if(e.symbol&&r.symbol)return e.symbol===r.symbol;if(e.aliasSymbol&&r.aliasSymbol){var a,o;if(e.aliasSymbol.escapedName===i.O9&&r.aliasSymbol.escapedName===i.pI||e.aliasSymbol.escapedName===i.pI&&r.aliasSymbol.escapedName===i.O9)return!0;if(!e.aliasTypeArguments&&!r.aliasTypeArguments)return function(e,t){return e===i.O9&&t===i.pI||e===i.pI&&t===i.O9||"any"===e||"any"===t||"void"===e||"void"===t||e===t}(e.aliasSymbol.escapedName,r.aliasSymbol.escapedName);if((null===(a=e.aliasTypeArguments)||void 0===a?void 0:a.length)===(null===(o=r.aliasTypeArguments)||void 0===o?void 0:o.length)){for(let t=0;t<e.aliasTypeArguments.length;t++)if(!c(e.aliasTypeArguments[t],null,r.aliasTypeArguments[t],null))return!1;return!0}return!1}return!(!e.intrinsicName||!r.intrinsicName)&&e.intrinsicName===r.intrinsicName}function l(e,t){if(!e)return!1;if(x(e,t))return!0;if(e.aliasSymbol)return e.aliasSymbol.escapedName===i.pI||e.aliasSymbol.escapedName===i.dL||s.is.number(a.d1[e.aliasSymbol.escapedName]);if(e.isIntersection()){const t=C(e.getProperty(i.sf));if(t)return s.is.number(a.d1[t.replace(/\*$/g,"")])}return!1}function u(e,t){return!!e&&x(e,t)&&(e.aliasSymbol&&e.aliasTypeArguments&&l(e.aliasTypeArguments[0],null)||!e.symbol&&!e.aliasSymbol&&!A(e,t))}function f(e,t=!1){if(!e)return!1;if(e.symbol)return(0,o.ux)(e.symbol);if(e.aliasSymbol)return e.aliasSymbol.escapedName===i.aS||e.aliasSymbol.escapedName===i.is;if(e.isIntersection()){var r,n,a;const s=C(e.getProperty(i.ec));if(!t&&s&&s>0)return!1;const c=e.getProperty(i.sf);if(null!=c&&null!==(r=c.links)&&void 0!==r&&null!==(r=r.type)&&void 0!==r&&r.symbol)return f(c.links.type);if(null!=c&&null!==(n=c.links)&&void 0!==n&&null!==(n=n.type)&&void 0!==n&&n.aliasSymbol&&null!=c&&null!==(a=c.links)&&void 0!==a&&null!==(a=a.type)&&void 0!==a&&a.aliasTypeArguments&&(c.links.type.aliasSymbol.escapedName===i.aS||c.links.type.aliasSymbol.escapedName===i.is))return f(c.links.type.aliasTypeArguments[0]);if(e.getProperty(i.$P))for(let t=0;t<e.types.length;t++)if(e.types[t].symbol&&(0,o.ux)(e.types[t].symbol))return!0}return!1}function p(e){return!!e.aliasSymbol&&e.aliasSymbol.escapedName===i.pI}function d(e){var t;return e.aliasSymbol&&e.aliasSymbol.escapedName===i.Qi&&(null===(t=e.aliasTypeArguments[1])||void 0===t?void 0:t.isNumberLiteral())}function y(e,t){return e.aliasSymbol?e.aliasSymbol.escapedName===i.g6:!(!t||!n.default.isIdentifier(t))&&t.escapedText===i.g6}function h(e){return!!e.aliasSymbol&&e.aliasSymbol.escapedName===i.dL}function x(e,t){if(!e)return!1;if(p(e)||h(e)||y(e,t))return!0;if(e.aliasSymbol)return e.aliasSymbol.escapedName===i.O9;if(e.symbol)return e.symbol.escapedName===i.O9;if(e.isIntersection()){const t=C(e.getProperty(i.ec));if(null!=t)return t>0}return!1}function m(e,t=!1){if(!e)return!1;if(e.aliasSymbol)return e.aliasSymbol.escapedName===i.E9;if(e.isIntersection()){if(C(e.getProperty(i.sf))===i.E9)return!0}else if(t&&e.isUnion())for(let t=0;t<e.types.length;t++)if(m(e.types[t]))return!0;return!1}function A(e,t){if(!e)return!1;if(x(e,t)){if(p(e)||h(e))return!1;if(e.aliasSymbol&&e.aliasTypeArguments)return f(e.aliasTypeArguments[0]);if(!e.symbol&&!e.aliasSymbol&&e.isIntersection()){const t=C(e.getProperty(i.ec));return!(t&&t>1)&&f(e,!0)}}return!1}function g(e){if(e.aliasSymbol&&e.aliasTypeArguments){if(e.aliasSymbol.escapedName===i.aS||e.aliasSymbol.escapedName===i.is||e.aliasSymbol.escapedName===i.Qi||e.aliasSymbol.escapedName===i.O9||e.aliasSymbol.escapedName===i.cu)return g(e.aliasTypeArguments[0])}else{if(e.symbol)return(0,o.Y)(e.symbol);if(e.isIntersection()){var t,r,n;const a=e.getProperty(i.sf);if(null!=a&&null!==(t=a.links)&&void 0!==t&&null!==(t=t.type)&&void 0!==t&&t.symbol)return g(a.links.type);if(null!=a&&null!==(r=a.links)&&void 0!==r&&null!==(r=r.type)&&void 0!==r&&r.aliasSymbol&&null!=a&&null!==(n=a.links)&&void 0!==n&&null!==(n=n.type)&&void 0!==n&&n.aliasTypeArguments&&(a.links.type.aliasSymbol.escapedName===i.aS||a.links.type.aliasSymbol.escapedName===i.is))return g(a.links.type.aliasTypeArguments[0]);if(e.getProperty(i.$P))for(let t=0;t<e.types.length;t++)if(e.types[t].symbol&&(0,o.ux)(e.types[t].symbol))return(0,o.Y)(e.types[t].symbol)}}}function v(e,t){return N(e,t)>1?null:e.aliasSymbol&&e.aliasTypeArguments&&!x(e.aliasTypeArguments[0],null)&&g(e.aliasTypeArguments[0])||!e.symbol&&!e.aliasSymbol&&g(e)}function T(e){var t;return e.aliasSymbol&&1===(null===(t=e.aliasTypeArguments)||void 0===t?void 0:t.length)&&(0,o.Y)(e.aliasTypeArguments[0].symbol)}function S(e){if(e.aliasSymbol)return e.aliasSymbol.escapedName;if(e.isIntersection()){const t=C(e.getProperty(i.sf));if(t)return/\*+$/.test(t)?a.$I[20]:t}}function E(e,t){if(x(e,t))return 20;const r=S(e);return r?a.d1[r]:void 0}function b(e,t){let r=e.aliasSymbol&&e.aliasTypeArguments&&E(e.aliasTypeArguments[0],null);if(!s.is.number(r)&&!e.symbol&&!e.aliasSymbol&&e.isIntersection()){if(N(e,t)>1)return 20;const r=C(e.getProperty(i.sf));if(r)return/\*{2}$/.test(r)?20:a.d1[r.replace(/\**$/,"")]}return r}function k(e,t){if(x(e,t)){if(e.aliasSymbol&&e.aliasTypeArguments)return k(e.aliasTypeArguments[0],null);{const t=C(e.getProperty(i.sf));return t?a.d1[t.replace(/\**$/,"")]:g(e)}}return f(e)?g(e):l(e,t)?E(e,t):void 0}function N(e,t){if(x(e,t)&&e.isIntersection()){const t=C(e.getProperty(i.ec));if(t)return t}return 0}function I(e){if(!e)return!1;if(e.aliasSymbol){const t=C(e.getProperty(i.sf));return e.aliasSymbol.escapedName===i.cu&&t===i.cu}return!1}function C(e){var t,r;if(e)return null!=e&&null!==(t=e.links)&&void 0!==t&&null!==(t=t.type)&&void 0!==t&&t.value?e.links.type.value:null!=e&&null!==(r=e.valueDeclaration)&&void 0!==r&&null!==(r=r.type)&&void 0!==r&&r.literal?e.valueDeclaration.type.literal.text:void 0}},43109:(e,t,r)=>{var n=r(16610);e.exports=n},43116:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(89059),o=r(81767),s=r(35411),c=r(69508),l=r(79535),u=r(35021),f=r(22890),p=r(91485),d=r(3975),y=r(77097).f,h=r(63637).forEach,x=r(73012),m=r(16437),A=m.set,g=m.getterFor;e.exports=function(e,t,r){var m,v=-1!==e.indexOf("Map"),T=-1!==e.indexOf("Weak"),S=v?"set":"add",E=i[e],b=E&&E.prototype,k={};if(x&&u(E)&&(T||b.forEach&&!o((function(){(new E).entries().next()})))){var N=(m=t((function(t,r){A(l(t,N),{type:e,collection:new E}),p(r)||c(r,t[S],{that:t,AS_ENTRIES:v})}))).prototype,I=g(e);h(["add","clear","delete","forEach","get","has","set","keys","values","entries"],(function(e){var t="add"===e||"set"===e;!(e in b)||T&&"clear"===e||s(N,e,(function(r,n){var i=I(this).collection;if(!t&&T&&!f(r))return"get"===e&&void 0;var a=i[e](0===r?0:r,n);return t?this:a}))})),T||y(N,"size",{configurable:!0,get:function(){return I(this).collection.size}})}else m=r.getConstructor(t,e,v,S),a.enable();return d(m,e,!1,!0),k[e]=m,n({global:!0,forced:!0},k),T||r.setStrong(m,e,v),m}},43744:(e,t,r)=>{r(31519),r(66582)},44125:e=>{e.exports=function(e,t){try{1===arguments.length?console.error(e):console.error(e,t)}catch(e){}}},44241:(e,t,r)=>{var n=r(53457),i=r(28035),a=RegExp.prototype;e.exports=function(e){return e===a||n(a,e)?i(e):e.flags}},44292:(e,t,r)=>{r(29074);var n=r(42244);e.exports=n("Array","reverse")},44360:(e,t,r)=>{var n=r(69679);r(92833),e.exports=n},44421:(e,t,r)=>{var i,a;e.exports=(i={default:()=>n.default,readFileSync:()=>n.readFileSync},a={},r.d(a,i),a)},44752:(e,t,r)=>{var n=r(89838),i=r(86927),a=r(51219),o=r(32542),s=r(74652),c=r(35398),l=i("Promise"),u=a&&!s;n({target:"Promise",stat:!0,forced:a||s},{resolve:function(e){return c(u&&this===l?o:this,e)}})},44891:(e,t,r)=>{r(93142)},45078:(e,t,r)=>{r.d(t,{O:()=>i});var n=r(74093);function i(e,t,r){return r===n.default.SyntaxKind.PlusToken?e+t:r===n.default.SyntaxKind.MinusToken?e-t:r===n.default.SyntaxKind.AsteriskToken?e*t:r===n.default.SyntaxKind.AsteriskAsteriskToken?e**t:r===n.default.SyntaxKind.SlashToken?e/t:r===n.default.SyntaxKind.PercentToken?e%t:r===n.default.SyntaxKind.LessThanLessThanToken?e<<t:r===n.default.SyntaxKind.GreaterThanGreaterThanToken?e>>t:r===n.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken?e>>>t:r===n.default.SyntaxKind.AmpersandToken?e&t:r===n.default.SyntaxKind.BarToken?e|t:void 0}},45188:(e,t,r)=>{var n=r(54485),i=r(21951),a=TypeError;e.exports=function(e){if(n(e))return e;throw new a(i(e)+" is not a constructor")}},45590:(e,t,r)=>{var n=r(89838),i=r(58352),a=r(54485),o=r(22890),s=r(84418),c=r(32606),l=r(33437),u=r(42888),f=r(25563),p=r(11437),d=r(1800),y=p("slice"),h=f("species"),x=Array,m=Math.max;n({target:"Array",proto:!0,forced:!y},{slice:function(e,t){var r,n,f,p=l(this),y=c(p),A=s(e,y),g=s(void 0===t?y:t,y);if(i(p)&&(r=p.constructor,(a(r)&&(r===x||i(r.prototype))||o(r)&&null===(r=r[h]))&&(r=void 0),r===x||void 0===r))return d(p,A,g);for(n=new(void 0===r?x:r)(m(g-A,0)),f=0;A<g;A++,f++)A in p&&u(n,f,p[A]);return n.length=f,n}})},45818:(e,t,r)=>{var n=r(65371);e.exports=n},45965:(e,t,r)=>{r(9815)("replace")},46e3:(e,t,r)=>{var n=r(89838),i=r(76157),a=r(8472);n({target:"Object",stat:!0,forced:r(81767)((function(){a(1)}))},{keys:function(e){return a(i(e))}})},46017:(e,t,r)=>{var n=r(29855);e.exports=/ipad|iphone|ipod/i.test(n)&&"undefined"!=typeof Pebble},46025:(e,t,r)=>{r.d(t,{U:()=>o});const n={"[:alnum:]":["\\p{L}\\p{Nl}\\p{Nd}",!0],"[:alpha:]":["\\p{L}\\p{Nl}",!0],"[:ascii:]":["\\x00-\\x7f",!1],"[:blank:]":["\\p{Zs}\\t",!0],"[:cntrl:]":["\\p{Cc}",!0],"[:digit:]":["\\p{Nd}",!0],"[:graph:]":["\\p{Z}\\p{C}",!0,!0],"[:lower:]":["\\p{Ll}",!0],"[:print:]":["\\p{C}",!0],"[:punct:]":["\\p{P}",!0],"[:space:]":["\\p{Z}\\t\\r\\n\\v\\f",!0],"[:upper:]":["\\p{Lu}",!0],"[:word:]":["\\p{L}\\p{Nl}\\p{Nd}\\p{Pc}",!0],"[:xdigit:]":["A-Fa-f0-9",!1]},i=e=>e.replace(/[[\]\\-]/g,"\\$&"),a=e=>e.join(""),o=(e,t)=>{const r=t;if("["!==e.charAt(r))throw new Error("not in a brace expression");const o=[],s=[];let c=r+1,l=!1,u=!1,f=!1,p=!1,d=r,y="";e:for(;c<e.length;){const t=e.charAt(c);if("!"!==t&&"^"!==t||c!==r+1){if("]"===t&&l&&!f){d=c+1;break}if(l=!0,"\\"!==t||f){if("["===t&&!f)for(const[t,[i,a,l]]of Object.entries(n))if(e.startsWith(t,c)){if(y)return["$.",!1,e.length-r,!0];c+=t.length,l?s.push(i):o.push(i),u=u||a;continue e}f=!1,y?(t>y?o.push(i(y)+"-"+i(t)):t===y&&o.push(i(t)),y="",c++):e.startsWith("-]",c+1)?(o.push(i(t+"-")),c+=2):e.startsWith("-",c+1)?(y=t,c+=2):(o.push(i(t)),c++)}else f=!0,c++}else p=!0,c++}if(d<c)return["",!1,0,!1];if(!o.length&&!s.length)return["$.",!1,e.length-r,!0];if(0===s.length&&1===o.length&&/^\\?.$/.test(o[0])&&!p){return[(h=2===o[0].length?o[0].slice(-1):o[0],h.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&")),!1,d-r,!1]}var h;const x="["+(p?"^":"")+a(o)+"]",m="["+(p?"":"^")+a(s)+"]";return[o.length&&s.length?"("+x+"|"+m+")":o.length?x:m,u,d-r,!0]}},46154:(e,t,r)=>{var n=r(90012);(0,n.reverse)({a:65,b:66,c:67,d:68,e:69,f:70,g:71,h:72,i:73,j:74,k:75,l:76,m:77,n:78,o:79,p:80,q:81,r:82,s:83,t:84,u:85,v:86,w:87,x:88,y:89,z:90,0:48,1:49,2:50,3:51,4:52,5:53,6:54,7:55,8:56,9:57,"`":192,"+":187,"-":189,"=":61,"[":219,"]":221,"\\":220,";":59,"'":222,",":188,".":190,"/":191,$0:96,$1:97,$2:98,$3:99,$4:100,$5:101,$6:102,$7:103,$8:104,$9:105,"$.":110,"$+":107,"$-":109,"$*":106,"$/":111,space:32,tab:9}),(0,n.reverse)({backspace:8,delete:46}),(0,n.reverse)({f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123,enter:13,esc:27,capslock:20,insert:45,home:36,end:35,pageup:33,pagedown:34,left:37,right:39,up:38,down:40}),(0,n.reverse)({shift:16,ctrl:17,meta:91,alt:18})},46912:(e,t,r)=>{r.d(t,{A:()=>o});var n=r(74093),i=r(52788),a=r(80807);function o(e,t){if(!n.default.isCallExpression(e.expression)||!n.default.isIdentifier(e.expression.expression)||e.expression.expression.escapedText!==i.vA)return n.default.visitEachChild(e,t,a.Ay.context);if(a.Ay.cheapCompilerOptions.defined.DEBUG&&e.expression.arguments.length>=1){const r=n.default.visitEachChild(e.expression,t,a.Ay.context),i=[],{line:o}=n.default.getLineAndCharacterOfPosition(a.Ay.currentFile,e.getStart()),s=[a.Ay.context.factory.createStringLiteral(`[${a.Ay.currentFilePath} line: ${o+1}]`),a.Ay.context.factory.createStringLiteral(`Assertion failed: ${e.expression.arguments[0].getText()}`)];return r.arguments[1]&&s.push(r.arguments[1]),i.push(a.Ay.context.factory.createExpressionStatement(a.Ay.context.factory.createCallExpression(a.Ay.context.factory.createPropertyAccessExpression(a.Ay.context.factory.createIdentifier("console"),a.Ay.context.factory.createIdentifier("error")),void 0,s))),i.push(a.Ay.context.factory.createDebuggerStatement()),a.Ay.context.factory.createIfStatement(a.Ay.context.factory.createPrefixUnaryExpression(n.default.SyntaxKind.ExclamationToken,a.Ay.context.factory.createParenthesizedExpression(r.arguments[0])),a.Ay.context.factory.createBlock(i,!0))}}},46998:(e,t,r)=>{var n=r(50850),i=r(91485);e.exports=function(e,t){var r=e[t];return i(r)?void 0:n(r)}},47035:e=>{e.exports=function(e,t){return 1===t?function(t,r){return t[e](r)}:function(t,r,n){return t[e](r,n)}}},47218:(e,t,r)=>{var n=r(12475);e.exports=n},47224:()=>{},47839:(e,t,r)=>{var n=r(58184),i=r(29855),a=r(76280),o=function(e){return i.slice(0,e.length)===e};e.exports=o("Bun/")?"BUN":o("Cloudflare-Workers")?"CLOUDFLARE":o("Deno/")?"DENO":o("Node.js/")?"NODE":n.Bun&&"string"==typeof Bun.version?"BUN":n.Deno&&"object"==typeof Deno.version?"DENO":"process"===a(n.process)?"NODE":n.window&&n.document?"BROWSER":"REST"},47874:(e,t,r)=>{var n=r(86927),i=r(89624),a=n("Symbol"),o=a.keyFor,s=i(a.prototype.valueOf);e.exports=a.isRegisteredSymbol||function(e){try{return void 0!==o(s(e))}catch(e){return!1}}},48069:(e,t,r)=>{var n=r(51219),i=r(58184),a=r(6001),o="__core-js_shared__",s=e.exports=i[o]||a(o,{});(s.versions||(s.versions=[])).push({version:"3.46.0",mode:n?"pure":"global",copyright:"© 2014-2025 Denis Pushkarev (zloirock.ru), 2025 CoreJS Company (core-js.io)",license:"https://github.com/zloirock/core-js/blob/v3.46.0/LICENSE",source:"https://github.com/zloirock/core-js"})},48183:(e,t,r)=>{r(39663),r(13247)},48388:(e,t,r)=>{var n={};n[r(25563)("toStringTag")]="z",e.exports="[object z]"===String(n)},48447:(e,t,r)=>{var n=r(29855).match(/AppleWebKit\/(\d+)\./);e.exports=!!n&&+n[1]},48448:(e,t,r)=>{for(var n=r(8377),i=r(86927),a=r(89624),o=r(84845),s=r(25563),c=i("Symbol"),l=c.isWellKnownSymbol,u=i("Object","getOwnPropertyNames"),f=a(c.prototype.valueOf),p=n("wks"),d=0,y=u(c),h=y.length;d<h;d++)try{var x=y[d];o(c[x])&&s(x)}catch(e){}e.exports=function(e){if(l&&l(e))return!0;try{for(var t=f(e),r=0,n=u(p),i=n.length;r<i;r++)if(p[n[r]]==t)return!0}catch(e){}return!1}},48527:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(80807);function i(e,t){return!1===n.Ay.cheapCompilerOptions.defined.BIGINT_LITERAL?n.Ay.context.factory.createCallExpression(n.Ay.context.factory.createIdentifier("BigInt"),void 0,[n.Ay.context.factory.createNumericLiteral(e.text.replace(/n$/,""))]):e}},48720:(e,t,r)=>{r(10152),r(80469)},48829:(e,t,r)=>{r.d(t,{A:()=>f});var n=r(9538),i=r.n(n),a=r(74093),o=r(80807),s=r(43095),c=r(17275),l=r(88431),u=r(26336);function f(e,t){if(o.Ay.pushStage(o.T0.VariableDeclaration),e.initializer&&e.type&&e.pos>-1){const t=o.Ay.typeChecker.getTypeAtLocation(e.type),r=o.Ay.typeChecker.getTypeAtLocation(e.initializer);if(s.IQ(t,null)&&(s.cX(r,e.initializer)||i()(r)&a.default.TypeFlags.NumberLike)&&!s.IQ(r,e.initializer)&&!s.Tp(r,e.initializer))(0,l.A)(o.Ay.currentFile,e,`type ${s.OQ(r)||"number"} is not assignable to variable declaration of type ${s.OQ(t)}`,u._N);else if(s.sV(t))return a.default.visitNode(o.Ay.context.factory.createVariableDeclaration(e.name,e.exclamationToken,e.type,c.bk(e.initializer)),o.Ay.visitor)}const r=a.default.visitEachChild(e,t,o.Ay.context);return o.Ay.popStage(),r}},48852:(e,t,r)=>{r.d(t,{l:()=>n});const n=(e,t,r)=>{const n=e instanceof RegExp?i(e,r):e,o=t instanceof RegExp?i(t,r):t,s=null!==n&&null!=o&&a(n,o,r);return s&&{start:s[0],end:s[1],pre:r.slice(0,s[0]),body:r.slice(s[0]+n.length,s[1]),post:r.slice(s[1]+o.length)}},i=(e,t)=>{const r=t.match(e);return r?r[0]:null},a=(e,t,r)=>{let n,i,a,o,s,c=r.indexOf(e),l=r.indexOf(t,c+1),u=c;if(c>=0&&l>0){if(e===t)return[c,l];for(n=[],a=r.length;u>=0&&!s;){if(u===c)n.push(u),c=r.indexOf(e,u+1);else if(1===n.length){const e=n.pop();void 0!==e&&(s=[e,l])}else i=n.pop(),void 0!==i&&i<a&&(a=i,o=l),l=r.indexOf(t,u+1);u=c<l&&c>=0?c:l}n.length&&void 0!==o&&(s=[a,o])}return s}},49089:(e,t,r)=>{var n=r(58352),i=r(54485),a=r(22890),o=r(25563)("species"),s=Array;e.exports=function(e){var t;return n(e)&&(t=e.constructor,(i(t)&&(t===s||n(t.prototype))||a(t)&&null===(t=t[o]))&&(t=void 0)),void 0===t?s:t}},49136:(e,t,r)=>{var n=r(81767);e.exports=!n((function(){return Object.isExtensible(Object.preventExtensions({}))}))},49497:(e,t,r)=>{r(35651)},49604:(e,t,r)=>{var n=r(40803),i=r(95497),a=r(53457),o=r(45818);r(42452);var s=Array.prototype,c={DOMTokenList:!0,NodeList:!0};e.exports=function(e){var t=e.forEach;return e===s||a(s,e)&&t===s.forEach||i(c,n(e))?o:t}},49745:(e,t,r)=>{var n=r(50900);e.exports=n},50036:(e,t,r)=>{var n=r(89838),i=r(95948),a=r(32841).indexOf,o=r(62830),s=i([].indexOf),c=!!s&&1/s([1],1,-0)<0;n({target:"Array",proto:!0,forced:c||!o("indexOf")},{indexOf:function(e){var t=arguments.length>1?arguments[1]:void 0;return c?s(this,e,t)||0:a(this,e,t)}})},50164:(e,t,r)=>{r.d(t,{A:()=>c});var n=r(74093),i=r(80807),a=r(35491),o=r(17275),s=r(78686);function c(e,t){var r,c;(i.Ay.lookupStage(i.T0.Parameter)||i.Ay.lookupStage(i.T0.VariableDeclaration))&&e.parent&&(n.default.isVariableDeclaration(e.parent)&&e.parent.name===e||n.default.isBindingElement(e.parent)&&e.parent.name===e||n.default.isParameter(e.parent)&&e.parent.name===e)&&i.Ay.getCurrentStack().locals.set(e.escapedText,i.Ay.typeChecker.getSymbolAtLocation(e));let l=e.parent;return l&&n.default.isAsExpression(l)&&(l=e.parent.parent),e.escapedText===a.$I[0]&&!i.Ay.lookupLocal(e.escapedText)&&l&&(l.initializer===e||n.default.isBinaryExpression(l)||n.default.isCallExpression(l)||n.default.isReturnStatement(l)||n.default.isConditionalExpression(l)||n.default.isCaseClause(l)||n.default.isComputedPropertyName(l)||n.default.isArrayLiteralExpression(l)||n.default.isAsExpression(l)||(null===(r=i.Ay.getCurrentStage())||void 0===r?void 0:r.stage)===i.T0.SingleArrowRight&&!n.default.isTypeReferenceNode(l))?i.Ay.cheapCompilerOptions.defined.WASM_64?o.n1(0):i.Ay.context.factory.createNumericLiteral(0):s.is.number(a.d1[e.escapedText])&&!i.Ay.lookupLocal(e.escapedText)&&l&&(l.initializer===e||n.default.isBinaryExpression(l)||n.default.isCallExpression(l)&&l.expression!==e||n.default.isReturnStatement(l)||n.default.isConditionalExpression(l)||n.default.isCaseClause(l)||n.default.isComputedPropertyName(l)||n.default.isElementAccessExpression(l)&&l.argumentExpression===e||(null===(c=i.Ay.getCurrentStage())||void 0===c?void 0:c.stage)===i.T0.SingleArrowRight&&!n.default.isTypeReferenceNode(l))?i.Ay.context.factory.createNumericLiteral(a.d1[e.escapedText]):n.default.visitEachChild(e,t,i.Ay.context)}},50179:(e,t,r)=>{var n=r(48388),i=r(40803);e.exports=n?{}.toString:function(){return"[object "+i(this)+"]"}},50442:(e,t,r)=>{e.exports=r(49604)},50549:(e,t,r)=>{r.d(t,{A:()=>l});var n=r(9105),i=r.n(n),a=r(74093),o=r(80807),s=r(17275);function c(e){var t;return a.default.isBlock(e)&&!i()(t=e.statements).call(t,(e=>!a.default.isImportDeclaration(e)))?1===e.statements.length?e.statements[0]:e.statements:e}function l(e,t){return a.default.visitNode(e.expression,s.p)&&a.default.visitNode(e.expression,s.hS)?s.XC(e.expression,t)?c(a.default.visitNode(e.thenStatement,t)):e.elseStatement?c(a.default.visitNode(e.elseStatement,t)):void 0:a.default.visitEachChild(e,t,o.Ay.context)}},50573:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(74093),i=r(80807);function a(e,t){e.name&&i.Ay.addFunc(e.name.escapedText,e),i.Ay.pushStack();let r=n.default.visitEachChild(e,t,i.Ay.context);return i.Ay.popStack(),r}},50751:(e,t,r)=>{r(48720);var n=r(72071);e.exports=n.setImmediate},50850:(e,t,r)=>{var n=r(35021),i=r(21951),a=TypeError;e.exports=function(e){if(n(e))return e;throw new a(i(e)+" is not a function")}},50900:(e,t,r)=>{r(68690);var n=r(72071);e.exports=n.Array.isArray},51026:(e,t,r)=>{var n=r(89624),i=r(61726),a=r(42391),o=r(98276),s=n("".replace),c=RegExp("^["+o+"]+"),l=RegExp("(^|[^"+o+"])["+o+"]+$"),u=function(e){return function(t){var r=a(i(t));return 1&e&&(r=s(r,c,"")),2&e&&(r=s(r,l,"$1")),r}};e.exports={start:u(1),end:u(2),trim:u(3)}},51219:e=>{e.exports=!0},51602:(e,t,r)=>{var n=r(76280),i=r(33437),a=r(62456).f,o=r(1800),s="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[];e.exports.f=function(e){return s&&"Window"===n(e)?function(e){try{return a(e)}catch(e){return o(s)}}(e):a(i(e))}},51645:e=>{e.exports=function(){}},51801:(e,t,r)=>{r(9815)("split")},52056:(e,t,r)=>{var n=r(18153);e.exports=n},52206:(e,t,r)=>{r(95809),e.exports=r(58184)},52788:(e,t,r)=>{r.d(t,{$9:()=>Ae,$P:()=>fe,CF:()=>h,Cy:()=>l,Dj:()=>j,E6:()=>se,E9:()=>L,FK:()=>c,Fo:()=>Te,Fx:()=>Y,G9:()=>ce,Gl:()=>ge,H7:()=>q,HY:()=>H,IF:()=>ne,Ie:()=>de,JY:()=>E,Jp:()=>V,K5:()=>A,Kk:()=>Oe,L8:()=>Z,Mr:()=>s,My:()=>G,N0:()=>k,O9:()=>P,OE:()=>Q,Og:()=>v,Ou:()=>X,P6:()=>Ee,PB:()=>N,PW:()=>ye,QC:()=>$,Qi:()=>I,RO:()=>me,Rf:()=>U,Uq:()=>Pe,VH:()=>Fe,Yq:()=>a,_5:()=>d,_s:()=>Le,a2:()=>M,aS:()=>_,bF:()=>R,bf:()=>Ce,c$:()=>u,cP:()=>Se,cd:()=>z,cr:()=>C,cu:()=>y,d7:()=>m,dB:()=>ve,dL:()=>F,dc:()=>T,dz:()=>te,ec:()=>ue,fJ:()=>we,g:()=>he,g2:()=>Ne,g3:()=>oe,g6:()=>w,g7:()=>S,is:()=>K,j8:()=>o,jk:()=>be,lh:()=>W,me:()=>xe,o9:()=>g,oP:()=>Ke,o_:()=>x,pI:()=>O,pj:()=>pe,pt:()=>b,qh:()=>p,s_:()=>ae,se:()=>i,sf:()=>le,sw:()=>B,t9:()=>ie,tI:()=>Ie,tJ:()=>D,vA:()=>f,xH:()=>J,xK:()=>re,y1:()=>ke,z1:()=>ee});var n=r(85349);const i="accessof",a="addressof",o="offsetof",s="memcpy",c="sizeof",l="move",u="static_cast",f="assert",p="indexOf",d="reinterpret_cast",y="SharedPtr",h="mapStruct",x="CTypeEnumWrite",m="CTypeEnumRead",A="definedMetaProperty",g="symbolStructAddress",v="symbolStruct",T="symbolStructMaxBaseTypeByteLength",S="symbolStructLength",E="symbolStructKeysMeta",b="createThreadFromClass",k="createThreadFromFunction",N="createThreadFromModule",I="array",C="bit",P="pointer",L="size",O="anyptr",w="nullptr",F="multiPointer",K="union",_="struct",B="defined",M="args",D="enableArgs",j="typeptr",$="asm",z="asm64",R="prototype",W="struct",q="union",G="type",Y="pointer",U="array",V="bit",Q="ignore",H="inline",J="deasync",Z="make",X="unmake",ee="malloc",te="calloc",re="realloc",ne="aligned_alloc",ie="free",ae="Allocator",oe="make_shared_ptr",se="makeSharedPtr",ce=["get","reset","unique","useCount","has","transferable","clone"],le="zzztype__",ue="zzzlevel__",fe="zzzstruct__",pe="___LINE__",de="__LINE__",ye="___FILE__",he="__FILE__",xe="__importStar",me="__importDefault";r.n(n)()("symbolIsPointer");let Ae="",ge="",ve="",Te="",Se="",Ee="",be="",ke="",Ne="",Ie="",Ce="",Pe="",Le="",Oe="",we="",Fe="";function Ke(e){Ae=e,ge=Ae,ve=Ae+"/internal",Te=Ae+"/heap",Se=Ae+"/std/make",Ee=Ae+"/std/unmake",be=Ae+"/std/smartPtr/SharedPtr",ke=Ae+"/thread/atomics",Ne=Ae+"/std/sizeof",Ie=Ae+"/function/definedMetaProperty",Ce=Ae+"/std/memory",Pe=Ae+"/symbol",Le=Ae+"/std/mapStruct",Oe=Ae+"/ctypeEnumRead",we=Ae+"/ctypeEnumWrite",Fe=Ae+"/thread/thread"}},53043:(e,t,r)=>{var n=r(16516);e.exports=n},53063:(e,t,r)=>{var n=r(89624),i=r(81767),a=r(76280),o=Object,s=n("".split);e.exports=i((function(){return!o("z").propertyIsEnumerable(0)}))?function(e){return"String"===a(e)?s(e,""):o(e)}:o},53457:(e,t,r)=>{var n=r(89624);e.exports=n({}.isPrototypeOf)},53836:(e,t,r)=>{r(9815)("match")},54028:(e,t,r)=>{var n=r(22890),i=r(76280),a=r(25563)("match");e.exports=function(e){var t;return n(e)&&(void 0!==(t=e[a])?!!t:"RegExp"===i(e))}},54043:(e,t,r)=>{r(20071)},54046:(e,t,r)=>{r.d(t,{x:()=>n});const n=(e,{windowsPathsNoEscape:t=!1,magicalBraces:r=!0}={})=>r?t?e.replace(/\[([^\/\\])\]/g,"$1"):e.replace(/((?!\\).|^)\[([^\/\\])\]/g,"$1$2").replace(/\\([^\/])/g,"$1"):t?e.replace(/\[([^\/\\{}])\]/g,"$1"):e.replace(/((?!\\).|^)\[([^\/\\{}])\]/g,"$1$2").replace(/\\([^\/{}])/g,"$1")},54099:(e,t,r)=>{var n=r(15405),i=r.n(n),a=r(20071),o=r.n(a),s=r(80244),c=r(17095);let l;typeof i()===c.s0&&(0,s.A)(i())&&(l=i()),l=typeof MessageChannel===c.s0&&(0,s.A)(MessageChannel)?function(e){const t=new MessageChannel;t.port1.onmessage=e,t.port2.postMessage(1)}:"function"==typeof o()?o():function(e){o()(e)}},54167:(e,t,r)=>{r(42399)},54416:(e,t,r)=>{r(9815)("isConcatSpreadable")},54485:(e,t,r)=>{var n=r(89624),i=r(81767),a=r(35021),o=r(40803),s=r(86927),c=r(30530),l=function(){},u=s("Reflect","construct"),f=/^\s*(?:class|function)\b/,p=n(f.exec),d=!f.test(l),y=function(e){if(!a(e))return!1;try{return u(l,[],e),!0}catch(e){return!1}},h=function(e){if(!a(e))return!1;switch(o(e)){case"AsyncFunction":case"GeneratorFunction":case"AsyncGeneratorFunction":return!1}try{return d||!!p(f,c(e))}catch(e){return!0}};h.sham=!0,e.exports=!u||i((function(){var e;return y(y.call)||!y(Object)||!y((function(){e=!0}))||e}))?h:y},54673:(e,t,r)=>{r(9815)("observable")},55312:(e,t,r)=>{r.d(t,{dc:()=>o,g7:()=>a});var n=r(85349),i=r.n(n);i()("Struct");const a=i()("StructLength"),o=i()("StructMaxBaseTypeByteLength");i()("StructAddress"),i()("StructKeysQueue"),i()("StructKeysMeta"),i()("StructKeysInstance"),i()("StructProxyRevoke")},55421:(e,t,r)=>{e.exports=r(86395)},55564:(e,t,r)=>{var n=r(44241);e.exports=n},55701:(e,t,r)=>{var n=r(3872),i=Function.prototype.call;e.exports=n?i.bind(i):function(){return i.apply(i,arguments)}},55747:(e,t,r)=>{var n=r(53457),i=r(90943),a=Array.prototype;e.exports=function(e){var t=e.find;return e===a||n(a,e)&&t===a.find?i:t}},55801:(e,t,r)=>{r(62730),r(99627),r(97899),r(69257),r(5828),r(80879),r(76324),r(60825),r(54416),r(75419),r(53836),r(13518),r(45965),r(31265),r(8883),r(51801),r(97228),r(97749),r(81326),r(97939),r(30599),r(47224);var n=r(72071);e.exports=n.Symbol},56418:(e,t,r)=>{var n=r(89838),i=r(76157),a=r(84418),o=r(74371),s=r(32606),c=r(87223),l=r(91037),u=r(81941),f=r(42888),p=r(99302),d=r(11437)("splice"),y=Math.max,h=Math.min;n({target:"Array",proto:!0,forced:!d},{splice:function(e,t){var r,n,d,x,m,A,g=i(this),v=s(g),T=a(e,v),S=arguments.length;for(0===S?r=n=0:1===S?(r=0,n=v-T):(r=S-2,n=h(y(o(t),0),v-T)),l(v+r-n),d=u(g,n),x=0;x<n;x++)(m=T+x)in g&&f(d,x,g[m]);if(d.length=n,r<n){for(x=T;x<v-n;x++)A=x+r,(m=x+n)in g?g[A]=g[m]:p(g,A);for(x=v;x>v-n+r;x--)p(g,x-1)}else if(r>n)for(x=v-n;x>T;x--)A=x+r-1,(m=x+n-1)in g?g[A]=g[m]:p(g,A);for(x=0;x<r;x++)g[x+T]=arguments[x+2];return c(g,v-n+r),d}})},56453:(e,t,r)=>{var n=r(44360);e.exports=n},56567:(e,t,r)=>{function n(e,t){let r=e.meta.get(t);if(r)return r;let n=e.parent;for(;n;){if(r=n.meta.get(t),r)return r;n=n.parent}return null}r.d(t,{A:()=>n})},56600:(e,t,r)=>{var n,i=r(58184),a=r(83105),o=r(35021),s=r(47839),c=r(29855),l=r(1800),u=r(17428),f=i.Function,p=/MSIE .\./.test(c)||"BUN"===s&&((n=i.Bun.version.split(".")).length<3||"0"===n[0]&&(n[1]<3||"3"===n[1]&&"0"===n[2]));e.exports=function(e,t){var r=t?2:1;return p?function(n,i){var s=u(arguments.length,1)>r,c=o(n)?n:f(n),p=s?l(arguments,r):[],d=s?function(){a(c,this,p)}:c;return t?e(d,i):e(d)}:e}},57884:e=>{e.exports=function(e,t){return{enumerable:!(1&e),configurable:!(2&e),writable:!(4&e),value:t}}},58184:function(e,t,r){var n=function(e){return e&&e.Math===Math&&e};e.exports=n("object"==typeof globalThis&&globalThis)||n("object"==typeof window&&window)||n("object"==typeof self&&self)||n("object"==typeof r.g&&r.g)||n("object"==typeof this&&this)||function(){return this}()||Function("return this")()},58309:(e,t,r)=>{var n=r(73012),i=r(81767),a=r(15967);e.exports=!n&&!i((function(){return 7!==Object.defineProperty(a("div"),"a",{get:function(){return 7}}).a}))},58352:(e,t,r)=>{var n=r(76280);e.exports=Array.isArray||function(e){return"Array"===n(e)}},58819:(e,t,r)=>{var n=r(89838),i=r(93309),a=r(51645);n({target:"Array",proto:!0},{fill:i}),a("fill")},58940:(e,t,r)=>{var n=r(12959).charAt,i=r(42391),a=r(16437),o=r(16040),s=r(13817),c="String Iterator",l=a.set,u=a.getterFor(c);o(String,"String",(function(e){l(this,{type:c,string:i(e),index:0})}),(function(){var e,t=u(this),r=t.string,i=t.index;return i>=r.length?s(void 0,!0):(e=n(r,i),t.index+=e.length,s(e,!1))}))},59255:e=>{e.exports=function(e){try{return{error:!1,value:e()}}catch(e){return{error:!0,value:e}}}},59627:(e,t,r)=>{var n=r(73776);e.exports=n},59748:(e,t,r)=>{r(87299);var n=r(72071);e.exports=n.parseFloat},59992:(e,t,r)=>{r(63254);var n=r(42244);e.exports=n("Array","sort")},60522:(e,t,r)=>{var n=r(89624),i=r(50850);e.exports=function(e,t,r){try{return n(i(Object.getOwnPropertyDescriptor(e,t)[r]))}catch(e){}}},60821:(e,t,r)=>{var n=r(86927);e.exports=n("document","documentElement")},60825:(e,t,r)=>{r(9815)("hasInstance")},61448:(e,t,r)=>{var n=r(58184),i=r(81767),a=r(89624),o=r(42391),s=r(51026).trim,c=r(98276),l=a("".charAt),u=n.parseFloat,f=n.Symbol,p=f&&f.iterator,d=1/u(c+"-0")!=-1/0||p&&!i((function(){u(Object(p))}));e.exports=d?function(e){var t=s(o(e)),r=u(t);return 0===r&&"-"===l(t,0)?-0:r}:u},61726:(e,t,r)=>{var n=r(91485),i=TypeError;e.exports=function(e){if(n(e))throw new i("Can't call method on "+e);return e}},62113:(e,t,r)=>{var n=r(55701),i=r(22890),a=r(84845),o=r(46998),s=r(16870),c=r(25563),l=TypeError,u=c("toPrimitive");e.exports=function(e,t){if(!i(e)||a(e))return e;var r,c=o(e,u);if(c){if(void 0===t&&(t="default"),r=n(c,e,t),!i(r)||a(r))return r;throw new l("Can't convert object to primitive value")}return void 0===t&&(t="number"),s(e,t)}},62408:(e,t,r)=>{r.d(t,{A:()=>w});var n=r(9538),i=r.n(n),a=r(50442),o=r.n(a),s=r(82784),c=r.n(s),l=r(10642),u=r.n(l),f=r(74093),p=r(78686),d=r(80807),y=r(88431),h=r(85961),x=r(52788),m=r(23581),A=r(17275),g=r(31431),v=r(91745),T=r(35491),S=r(43095),E=r(45078),b=r(56567),k=r(26336);function N(e,t,r){let n=!1;r===f.default.SyntaxKind.EqualsToken&&(d.Ay.pushStage(d.T0.EqualLeft),n=!0);const i=f.default.visitNode(e,t);return n&&d.Ay.popStage(),i}function I(e,t,r){let n=!1;r===f.default.SyntaxKind.EqualsToken&&(d.Ay.pushStage(d.T0.EqualRight),n=!0);const i=f.default.visitNode(e,t);return n&&d.Ay.popStage(),i}function C(e,t,r){if(r[5]){let n=0,i=8*m.i[r[0]];for(let e=0;e<r[6];e++)n|=1<<i-1-(e+r[8]);let a=d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createElementAccessExpression(d.Ay.addMemoryImport(x.d7),r[0]),void 0,[e]);const o=Math.pow(2,r[6])-1,s=i-r[8]-r[6];let c=p.YO.has(T.D,T.$I[r[0]]);d.Ay.cheapCompilerOptions.defined.WASM_64&&(20!==r[0]&&25!==r[0]||(c=!0,25===r[0]&&(t=A.bk(t)))),t=d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(t,f.default.SyntaxKind.AmpersandToken,c?A.n1(o):d.Ay.context.factory.createNumericLiteral(o))),t=d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(t,f.default.SyntaxKind.LessThanLessThanToken,c?A.n1(s):d.Ay.context.factory.createNumericLiteral(s))),a=d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(a,f.default.SyntaxKind.AmpersandToken,d.Ay.context.factory.createPrefixUnaryExpression(f.default.SyntaxKind.TildeToken,c?A.n1(n):d.Ay.context.factory.createNumericLiteral(n)))),t=d.Ay.context.factory.createBinaryExpression(a,f.default.SyntaxKind.BarToken,t)}return d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createElementAccessExpression(d.Ay.addMemoryImport(x.o_),r[1]?20:r[0]),void 0,[e,t])}function P(e){if(f.default.isBinaryExpression(e))return!!P(e.left)&&P(e.right);if(f.default.isParenthesizedExpression(e))return P(e.expression);const t=d.Ay.typeChecker.getTypeAtLocation(e);return!(!S.sV(t)&&!S.IQ(t,e))}function L(e){if(f.default.isBinaryExpression(e))return!!L(e.left)||L(e.right);if(f.default.isParenthesizedExpression(e))return L(e.expression);const t=d.Ay.typeChecker.getTypeAtLocation(e);return!!S.sV(t)}function O(e){if(f.default.isBinaryExpression(e)){if(f.default.isNumericLiteral(e.left)&&f.default.isNumericLiteral(e.right)){const t=(0,E.O)(+e.left.text,+e.right.text,e.operatorToken.kind);if(p.is.number(t))return d.Ay.context.factory.createNumericLiteral(t)}if(A.AK(e.left)&&A.AK(e.right)){const t=(0,E.O)(A.pg(e.left),A.pg(e.right),e.operatorToken.kind);if(p.is.bigint(t)&&t<=c()&&t>=u())return d.Ay.cheapCompilerOptions.defined.BIGINT_LITERAL?d.Ay.context.factory.createBigIntLiteral(t.toString()+"n"):d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier("BigInt"),void 0,[d.Ay.context.factory.createNumericLiteral(t.toString())])}if(e.operatorToken.kind===f.default.SyntaxKind.PlusToken){if(f.default.isNumericLiteral(e.right)&&"0"===e.right.text)return e.left;if(f.default.isNumericLiteral(e.left)&&"0"===e.left.text)return e.right}if(e.operatorToken.kind===f.default.SyntaxKind.MinusToken&&f.default.isNumericLiteral(e.right)&&"0"===e.right.text)return e.left;if(e.operatorToken.kind===f.default.SyntaxKind.AsteriskToken){if(f.default.isNumericLiteral(e.right)&&"1"===e.right.text)return e.left;if(f.default.isNumericLiteral(e.left)&&"1"===e.left.text)return e.right;if(f.default.isNumericLiteral(e.right)&&"0"===e.right.text)return e.right;if(f.default.isNumericLiteral(e.left)&&"0"===e.left.text)return e.left}if(e.operatorToken.kind===f.default.SyntaxKind.SlashToken){if(f.default.isNumericLiteral(e.right)&&"1"===e.right.text)return e.left;if(f.default.isNumericLiteral(e.left)&&"0"===e.left.text)return e.left}}return f.default.visitEachChild(e,O,d.Ay.context)}function w(e,t){let r=function(e,t){if(e.operatorToken.kind===f.default.SyntaxKind.EqualsToken&&f.default.isBinaryExpression(e.right)&&e.right.operatorToken.kind===f.default.SyntaxKind.EqualsToken&&((0,A.i$)(e.right)||(0,A.i$)(e.left))){const r=(0,A.LZ)(e);let n=d.Ay.context.factory.createBinaryExpression(e.left,f.default.SyntaxKind.EqualsToken,r),i=e.right;for(;i&&f.default.isBinaryExpression(i)&&i.operatorToken.kind===f.default.SyntaxKind.EqualsToken;)n=d.Ay.context.factory.createBinaryExpression(n,f.default.SyntaxKind.CommaToken,d.Ay.context.factory.createBinaryExpression(i.left,f.default.SyntaxKind.EqualsToken,r)),i=i.right;return f.default.visitEachChild(n,t,d.Ay.context)}if((0,A.i$)(e.left)&&(0,g.A)(e.operatorToken.kind))return f.default.visitNode(d.Ay.context.factory.createBinaryExpression(e.left,f.default.SyntaxKind.EqualsToken,d.Ay.context.factory.createBinaryExpression(e.left,(0,v.A)(e.operatorToken.kind),e.right)),t);if(e.operatorToken.kind===f.default.SyntaxKind.EqualsToken)return function(e,t){const r=d.Ay.typeChecker.getTypeAtLocation(e.left),n=d.Ay.typeChecker.getTypeAtLocation(e.right);if(S.IQ(r,e.left)&&(S.cX(n,e.right)||i()(n)&f.default.TypeFlags.NumberLike)&&!S.IQ(n,e.right)&&!S.Tp(n,e.right)||S.cX(r,e.left)&&!S.IQ(r,e.left)&&!S.Tp(r,e.left)&&S.IQ(n,e.right))return(0,y.A)(d.Ay.currentFile,e,`type ${S.OQ(r)||"number"} is not assignable to value of type ${S.OQ(n)||"number"}`,k._N),e;if(f.default.isIdentifier(e.left)&&f.default.isIdentifier(e.right))return f.default.visitEachChild(e,t,d.Ay.context);if(f.default.isPropertyAccessExpression(e.left)&&A.gF(e.left)&&f.default.isObjectLiteralExpression(e.right)&&S.O4(d.Ay.typeChecker.getTypeAtLocation(e.left))){const u=[],m=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.left]),t);function g(e,t,r){o()(r).call(r,(r=>{if(f.default.isPropertyAssignment(r)&&f.default.isIdentifier(r.name)){if(!t)return void(0,y.A)(d.Ay.currentFile,r,"struct not found ");const n=(0,b.A)(t,r.name.escapedText);f.default.isObjectLiteralExpression(r.initializer)&&n.getTypeMeta?g(e+n[7],n.getTypeMeta(),r.initializer.properties):p.is.number(n[0])?u.push(C(f.default.isBinaryExpression(m)&&f.default.isNumericLiteral(m.right)&&m.operatorToken.kind===f.default.SyntaxKind.PlusToken?d.Ay.context.factory.createBinaryExpression(m.left,f.default.SyntaxKind.PlusToken,A.bk(n[7]+e+ +m.right.text)):d.Ay.context.factory.createBinaryExpression(m,f.default.SyntaxKind.PlusToken,A.bk(n[7]+e)),r.initializer,n)):(0,y.A)(d.Ay.currentFile,r,"struct found invalid property value")}else(0,y.A)(d.Ay.currentFile,r,"struct found invalid property")}))}if(g(0,S.pj(d.Ay.typeChecker.getTypeAtLocation(e.left)),e.right.properties),0===u.length)return;if(1===u.length)return u[0];{let v=u[0];for(let T=1;T<u.length;T++)v=d.Ay.context.factory.createBinaryExpression(v,f.default.SyntaxKind.CommaToken,u[T]);return v}}if(f.default.isPropertyAccessExpression(e.left)||f.default.isElementAccessExpression(e.left)){const E=A.gF(e.left.expression),L=f.default.isPropertyAccessExpression(e.left)&&A.nI(e.left.expression);if(E||L){var a,s,c,l;const O=d.Ay.typeChecker.getTypeAtLocation(e.left),w=d.Ay.typeChecker.getTypeAtLocation(e.right);d.Ay.pushStage(d.T0.AddressOf);const F=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.left]),t);if(d.Ay.popStage(),S.O4(O)&&S.yY(O,e.left,w,e.right)||O.aliasSymbol&&(O.aliasSymbol.escapedName===x.aS||O.aliasSymbol.escapedName===x.is)&&O.aliasTypeArguments&&w.aliasTypeArguments&&(0,h.ux)(O.aliasTypeArguments[0].symbol)&&S.yY(O.aliasTypeArguments[0],null,w.aliasTypeArguments[0],null)){const K=S.pj(O),_=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.right]),t);return d.Ay.context.factory.createCallExpression(d.Ay.addMemoryImport(x.Mr),void 0,[F,_,A.bk(K.length)])}if(S.cX(O,e.left)||O.aliasSymbol&&O.aliasSymbol.escapedName===x.cr||null!==(a=O.symbol)&&void 0!==a&&a.valueDeclaration&&(f.default.isEnumDeclaration(O.symbol.valueDeclaration)||f.default.isEnumMember(O.symbol.valueDeclaration))||O.isUnion()&&null!==(s=O.types[0])&&void 0!==s&&null!==(s=s.symbol)&&void 0!==s&&s.valueDeclaration&&(f.default.isEnumDeclaration(null===(c=O.types[0])||void 0===c||null===(c=c.symbol)||void 0===c?void 0:c.valueDeclaration)||f.default.isEnumMember(null===(l=O.types[0])||void 0===l||null===(l=l.symbol)||void 0===l?void 0:l.valueDeclaration))){let B=I(e.right,t,e.operatorToken.kind);if(S.sV(O)&&(B=A.bk(B)),f.default.isPropertyAccessExpression(e.left)){const M=d.Ay.typeChecker.getTypeAtLocation(e.left.expression),D=S.pj(M);if(null==D)return(0,y.A)(d.Ay.currentFile,e,`${e.left.expression.getText()} is not struct`),e;const j=(0,b.A)(D,e.left.name.escapedText);return j?C(F,B,j):((0,y.A)(d.Ay.currentFile,e,`struct ${D.symbol.deref().escapedName} not has property ${e.left.name.escapedText}`),e)}if(f.default.isElementAccessExpression(e.left)&&S.cX(O,e.left))return d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createElementAccessExpression(d.Ay.addMemoryImport(x.o_),S.L(O,e.left)),void 0,[F,B])}}}return S.sV(r)&&!P(e.right)?f.default.isNumericLiteral(e.right)?d.Ay.context.factory.createBinaryExpression(f.default.visitNode(e.left,d.Ay.visitor),e.operatorToken,A.bk(f.default.visitNode(e.right,d.Ay.visitor))):((0,y.A)(d.Ay.currentFile,e,`type ${S.OQ(r)||"number"} is not assignable to value of type ${S.OQ(n)||"number"}`,k._N),e):d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),f.default.SyntaxKind.EqualsToken,I(e.right,t,e.operatorToken.kind))}(e,t);if(e.operatorToken.kind===f.default.SyntaxKind.LessThanToken&&f.default.isPrefixUnaryExpression(e.right)&&e.right.operator===f.default.SyntaxKind.MinusToken)return function(e,t){if(f.default.isPrefixUnaryExpression(e.right)){if(e.parent&&f.default.isExpressionStatement(e.parent)&&(f.default.isCallExpression(e.left)&&(f.default.isIdentifier(e.left.expression)&&e.left.expression.escapedText===x.se||f.default.isPropertyAccessExpression(e.left.expression)&&e.left.expression.name.escapedText===x.qh&&(0,A.i$)(e.left.expression.expression))||f.default.isElementAccessExpression(e.left)&&A.Og(e.left))){const r=d.Ay.typeChecker.getTypeAtLocation(e.left),n=d.Ay.typeChecker.getTypeAtLocation(e.right.operand);if(S.yY(r,e.left,n,e.right.operand)||S.IQ(r,e.left)&&S.Tp(n,e.right.operand)){let n=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.left]),t);if(S.O4(r)){const i=S.pj(r);d.Ay.pushStage(d.T0.SingleArrowRight);const a=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.right.operand]),t);return d.Ay.popStage(),d.Ay.context.factory.createCallExpression(d.Ay.addMemoryImport(x.Mr),void 0,[n,a,A.bk(i.length)])}if(S.cX(r,e.left)){const i=S.L(r,e.left);d.Ay.pushStage(d.T0.SingleArrowRight);const a=f.default.visitNode(e.right.operand,t);return d.Ay.popStage(),d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createElementAccessExpression(d.Ay.addMemoryImport(x.o_),i),void 0,[n,a])}return(0,y.A)(d.Ay.currentFile,e,"operator '<-' only allowed between two builtin type or struct type"),e}return(0,y.A)(d.Ay.currentFile,e,"The types on the left and right sides of the operator '<-' are not equal"),e}{const r=d.Ay.typeChecker.getTypeAtLocation(e.left),n=d.Ay.typeChecker.getTypeAtLocation(e.right.operand);if(S.O4(r)&&S.yY(r,e.left,n,e.right.operand)){const n=S.pj(r);d.Ay.pushStage(d.T0.SingleArrowRight);const i=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.right.operand]),t);d.Ay.popStage();const a=f.default.visitNode(d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier(x.Yq),void 0,[e.left]),t);return d.Ay.context.factory.createCallExpression(d.Ay.addMemoryImport(x.Mr),void 0,[a,i,A.bk(n.length)])}}}return f.default.visitEachChild(e,t,d.Ay.context)}(e,t);if((L(e.right)||L(e.left))&&e.operatorToken.kind!==f.default.SyntaxKind.AmpersandAmpersandToken&&e.operatorToken.kind!==f.default.SyntaxKind.BarBarToken&&e.operatorToken.kind!==f.default.SyntaxKind.GreaterThanToken&&e.operatorToken.kind!==f.default.SyntaxKind.GreaterThanEqualsToken&&e.operatorToken.kind!==f.default.SyntaxKind.LessThanToken&&e.operatorToken.kind!==f.default.SyntaxKind.LessThanEqualsToken){if(L(e.left)&&!P(e.right))return!f.default.isNumericLiteral(e.right)||e.parent&&f.default.isBinaryExpression(e.parent)?((0,y.A)(d.Ay.currentFile,e,"size type in binary expression must convert to other base type"),e):d.Ay.context.factory.createBinaryExpression(f.default.visitNode(e.left,d.Ay.visitor),e.operatorToken.kind===f.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken?f.default.SyntaxKind.GreaterThanGreaterThanToken:e.operatorToken.kind,A.bk(e.right));if(!P(e.left)&&L(e.right))return!f.default.isNumericLiteral(e.left)||e.parent&&f.default.isBinaryExpression(e.parent)?((0,y.A)(d.Ay.currentFile,e,"size type in binary expression must convert to other base type"),e):d.Ay.context.factory.createBinaryExpression(A.bk(e.left),e.operatorToken,f.default.visitNode(e.right,d.Ay.visitor))}else if((e.operatorToken.kind===f.default.SyntaxKind.PlusToken||e.operatorToken.kind===f.default.SyntaxKind.MinusToken)&&!d.Ay.lookupStage(d.T0.PointerPlusMinusIgnore)){var r;const n=A.H3(e.left),a=A.H3(e.right);if(S.IQ(n,e.left)&&(f.default.isNumericLiteral(e.right)||i()(a)&f.default.TypeFlags.NumberLike||p.YO.has(T.Be,S.OQ(a)))){let r=1;if(S.bE(n,e.left)?r=S.K4(n,e.left).length:S.T7(n,e.left)&&(r=m.i[S.qZ(n,e.left)]),r>1){const n=I(e.right,t,e.operatorToken.kind);return d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,f.default.isNumericLiteral(n)?A.bk(+n.text*r):d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(A.bk(n),f.default.SyntaxKind.AsteriskToken,A.bk(r))))}if(d.Ay.cheapCompilerOptions.defined.WASM_64){const r=I(e.right,t,e.operatorToken.kind);return d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,A.bk(r))}}else if(S.IQ(a,e.right)&&(f.default.isNumericLiteral(e.left)||i()(n)&f.default.TypeFlags.NumberLike||p.YO.has(T.Be,null===(r=n.aliasSymbol)||void 0===r?void 0:r.escapedName))){let r=1;if(S.T7(a,e.right)?r=m.i[S.qZ(a,e.right)]:S.bE(a,e.right)&&(r=S.K4(a,e.right).length),r>1){const n=I(e.left,t,e.operatorToken.kind);return d.Ay.context.factory.createBinaryExpression(f.default.isNumericLiteral(n)?A.bk(+n.text*r):d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(A.bk(n),f.default.SyntaxKind.AsteriskToken,A.bk(r))),e.operatorToken.kind,N(e.right,t,e.operatorToken.kind))}if(d.Ay.cheapCompilerOptions.defined.WASM_64){const r=I(e.left,t,e.operatorToken.kind);return d.Ay.context.factory.createBinaryExpression(A.bk(r),e.operatorToken.kind,N(e.right,t,e.operatorToken.kind))}}else if(S.IQ(n,e.left)&&S.IQ(a,e.right))if(e.operatorToken.kind===f.default.SyntaxKind.MinusToken&&S.yY(n,e.left,a,e.right)){let r=1;if(S.T7(n,e.left)?r=m.i[S.qZ(n,e.left)]:S.bE(n,e.left)&&(r=S.K4(n,e.left).length),r>1){if(r&r-1)return d.Ay.cheapCompilerOptions.defined.WASM_64?d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier("Number"),void 0,[d.Ay.context.factory.createBinaryExpression(d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,I(e.right,t,e.operatorToken.kind))),f.default.SyntaxKind.SlashToken,A.n1(r))]):d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,I(e.right,t,e.operatorToken.kind))),f.default.SyntaxKind.SlashToken,d.Ay.context.factory.createNumericLiteral(r)));{let n=0;for(;r>1;)n++,r>>>=1;return d.Ay.cheapCompilerOptions.defined.WASM_64?d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier("Number"),void 0,[d.Ay.context.factory.createBinaryExpression(d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,I(e.right,t,e.operatorToken.kind))),f.default.SyntaxKind.GreaterThanGreaterThanToken,A.n1(n))]):d.Ay.context.factory.createBinaryExpression(d.Ay.context.factory.createParenthesizedExpression(d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,I(e.right,t,e.operatorToken.kind))),f.default.SyntaxKind.GreaterThanGreaterThanToken,d.Ay.context.factory.createNumericLiteral(n))}}if(d.Ay.cheapCompilerOptions.defined.WASM_64)return d.Ay.context.factory.createCallExpression(d.Ay.context.factory.createIdentifier("Number"),void 0,[d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind,I(e.right,t,e.operatorToken.kind))])}else(0,y.A)(d.Ay.currentFile,e,"The operation between two pointer types only allowed subtraction")}if(d.Ay.cheapCompilerOptions.defined.WASM_64){const r=d.Ay.typeChecker.getTypeAtLocation(e.left);if(S.IQ(r,e.left)&&(!f.default.isIdentifier(e.right)||e.right.escapedText===x.Dj&&!d.Ay.lookupLocal(x.Dj))&&(e.operatorToken.kind===f.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken||e.operatorToken.kind===f.default.SyntaxKind.PercentToken)){const r=I(e.right,t,e.operatorToken.kind);return d.Ay.context.factory.createBinaryExpression(N(e.left,t,e.operatorToken.kind),e.operatorToken.kind===f.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken?f.default.SyntaxKind.GreaterThanGreaterThanToken:e.operatorToken.kind,f.default.isNumericLiteral(r)?A.bk(+r.text):A.bk(r))}}return f.default.visitEachChild(e,t,d.Ay.context)}(e,t);return r=f.default.isBinaryExpression(r)?O(r):r,r}},62456:(e,t,r)=>{var n=r(71836),i=r(96959).concat("length","prototype");t.f=Object.getOwnPropertyNames||function(e){return n(e,i)}},62643:(e,t,r)=>{r.d(t,{A:()=>y});var n=r(15970),i=r.n(n),a=r(66582),o=r(79843),s=r(38507),c=r(12473);function l(e){return o.string(e)&&e.split(".").shift()||""}const u=[["alipay",/alipay/],["wechat",/micromessenger/],["dingtalk",/dingtalk[ \/]([\d_.]+)/],["baiduApp",/baiduboxapp/],["baidu",/baidubrowser/],["baidu",/bdbrowser/],["uc",/ucbrowser/],["uc",/ucweb/],["qq",/qqbrowser/],["qqApp",/qq/],["ie",/iemobile[ \/]([\d_.]+)/],["ie",/msie[ \/]([\d_.]+)/],["ie",/trident[ \/]([\d_.]+)/,4],["edge",/edge[ \/]([\d_.]+)/],["newEdge",/edg[ \/]([\d_.]+)/],["chrome",/chrome[ \/]([\d_.]+)/],["firefox",/firefox[ \/]([\d_.]+)/],["opera",/opera(?:.*version)?[ \/]([\d_.]+)/],["safari",/version[ \/]([\d_.]+) safari/],["safari",/version[ \/]([\d_.]+) \S* safari/],["safari",/safari/]],f={},p={},d=function(e){let t,r;return(0,a.each)(u,(n=>{let a=n[1].exec(e);if(a)return t=n[0],r=a[1],r&&(r=r.replace(/_/g,"."),n[2]&&(r=i()(r,10)+n[2]+".0")),!1})),"safari"!==t||r||(r=c.A.version),{name:t||"",version:r||"",majorVersion:(f[t]||l)(r),checkVersion:p[t]||s.A}}(("object"==typeof navigator&&navigator.userAgent||"").toLowerCase());d.name&&(d[d.name]=!0);const y=d},62730:(e,t,r)=>{var n=r(89838),i=r(81767),a=r(58352),o=r(22890),s=r(76157),c=r(32606),l=r(91037),u=r(42888),f=r(81941),p=r(11437),d=r(25563),y=r(6455),h=d("isConcatSpreadable"),x=y>=51||!i((function(){var e=[];return e[h]=!1,e.concat()[0]!==e})),m=function(e){if(!o(e))return!1;var t=e[h];return void 0!==t?!!t:a(e)};n({target:"Array",proto:!0,arity:1,forced:!x||!p("concat")},{concat:function(e){var t,r,n,i,a,o=s(this),p=f(o,0),d=0;for(t=-1,n=arguments.length;t<n;t++)if(m(a=-1===t?o:arguments[t]))for(i=c(a),l(d+i),r=0;r<i;r++,d++)r in a&&u(p,d,a[r]);else l(d+1),u(p,d++,a);return p.length=d,p}})},62830:(e,t,r)=>{var n=r(81767);e.exports=function(e,t){var r=[][e];return!!r&&n((function(){r.call(null,t||function(){return 1},1)}))}},62940:(e,t,r)=>{r(20071),r(33668),r(66582)},62948:(e,t,r)=>{r.d(t,{A:()=>f});var n=r(9538),i=r.n(n),a=r(74093),o=r(80807),s=r(43095),c=r(17275),l=r(88431),u=r(26336);function f(e,t){if(e.initializer&&e.type&&e.pos>-1){const t=o.Ay.typeChecker.getTypeAtLocation(e.type),r=o.Ay.typeChecker.getTypeAtLocation(e.initializer);if(s.IQ(t,null)&&(s.cX(r,e.initializer)||i()(r)&a.default.TypeFlags.NumberLike)&&!s.IQ(r,e.initializer)&&!s.Tp(r,e.initializer))return(0,l.A)(o.Ay.currentFile,e,`type ${s.OQ(r)||"number"} is not assignable to property declaration of type ${s.OQ(t)}`,u._N),e;if(s.sV(t))return a.default.visitNode(o.Ay.context.factory.createPropertyDeclaration(e.modifiers,e.name,e.questionToken||e.exclamationToken,e.type,c.bk(e.initializer)),o.Ay.visitor)}return a.default.visitEachChild(e,t,o.Ay.context)}},63254:(e,t,r)=>{var n=r(89838),i=r(89624),a=r(50850),o=r(76157),s=r(32606),c=r(99302),l=r(42391),u=r(81767),f=r(74176),p=r(62830),d=r(22005),y=r(68731),h=r(6455),x=r(48447),m=[],A=i(m.sort),g=i(m.push),v=u((function(){m.sort(void 0)})),T=u((function(){m.sort(null)})),S=p("sort"),E=!u((function(){if(h)return h<70;if(!(d&&d>3)){if(y)return!0;if(x)return x<603;var e,t,r,n,i="";for(e=65;e<76;e++){switch(t=String.fromCharCode(e),e){case 66:case 69:case 70:case 72:r=3;break;case 68:case 71:r=4;break;default:r=2}for(n=0;n<47;n++)m.push({k:t+n,v:r})}for(m.sort((function(e,t){return t.v-e.v})),n=0;n<m.length;n++)t=m[n].k.charAt(0),i.charAt(i.length-1)!==t&&(i+=t);return"DGBEFHACIJK"!==i}}));n({target:"Array",proto:!0,forced:v||!T||!S||!E},{sort:function(e){void 0!==e&&a(e);var t=o(this);if(E)return void 0===e?A(t):A(t,e);var r,n,i=[],u=s(t);for(n=0;n<u;n++)n in t&&g(i,t[n]);for(f(i,function(e){return function(t,r){return void 0===r?-1:void 0===t?1:void 0!==e?+e(t,r)||0:l(t)>l(r)?1:-1}}(e)),r=s(i),n=0;n<r;)t[n]=i[n++];for(;n<u;)c(t,n++);return t}})},63637:(e,t,r)=>{var n=r(97960),i=r(89624),a=r(53063),o=r(76157),s=r(32606),c=r(81941),l=i([].push),u=function(e){var t=1===e,r=2===e,i=3===e,u=4===e,f=6===e,p=7===e,d=5===e||f;return function(y,h,x,m){for(var A,g,v=o(y),T=a(v),S=s(T),E=n(h,x),b=0,k=m||c,N=t?k(y,S):r||p?k(y,0):void 0;S>b;b++)if((d||b in T)&&(g=E(A=T[b],b,v),e))if(t)N[b]=g;else if(g)switch(e){case 3:return!0;case 5:return A;case 6:return b;case 2:l(N,A)}else switch(e){case 4:return!1;case 7:l(N,A)}return f?-1:i||u?u:N}};e.exports={forEach:u(0),map:u(1),filter:u(2),some:u(3),every:u(4),find:u(5),findIndex:u(6),filterReject:u(7)}},63640:(e,t,r)=>{var n=r(39559);e.exports=n&&!!Symbol.for&&!!Symbol.keyFor},63728:(e,t,r)=>{r(20071),r(33668),r(66582),r(17095)},63760:(e,t,r)=>{r(79843)},63856:(e,t,r)=>{r(77905)},64105:(e,t,r)=>{var n=r(25563),i=r(77097).f,a=n("metadata"),o=Function.prototype;void 0===o[a]&&i(o,a,{value:null})},64221:(e,t)=>{t.f=Object.getOwnPropertySymbols},64267:(e,t,r)=>{var n=r(59748);e.exports=n},64353:(e,t,r)=>{r(30785),e.exports=9007199254740991},64548:(e,t,r)=>{var n=r(53457),i=r(3784),a=Array.prototype;e.exports=function(e){var t=e.splice;return e===a||n(a,e)&&t===a.splice?i:t}},65371:(e,t,r)=>{r(82021);var n=r(42244);e.exports=n("Array","forEach")},65573:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(42399),i=r.n(n);let a,o="unknown";if("object"==typeof window&&window.document){const e=document.createElement("canvas"),t=e.getContext("webgl")||e.getContext("experimental-webgl");if(null!=t&&t.getExtension){const e=t.getExtension("WEBGL_debug_renderer_info");if(e){let r=(t.getParameter(e.UNMASKED_VENDOR_WEBGL)||"").toLocaleLowerCase();a=(t.getParameter(e.UNMASKED_RENDERER_WEBGL)||"").toLocaleLowerCase(),r&&(i()(r).call(r,"apple")>-1?o="apple":i()(r).call(r,"intel")>-1?o="intel":i()(r).call(r,"amd")>-1?o="amd":i()(r).call(r,"nvidia")>-1&&(o="nvidia"))}}}const s={vendor:o,renderer:a}},65695:(e,t,r)=>{r(36163);var n=r(72071);e.exports=n.Object.freeze},65977:(e,t,r)=>{var n=r(86927),i=r(28626),a=r(25563),o=r(73012),s=a("species");e.exports=function(e){var t=n(e);o&&t&&!t[s]&&i(t,s,{configurable:!0,get:function(){return this}})}},66415:(e,t,r)=>{var n=r(22890),i=String,a=TypeError;e.exports=function(e){if(n(e))return e;throw new a(i(e)+" is not an object")}},66436:(e,t,r)=>{var n=r(95497),i=r(10015),a=r(80347),o=r(77097);e.exports=function(e,t,r){for(var s=i(t),c=o.f,l=a.f,u=0;u<s.length;u++){var f=s[u];n(e,f)||r&&n(r,f)||c(e,f,l(t,f))}}},66582:(e,t,r)=>{r.r(t),r.d(t,{binarySearch:()=>N,each:()=>u,exclude:()=>k,falsy:()=>b,has:()=>v,indexOf:()=>x,join:()=>E,last:()=>m,pop:()=>A,push:()=>y,remove:()=>g,same:()=>C,sortInsert:()=>I,toArray:()=>T,toObject:()=>S,unshift:()=>h});var n=r(76713),i=r.n(n),a=r(18811),o=r.n(a),s=r(79843),c=r(17095),l=r(33668);function u(e,t,r){if(!e)return;const{length:n}=e;if(n)if(r)for(let r=n-1;r>=0&&t(e[r],r)!==c.W8;r--);else for(let r=0;r<n&&t(e[r],r)!==c.W8;r++);}function f(e,t){e[e.length]=t}function p(e,t){e.unshift(t)}function d(e,t,r){s.array(t)?u(t,(function(t){r(e,t)})):r(e,t)}function y(e,t){d(e,t,f)}function h(e,t){d(e,t,p)}function x(e,t,r){let n=c.Cy;return u(e,(function(e,i){if(r===c.W8?e==t:e===t)return n=i,c.W8})),n}function m(e){const{length:t}=e;if(t>0)return e[t-1]}function A(e){const{length:t}=e;if(t>0)return e.pop()}function g(e,t,r){let n=0;return u(e,(function(a,o){(r===c.W8?a==t:a===t)&&(i()(e).call(e,o,1),n++)}),c.rT),n}function v(e,t,r){return x(e,t,r)>=0}function T(e){return s.array(e)?e:(0,l.A)(o()(c.Ml),e)}function S(e,t,r){let n={};return u(e,(function(e){n[t?e[t]:e]=r||e})),n}function E(e,t){return e.join(t)}function b(e){return!s.array(e)||!e.length}function k(e,t){const r=[];return u(e,((e,n)=>{v(t,e)||r.push(e)})),r}function N(e,t){let r=0,n=e.length-1,i=-1;for(;r<=n;){let a=(r+n)/2>>>0;const o=t(e[a]);if(0===o){i=a;break}1===o?r=a+1:(n=a-1,i=a)}return i}function I(e,t,r){const n=N(e,r);n>-1?i()(e).call(e,n,0,t):e.push(t)}function C(e,t){if(e===t)return!0;if(!e||!t)return!1;if(e.length!==t.length)return!1;for(let r=0;r<e.length;r++)if(e[r]!==t[r])return!1;return!0}},66644:(e,t,r)=>{var n=r(53457),i=r(71014),a=String.prototype;e.exports=function(e){var t=e.trim;return"string"==typeof e||e===a||n(a,e)&&t===a.trim?i:t}},66715:(e,t,r)=>{var n,i,a,o,s,c=r(58184),l=r(77477),u=r(97960),f=r(85089).set,p=r(15201),d=r(18192),y=r(46017),h=r(40300),x=r(78809),m=c.MutationObserver||c.WebKitMutationObserver,A=c.document,g=c.process,v=c.Promise,T=l("queueMicrotask");if(!T){var S=new p,E=function(){var e,t;for(x&&(e=g.domain)&&e.exit();t=S.get();)try{t()}catch(e){throw S.head&&n(),e}e&&e.enter()};d||x||h||!m||!A?!y&&v&&v.resolve?((o=v.resolve(void 0)).constructor=v,s=u(o.then,o),n=function(){s(E)}):x?n=function(){g.nextTick(E)}:(f=u(f,c),n=function(){f(E)}):(i=!0,a=A.createTextNode(""),new m(E).observe(a,{characterData:!0}),n=function(){a.data=i=!i}),T=function(e){S.head||n(),S.add(e)}}e.exports=T},66887:(e,t,r)=>{var n,a;e.exports=(n={fileURLToPath:()=>i.fileURLToPath},a={},r.d(a,n),a)},66942:(e,t,r)=>{function n(e,t,r,n,i){for(let n=0;n<e.length;n++)if(e[n].name===t&&e[n].path===r)return e[n];const a={name:t,path:r,default:i,formatName:n};return e.push(a),a}function i(e,t,r,n,i){for(let t=0;t<e.length;t++)if(e[t].path===r&&e[t].default===n)return e[t];const a={formatName:t,path:r,default:n,esModule:i};return e.push(a),a}r.d(t,{E:()=>i,I:()=>n})},67337:(e,t,r)=>{r(14739)},67681:(e,t,r)=>{var n=r(28106);e.exports=n},67704:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(74093),i=r(80807),a=r(43095),o=r(17275);function s(e,t){if(i.Ay.pushStage(i.T0.Parameter),e.initializer&&e.type&&e.pos>-1){const t=i.Ay.typeChecker.getTypeAtLocation(e.type);if(a.sV(t))return n.default.visitNode(i.Ay.context.factory.createParameterDeclaration(e.modifiers,e.dotDotDotToken,e.name,e.questionToken,e.type,o.bk(e.initializer)),i.Ay.visitor)}const r=n.default.visitEachChild(e,t,i.Ay.context);return i.Ay.popStage(),r}},67728:(e,t,r)=>{r(9815)("patternMatch")},67915:(e,t,r)=>{r(89838)({target:"Number",stat:!0,nonConfigurable:!0,nonWritable:!0},{MIN_SAFE_INTEGER:-9007199254740991})},68013:(e,t,r)=>{r(66582),r(33668),r(54099)},68161:(e,t,r)=>{var n=r(89838),i=r(73012),a=r(77097).f;n({target:"Object",stat:!0,forced:Object.defineProperty!==a,sham:!i},{defineProperty:a})},68690:(e,t,r)=>{r(89838)({target:"Array",stat:!0},{isArray:r(58352)})},68696:(e,t,r)=>{var n=r(89838),i=r(89624),a=r(50850),o=r(61726),s=r(69508),c=r(99616),l=r(51219),u=r(81767),f=c.Map,p=c.has,d=c.get,y=c.set,h=i([].push),x=l||u((function(){return 1!==f.groupBy("ab",(function(e){return e})).get("a").length}));n({target:"Map",stat:!0,forced:l||x},{groupBy:function(e,t){o(e),a(t);var r=new f,n=0;return s(e,(function(e){var i=t(e,n++);p(r,i)?h(d(r,i),e):y(r,i,[e])})),r}})},68731:(e,t,r)=>{var n=r(29855);e.exports=/MSIE|Trident/.test(n)},68769:(e,t,r)=>{e.exports=r(53043)},69257:(e,t,r)=>{r(9815)("asyncDispose")},69263:(e,t,r)=>{r(87523),r(90012)},69491:(e,t,r)=>{var n=r(35411),i=r(409),a=r(16523),o=Error.captureStackTrace;e.exports=function(e,t,r,s){a&&(o?o(e,t):n(e,"stack",i(r,s)))}},69508:(e,t,r)=>{var n=r(97960),i=r(55701),a=r(66415),o=r(21951),s=r(89769),c=r(32606),l=r(53457),u=r(32105),f=r(80283),p=r(37579),d=TypeError,y=function(e,t){this.stopped=e,this.result=t},h=y.prototype;e.exports=function(e,t,r){var x,m,A,g,v,T,S,E=r&&r.that,b=!(!r||!r.AS_ENTRIES),k=!(!r||!r.IS_RECORD),N=!(!r||!r.IS_ITERATOR),I=!(!r||!r.INTERRUPTED),C=n(t,E),P=function(e){return x&&p(x,"normal"),new y(!0,e)},L=function(e){return b?(a(e),I?C(e[0],e[1],P):C(e[0],e[1])):I?C(e,P):C(e)};if(k)x=e.iterator;else if(N)x=e;else{if(!(m=f(e)))throw new d(o(e)+" is not iterable");if(s(m)){for(A=0,g=c(e);g>A;A++)if((v=L(e[A]))&&l(h,v))return v;return new y(!1)}x=u(e,m)}for(T=k?e.next:x.next;!(S=i(T,x)).done;){try{v=L(S.value)}catch(e){p(x,"throw",e)}if("object"==typeof v&&v&&l(h,v))return v}return new y(!1)}},69679:(e,t,r)=>{r(71768),r(99627),r(58940),r(75419);var n=r(72855);e.exports=n.f("iterator")},70120:(e,t,r)=>{r(95809)},70163:(e,t,r)=>{var n=r(24840);e.exports=n},70307:(e,t,r)=>{r.d(t,{A:()=>d});var n=r(74093),i=r(80807),a=r(17275),o=r(73269),s=r(40946),c=r(62408),l=r(85658),u=r(77965),f=r(82313),p=r(97131);function d(e,t){var r;return n.default.isBinaryExpression(e)?(0,c.A)(e,t):n.default.isPrefixUnaryExpression(e)||n.default.isPostfixUnaryExpression(e)?(0,l.A)(e,t):n.default.isCallExpression(e)?(0,o.A)(e,t):n.default.isPropertyAccessExpression(e)?(0,s.A)(e,t):n.default.isElementAccessExpression(e)?(0,u.A)(e,t):i.Ay.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API&&n.default.isAwaitExpression(e)&&e.expression&&n.default.isCallExpression(e.expression)&&(i.Ay.lookupSynchronized()||a.nP(null===(r=i.Ay.typeChecker.getSymbolAtLocation(n.default.isPropertyAccessExpression(e.expression.expression)?e.expression.expression.name:e.expression.expression))||void 0===r?void 0:r.valueDeclaration))?n.default.visitEachChild(e.expression,t,i.Ay.context):n.default.isTaggedTemplateExpression(e)?(0,f.A)(e,t):n.default.isConditionalExpression(e)?(0,p.A)(e,t):n.default.visitEachChild(e,t,i.Ay.context)}},70371:(e,t,r)=>{var n=r(42391);e.exports=function(e,t){return void 0===e?arguments.length<2?"":t:n(e)}},70575:(e,t,r)=>{r(9135)},70905:(e,t,r)=>{r(9815)("metadata")},71014:(e,t,r)=>{r(35634);var n=r(42244);e.exports=n("String","trim")},71696:(e,t,r)=>{r(26838);var n=r(42244);e.exports=n("Array","map")},71768:(e,t,r)=>{var n=r(33437),i=r(51645),a=r(77221),o=r(16437),s=r(77097).f,c=r(16040),l=r(13817),u=r(51219),f=r(73012),p="Array Iterator",d=o.set,y=o.getterFor(p);e.exports=c(Array,"Array",(function(e,t){d(this,{type:p,target:n(e),index:0,kind:t})}),(function(){var e=y(this),t=e.target,r=e.index++;if(!t||r>=t.length)return e.target=null,l(void 0,!0);switch(e.kind){case"keys":return l(r,!1);case"values":return l(t[r],!1)}return l([r,t[r]],!1)}),"values");var h=a.Arguments=a.Array;if(i("keys"),i("values"),i("entries"),!u&&f&&"values"!==h.name)try{s(h,"name",{value:"values"})}catch(e){}},71836:(e,t,r)=>{var n=r(89624),i=r(95497),a=r(33437),o=r(32841).indexOf,s=r(84061),c=n([].push);e.exports=function(e,t){var r,n=a(e),l=0,u=[];for(r in n)!i(s,r)&&i(n,r)&&c(u,r);for(;t.length>l;)i(n,r=t[l++])&&(~o(u,r)||c(u,r));return u}},71852:(e,t,r)=>{var n=r(89838),i=r(95497),a=r(84845),o=r(21951),s=r(8377),c=r(63640),l=s("symbol-to-string-registry");n({target:"Symbol",stat:!0,forced:!c},{keyFor:function(e){if(!a(e))throw new TypeError(o(e)+" is not a symbol");if(i(l,e))return l[e]}})},72071:e=>{e.exports={}},72551:(e,t,r)=>{function n(){return"function"==typeof registerProcessor&&"number"==typeof sampleRate&&"number"==typeof currentFrame&&"number"==typeof currentTime}r.d(t,{A:()=>n})},72855:(e,t,r)=>{var n=r(25563);t.f=n},73012:(e,t,r)=>{var n=r(81767);e.exports=!n((function(){return 7!==Object.defineProperty({},1,{get:function(){return 7}})[1]}))},73269:(e,t,r)=>{r.d(t,{A:()=>I});var n=r(42399),i=r.n(n),a=r(50442),o=r.n(a),s=r(9538),c=r.n(s),l=r(74093),u=r(80807),f=r(35491),p=r(88431),d=r(23581),y=r(85961),h=r(17275),x=r(2080),m=r(52788),A=r(43095),g=r(56567),v=r(26336),T=r(78686);function S(e,t){if(e===m.pj||e===m.Ie){const{line:e}=l.default.getLineAndCharacterOfPosition(u.Ay.currentFile,t.getStart());return u.Ay.context.factory.createNumericLiteral(e+1)}if(e===m.PW||e===m.g){const{formatName:e}=u.Ay.addModuleDeclaration("fileName",u.Ay.context.factory.createStringLiteral(u.Ay.currentFilePath));return u.Ay.context.factory.createIdentifier(e)}if((0,T.C8)(u.Ay.cheapCompilerOptions.defined[e])){const r=u.Ay.cheapCompilerOptions.defined[e];if(T.is.boolean(r))return r?u.Ay.context.factory.createTrue():u.Ay.context.factory.createFalse();if(T.is.number(r))return u.Ay.context.factory.createNumericLiteral(r);if(T.is.string(r))return u.Ay.context.factory.createStringLiteral(r);if(t)return(0,p.A)(u.Ay.currentFile,t,`the type(${typeof r}) of defined not support`),t}else if(t)return(0,p.A)(u.Ay.currentFile,t,`cannot found the defined(${e})`),t}function E(e,t,r){if(l.default.isTypeReferenceNode(t))if(l.default.isIdentifier(t.typeName)&&t.typeName.symbol){var n;const r=u.Ay.typeChecker.getTypeOfSymbol(t.typeName.symbol);var a;if(A.cX(r,null===(n=t.typeName.symbol)||void 0===n?void 0:n.valueDeclaration))e.push(u.Ay.context.factory.createNumericLiteral(A.L(r,null===(a=t.typeName.symbol)||void 0===a?void 0:a.valueDeclaration)));else if(r.aliasSymbol){const t=r.aliasSymbol.escapedName;e.push(u.Ay.context.factory.createIdentifier(t))}else if(r.symbol&&r.symbol.valueDeclaration&&l.default.isClassDeclaration(r.symbol.valueDeclaration)){var s;let t;const n=null===(s=r.symbol.valueDeclaration)||void 0===s?void 0:s.getSourceFile();t=n!==u.Ay.currentFile?u.Ay.addStructImport(r.symbol,n):u.Ay.context.factory.createIdentifier(r.symbol.escapedName),e.push(t)}else r.symbol?e.push(u.Ay.context.factory.createIdentifier(r.symbol.escapedName)):e.push(u.Ay.context.factory.createIdentifier("undefined"))}else e.push(u.Ay.context.factory.createIdentifier("undefined"));else if(l.default.isLiteralTypeNode(t))if(l.default.isNumericLiteral(t.literal))e.push(u.Ay.context.factory.createNumericLiteral(+t.literal.text));else if(l.default.isStringLiteral(t.literal))if(/^defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)$/.test(t.literal.text)){const n=S(t.literal.text.match(/^defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)$/)[1],r);n?e.push(n):e.push(u.Ay.context.factory.createIdentifier("undefined"))}else if(/^moduleId\(([0-9]+)\)$/.test(t.literal.text))if(u.Ay.cheapCompilerOptions.defined.ENV_WEBPACK){const n=+t.literal.text.match(/^moduleId\(([0-9]+)\)$/)[1],a=r.arguments[n];if(a){var c;const n=null===(c=u.Ay.typeChecker.getTypeAtLocation(a).symbol.valueDeclaration)||void 0===c?void 0:c.getSourceFile();if(n){var f;const a=u.Ay.typeChecker.getTypeAtLocation(r.expression),s=null==a||null===(f=a.symbol)||void 0===f||null===(f=f.valueDeclaration)||void 0===f?void 0:f.getSourceFile().fileName;let c=m.VH;if(u.Ay.options.cheapSourcePath&&(c=u.Ay.options.cheapSourcePath+c.replace(m.$9,"")),u.Ay.cheapCompilerOptions.defined.ENABLE_THREADS&&u.Ay.cheapCompilerOptions.defined.ENABLE_THREADS_SPLIT&&i()(s).call(s,c)>=0&&(a.symbol.escapedName===m.pt||a.symbol.escapedName===m.N0||a.symbol.escapedName===m.PB)){const i=a.symbol.escapedName===m.pt?"class":a.symbol.escapedName===m.PB?"module":"function";let s=l.default.isIdentifier(r.arguments[0])?r.arguments[0].escapedText:l.default.isPropertyAccessExpression(r.arguments[0])?r.arguments[0].name.escapedText:"unknown";if("class"===i||"function"===i){var d;let e;if(l.default.isIdentifier(r.arguments[0])?e=u.Ay.typeChecker.getTypeAtLocation(r.arguments[0]):l.default.isPropertyAccessExpression(r.arguments[0])&&(e=u.Ay.typeChecker.getTypeAtLocation(r.arguments[0].name)),null!==(d=e)&&void 0!==d&&null!==(d=d.symbol)&&void 0!==d&&d.valueDeclaration)if(l.default.isClassDeclaration(e.symbol.valueDeclaration)){if(!e.symbol.valueDeclaration.name)return(0,p.A)(u.Ay.currentFile,t,"The thread class must have a class name"),t;s=e.symbol.valueDeclaration.name.escapedText}else if(l.default.isFunctionDeclaration(e.symbol.valueDeclaration)){if(!e.symbol.valueDeclaration.name)return(0,p.A)(u.Ay.currentFile,t,"The thread function must has a function name"),t;s=e.symbol.valueDeclaration.name.escapedText}}let c=`${s}Thread`;var y;r.arguments[1]&&l.default.isObjectLiteralExpression(r.arguments[1])&&o()(y=r.arguments[1].properties).call(y,(e=>{if(l.default.isPropertyAssignment(e)&&l.default.isIdentifier(e.name)&&"name"===e.name.escapedText){let t=e.initializer.getText();t&&(t=t.replace(/^['|"]/,""),t=t.replace(/['|"]$/,""),t&&(c=t))}}));const f=`cheap-worker-loader?type=${i}&point=${s}&name=${c}`,h=u.Ay.addIdentifierImport("worker",`${f}!${(0,x.A)(u.Ay.currentFile.fileName,n.fileName)}`,!0);e.push(h)}else e.push(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("require"),u.Ay.context.factory.createIdentifier("resolveWeak")),void 0,[u.Ay.context.factory.createStringLiteral((0,x.A)(u.Ay.currentFile.fileName,n.fileName))]))}}}else(0,p.A)(u.Ay.currentFile,r,"moduleId only support in webpack");else{let n=t.literal.text.replace(/defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)/g,((e,t)=>function(e,t){if(e===m.pj||e===m.Ie){const{line:e}=l.default.getLineAndCharacterOfPosition(u.Ay.currentFile,t.getStart());return(0,T.dI)(e+1)}if(e===m.PW||e===m.g)return u.Ay.currentFilePath;if((0,T.C8)(u.Ay.cheapCompilerOptions.defined[e])){const t=u.Ay.cheapCompilerOptions.defined[e];return(0,T.dI)(t,"")}return""}(t,r)));e.push(u.Ay.context.factory.createStringLiteral(n))}else t.literal.kind===l.default.SyntaxKind.TrueKeyword?e.push(u.Ay.context.factory.createTrue()):t.literal.kind===l.default.SyntaxKind.FalseKeyword&&e.push(u.Ay.context.factory.createFalse());else t.kind===l.default.SyntaxKind.UndefinedKeyword&&e.push(u.Ay.context.factory.createIdentifier("undefined"))}function b(e,t){var r;const n=t;let i=n.symbol.deref(),a="";n.structType===y.cj.INLINE_OBJECT&&(i=n.definedClassParent.symbol.deref(),a=n.definedClassParent.inlineStructPathMap.get(n.symbol.deref()));const o=null===(r=i.valueDeclaration)||void 0===r?void 0:r.getSourceFile();if(o){let t;t=o!==u.Ay.currentFile?u.Ay.addStructImport(i,o):u.Ay.context.factory.createIdentifier(i.escapedName);const r=[e,t];return a&&r.push(u.Ay.context.factory.createStringLiteral(a)),u.Ay.context.factory.createCallExpression(u.Ay.addIdentifierImport(m.CF,m.Gl,!1),void 0,r)}}function k(e,t){if(A.O4(e)){const t=A.pj(e);if(t)return t.length}else{if(A.cX(e,t))return d.i[A.L(e,t)];if(e.aliasSymbol){var r,n;const t=e.aliasSymbol.escapedName;if(t===m.Qi&&null!==(r=e.aliasTypeArguments[1])&&void 0!==r&&r.isNumberLiteral())return k(e.aliasTypeArguments[0],null)*e.aliasTypeArguments[1].value;if(t===m.cr&&null!==(n=e.aliasTypeArguments[1])&&void 0!==n&&n.isNumberLiteral())return e.aliasTypeArguments[1].value}}return 0}function N(e,t){const r=[];let n=!1;for(let i=0;i<t.length;i++)if(e.parameters[i]){const a=u.Ay.typeChecker.getTypeAtLocation(t[i]),o=u.Ay.typeChecker.getTypeOfSymbol(e.parameters[i]);(A.IQ(a,t[i])&&A.cX(o,e.parameters[i].valueDeclaration)&&!A.IQ(o,e.parameters[i].valueDeclaration)&&!A.Tp(o,e.parameters[i].valueDeclaration)||A.cX(a,t[i])&&!A.IQ(a,t[i])&&!A.Tp(a,t[i])&&A.IQ(o,e.parameters[i].valueDeclaration))&&(0,p.A)(u.Ay.currentFile,t[i],`type ${A.OQ(a)} is not assignable to parameter of type ${A.OQ(o)}`,v._N),A.sV(o)?(r.push(h.bk(t[i])),n=!0):r.push(t[i])}return{newArgument:r,hasSizeParameter:n}}function I(e,t){let r="";l.default.isIdentifier(e.expression)?r=e.expression.escapedText:l.default.isPropertyAccessExpression(e.expression)&&(r=e.expression.name.escapedText);const n=u.Ay.typeChecker.getResolvedSignature(e),i=null==n?void 0:n.getDeclaration();if(i&&function(e){if(!e)return!1;for(let t=0;t<e.length;t++)if(e[t].name.escapedText===m.a2)return!0;return!1}(i.typeParameters)){const c=u.Ay.typeChecker.signatureToSignatureDeclaration(n,l.default.SyntaxKind.CallSignature,h.KZ(h.ez(e)),l.default.NodeBuilderFlags.WriteTypeArgumentsOfSignature|l.default.NodeBuilderFlags.IgnoreErrors|l.default.NodeBuilderFlags.WriteTypeParametersInQualifiedName|l.default.NodeBuilderFlags.UseAliasDefinedOutsideCurrentScope|l.default.NodeBuilderFlags.MultilineObjectLiterals|l.default.NodeBuilderFlags.OmitParameterModifiers);if(null!=c&&c.typeArguments){const n=function(e,t){let r=-1;for(let t=0;t<e.length;t++)if(e[t].name.escapedText===m.a2){r=t;break}if(r>-1)return t[r]}(i.typeParameters,c.typeArguments);if(n&&function(e,t,r){for(let n=0;n<e.length;n++){const i=e[n];if(i.name.escapedText===m.tJ&&i.default){const e=[];if(E(e,t[n],r),e[0].kind===l.default.SyntaxKind.FalseKeyword||l.default.isStringLiteral(e[0])&&""===e[0].text||l.default.isNumericLiteral(e[0])&&"0"===e[0].text)return!1;break}}return!0}(i.typeParameters,c.typeArguments,e)){var a;const c=[];let d=((null===(a=i.parameters)||void 0===a?void 0:a.length)||0)-e.arguments.length;for(;d>0;){var s;c.push(null!==(s=h.KU(u.Ay.typeChecker.getSymbolAtLocation(i.name),e.arguments.length+c.length))&&void 0!==s?s:u.Ay.context.factory.createIdentifier("undefined")),d--}var x;return l.default.isTupleTypeNode(n)?o()(x=n.elements).call(x,(t=>{d<0?d++:E(c,t,e)})):d<0?d++:E(c,n,e),h.AI(e)&&24===A.qZ(u.Ay.typeChecker.getTypeAtLocation(e.arguments[0]),e.arguments[0])?"load"===r?l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.c$),[u.Ay.context.factory.createTypeReferenceNode(u.Ay.context.factory.createIdentifier(f.$I[24]),void 0)],[u.Ay.context.factory.createCallExpression(e.expression,void 0,[...e.arguments,...c])]),t):"store"===r||"exchange"===r?l.default.visitNode(u.Ay.context.factory.createCallExpression(e.expression,void 0,[e.arguments[0],u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.c$),[u.Ay.context.factory.createTypeReferenceNode(u.Ay.context.factory.createIdentifier(f.$I[16]),void 0)],[e.arguments[1]]),...c]),t):"compareExchange"===r?l.default.visitNode(u.Ay.context.factory.createCallExpression(e.expression,void 0,[e.arguments[0],u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.c$),[u.Ay.context.factory.createTypeReferenceNode(u.Ay.context.factory.createIdentifier(f.$I[16]),void 0)],[e.arguments[1]]),u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.c$),[u.Ay.context.factory.createTypeReferenceNode(u.Ay.context.factory.createIdentifier(f.$I[16]),void 0)],[e.arguments[2]]),...c]),t):((0,p.A)(u.Ay.currentFile,e,`atomic_bool not support to ${r} operate`),e):l.default.visitNode(u.Ay.context.factory.createCallExpression(e.expression,e.typeArguments,[...e.arguments,...c]),t)}}}if(l.default.isIdentifier(e.expression))if(r!==m.FK||u.Ay.lookupFunc(m.FK)){if(r===m.Yq&&!u.Ay.lookupFunc(m.Yq)){const r=e.arguments[0];if(l.default.isCallExpression(r)&&(l.default.isIdentifier(r.expression)&&r.expression.escapedText===m.se||l.default.isElementAccessExpression(r.expression)&&(l.default.isIdentifier(r.expression.expression)||l.default.isPropertyAccessExpression(r.expression.expression))&&u.Ay.isIdentifier(r.expression.expression,m.d7,m.Kk,m.dB)||(l.default.isIdentifier(r.expression)||l.default.isPropertyAccessExpression(r.expression))&&u.Ay.isIdentifier(r.expression,m.CF,m._s,m.Gl)))return l.default.visitNode(r.arguments[0],t);var I;if(l.default.isIdentifier(r))return(0,y.ux)(null===(I=u.Ay.typeChecker.getTypeAtLocation(r))||void 0===I?void 0:I.symbol)?u.Ay.context.factory.createElementAccessExpression(l.default.visitNode(r,t),u.Ay.addSymbolImport(m.o9)):((0,p.A)(u.Ay.currentFile,r,"addressof only support with struct instance Identifier"),e);if(l.default.isPropertyAccessExpression(r)||l.default.isCallExpression(r)&&h.ZV(r)||l.default.isElementAccessExpression(r)&&A.IQ(u.Ay.typeChecker.getTypeAtLocation(r.expression),r.expression)){const n=l.default.visitNode(r,t);if(l.default.isCallExpression(n)&&(l.default.isIdentifier(n.expression)&&u.Ay.isIdentifier(n.expression,m.CF,m._s,m.Gl)||l.default.isPropertyAccessExpression(n.expression)&&u.Ay.isIdentifier(n.expression,m.CF,m._s,m.Gl)))return n.arguments[0];if(l.default.isCallExpression(n)&&l.default.isElementAccessExpression(n.expression)&&(l.default.isIdentifier(n.expression.expression)&&u.Ay.isIdentifier(n.expression.expression,m.d7,m.Kk,m.dB)||l.default.isPropertyAccessExpression(n.expression.expression)&&u.Ay.isIdentifier(n.expression.expression,m.d7,m.Kk,m.dB)))return n.arguments[0];if(l.default.isPropertyAccessExpression(n)){let t=u.Ay.typeChecker.getTypeAtLocation(r.expression),i=A.pj(t);if(!i)return t=u.Ay.typeChecker.getTypeAtLocation(r),i=A.pj(t),i?u.Ay.context.factory.createElementAccessExpression(n,u.Ay.addSymbolImport(m.o9)):((0,p.A)(u.Ay.currentFile,r,"addressof only support with struct instance or struct property"),e);const a=(0,g.A)(i,n.name.escapedText);return a?a[5]?((0,p.A)(u.Ay.currentFile,r,"addressof not support with bit field property"),e):a[7]?u.Ay.context.factory.createBinaryExpression(u.Ay.context.factory.createElementAccessExpression(n.expression,u.Ay.addSymbolImport(m.o9)),l.default.SyntaxKind.PlusToken,h.bk(a[7])):l.default.isCallExpression(n.expression)&&l.default.isIdentifier(n.expression.expression)&&n.expression.expression.escapedText===m.CF?n.expression.arguments[0]:u.Ay.context.factory.createElementAccessExpression(n.expression,u.Ay.addSymbolImport(m.o9)):((0,p.A)(u.Ay.currentFile,e,`struct ${i.symbol.deref().escapedName} not has property ${n.name.escapedText}`),e)}return l.default.isElementAccessExpression(n)&&l.default.isCallExpression(n.expression)&&l.default.isIdentifier(n.expression.expression)&&n.expression.expression.escapedText===m.CF?n.expression.arguments[0]:((0,p.A)(u.Ay.currentFile,r,"invalid operation"),e)}if(l.default.isElementAccessExpression(r)){const n=l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.Yq),void 0,[r.expression]),t);let i,a=0;const o=u.Ay.typeChecker.getTypeAtLocation(r);return A.cX(o,r)?a=d.i[A.L(o,r)]:A.O4(o)?a=A.pj(o).length:A._L(o)&&(a=k(o.aliasTypeArguments[0],null)*o.aliasTypeArguments[1].value),a?(l.default.isNumericLiteral(r.argumentExpression)?+r.argumentExpression.text&&(i=h.bk(+r.argumentExpression.text*a)):i=h.bk(u.Ay.context.factory.createBinaryExpression(l.default.visitNode(r.argumentExpression,t),l.default.SyntaxKind.AsteriskToken,u.Ay.context.factory.createNumericLiteral(a))),i?u.Ay.context.factory.createBinaryExpression(n,l.default.SyntaxKind.PlusToken,i):n):((0,p.A)(u.Ay.currentFile,r,"type mismatch"),e)}{const n=u.Ay.typeChecker.getTypeAtLocation(r);return n.symbol&&(0,y.ux)(n.symbol)?u.Ay.context.factory.createElementAccessExpression(l.default.visitNode(r,t),u.Ay.addSymbolImport(m.o9)):((0,p.A)(u.Ay.currentFile,r,"addressof only support in related to struct"),e)}}if(r===m.se&&!u.Ay.lookupFunc(m.se)&&(0,h.i$)(e.arguments[0])){const r=e.arguments[0];if(l.default.isCallExpression(r)&&l.default.isIdentifier(r.expression)&&r.expression.escapedText===m.Yq)return l.default.visitNode(r.arguments[0],t);const n=h.U_(r);if(A.IQ(n,r)){const i=l.default.visitNode(r,t);return A.bE(n,r)?b(i,A.K4(n,r)):A.T7(n,r)?u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createElementAccessExpression(u.Ay.addMemoryImport(m.d7),A.qZ(n,r)),void 0,[i]):((0,p.A)(u.Ay.currentFile,e,"accessof only support in cheap builtin type or struct type"),e)}return(0,p.A)(u.Ay.currentFile,e,`the type of ${r.getText()} is not pointer`),e}if(r===m.j8&&!u.Ay.lookupFunc(m.j8)){if(2===e.arguments.length){const t=u.Ay.typeChecker.getTypeAtLocation(e.arguments[0]);if(A.O4(t)&&l.default.isStringLiteral(e.arguments[1])){const r=A.pj(t),n=(0,g.A)(r,e.arguments[1].text);return n?u.Ay.context.factory.createNumericLiteral(n[7]):((0,p.A)(u.Ay.currentFile,e,`struct ${r.name} has not property ${e.arguments[1].text}`),e)}return(0,p.A)(u.Ay.currentFile,e,"offsetof invalid arguments"),e}return(0,p.A)(u.Ay.currentFile,e,"offsetof invalid arguments"),e}if(r===m.c$&&!u.Ay.lookupFunc(m.c$)){var C;const r=l.default.visitNode(e.arguments[0],t);let n=h.u9(e.arguments[0]),i=e.typeArguments[0]&&(null===(C=u.Ay.typeChecker.getTypeAtLocation(e.typeArguments[0]))||void 0===C||null===(C=C.aliasSymbol)||void 0===C?void 0:C.escapedName)||"";!i&&l.default.isTypeReferenceNode(e.typeArguments[0])&&l.default.isIdentifier(e.typeArguments[0].typeName)&&(i=e.typeArguments[0].typeName.escapedText),i!==m.O9&&i!==m.E9||(i=u.Ay.cheapCompilerOptions.defined.WASM_64?"uint64":"uint32");const a=u.Ay.typeChecker.getTypeAtLocation(e.arguments[0]);if(T.YO.has(f.aO,n)&&(c()(a)&l.default.TypeFlags.BigIntLiteral||c()(a)&l.default.TypeFlags.NumberLiteral)&&d.i[f.d1[i]]===d.i[f.d1[n]]&&(n=i),T.YO.has(f.Be,i)){let e=r;if(T.YO.has(f.YI,n))e=u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(u.Ay.context.factory.createParenthesizedExpression(r),l.default.SyntaxKind.GreaterThanGreaterThanToken,u.Ay.context.factory.createNumericLiteral(0))),n="int32";else if(T.YO.has(f.D,n)){let t=8*d.i[f.d1[i]];T.YO.has(f.YI,i)?e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("Number"),void 0,[r]):(e=T.YO.has(f.aO,i)?u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("BigInt"),u.Ay.context.factory.createIdentifier("asUintN")),void 0,[u.Ay.context.factory.createNumericLiteral(t),r]):u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("BigInt"),u.Ay.context.factory.createIdentifier("asIntN")),void 0,[u.Ay.context.factory.createNumericLiteral(t),r]),e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("Number"),void 0,[e])),n=i}return d.i[f.d1[n]]>1&&1===d.i[f.d1[i]]?(e=u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0xff",l.default.TokenFlags.HexSpecifier))),n="uint8"):d.i[f.d1[n]]>2&&2===d.i[f.d1[i]]&&(e=u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0xffff",l.default.TokenFlags.HexSpecifier))),n="uint16"),T.YO.has(f.aO,n)&&!T.YO.has(f.aO,i)?e=1===d.i[f.d1[i]]?u.Ay.context.factory.createConditionalExpression(u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0x80",l.default.TokenFlags.HexSpecifier))),u.Ay.context.factory.createToken(l.default.SyntaxKind.QuestionToken),u.Ay.context.factory.createPrefixUnaryExpression(l.default.SyntaxKind.MinusToken,u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(u.Ay.context.factory.createNumericLiteral("0x100",l.default.TokenFlags.HexSpecifier),l.default.SyntaxKind.MinusToken,e))),u.Ay.context.factory.createToken(l.default.SyntaxKind.ColonToken),e):2===d.i[f.d1[i]]?u.Ay.context.factory.createConditionalExpression(u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0x80000",l.default.TokenFlags.HexSpecifier))),u.Ay.context.factory.createToken(l.default.SyntaxKind.QuestionToken),u.Ay.context.factory.createPrefixUnaryExpression(l.default.SyntaxKind.MinusToken,u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(u.Ay.context.factory.createNumericLiteral("0x10000",l.default.TokenFlags.HexSpecifier),l.default.SyntaxKind.MinusToken,e))),u.Ay.context.factory.createToken(l.default.SyntaxKind.ColonToken),e):u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.GreaterThanGreaterThanToken,u.Ay.context.factory.createNumericLiteral(0))):T.YO.has(f.aO,n)||T.YO.has(f.uA,n)||!T.YO.has(f.aO,i)||(e=1===d.i[f.d1[i]]?u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0xff",l.default.TokenFlags.HexSpecifier))):2===d.i[f.d1[i]]?u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.AmpersandToken,u.Ay.context.factory.createNumericLiteral("0xffff",l.default.TokenFlags.HexSpecifier))):u.Ay.context.factory.createParenthesizedExpression(u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,u.Ay.context.factory.createNumericLiteral(0)))),T.YO.has(f.uA,n)&&(e=e.kind===l.default.SyntaxKind.TrueKeyword?u.Ay.context.factory.createNumericLiteral(1):e.kind===l.default.SyntaxKind.FalseKeyword?u.Ay.context.factory.createNumericLiteral(0):u.Ay.context.factory.createConditionalExpression(u.Ay.context.factory.createParenthesizedExpression(e),u.Ay.context.factory.createToken(l.default.SyntaxKind.QuestionToken),u.Ay.context.factory.createNumericLiteral(1),u.Ay.context.factory.createToken(l.default.SyntaxKind.ColonToken),u.Ay.context.factory.createNumericLiteral(0))),(l.default.isBinaryExpression(e)||l.default.isConditionalExpression(e))&&(e=u.Ay.context.factory.createParenthesizedExpression(e)),e}if(T.YO.has(f.D,i)){let e=r;const t=d.i[f.d1[n]];if(T.YO.has(f.YI,n)&&(e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("Math"),u.Ay.context.factory.createIdentifier("floor")),void 0,[e]),e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("BigInt"),void 0,[e]),n="int64"),T.YO.has(f.Be,n)){let t=!1;T.YO.has(f.aO,n)||(T.YO.has(f.aO,i)?e=u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken,u.Ay.context.factory.createNumericLiteral(0)):(e=u.Ay.context.factory.createBinaryExpression(e,l.default.SyntaxKind.GreaterThanGreaterThanToken,u.Ay.context.factory.createNumericLiteral(0)),t=!0)),e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("BigInt"),void 0,[e]),n=t?"int64":"uint64"}return T.YO.has(f.aO,n)&&!T.YO.has(f.aO,i)&&8===t?e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("BigInt"),u.Ay.context.factory.createIdentifier("asIntN")),void 0,[u.Ay.context.factory.createNumericLiteral(64),e]):T.YO.has(f.aO,n)||T.YO.has(f.uA,n)||!T.YO.has(f.aO,i)||(e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.context.factory.createIdentifier("BigInt"),u.Ay.context.factory.createIdentifier("asUintN")),void 0,[u.Ay.context.factory.createNumericLiteral(64),e])),T.YO.has(f.uA,n)&&(e=e.kind===l.default.SyntaxKind.TrueKeyword?u.Ay.context.factory.createBigIntLiteral("1n"):e.kind===l.default.SyntaxKind.FalseKeyword?u.Ay.context.factory.createBigIntLiteral("0n"):u.Ay.context.factory.createConditionalExpression(u.Ay.context.factory.createParenthesizedExpression(e),u.Ay.context.factory.createToken(l.default.SyntaxKind.QuestionToken),u.Ay.context.factory.createBigIntLiteral("1n"),u.Ay.context.factory.createToken(l.default.SyntaxKind.ColonToken),u.Ay.context.factory.createBigIntLiteral("0n"))),(l.default.isBinaryExpression(e)||l.default.isConditionalExpression(e))&&(e=u.Ay.context.factory.createParenthesizedExpression(e)),e}if(T.YO.has(f.YI,i)){let e=r;return T.YO.has(f.D,n)&&(e=u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("Number"),void 0,[e])),T.YO.has(f.uA,n)&&(e=e.kind===l.default.SyntaxKind.TrueKeyword?u.Ay.context.factory.createNumericLiteral(1):e.kind===l.default.SyntaxKind.FalseKeyword?u.Ay.context.factory.createNumericLiteral(0):u.Ay.context.factory.createConditionalExpression(u.Ay.context.factory.createParenthesizedExpression(e),u.Ay.context.factory.createToken(l.default.SyntaxKind.QuestionToken),u.Ay.context.factory.createNumericLiteral(1),u.Ay.context.factory.createToken(l.default.SyntaxKind.ColonToken),u.Ay.context.factory.createNumericLiteral(0))),(l.default.isBinaryExpression(e)||l.default.isConditionalExpression(e))&&(e=u.Ay.context.factory.createParenthesizedExpression(e)),e}if(T.YO.has(f.uA,i)){let e=r;return(l.default.isBinaryExpression(e)||l.default.isConditionalExpression(e))&&(e=u.Ay.context.factory.createParenthesizedExpression(e)),u.Ay.context.factory.createPrefixUnaryExpression(l.default.SyntaxKind.ExclamationToken,u.Ay.context.factory.createPrefixUnaryExpression(l.default.SyntaxKind.ExclamationToken,e))}return u.Ay.context.factory.createParenthesizedExpression(r)}if(r===m._5&&!u.Ay.lookupFunc(m._5)){if(u.Ay.cheapCompilerOptions.defined.WASM_64){var P;let r=e.typeArguments[0]&&(null===(P=u.Ay.typeChecker.getTypeAtLocation(e.typeArguments[0]))||void 0===P||null===(P=P.aliasSymbol)||void 0===P?void 0:P.escapedName)||"";if(r===m.E9||r===m.O9){const r=h.u9(e.arguments[0]);if(!T.YO.has(f.D,r))return h.bk(l.default.visitNode(e.arguments[0],t))}const n=u.Ay.typeChecker.getTypeAtLocation(e.arguments[0]);if((A.sV(n)||A.IQ(n,e.arguments[0]))&&!T.YO.has(f.D,r)&&r!==m.O9&&r!==m.E9){const r=l.default.visitNode(e.arguments[0],t);return h.AK(r)?u.Ay.context.factory.createNumericLiteral(Number(h.pg(r))):u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier("Number"),void 0,[r])}}return l.default.visitNode(e.arguments[0],t)}if(r===m.sw&&!u.Ay.lookupFunc(m.sw)&&1===e.arguments.length&&l.default.isIdentifier(e.arguments[0]))return S(e.arguments[0].escapedText,e);if(r===m.Cy&&!u.Ay.lookupFunc(m.Cy)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createIdentifier(m.Yq),void 0,r),t)}if(r===m.z1&&!u.Ay.lookupFunc(m.z1)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.addIdentifierImport(m.s_,m.dB,!1),u.Ay.context.factory.createIdentifier(m.z1)),void 0,r),t)}if(r===m.dz&&!u.Ay.lookupFunc(m.dz)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.addIdentifierImport(m.s_,m.dB,!1),u.Ay.context.factory.createIdentifier(m.dz)),void 0,r),t)}if(r===m.xK&&!u.Ay.lookupFunc(m.xK)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.addIdentifierImport(m.s_,m.dB,!1),u.Ay.context.factory.createIdentifier(m.xK)),void 0,r),t)}if(r===m.IF&&!u.Ay.lookupFunc(m.IF)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.addIdentifierImport(m.s_,m.dB,!1),u.Ay.context.factory.createIdentifier("alignedAlloc")),void 0,r),t)}if(r===m.t9&&!u.Ay.lookupFunc(m.t9)){const{newArgument:r}=N(n,e.arguments);return l.default.visitNode(u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createPropertyAccessExpression(u.Ay.addIdentifierImport(m.s_,m.dB,!1),u.Ay.context.factory.createIdentifier(m.t9)),void 0,r),t)}if(r===m.L8&&!u.Ay.lookupFunc(m.L8)){if(e.arguments.length<2){if(!e.typeArguments||1!==e.typeArguments.length||!l.default.isTypeReferenceNode(e.typeArguments[0])||!l.default.isIdentifier(e.typeArguments[0].typeName))return(0,p.A)(u.Ay.currentFile,e,"invalid typeArguments",v.lh),e;const t=u.Ay.typeChecker.getTypeAtLocation(e.typeArguments[0].typeName);if(!(t.symbol&&t.symbol.valueDeclaration&&l.default.isClassDeclaration(t.symbol.valueDeclaration)&&(0,y.ux)(t.symbol)))return(0,p.A)(u.Ay.currentFile,e,`invalid typeArguments, not found struct defined of ${e.typeArguments[0].typeName.escapedText}`,v.lh),e}const t=l.default.visitEachChild(e,u.Ay.visitor,u.Ay.context);return u.Ay.context.factory.createCallExpression(u.Ay.addIdentifierImport(m.L8,m.Gl,!1),void 0,t.arguments)}if(r===m.g3&&!u.Ay.lookupFunc(m.g3)){if(e.arguments.length<3){if(!e.typeArguments||1!==e.typeArguments.length||!l.default.isTypeReferenceNode(e.typeArguments[0])||!l.default.isIdentifier(e.typeArguments[0].typeName))return(0,p.A)(u.Ay.currentFile,e,"invalid typeArguments",v.lh),e;const t=u.Ay.typeChecker.getTypeAtLocation(e.typeArguments[0].typeName);if(!(t.symbol&&t.symbol.valueDeclaration&&l.default.isClassDeclaration(t.symbol.valueDeclaration)&&(0,y.ux)(t.symbol)||A.cX(t,null)))return(0,p.A)(u.Ay.currentFile,e,`invalid typeArguments, not found struct defined of ${e.typeArguments[0].typeName.escapedText} or ${e.typeArguments[0].typeName.escapedText} is not builtin type`,v.lh),e}const t=l.default.visitEachChild(e,u.Ay.visitor,u.Ay.context);return u.Ay.context.factory.createCallExpression(u.Ay.addIdentifierImport(m.E6,m.dB,!1),void 0,t.arguments)}if(r===m.Ou&&!u.Ay.lookupFunc(m.Ou)){const t=l.default.visitEachChild(e,u.Ay.visitor,u.Ay.context);return u.Ay.context.factory.createCallExpression(u.Ay.addIdentifierImport(m.Ou,m.Gl,!1),void 0,t.arguments)}}else{const t=e.arguments[0];let r=u.Ay.typeChecker.getTypeAtLocation(t);if(r){const n=k(r,t);return n?h.bk(u.Ay.context.factory.createNumericLiteral(n)):u.Ay.context.factory.createCallExpression(u.Ay.addIdentifierImport(m.FK,m.Gl,!1),void 0,e.arguments)}}else if(l.default.isPropertyAccessExpression(e.expression)&&r===m.qh){const r=u.Ay.typeChecker.getTypeAtLocation(e.expression.expression);if(A.IQ(r,e.expression.expression)&&e.arguments[0]){let n=l.default.visitNode(e.expression.expression,t);if(A.bE(r,e.expression.expression)){const i=A.K4(r,e.expression.expression);if(i){let r=null;return l.default.isNumericLiteral(e.arguments[0])?+e.arguments[0].text&&(r=h.bk(+e.arguments[0].text*i.length)):r=h.bk(u.Ay.context.factory.createBinaryExpression(l.default.visitNode(e.arguments[0],t),l.default.SyntaxKind.AsteriskToken,u.Ay.context.factory.createNumericLiteral(i.length))),n=r?u.Ay.context.factory.createBinaryExpression(n,l.default.SyntaxKind.PlusToken,r):n,b(n,i)}}else if(A.T7(r,e.expression.expression)){const i=A.qZ(r,e.expression.expression),a=d.i[i];if(a){let r=null;return l.default.isNumericLiteral(e.arguments[0])?+e.arguments[0].text&&(r=h.bk(+e.arguments[0].text*a)):r=h.bk(u.Ay.context.factory.createBinaryExpression(l.default.visitNode(e.arguments[0],t),l.default.SyntaxKind.AsteriskToken,u.Ay.context.factory.createNumericLiteral(a))),n=r?u.Ay.context.factory.createBinaryExpression(n,l.default.SyntaxKind.PlusToken,r):n,function(e,t){return u.Ay.context.factory.createCallExpression(u.Ay.context.factory.createElementAccessExpression(u.Ay.addMemoryImport(m.d7),t),void 0,[e])}(n,i)}}}}if(n&&e.arguments.length){const{hasSizeParameter:r,newArgument:i}=N(n,e.arguments);if(r)return l.default.visitNode(u.Ay.context.factory.createCallExpression(e.expression,e.typeArguments,[...i]),t)}return l.default.visitEachChild(e,t,u.Ay.context)}},73776:(e,t,r)=>{var n=r(53457),i=r(37804),a=Array.prototype;e.exports=function(e){var t=e.some;return e===a||n(a,e)&&t===a.some?i:t}},74093:(e,t,r)=>{var n,i;e.exports=(n={default:()=>a.default},i={},r.d(i,n),i)},74150:(e,t,r)=>{var n=r(73012),i=r(95497),a=Function.prototype,o=n&&Object.getOwnPropertyDescriptor,s=i(a,"name"),c=s&&"something"===function(){}.name,l=s&&(!n||n&&o(a,"name").configurable);e.exports={EXISTS:s,PROPER:c,CONFIGURABLE:l}},74176:(e,t,r)=>{var n=r(1800),i=Math.floor,a=function(e,t){var r=e.length;if(r<8)for(var o,s,c=1;c<r;){for(s=c,o=e[c];s&&t(e[s-1],o)>0;)e[s]=e[--s];s!==c++&&(e[s]=o)}else for(var l=i(r/2),u=a(n(e,0,l),t),f=a(n(e,l),t),p=u.length,d=f.length,y=0,h=0;y<p||h<d;)e[y+h]=y<p&&h<d?t(u[y],f[h])<=0?u[y++]:f[h++]:y<p?u[y++]:f[h++];return e};e.exports=a},74347:(e,t,r)=>{r(67915),e.exports=-9007199254740991},74371:(e,t,r)=>{var n=r(40317);e.exports=function(e){var t=+e;return t!=t||0===t?0:n(t)}},74553:(e,t,r)=>{var n=r(53457),i=r(99669),a=Array.prototype;e.exports=function(e){var t=e.fill;return e===a||n(a,e)&&t===a.fill?i:t}},74652:(e,t,r)=>{var n=r(58184),i=r(32542),a=r(35021),o=r(34676),s=r(30530),c=r(25563),l=r(47839),u=r(51219),f=r(6455),p=i&&i.prototype,d=c("species"),y=!1,h=a(n.PromiseRejectionEvent),x=o("Promise",(function(){var e=s(i),t=e!==String(i);if(!t&&66===f)return!0;if(u&&(!p.catch||!p.finally))return!0;if(!f||f<51||!/native code/.test(e)){var r=new i((function(e){e(1)})),n=function(e){e((function(){}),(function(){}))};if((r.constructor={})[d]=n,!(y=r.then((function(){}))instanceof n))return!0}return!(t||"BROWSER"!==l&&"DENO"!==l||h)}));e.exports={CONSTRUCTOR:x,REJECTION_EVENT:h,SUBCLASSING:y}},74715:(e,t,r)=>{r(82625);var n=r(42244);e.exports=n("Array","lastIndexOf")},74813:(e,t,r)=>{r(42399),r(18811),r(79843),r(17247),r(66582),r(90012)},74840:(e,t,r)=>{r(9815)("replaceAll")},75191:(e,t,r)=>{var n=r(53457),i=r(74715),a=Array.prototype;e.exports=function(e){var t=e.lastIndexOf;return e===a||n(a,e)&&t===a.lastIndexOf?i:t}},75419:(e,t,r)=>{r(9815)("iterator")},76157:(e,t,r)=>{var n=r(61726),i=Object;e.exports=function(e){return i(n(e))}},76280:(e,t,r)=>{var n=r(89624),i=n({}.toString),a=n("".slice);e.exports=function(e){return a(i(e),8,-1)}},76312:(e,t,r)=>{r.d(t,{A:()=>o});var n=r(50442),i=r.n(n),a=r(80807);function o(e,t,r){if(e.length){const n=[];i()(e).call(e,(e=>{n.push(a.Ay.context.factory.createImportSpecifier(!1,a.Ay.context.factory.createIdentifier(e.name),a.Ay.context.factory.createIdentifier(e.formatName)))}));const o=a.Ay.context.factory.createImportDeclaration(void 0,a.Ay.context.factory.createImportClause(!1,void 0,a.Ay.context.factory.createNamedImports(n)),a.Ay.context.factory.createStringLiteral(t));r.push(o)}}},76324:(e,t,r)=>{r(9815)("dispose")},76713:(e,t,r)=>{e.exports=r(17347)},76832:(e,t,r)=>{r(45590);var n=r(42244);e.exports=n("Array","slice")},76972:(e,t,r)=>{var n=r(8606),i=r.n(n),a=r(72551),o=r(99309),s=r(62643),c=r(12473);!function(){let e="object"==typeof WebAssembly&&"function"==typeof WebAssembly.instantiate,t="object"==typeof document&&document.createElement("canvas"),r=(t&&t.getContext("webgl"),"function"==typeof Worker),n="object"==typeof Atomics&&"Atomics"===Atomics[i()],l="function"==typeof VideoDecoder,u="function"==typeof AudioDecoder,f="function"==typeof SharedArrayBuffer,p="function"==typeof Proxy;r||(0,o.A)()||(0,a.A)(),"function"==typeof WebAssembly.Suspending&&WebAssembly.promising;(s.A.safari&&!s.A.checkVersion(s.A.majorVersion,"11",!0)||c.A.ios&&!s.A.checkVersion(c.A.version,"11",!0))&&(e=!1),s.A.chrome&&!s.A.checkVersion(s.A.majorVersion,"94",!0)&&(l=!1,u=!1),(s.A.safari&&!s.A.checkVersion(s.A.majorVersion,"17",!0)||c.A.ios&&!s.A.checkVersion(c.A.version,"17",!0))&&(l=!1);"object"==typeof navigator&&navigator.gpu,e&&WebAssembly.Global;s.A,(s.A.chrome||s.A.newEdge)&&s.A.checkVersion(s.A.majorVersion,"91",!0)||s.A.firefox&&s.A.checkVersion(s.A.majorVersion,"89",!0)||s.A.safari&&s.A.checkVersion(s.A.version,"16.4",!0)||c.A.ios&&s.A.checkVersion(c.A.version,"16.4",!0)}()},77097:(e,t,r)=>{var n=r(73012),i=r(58309),a=r(92518),o=r(66415),s=r(27041),c=TypeError,l=Object.defineProperty,u=Object.getOwnPropertyDescriptor,f="enumerable",p="configurable",d="writable";t.f=n?a?function(e,t,r){if(o(e),t=s(t),o(r),"function"==typeof e&&"prototype"===t&&"value"in r&&d in r&&!r[d]){var n=u(e,t);n&&n[d]&&(e[t]=r.value,r={configurable:p in r?r[p]:n[p],enumerable:f in r?r[f]:n[f],writable:!1})}return l(e,t,r)}:l:function(e,t,r){if(o(e),t=s(t),o(r),i)try{return l(e,t,r)}catch(e){}if("get"in r||"set"in r)throw new c("Accessors not supported");return"value"in r&&(e[t]=r.value),e}},77221:e=>{e.exports={}},77477:(e,t,r)=>{var n=r(58184),i=r(73012),a=Object.getOwnPropertyDescriptor;e.exports=function(e){if(!i)return n[e];var t=a(n,e);return t&&t.value}},77905:(e,t,r)=>{var n=r(2710);r(92833),e.exports=n},77965:(e,t,r)=>{r.d(t,{A:()=>f});var n=r(74093),i=r(80807),a=r(88431),o=r(23581),s=r(85961),c=r(52788),l=r(17275),u=r(43095);function f(e,t){const r=i.Ay.typeChecker.getTypeAtLocation(e.expression);if(l.Og(e)&&(!r.aliasSymbol||r.aliasSymbol.escapedName!==c.Qi))return n.default.visitNode(i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createIdentifier(c.se),void 0,[i.Ay.context.factory.createBinaryExpression(e.expression,n.default.SyntaxKind.PlusToken,e.argumentExpression)]),t);if(l.F7(e))return(0,a.A)(i.Ay.currentFile,e,"smart pointer not support [] operate"),e;if(n.default.isPropertyAccessExpression(e.expression)&&l.i$(e.expression.expression)||n.default.isElementAccessExpression(e.expression)&&l.i$(e.expression)){const r=i.Ay.typeChecker.getTypeAtLocation(e),p=i.Ay.typeChecker.getTypeAtLocation(e.expression);if(u._L(p)&&n.default.isNumericLiteral(e.argumentExpression)){const t=+e.argumentExpression.text,r=+p.aliasTypeArguments[1].value;if(t<0||t>=r)return(0,a.A)(i.Ay.currentFile,e,`type array access invalid index ${t}, range [0, ${r-1}]`),e}let d=n.default.visitNode(i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createIdentifier(c.Yq),void 0,[e.expression]),t);if(!u.O4(r))return u.cX(r,e)?(n.default.isNumericLiteral(e.argumentExpression)&&0==+e.argumentExpression.text||(d=i.Ay.context.factory.createBinaryExpression(d,n.default.SyntaxKind.PlusToken,n.default.isNumericLiteral(e.argumentExpression)?l.bk(o.i[u.L(r,e)]*+e.argumentExpression.text):l.bk(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createNumericLiteral(o.i[u.L(r,e)]),n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createParenthesizedExpression(e.argumentExpression))))),i.Ay.context.factory.createCallExpression(i.Ay.context.factory.createElementAccessExpression(i.Ay.addMemoryImport(c.d7),u.L(r,e)),void 0,[d])):((0,a.A)(i.Ay.currentFile,e,"struct type mismatch"),e);{var f;let t=u.pj(r),a=t.symbol.deref(),o="";t.structType===s.cj.INLINE_OBJECT&&(a=t.definedClassParent.symbol.deref(),o=t.definedClassParent.inlineStructPathMap.get(t.symbol.deref())),n.default.isNumericLiteral(e.argumentExpression)&&0==+e.argumentExpression.text||(d=i.Ay.context.factory.createBinaryExpression(d,n.default.SyntaxKind.PlusToken,n.default.isNumericLiteral(e.argumentExpression)?l.bk(t.length*+e.argumentExpression.text):l.bk(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createNumericLiteral(t.length),n.default.SyntaxKind.AsteriskToken,i.Ay.context.factory.createParenthesizedExpression(e.argumentExpression)))));const p=null===(f=a.valueDeclaration)||void 0===f?void 0:f.getSourceFile();if(p){let t;t=p!==i.Ay.currentFile?e.parent&&n.default.isCallExpression(e.parent)&&n.default.isIdentifier(e.parent.expression)&&e.parent.expression.escapedText===c.Yq&&!i.Ay.lookupFunc(c.Yq)?i.Ay.context.factory.createIdentifier("undefined"):i.Ay.addStructImport(a,p):i.Ay.context.factory.createIdentifier(a.escapedName);const r=[d,t];return o&&r.push(i.Ay.context.factory.createStringLiteral(o)),i.Ay.context.factory.createCallExpression(i.Ay.addIdentifierImport(c.CF,c.Gl,!1),void 0,r)}}}return n.default.visitEachChild(e,t,i.Ay.context)}},78563:(e,t,r)=>{r(92833);var n=r(40803),i=r(95497),a=r(53457),o=r(67681),s=Array.prototype,c={DOMTokenList:!0,NodeList:!0};e.exports=function(e){var t=e.entries;return e===s||a(s,e)&&t===s.entries||i(c,n(e))?o:t}},78686:(e,t,r)=>{r.d(t,{C8:()=>o.A,Ik:()=>a,YO:()=>i,cm:()=>s.A,dI:()=>c.A,is:()=>n}),r(40339),r(5884),r(63760),r(68013),r(4995),r(95522),r(69263),r(76972),r(62643),r(12473),r(15973),r(7849),r(65573);var n=r(79843),i=(r(83022),r(66582)),a=r(90012),o=(r(54167),r(11104),r(13695),r(10958),r(87523),r(98796),r(93799),r(74813),r(46154),r(97975),r(82946),r(21241),r(87110),r(43744),r(99937),r(38350),r(38507),r(63728),r(33668),r(18802),r(44891),r(94651),r(5661),r(23712)),s=r(6728),c=(r(80244),r(99309),r(54099),r(54043),r(17247),r(62940),r(11387),r(9135));r(70575),r(41900)},78809:(e,t,r)=>{var n=r(47839);e.exports="NODE"===n},78887:(e,t,r)=>{var n=r(54028),i=TypeError;e.exports=function(e){if(n(e))throw new i("The method doesn't accept regular expressions");return e}},79046:(e,t,r)=>{var n=r(58184),i=r(35021),a=n.WeakMap;e.exports=i(a)&&/native code/.test(String(a))},79197:(e,t,r)=>{r(48183);var n=r(72071);e.exports=n.setTimeout},79535:(e,t,r)=>{var n=r(53457),i=TypeError;e.exports=function(e,t){if(n(t,e))return e;throw new i("Incorrect invocation")}},79827:(e,t,r)=>{var n=r(66415);e.exports=function(){var e=n(this),t="";return e.hasIndices&&(t+="d"),e.global&&(t+="g"),e.ignoreCase&&(t+="i"),e.multiline&&(t+="m"),e.dotAll&&(t+="s"),e.unicode&&(t+="u"),e.unicodeSets&&(t+="v"),e.sticky&&(t+="y"),t}},79843:(e,t,r)=>{r.r(t),r.d(t,{array:()=>l,arrayBuffer:()=>g,bigint:()=>d,boolean:()=>y,func:()=>c,isPlainObject:()=>m,number:()=>p,numeric:()=>h,object:()=>u,range:()=>A,string:()=>f});var n=r(31519),i=r.n(n),a=r(5029),o=r.n(a),s=r(17095);function c(e){return typeof e===s.s0}function l(e){return i()(e)}function u(e){return e!==s.Cq&&"object"==typeof e}function f(e){return"string"==typeof e}function p(e){return"number"==typeof e&&!isNaN(e)}function d(e){return"bigint"==typeof e}function y(e){return"boolean"==typeof e}function h(e){return p(e)||f(e)&&!isNaN(o()(e))&&isFinite(+e)}const x={}.hasOwnProperty;function m(e){if(!u(e)||e.nodeType||e===e.window)return!1;if(e.constructor&&!x.call(e,"constructor")&&!x.call(e.constructor.prototype||{},"isPrototypeOf"))return!1;let t;for(t in e);return void 0===t||x.call(e,t)}function A(e,t,r){return e>=t&&e<=r}function g(e){return e instanceof ArrayBuffer}},79847:(e,t,r)=>{var n=r(66644);e.exports=n},80043:(e,t,r)=>{r(17489)},80064:(e,t,r)=>{var n=r(65695);e.exports=n},80076:(e,t,r)=>{r(10696);var n=r(42244);e.exports=n("String","startsWith")},80244:(e,t,r)=>{r.d(t,{A:()=>o});var n=r(79843),i=r(9135),a=r(83022);function o(e){return n.func(e)&&a.zy((0,i.A)(e),"[native code]")}},80283:(e,t,r)=>{var n=r(40803),i=r(46998),a=r(91485),o=r(77221),s=r(25563)("iterator");e.exports=function(e){if(!a(e))return i(e,s)||i(e,"@@iterator")||o[n(e)]}},80347:(e,t,r)=>{var n=r(73012),i=r(55701),a=r(34877),o=r(57884),s=r(33437),c=r(27041),l=r(95497),u=r(58309),f=Object.getOwnPropertyDescriptor;t.f=n?f:function(e,t){if(e=s(e),t=c(t),u)try{return f(e,t)}catch(e){}if(l(e,t))return o(!i(a.f,e,t),e[t])}},80469:(e,t,r)=>{var n=r(89838),i=r(58184),a=r(85089).set,o=r(56600),s=i.setImmediate?o(a,!1):a;n({global:!0,bind:!0,enumerable:!0,forced:i.setImmediate!==s},{setImmediate:s})},80807:(e,t,r)=>{r.d(t,{Ay:()=>D,T0:()=>F,_B:()=>K});var n=r(82563),i=r(23339),a=r.n(i),o=r(42399),s=r.n(o),c=r(41450),l=r.n(c),u=r(91149),f=r.n(u),p=r(50442),d=r.n(p),y=r(9538),h=r.n(y),x=r(9105),m=r.n(x),A=r(74093),g=r(12521),v=r(44421),T=r(78686),S=r(15460),E=r(66942),b=r(52788),k=r(76312),N=r(2080),I=r(99280),C=r(95998),P=r(88431);const L=new(a());function O(e,t){return`cheap__${e}__${t}`}function w(e,t){return e===t||0===s()(e).call(e,`cheap__${t}__`)}var F,K;!function(e){e[e.NONE=0]="NONE",e[e.CALL=1]="CALL",e[e.EqualLeft=2]="EqualLeft",e[e.EqualRight=3]="EqualRight",e[e.SingleArrowRight=4]="SingleArrowRight",e[e.PointerPlusMinusIgnore=5]="PointerPlusMinusIgnore",e[e.AddressOf=6]="AddressOf",e[e.Parameter=7]="Parameter",e[e.VariableDeclaration=8]="VariableDeclaration"}(F||(F={})),function(e){e[e.UNKNOWN=0]="UNKNOWN",e[e.FUNCTION=1]="FUNCTION",e[e.IF=2]="IF",e[e.LOOP=3]="LOOP"}(K||(K={}));class _{constructor(){(0,n.A)(this,"stage",void 0),(0,n.A)(this,"data",void 0)}}class B{constructor(e=K.UNKNOWN){(0,n.A)(this,"type",K.UNKNOWN),(0,n.A)(this,"topDeclaration",[]),(0,n.A)(this,"definedStruct",[]),(0,n.A)(this,"stages",[]),(0,n.A)(this,"locals",new(a())),(0,n.A)(this,"funcs",new(a())),(0,n.A)(this,"synchronize",!1),this.type=e}pushStage(e,t){const r=new _;r.stage=e,r.data=t,this.stages.push(r)}popStage(){this.stages.pop()}lookupStage(e){for(let t=this.stages.length-1;t>=0;t--)if(this.stages[t].stage===e)return this.stages[t]}getCurrentStage(){return this.stages[this.stages.length-1]}hasStruct(e){return T.YO.has(this.definedStruct,e)}getDeclaration(e){var t;return l()(t=this.topDeclaration).call(t,(t=>t.name===e))}}const M=new class{constructor(){(0,n.A)(this,"options",void 0),(0,n.A)(this,"compilerOptions",void 0),(0,n.A)(this,"cheapCompilerOptions",void 0),(0,n.A)(this,"program",void 0),(0,n.A)(this,"context",void 0),(0,n.A)(this,"typeChecker",void 0),(0,n.A)(this,"visitor",void 0),(0,n.A)(this,"currentFile",void 0),(0,n.A)(this,"currentFilePath",void 0),(0,n.A)(this,"imports",void 0),(0,n.A)(this,"memoryImports",void 0),(0,n.A)(this,"symbolImports",void 0),(0,n.A)(this,"stdImports",void 0),(0,n.A)(this,"identifierImports",void 0),(0,n.A)(this,"requires",void 0),(0,n.A)(this,"stacks",void 0),(0,n.A)(this,"identifierIndex",void 0),(0,n.A)(this,"packageModule",void 0),(0,n.A)(this,"moduleType",void 0),(0,n.A)(this,"esModuleInterop",void 0),(0,n.A)(this,"isCheapSource",void 0)}start(e){if(this.currentFile=e,this.identifierIndex=0,this.memoryImports=[],this.symbolImports=[],this.stdImports=[],this.identifierImports=[],this.requires=[],this.isCheapSource=!1,this.stacks=[],this.pushStack(),this.imports=(0,S.A)(e,this.program,this.typeChecker,this.getCurrentStack().locals),this.currentFilePath=g.default.relative(this.options.projectPath,e.fileName),this.options.cheapSourcePath){const t=g.default.relative(this.options.cheapSourcePath,e.fileName);this.isCheapSource=!!t&&!f()(t).call(t,"..")&&!g.default.isAbsolute(t)}if(this.moduleType===A.default.ModuleKind.Node16||this.moduleType===A.default.ModuleKind.Node18||this.moduleType===A.default.ModuleKind.Node20||this.moduleType===A.default.ModuleKind.NodeNext){const e=this.findNearestPackageJson(this.currentFile.fileName);null!=e&&e.content.type&&(this.packageModule=e.content.type)}}isOutputCJS(){return this.moduleType===A.default.ModuleKind.CommonJS||this.moduleType===A.default.ModuleKind.UMD||this.moduleType===A.default.ModuleKind.AMD||"commonjs"===this.options.module||(this.moduleType===A.default.ModuleKind.Node16||this.moduleType===A.default.ModuleKind.Node18||this.moduleType===A.default.ModuleKind.Node20||this.moduleType===A.default.ModuleKind.NodeNext)&&"commonjs"===this.packageModule}end(e){const t=this.getCurrentStack(),r=[];T.YO.each(t.topDeclaration,(e=>{r.push(this.context.factory.createVariableStatement(void 0,this.context.factory.createVariableDeclarationList([this.context.factory.createVariableDeclaration(e.formatName,void 0,void 0,e.initializer)],A.default.NodeFlags.Const)))})),(0,k.A)(this.memoryImports,b.Gl,r),(0,k.A)(this.symbolImports,b.dB,r);const n=new RegExp(`^\\S*/node_modules/${b.$9}/dist/((esm|cjs)/)?`);var i,a;return this.identifierImports.length&&d()(i=this.identifierImports).call(i,(e=>{let t=e.path.replace(/(\.d)?\.[t|j]s$/,"");t=t.replace(n,b.$9+"/"),this.options.importPath&&(t=this.options.importPath(t));const i=this.context.factory.createImportDeclaration(void 0,this.context.factory.createImportClause(!1,e.default?this.context.factory.createIdentifier(e.formatName):void 0,e.default?void 0:this.context.factory.createNamedImports([this.context.factory.createImportSpecifier(!1,this.context.factory.createIdentifier(e.name),this.context.factory.createIdentifier(e.formatName))])),this.context.factory.createStringLiteral(t));r.push(i)})),this.requires.length&&d()(a=this.requires).call(a,(e=>{let t=e.path.replace(/(\.d)?\.[t|j]s$/,"");t=t.replace(n,b.$9+"/"),this.options.importPath&&(t=this.options.importPath(t));const i=this.context.factory.createCallExpression(this.context.factory.createIdentifier("require"),void 0,[this.context.factory.createStringLiteral(t)]),a=this.context.factory.createVariableStatement(void 0,this.context.factory.createVariableDeclarationList([this.context.factory.createVariableDeclaration(this.context.factory.createIdentifier(e.formatName),void 0,void 0,this.esModuleInterop&&!e.esModule?this.context.factory.createCallExpression(this.context.factory.createIdentifier(e.default?b.RO:b.me),void 0,[i]):i)],A.default.NodeFlags.Const));r.push(a)})),r.length&&(e=this.context.factory.updateSourceFile(e,[...r,...e.statements])),this.popStack(),this.program=null,this.typeChecker=null,this.context=null,this.currentFile=null,this.visitor=null,this.memoryImports=[],this.symbolImports=[],this.stdImports=[],this.identifierImports=[],this.requires=[],this.stacks=[],e}pushStack(e){this.stacks.push(new B(e))}popStack(){this.stacks.pop()}getCurrentStack(){return this.stacks[this.stacks.length-1]}pushStage(e,t={}){var r;null===(r=this.getCurrentStack())||void 0===r||r.pushStage(e,t)}popStage(){var e;null===(e=this.getCurrentStack())||void 0===e||e.popStage()}getCurrentStage(){var e;return null===(e=this.getCurrentStack())||void 0===e?void 0:e.getCurrentStage()}lookupStage(e){for(let t=this.stacks.length-1;t>=0;t--){const r=this.stacks[t].lookupStage(e);if(r)return r}}hasStruct(e){for(let t=this.stacks.length-1;t>=0;t--){const r=this.stacks[t].hasStruct(e);if(r)return r}return!1}addStruct(e){this.getCurrentStack().definedStruct.push(e)}getDeclaration(e){var t;return null===(t=this.getCurrentStack())||void 0===t?void 0:t.getDeclaration(e)}addDeclaration(e,t){const r=this.getCurrentStack();for(let t=0;t<r.topDeclaration.length;t++)if(r.topDeclaration[t].name===e)return r.topDeclaration[t];const n={name:e,formatName:O(e,this.identifierIndex++),initializer:t};return r.topDeclaration.push(n),n}addModuleDeclaration(e,t){const r=this.stacks[0];for(let t=0;t<r.topDeclaration.length;t++)if(r.topDeclaration[t].name===e)return r.topDeclaration[t];const n={name:e,formatName:O(e,this.identifierIndex++),initializer:t};return r.topDeclaration.push(n),n}relativePath(e){return 0===s()(e).call(e,b.$9)&&(e=e.replace(b.$9+"/","")),(0,N.A)(this.currentFile.fileName,g.default.resolve(this.options.cheapSourcePath,e))}modulePath2relativePath(e,t,r){return t===b.dB?e===b.d7?(t=this.relativePath(b.Kk),r=!1):e===b.o_?(t=this.relativePath(b.fJ),r=!1):e===b.s_?(t=this.relativePath(b.Fo),r=!1):e===b.g3?(t=this.relativePath(b.jk),r=!1):e===b.K5&&(t=this.relativePath(b.tI),r=!0):t===b.Gl&&(e===b.L8?(t=this.relativePath(b.cP),r=!0):e===b.Ou?(t=this.relativePath(b.P6),r=!0):e===b.FK?(t=this.relativePath(b.g2),r=!0):e===b.CF&&(t=this.relativePath(b._s),r=!0)),{modulePath:t,defaultExport:r}}addMemoryImport(e){if(e===b.d7)return this.addIdentifierImport(e,b.dB,!1);if(e===b.o_)return this.addIdentifierImport(e,b.dB,!1);if(this.isOutputCJS()){let{formatName:t}=(0,E.E)(this.requires,O("identifier",this.identifierIndex++),this.isCheapSource?this.relativePath(b.bf):b.Gl,!1,!0);return this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(t),this.context.factory.createIdentifier(e))}{let{formatName:t}=(0,E.I)(this.memoryImports,e,this.isCheapSource?this.relativePath(b.bf):b.Gl,!1===this.options.formatIdentifier?e:O(e,this.identifierIndex++),!1);return this.context.factory.createIdentifier(t)}}addSymbolImport(e){if(this.isOutputCJS()){let{formatName:t}=(0,E.E)(this.requires,O("identifier",this.identifierIndex++),this.isCheapSource?this.relativePath(b.Uq):b.dB,!1,!0);return this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(t),this.context.factory.createIdentifier(e))}{let{formatName:t}=(0,E.I)(this.symbolImports,e,this.isCheapSource?this.relativePath(b.Uq):b.dB,!1===this.options.formatIdentifier?e:O(e,this.identifierIndex++),!1);return this.context.factory.createIdentifier(t)}}addIdentifierImport(e,t,r,n=!0){if(this.isCheapSource){const n=this.modulePath2relativePath(e,t,r);t=n.modulePath,r=n.defaultExport}if(this.isOutputCJS()){let i=(0,E.E)(this.requires,O("identifier",this.identifierIndex++),t,r,!0);return r&&(i.defaultName=e),r&&!n?this.context.factory.createIdentifier(i.formatName):this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(i.formatName),this.context.factory.createIdentifier(r?"default":e))}{let{formatName:n}=(0,E.I)(this.identifierImports,e,t,!1===this.options.formatIdentifier?e:O(e,this.identifierIndex++),r);return this.context.factory.createIdentifier(n)}}resolveSourceSymbol(e){let t=e;for(;h()(t)&A.default.SymbolFlags.Alias;)t=this.typeChecker.getAliasedSymbol(t);return t}getAliasedNameFromModule(e,t,r){const n=(0,C.A)(this.program,this.currentFile.fileName,e);if(n){const e=this.program.getSourceFile(n);if(e){const n=this.typeChecker.getSymbolAtLocation(e);if(null!=n&&n.exports){if(n.exports.has(r)&&this.resolveSourceSymbol(n.exports.get(r))===t)return r;if(n.exports.has("default")&&this.resolveSourceSymbol(n.exports.get("default"))===t)return"default";for(let e of n.exports)if(this.resolveSourceSymbol(e[1])===t)return e[0]}}}}addStructImport(e,t){if(!this.isOutputCJS()){let t=this.lookupLocalSymbol(e);if(t)return this.context.factory.createIdentifier(t)}let r=(0,N.A)(this.currentFile.fileName,t.fileName),n=e.escapedName;if(T.Ik.each(this.cheapCompilerOptions.structPaths,((i,a)=>{if((0,I.xF)(t.fileName,a)&&!(0,I.xF)(this.currentFile.fileName,a)){let t=this.getAliasedNameFromModule(i,e,n);return t?(r=i,n=t):(0,P.A)(M.currentFile,this.currentFile,`not found struct ${n} from module ${i}`),!1}})),/[\\/]node_modules[\\/]/.test(t.fileName)){const i=t.fileName.match(/[\\/]node_modules[\\/](?:@[^\\/]+[\\/][^\\/]+|[^\\/]+)/);if(i){let t=i[0].replace(/.*node_modules[\\/]/,""),a=this.getAliasedNameFromModule(t,e,n);a&&(r=t,n=a)}}return this.addIdentifierImport(n,r,"default"===n)}isIdentifier(e,t,r,n){if(this.isCheapSource){const e=this.modulePath2relativePath(t,n,!1);n=e.modulePath}if(A.default.isIdentifier(e)){var i,a;if(e.escapedText===t){const t=this.typeChecker.getSymbolAtLocation(e);if(t){var o,c;const e=null===(o=t.valueDeclaration)||void 0===o?void 0:o.getSourceFile();if(e&&s()(c=e.fileName).call(c,r)>=0)return!0}}return w(e.escapedText,t)&&m()(i=this.identifierImports).call(i,(r=>r.formatName===e.escapedText&&r.name===t&&r.path===n))||w(e.escapedText,"identifier")&&m()(a=this.requires).call(a,(e=>e.defaultName===t&&e.path===n))}if(e.name.escapedText===t){const t=this.typeChecker.getSymbolAtLocation(e);if(t){var l,u;const e=null===(l=t.valueDeclaration)||void 0===l?void 0:l.getSourceFile();if(e&&s()(u=e.fileName).call(u,r)>=0)return!0}else if(A.default.isIdentifier(e.expression)&&w(e.expression.escapedText,"identifier")){var f;return m()(f=this.requires).call(f,(t=>t.formatName===e.expression.escapedText&&t.path===n))}}else if("default"===e.name.escapedText&&A.default.isIdentifier(e.expression)&&w(e.expression.escapedText,"identifier")){var p;return m()(p=this.requires).call(p,(e=>e.defaultName===t&&e.path===n))}return!1}addLocal(e,t){var r;null===(r=this.getCurrentStack())||void 0===r||r.locals.set(e,t)}addFunc(e,t){var r;null===(r=this.getCurrentStack())||void 0===r||r.funcs.set(e,t)}lookupLocal(e){for(let t=this.stacks.length-1;t>=0;t--){const r=this.stacks[t].locals.get(e);if(r)return r}}lookupLocalSymbol(e){for(let t=this.stacks.length-1;t>=0;t--){const r=this.stacks[t];for(let t of r.locals)if(this.resolveSourceSymbol(t[1])===e)return t[0]}}lookupFunc(e){for(let t=this.stacks.length-1;t>=0;t--){const r=this.stacks[t].funcs.get(e);if(r)return r}}lookupSynchronized(){for(let e=this.stacks.length-1;e>=0;e--){const t=this.stacks[e];if(t.type===K.FUNCTION)return t.synchronize}return!1}findNearestPackageJson(e){const t=g.default.resolve(e);if(L.has(t))return L.get(t);let r=g.default.dirname(t);for(;;){const e=g.default.join(r,"package.json");if(L.get(e))return L.get(e);if(!L.has(e)&&v.default.existsSync(e))try{const t={path:e,content:JSON.parse(v.default.readFileSync(e,"utf8"))};return L.set(e,t),t}catch(t){L.set(e,null)}const t=g.default.dirname(r);if(t===r)break;r=t}return L.set(t,null),null}},D=M},80879:()=>{},81326:(e,t,r)=>{r(9815)("unscopables")},81460:(e,t,r)=>{var n=r(55747);e.exports=n},81767:e=>{e.exports=function(e){try{return!!e()}catch(e){return!0}}},81918:(e,t,r)=>{var n=r(20171);r(31638),r(27568),r(38524),r(54673),r(40665),r(34067),r(7312),r(5759),r(67728),r(74840),e.exports=n},81941:(e,t,r)=>{var n=r(49089);e.exports=function(e,t){return new(n(e))(0===t?0:t)}},82021:(e,t,r)=>{var n=r(89838),i=r(36771);n({target:"Array",proto:!0,forced:[].forEach!==i},{forEach:i})},82313:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(74093),i=r(80807),a=r(52788),o=r(84126);function s(e,t){if(n.default.isIdentifier(e.tag)&&(e.tag.escapedText===a.QC||e.tag.escapedText===a.cd)){const r=n.default.visitNode(e.template,t);return(0,o.A)(r,e,e.tag.escapedText===a.cd)}return n.default.visitEachChild(e,t,i.Ay.context)}},82563:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(47218),i=r(28338);function a(e,t,r){return(t=(0,i.A)(t))in e?n(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}},82625:(e,t,r)=>{var n=r(89838),i=r(24691);n({target:"Array",proto:!0,forced:i!==[].lastIndexOf},{lastIndexOf:i})},82784:(e,t,r)=>{e.exports=r(84818)},82946:(e,t,r)=>{r(49497),r(63856),r(5391),r(90012),r(79843)},83022:(e,t,r)=>{r.d(t,{zy:()=>o}),r(1193),r(18811);var n=r(42399),i=r.n(n),a=(r(22608),r(15970),r(31472),r(79843),r(17095));function o(e,t){return function(e,t,r){return i()(e).call(e,t,r!==a.ZH?r:0)}(e,t)>=0}r(9135)},83105:(e,t,r)=>{var n=r(3872),i=Function.prototype,a=i.apply,o=i.call;e.exports="object"==typeof Reflect&&Reflect.apply||(n?o.bind(a):function(){return o.apply(a,arguments)})},83601:(e,t,r)=>{var n=r(98518);e.exports=n},84061:e=>{e.exports={}},84126:(e,t,r)=>{r.d(t,{A:()=>p});var n=r(35814),i=r(80807),a=r(74093),o=r(88431),s=r(78686),c=r(26336),l=r(44421);const u="__cheap__transformer_tmp.wat",f="__cheap__transformer_tmp.wasm";function p(e,t,r){let p="",d=t.template.getStart();if(a.default.isNoSubstitutionTemplateLiteral(e))p=e.text;else{e.head&&(p+=e.head.text);for(let g=0;g<e.templateSpans.length;g++){const v=e.templateSpans[g];if(!a.default.isStringLiteral(v.expression)&&!a.default.isNumericLiteral(v.expression))return(0,o.A)(i.Ay.currentFile,v.expression,`expression ${v.expression.getText()} not support in asm`),i.Ay.context.factory.createStringLiteral("compile asm error");p+=v.expression.text,p+=v.literal.text}}const y=i.Ay.options.tmpPath?`${i.Ay.options.tmpPath}/`:"";y&&!a.default.sys.directoryExists(y)&&a.default.sys.createDirectory(y);const h=`${y}${u}`,x=`${y}${f}`,m=`${i.Ay.options.wat2wasm} ${h} --enable-all -o ${x}`,A=`\n    (module\n      (import "env" "memory" (memory${r?" i64 ":" "}1 65536 shared))\n      ${p}\n    )\n  `;a.default.sys.writeFile(h,A);try{(0,n.execSync)(m,{stdio:"pipe"});const T=l.readFileSync(x);return i.Ay.context.factory.createStringLiteral(T.toString("base64"))}catch(S){let E=S.message.split("\n");E.shift();let b="",k=0;function N(e){let t=0;for(;e&&t<p.length;)"\n"===p[t++]&&e--;for(;t<p.length&&/\s/.test(p[t]);)t++;const r=d+t;for(;t<p.length&&"\n"!==p[t];)t++;return{start:r,end:d+t}}if(s.YO.each(E,(e=>{const r=e.match(/__cheap__transformer_tmp.wat:(\d+)/);if(r){if(b){const{start:e,end:r}=N(k);(0,o.A)(i.Ay.currentFile,t,b,c.jc,e,r)}b=`${e.split("error: ").pop()}`,k=+r[1]-4}else e&&(b+=`\n${e}`)})),b){const{start:I,end:C}=N(k);(0,o.A)(i.Ay.currentFile,t,b,c.jc,I,C)}return i.Ay.context.factory.createStringLiteral("compile asm error")}}},84140:()=>{},84418:(e,t,r)=>{var n=r(74371),i=Math.max,a=Math.min;e.exports=function(e,t){var r=n(e);return r<0?i(r+t,0):a(r,t)}},84478:(e,t,r)=>{r.d(t,{A:()=>c,X:()=>l});var n=r(74093),i=r(80807),a=r(35491),o=r(17275),s=r(78686);function c(e,t){if(n.default.isIdentifier(e.expression)){const t=e.expression.escapedText;if(s.YO.has(a.lo,t))return}else if(n.default.isCallExpression(e.expression)&&n.default.isIdentifier(e.expression.expression)){const t=e.expression.expression.escapedText;if(s.YO.has(a.lo,t))return}return n.default.visitEachChild(e,t,i.Ay.context)}function l(e,t){if(!(i.Ay.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API&&e.parent&&(n.default.isFunctionDeclaration(e.parent)||n.default.isFunctionExpression(e.parent)||n.default.isArrowFunction(e.parent)||n.default.isMethodDeclaration(e.parent))&&o.nP(e.parent)))return e}},84636:(e,t,r)=>{var n=r(53457),i=r(71696),a=Array.prototype;e.exports=function(e){var t=e.map;return e===a||n(a,e)&&t===a.map?i:t}},84718:(e,t,r)=>{var n=r(74553);e.exports=n},84818:(e,t,r)=>{var n=r(64353);e.exports=n},84845:(e,t,r)=>{var n=r(86927),i=r(35021),a=r(53457),o=r(26440),s=Object;e.exports=o?function(e){return"symbol"==typeof e}:function(e){var t=n("Symbol");return i(t)&&a(t.prototype,s(e))}},85089:(e,t,r)=>{var n,i,a,o,s=r(58184),c=r(83105),l=r(97960),u=r(35021),f=r(95497),p=r(81767),d=r(60821),y=r(1800),h=r(15967),x=r(17428),m=r(18192),A=r(78809),g=s.setImmediate,v=s.clearImmediate,T=s.process,S=s.Dispatch,E=s.Function,b=s.MessageChannel,k=s.String,N=0,I={},C="onreadystatechange";p((function(){n=s.location}));var P=function(e){if(f(I,e)){var t=I[e];delete I[e],t()}},L=function(e){return function(){P(e)}},O=function(e){P(e.data)},w=function(e){s.postMessage(k(e),n.protocol+"//"+n.host)};g&&v||(g=function(e){x(arguments.length,1);var t=u(e)?e:E(e),r=y(arguments,1);return I[++N]=function(){c(t,void 0,r)},i(N),N},v=function(e){delete I[e]},A?i=function(e){T.nextTick(L(e))}:S&&S.now?i=function(e){S.now(L(e))}:b&&!m?(o=(a=new b).port2,a.port1.onmessage=O,i=l(o.postMessage,o)):s.addEventListener&&u(s.postMessage)&&!s.importScripts&&n&&"file:"!==n.protocol&&!p(w)?(i=w,s.addEventListener("message",O,!1)):i=C in h("script")?function(e){d.appendChild(h("script"))[C]=function(){d.removeChild(this),P(e)}}:function(e){setTimeout(L(e),0)}),e.exports={set:g,clear:v}},85349:(e,t,r)=>{e.exports=r(86236)},85658:(e,t,r)=>{r.d(t,{A:()=>u});var n=r(74093),i=r(80807),a=r(17275),o=r(88431),s=r(35491),c=r(43095),l=r(78686);function u(e,t){if(n.default.isPrefixUnaryExpression(e)&&(0,a.i$)(e.operand)){var r;const a=i.Ay.typeChecker.getTypeAtLocation(e.operand);let c=1;const u=l.YO.has(s.D,null===(r=a.aliasSymbol)||void 0===r?void 0:r.escapedName)?i.Ay.context.factory.createBigIntLiteral({negative:!1,base10Value:(0,l.dI)(c)}):i.Ay.context.factory.createNumericLiteral(c);if(e.operator===n.default.SyntaxKind.PlusPlusToken)return n.default.isExpressionStatement(e.parent)?n.default.visitNode(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.PlusEqualsToken,u),t):n.default.visitNode(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.PlusEqualsToken,u),n.default.SyntaxKind.CommaToken,e.operand),t);if(e.operator===n.default.SyntaxKind.MinusMinusToken)return n.default.isExpressionStatement(e.parent)?n.default.visitNode(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.MinusEqualsToken,u),t):n.default.visitNode(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.MinusEqualsToken,u),n.default.SyntaxKind.CommaToken,e.operand),t);if(e.operator!==n.default.SyntaxKind.ExclamationToken)return(0,o.A)(i.Ay.currentFile,e,"The unary operation width pointer only allowed ++ -- !"),e}else if(n.default.isPostfixUnaryExpression(e)&&(0,a.i$)(e.operand)){const r=i.Ay.typeChecker.getTypeAtLocation(e.operand);let a=1;const o=l.YO.has(s.D,c.OQ(r))?i.Ay.context.factory.createBigIntLiteral({negative:!1,base10Value:(0,l.dI)(a)}):i.Ay.context.factory.createNumericLiteral(a);if(e.operator===n.default.SyntaxKind.PlusPlusToken)return n.default.isExpressionStatement(e.parent)?n.default.visitNode(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.PlusEqualsToken,o),t):n.default.visitNode(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.PlusEqualsToken,o),n.default.SyntaxKind.CommaToken,i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.MinusToken,o)),t);if(e.operator===n.default.SyntaxKind.MinusMinusToken)return n.default.isExpressionStatement(e.parent)?n.default.visitNode(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.MinusEqualsToken,o),t):n.default.visitNode(i.Ay.context.factory.createBinaryExpression(i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.MinusEqualsToken,o),n.default.SyntaxKind.CommaToken,i.Ay.context.factory.createBinaryExpression(e.operand,n.default.SyntaxKind.PlusToken,o)),t)}return n.default.visitEachChild(e,t,i.Ay.context)}},85961:(e,t,r)=>{r.d(t,{Y:()=>K,cj:()=>n,ng:()=>M,s1:()=>B,ux:()=>_});var n,i=r(82563),a=r(8606),o=r.n(a),s=r(9002),c=r.n(s),l=r(23339),u=r.n(l),f=r(5959),p=r.n(f),d=r(50442),y=r.n(d),h=r(9538),x=r.n(h),m=r(74093),A=r(3382),g=r(35491),v=r(52788),T=r(17275),S=r(80807),E=r(78686);!function(e){e[e.CSTRUCT=0]="CSTRUCT",e[e.CUNION=1]="CUNION",e[e.INLINE_OBJECT=2]="INLINE_OBJECT"}(n||(n={}));class b{constructor(e){(0,i.A)(this,"_value",void 0),(0,i.A)(this,o(),void 0),this._value=e}deref(){return this._value}}function k(e){return"undefined"==typeof WeakRef?new b(e):new WeakRef(e)}const N=new(c()),I=new(u()),C=[];function P(e){if(e.valueDeclaration){const t=e.valueDeclaration.getSourceFile().fileName;if(I.has(t)){const r=I.get(t);E.YO.has(r,e.name)||r.push(e.name)}else I.set(t,[e.name])}}function L(e){if(!e)return!1;let t=!1;return E.YO.each(e.modifiers,(e=>{var r;if(e.kind===m.default.SyntaxKind.Decorator&&(null===(r=e.expression)||void 0===r?void 0:r.kind)===m.default.SyntaxKind.Identifier&&e.expression.escapedText===v.lh)return t=!0,!1})),t}function O(e){if(!e)return!1;let t=!1;return E.YO.each(e.modifiers,(e=>{var r;if(e.kind===m.default.SyntaxKind.Decorator&&(null===(r=e.expression)||void 0===r?void 0:r.kind)===m.default.SyntaxKind.Identifier&&e.expression.escapedText===v.H7)return t=!0,!1})),t}function w(e,t){var r;if(e.aliasSymbol){var i,a;const r=e.aliasSymbol.escapedName;if(r===v.Qi&&null!==(i=e.aliasTypeArguments[1])&&void 0!==i&&i.isNumberLiteral())t[3]=1,t[4]=(t[4]?t[4]:1)*e.aliasTypeArguments[1].value,w(e.aliasTypeArguments[0],t);else if(r===v.cr&&null!==(a=e.aliasTypeArguments[1])&&void 0!==a&&a.isNumberLiteral())t[5]=1,t[6]=e.aliasTypeArguments[1].value,w(e.aliasTypeArguments[0],t);else if(r===v.O9)t[2]++,t[1]=1,w(e.aliasTypeArguments[0],t);else if(r===v.aS||r===v.is){const i=function(e,t){const r=new(u()),i=[];var a;if(e.symbol.members&&y()(a=e.symbol.members).call(a,((e,t)=>{if(x()(e)&m.default.SymbolFlags.Property&&e.valueDeclaration&&m.default.isPropertySignature(e.valueDeclaration)){const n=C[C.length-1];n.treePath.push(t);const a={0:1,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,has:!1,typeIdentifier:"",symbol:null,name:t};w(S.Ay.typeChecker.getTypeOfSymbol(e),a),a.has&&(r.set(t,a),i.push(t)),n.treePath.pop()}})),r.size){const a=(0,A.gH)(r);if(!a)return null;const o=t===n.CUNION?(0,A.$N)(r):(0,A.Zp)(i,r,a,0);return N.set(e.symbol,{maxBaseTypeByteLength:a,length:o,meta:r,symbol:k(e.symbol),parent:null,structType:n.INLINE_OBJECT,definedClassParent:C[C.length-1].struct,name:e.symbol.name}),P(e.symbol),N.get(e.symbol)}return null}(e.aliasTypeArguments[0],r===v.is?n.CUNION:n.CSTRUCT);if(i){t.has=!0;const e=C[C.length-1];e.inlineStructPathMap.set(i.symbol.deref(),e.treePath.join(".")),t.getTypeMeta=()=>i}}else e.aliasSymbol.valueDeclaration&&(m.default.isEnumDeclaration(e.aliasSymbol.valueDeclaration)||m.default.isEnumMember(e.aliasSymbol.valueDeclaration))?(t.has=!0,t[0]=15):E.YO.has(g.w7,r)&&(t.has=!0,t[0]=g.d1[r])}else e.symbol&&(L(e.symbol.valueDeclaration)||O(e.symbol.valueDeclaration))?t[1]||e.symbol!==t.symbol.deref()?(t.has=!0,t.typeIdentifier=e.symbol.escapedName,t.getTypeMeta=()=>K(e.symbol)):t.has=!1:null!==(r=e.symbol)&&void 0!==r&&r.valueDeclaration&&(m.default.isEnumDeclaration(e.symbol.valueDeclaration)||m.default.isEnumMember(e.symbol.valueDeclaration))?(t.has=!0,t[0]=15):t[1]?(t.has=!0,t[0]=1):e.isUnion()&&w(e.types[0],t)}function F(e){var t;if(!e.valueDeclaration||!m.default.isClassDeclaration(e.valueDeclaration))return void N.set(e,null);const r=e.valueDeclaration;if(!L(r)&&!O(r))return void N.set(e,null);const i=O(r)?n.CUNION:n.CSTRUCT,a=new(u()),o=[],s=new(c()),l={maxBaseTypeByteLength:0,length:0,meta:null,symbol:k(e),parent:null,structType:i,name:e.name},f=[];let d;if(C.length=0,C.push({treePath:f,struct:l,inlineStructPathMap:s}),null!==(t=r.heritageClauses)&&void 0!==t&&t.length)for(let e=0;e<r.heritageClauses.length;e++){const t=r.heritageClauses[e];if(t.token===m.default.SyntaxKind.ExtendsKeyword&&1===t.types.length){let e=S.Ay.typeChecker.getSymbolAtLocation(t.types[0].expression);d=N.get(e),d||(F(e),d=N.get(e))}}var h;if(e.members&&y()(h=e.members).call(h,((t,r)=>{if(x()(t)&m.default.SymbolFlags.Property&&t.valueDeclaration&&m.default.isPropertyDeclaration(t.valueDeclaration)){var i;const s=t.valueDeclaration;f.push(r);const c={0:1,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,has:!1,typeIdentifier:"",symbol:k(e),name:r};w(S.Ay.typeChecker.getTypeOfSymbol(t),c),null!==(i=s.modifiers)&&void 0!==i&&i.length&&function(e,t){for(let r=0;r<e.length;r++)if(e[r].kind===m.default.SyntaxKind.Decorator){const i=e[r];let a=!1;if(m.default.isCallExpression(i.expression)&&m.default.isIdentifier(i.expression.expression)){const e=i.expression.expression.escapedText;if(e===v.My)t.has=!0,m.default.isIdentifier(i.expression.arguments[0])||m.default.isExpressionWithTypeArguments(i.expression.arguments[0])?(t.typeIdentifier=m.default.isIdentifier(i.expression.arguments[0])?i.expression.arguments[0].escapedText:i.expression.arguments[0].expression.escapedText,t.getTypeMeta=()=>{const e=m.default.isIdentifier(i.expression.arguments[0])?S.Ay.typeChecker.getTypeAtLocation(i.expression.arguments[0]):S.Ay.typeChecker.getTypeAtLocation(i.expression.arguments[0].expression);return e?K(e.symbol):{maxBaseTypeByteLength:0,length:0,structType:n.CSTRUCT,meta:null,symbol:null,name:""}}):i.expression.arguments[0].kind===m.default.SyntaxKind.ThisKeyword?(t.typeIdentifier=i.parent.parent.name.escapedText,t.getTypeMeta=()=>K(S.Ay.typeChecker.getTypeAtLocation(i.parent.parent).symbol)):m.default.isPropertyAccessExpression(i.expression.arguments[0])&&(t[0]=g.d1[i.expression.arguments[0].name.escapedText]);else if(e===v.Fx)t[1]=1,i.expression.arguments.length?m.default.isIdentifier(i.expression.arguments[0])&&(t[2]=+i.expression.arguments[0].escapedText):t[2]=1;else if(e===v.Rf){if(t[3]=1,t[4]=0,m.default.isNumericLiteral(i.expression.arguments[0]))t[4]=+i.expression.arguments[0].text;else if(m.default.isIdentifier(i.expression.arguments[0])){const e=S.Ay.typeChecker.getSymbolAtLocation(i.expression.arguments[0]);e&&m.default.isVariableDeclaration(e.valueDeclaration)&&e.valueDeclaration.initializer&&m.default.isNumericLiteral(e.valueDeclaration.initializer)&&(t[4]=+e.valueDeclaration.initializer.text)}p()(t[4])&&(t[4]=0)}else e===v.Jp?(t[5]=1,m.default.isIdentifier(i.expression.arguments[0])&&(t[6]=+i.expression.arguments[0].escapedText)):e===v.OE&&(a=!0,m.default.isCallExpression(i.expression)&&i.expression.arguments.length&&!T.XC(S.Ay.visitor(i.expression.arguments[0]),S.Ay.visitor)&&(a=!1))}else m.default.isIdentifier(i.expression)&&i.expression.escapedText===v.OE&&(a=!0);a&&(t.has=!1)}}(s.modifiers,c),c.has&&(a.set(r,c),o.push(r)),f.pop()}})),a.size){var b,I;const t=Math.max((0,A.gH)(a),null!==(b=null===(I=d)||void 0===I?void 0:I.maxBaseTypeByteLength)&&void 0!==b?b:0);if(!t)return void N.set(e,null);let r=0;d&&(r=d.length);const c=i===n.CUNION?(0,A.$N)(a):(0,A.Zp)(o,a,t,r);E.Ik.extend(l,{maxBaseTypeByteLength:t,length:c,meta:a,parent:d,inlineStructPathMap:s}),N.set(e,l),P(e)}else d?(E.Ik.extend(l,{maxBaseTypeByteLength:d.maxBaseTypeByteLength,length:d.length,meta:a,parent:d}),N.set(e,l),P(e)):N.set(e,null);C.pop()}function K(e){return e?(N.has(e)||F(e),N.get(e)):null}function _(e){return null!=K(e)}function B(e){return I.get(e)}function M(){I.clear()}},86236:(e,t,r)=>{var n=r(55801);r(92833),e.exports=n},86395:(e,t,r)=>{r(70120);var n=r(31928);e.exports=n},86927:(e,t,r)=>{var n=r(72071),i=r(58184),a=r(35021),o=function(e){return a(e)?e:void 0};e.exports=function(e,t){return arguments.length<2?o(n[e])||o(i[e]):n[e]&&n[e][t]||i[e]&&i[e][t]}},87110:(e,t,r)=>{r(1193)},87223:(e,t,r)=>{var n=r(73012),i=r(58352),a=TypeError,o=Object.getOwnPropertyDescriptor,s=n&&!function(){if(void 0!==this)return!0;try{Object.defineProperty([],"length",{writable:!1}).length=1}catch(e){return e instanceof TypeError}}();e.exports=s?function(e,t){if(i(e)&&!o(e,"length").writable)throw new a("Cannot set read only .length");return e.length=t}:function(e,t){return e.length=t}},87299:(e,t,r)=>{var n=r(89838),i=r(61448);n({global:!0,forced:parseFloat!==i},{parseFloat:i})},87334:(e,t,r)=>{r(87523),r(98796)},87413:(e,t,r)=>{r(35945);var n=r(72071);e.exports=n.Date.now},87523:(e,t,r)=>{var n=r(17095),i=r(9135);const a=typeof console!==n.aV?console:n.Cq;/common/.test((0,i.A)(n.x7)),a||n.x7,a||n.x7,a||n.x7},87632:(e,t,r)=>{var n=r(35411);e.exports=function(e,t,r,i){return i&&i.enumerable?e[t]=r:n(e,t,r),e}},87808:(e,t,r)=>{var n=r(74347);e.exports=n},87982:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(74093),i=r(78686),a=r(80807),o=r(17275);function s(e,t){let r=a._B.UNKNOWN;e.parent&&(n.default.isFunctionDeclaration(e.parent)||n.default.isFunctionExpression(e.parent)||n.default.isArrowFunction(e.parent)||n.default.isMethodDeclaration(e.parent)?r=a._B.FUNCTION:n.default.isIfStatement(e.parent)?r=a._B.IF:(n.default.isForStatement(e.parent)||n.default.isForOfStatement(e.parent)||n.default.isWhileStatement(e.parent))&&(r=a._B.LOOP)),a.Ay.pushStack(r),a.Ay.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API&&e.parent&&(n.default.isFunctionDeclaration(e.parent)||n.default.isFunctionExpression(e.parent)||n.default.isArrowFunction(e.parent)||n.default.isMethodDeclaration(e.parent))&&o.nP(e.parent)&&(a.Ay.getCurrentStack().synchronize=!0);let s=n.default.visitEachChild(e,t,a.Ay.context);const c=a.Ay.getCurrentStack(),l=[];return i.YO.each(c.topDeclaration,(e=>{l.push(a.Ay.context.factory.createVariableStatement(void 0,a.Ay.context.factory.createVariableDeclarationList([a.Ay.context.factory.createVariableDeclaration(e.formatName,void 0,void 0,e.initializer)])))})),l.length&&(s=a.Ay.context.factory.createBlock([...l,...s.statements],!0)),a.Ay.popStack(),s}},88119:(e,t,r)=>{var n=r(58184),i=r(81767),a=r(89624),o=r(42391),s=r(51026).trim,c=r(98276),l=n.parseInt,u=n.Symbol,f=u&&u.iterator,p=/^[+-]?0x/i,d=a(p.exec),y=8!==l(c+"08")||22!==l(c+"0x16")||f&&!i((function(){l(Object(f))}));e.exports=y?function(e,t){var r=s(o(e));return l(r,t>>>0||(d(p,r)?16:10))}:l},88132:(e,t,r)=>{var n=r(25563)("iterator"),i=!1;try{var a=0,o={next:function(){return{done:!!a++}},return:function(){i=!0}};o[n]=function(){return this},Array.from(o,(function(){throw 2}))}catch(e){}e.exports=function(e,t){try{if(!t&&!i)return!1}catch(e){return!1}var r=!1;try{var a={};a[n]=function(){return{next:function(){return{done:r=!0}}}},e(a)}catch(e){}return r}},88217:(e,t,r)=>{var n=r(52206);e.exports=n},88431:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(74093),i=r(80807);function a(e,t,r,a=9e3,o=0,s=0){!o&&t.pos>-1&&(o=t.getStart()),!s&&t.end>-1&&(s=t.getEnd());const c=n.default.formatDiagnostic({file:e,start:o,length:s-o,category:n.default.DiagnosticCategory.Error,code:a,messageText:r},{getCurrentDirectory:n.default.sys.getCurrentDirectory,getCanonicalFileName:function(e){return e},getNewLine:function(){return n.default.sys.newLine}});if(i.Ay.options.reportError){const t=e.getLineAndCharacterOfPosition(o),r=e.getLineAndCharacterOfPosition(s);i.Ay.options.reportError({file:e.fileName,loc:{start:{line:t.line+1,column:t.character+1},end:{line:r.line+1,column:r.character+1}},code:a,message:c})}else console.error("[31m%s[0m",c)}},88745:(e,t,r)=>{var n=r(89838),i=r(63637).find,a=r(51645),o="find",s=!0;o in[]&&Array(1)[o]((function(){s=!1})),n({target:"Array",proto:!0,forced:s},{find:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0)}}),a(o)},88849:(e,t,r)=>{var n=r(32542),i=r(88132),a=r(74652);e.exports=a||!i((function(e){n.all(e).then(void 0,(function(){}))}))},89059:(e,t,r)=>{var n=r(89838),i=r(89624),a=r(84061),o=r(22890),s=r(95497),c=r(77097).f,l=r(62456),u=r(51602),f=r(13332),p=r(89096),d=r(49136),y=!1,h=p("meta"),x=0,m=function(e){c(e,h,{value:{objectID:"O"+x++,weakData:{}}})},A=e.exports={enable:function(){A.enable=function(){},y=!0;var e=l.f,t=i([].splice),r={};r[h]=1,e(r).length&&(l.f=function(r){for(var n=e(r),i=0,a=n.length;i<a;i++)if(n[i]===h){t(n,i,1);break}return n},n({target:"Object",stat:!0,forced:!0},{getOwnPropertyNames:u.f}))},fastKey:function(e,t){if(!o(e))return"symbol"==typeof e?e:("string"==typeof e?"S":"P")+e;if(!s(e,h)){if(!f(e))return"F";if(!t)return"E";m(e)}return e[h].objectID},getWeakData:function(e,t){if(!s(e,h)){if(!f(e))return!0;if(!t)return!1;m(e)}return e[h].weakData},onFreeze:function(e){return d&&y&&f(e)&&!s(e,h)&&m(e),e}};a[h]=!0},89096:(e,t,r)=>{var n=r(89624),i=0,a=Math.random(),o=n(1.1.toString);e.exports=function(e){return"Symbol("+(void 0===e?"":e)+")_"+o(++i+a,36)}},89239:(e,t,r)=>{var n=r(89838),i=r(51219),a=r(32542),o=r(81767),s=r(86927),c=r(35021),l=r(94797),u=r(35398),f=r(87632),p=a&&a.prototype;if(n({target:"Promise",proto:!0,real:!0,forced:!!a&&o((function(){p.finally.call({then:function(){}},(function(){}))}))},{finally:function(e){var t=l(this,s("Promise")),r=c(e);return this.then(r?function(r){return u(t,e()).then((function(){return r}))}:e,r?function(r){return u(t,e()).then((function(){throw r}))}:e)}}),!i&&c(a)){var d=s("Promise").prototype.finally;p.finally!==d&&f(p,"finally",d,{unsafe:!0})}},89619:(e,t,r)=>{var n=r(32342);r(92833),e.exports=n},89624:(e,t,r)=>{var n=r(3872),i=Function.prototype,a=i.call,o=n&&i.bind.bind(a,a);e.exports=n?o:function(e){return function(){return a.apply(e,arguments)}}},89696:(e,t,r)=>{r.d(t,{d:()=>y});var n=r(46025),i=r(54046);const a=new Set(["!","?","+","*","@"]),o=e=>a.has(e),s="(?!\\.)",c=new Set(["[","."]),l=new Set(["..","."]),u=new Set("().*{}+?[]^$\\!"),f="[^/]",p=f+"*?",d=f+"+?";class y{type;#e;#t;#r=!1;#n=[];#i;#a;#o;#s=!1;#c;#l;#u=!1;constructor(e,t,r={}){this.type=e,e&&(this.#t=!0),this.#i=t,this.#e=this.#i?this.#i.#e:this,this.#c=this.#e===this?r:this.#e.#c,this.#o=this.#e===this?[]:this.#e.#o,"!"!==e||this.#e.#s||this.#o.push(this),this.#a=this.#i?this.#i.#n.length:0}get hasMagic(){if(void 0!==this.#t)return this.#t;for(const e of this.#n)if("string"!=typeof e&&(e.type||e.hasMagic))return this.#t=!0;return this.#t}toString(){return void 0!==this.#l?this.#l:this.type?this.#l=this.type+"("+this.#n.map((e=>String(e))).join("|")+")":this.#l=this.#n.map((e=>String(e))).join("")}#f(){if(this!==this.#e)throw new Error("should only call on root");if(this.#s)return this;let e;for(this.toString(),this.#s=!0;e=this.#o.pop();){if("!"!==e.type)continue;let t=e,r=t.#i;for(;r;){for(let n=t.#a+1;!r.type&&n<r.#n.length;n++)for(const t of e.#n){if("string"==typeof t)throw new Error("string part in extglob AST??");t.copyIn(r.#n[n])}t=r,r=t.#i}}return this}push(...e){for(const t of e)if(""!==t){if("string"!=typeof t&&!(t instanceof y&&t.#i===this))throw new Error("invalid part: "+t);this.#n.push(t)}}toJSON(){const e=null===this.type?this.#n.slice().map((e=>"string"==typeof e?e:e.toJSON())):[this.type,...this.#n.map((e=>e.toJSON()))];return this.isStart()&&!this.type&&e.unshift([]),this.isEnd()&&(this===this.#e||this.#e.#s&&"!"===this.#i?.type)&&e.push({}),e}isStart(){if(this.#e===this)return!0;if(!this.#i?.isStart())return!1;if(0===this.#a)return!0;const e=this.#i;for(let t=0;t<this.#a;t++){const r=e.#n[t];if(!(r instanceof y&&"!"===r.type))return!1}return!0}isEnd(){if(this.#e===this)return!0;if("!"===this.#i?.type)return!0;if(!this.#i?.isEnd())return!1;if(!this.type)return this.#i?.isEnd();const e=this.#i?this.#i.#n.length:0;return this.#a===e-1}copyIn(e){"string"==typeof e?this.push(e):this.push(e.clone(this))}clone(e){const t=new y(this.type,e);for(const e of this.#n)t.copyIn(e);return t}static#p(e,t,r,n){let i=!1,a=!1,s=-1,c=!1;if(null===t.type){let l=r,u="";for(;l<e.length;){const r=e.charAt(l++);if(i||"\\"===r)i=!i,u+=r;else if(a)l===s+1?"^"!==r&&"!"!==r||(c=!0):"]"!==r||l===s+2&&c||(a=!1),u+=r;else if("["!==r)if(n.noext||!o(r)||"("!==e.charAt(l))u+=r;else{t.push(u),u="";const i=new y(r,t);l=y.#p(e,i,l,n),t.push(i)}else a=!0,s=l,c=!1,u+=r}return t.push(u),l}let l=r+1,u=new y(null,t);const f=[];let p="";for(;l<e.length;){const r=e.charAt(l++);if(i||"\\"===r)i=!i,p+=r;else if(a)l===s+1?"^"!==r&&"!"!==r||(c=!0):"]"!==r||l===s+2&&c||(a=!1),p+=r;else if("["!==r)if(o(r)&&"("===e.charAt(l)){u.push(p),p="";const t=new y(r,u);u.push(t),l=y.#p(e,t,l,n)}else if("|"!==r){if(")"===r)return""===p&&0===t.#n.length&&(t.#u=!0),u.push(p),p="",t.push(...f,u),l;p+=r}else u.push(p),p="",f.push(u),u=new y(null,t);else a=!0,s=l,c=!1,p+=r}return t.type=null,t.#t=void 0,t.#n=[e.substring(r-1)],l}static fromGlob(e,t={}){const r=new y(null,void 0,t);return y.#p(e,r,0,t),r}toMMPattern(){if(this!==this.#e)return this.#e.toMMPattern();const e=this.toString(),[t,r,n,i]=this.toRegExpSource();if(!(n||this.#t||this.#c.nocase&&!this.#c.nocaseMagicOnly&&e.toUpperCase()!==e.toLowerCase()))return r;const a=(this.#c.nocase?"i":"")+(i?"u":"");return Object.assign(new RegExp(`^${t}$`,a),{_src:t,_glob:e})}get options(){return this.#c}toRegExpSource(e){const t=e??!!this.#c.dot;if(this.#e===this&&this.#f(),!this.type){const r=this.isStart()&&this.isEnd()&&!this.#n.some((e=>"string"!=typeof e)),n=this.#n.map((t=>{const[n,i,a,o]="string"==typeof t?y.#d(t,this.#t,r):t.toRegExpSource(e);return this.#t=this.#t||a,this.#r=this.#r||o,n})).join("");let a="";if(this.isStart()&&"string"==typeof this.#n[0]&&(1!==this.#n.length||!l.has(this.#n[0]))){const r=c,i=t&&r.has(n.charAt(0))||n.startsWith("\\.")&&r.has(n.charAt(2))||n.startsWith("\\.\\.")&&r.has(n.charAt(4)),o=!t&&!e&&r.has(n.charAt(0));a=i?"(?!(?:^|/)\\.\\.?(?:$|/))":o?s:""}let o="";return this.isEnd()&&this.#e.#s&&"!"===this.#i?.type&&(o="(?:$|\\/)"),[a+n+o,(0,i.x)(n),this.#t=!!this.#t,this.#r]}const r="*"===this.type||"+"===this.type,n="!"===this.type?"(?:(?!(?:":"(?:";let a=this.#y(t);if(this.isStart()&&this.isEnd()&&!a&&"!"!==this.type){const e=this.toString();return this.#n=[e],this.type=null,this.#t=void 0,[e,(0,i.x)(this.toString()),!1,!1]}let o=!r||e||t?"":this.#y(!0);o===a&&(o=""),o&&(a=`(?:${a})(?:${o})*?`);let u="";return u="!"===this.type&&this.#u?(this.isStart()&&!t?s:"")+d:n+a+("!"===this.type?"))"+(!this.isStart()||t||e?"":s)+p+")":"@"===this.type?")":"?"===this.type?")?":"+"===this.type&&o?")":"*"===this.type&&o?")?":`)${this.type}`),[u,(0,i.x)(a),this.#t=!!this.#t,this.#r]}#y(e){return this.#n.map((t=>{if("string"==typeof t)throw new Error("string type in extglob ast??");const[r,n,i,a]=t.toRegExpSource(e);return this.#r=this.#r||a,r})).filter((e=>!(this.isStart()&&this.isEnd()&&!e))).join("|")}static#d(e,t,r=!1){let a=!1,o="",s=!1;for(let i=0;i<e.length;i++){const c=e.charAt(i);if(a)a=!1,o+=(u.has(c)?"\\":"")+c;else if("\\"!==c){if("["===c){const[r,a,c,l]=(0,n.U)(e,i);if(c){o+=r,s=s||a,i+=c-1,t=t||l;continue}}"*"!==c?"?"!==c?o+=c.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"):(o+=f,t=!0):(o+=r&&"*"===e?d:p,t=!0)}else i===e.length-1?o+="\\\\":a=!0}return[o,(0,i.x)(e),!!t,s]}}},89736:(e,t,r)=>{var n=r(22890),i=r(35411);e.exports=function(e,t){n(t)&&"cause"in t&&i(e,"cause",t.cause)}},89769:(e,t,r)=>{var n=r(25563),i=r(77221),a=n("iterator"),o=Array.prototype;e.exports=function(e){return void 0!==e&&(i.Array===e||o[a]===e)}},89803:(e,t,r)=>{var n=r(81767);e.exports=!n((function(){function e(){}return e.prototype.constructor=null,Object.getPrototypeOf(new e)!==e.prototype}))},89838:(e,t,r)=>{var n=r(58184),i=r(83105),a=r(95948),o=r(35021),s=r(80347).f,c=r(34676),l=r(72071),u=r(97960),f=r(35411),p=r(95497);r(48069);var d=function(e){var t=function(r,n,a){if(this instanceof t){switch(arguments.length){case 0:return new e;case 1:return new e(r);case 2:return new e(r,n)}return new e(r,n,a)}return i(e,this,arguments)};return t.prototype=e.prototype,t};e.exports=function(e,t){var r,i,y,h,x,m,A,g,v,T=e.target,S=e.global,E=e.stat,b=e.proto,k=S?n:E?n[T]:n[T]&&n[T].prototype,N=S?l:l[T]||f(l,T,{})[T],I=N.prototype;for(h in t)i=!(r=c(S?h:T+(E?".":"#")+h,e.forced))&&k&&p(k,h),m=N[h],i&&(A=e.dontCallGetSet?(v=s(k,h))&&v.value:k[h]),x=i&&A?A:t[h],(r||b||typeof m!=typeof x)&&(g=e.bind&&i?u(x,n):e.wrap&&i?d(x):b&&o(x)?a(x):x,(e.sham||x&&x.sham||m&&m.sham)&&f(g,"sham",!0),f(N,h,g),b&&(p(l,y=T+"Prototype")||f(l,y,{}),f(l[y],h,x),e.real&&I&&(r||!I[h])&&f(I,h,x)))}},89902:(e,t,r)=>{var n=r(89838),i=r(86927),a=r(95497),o=r(42391),s=r(8377),c=r(63640),l=s("string-to-symbol-registry"),u=s("symbol-to-string-registry");n({target:"Symbol",stat:!0,forced:!c},{for:function(e){var t=o(e);if(a(l,t))return l[t];var r=i("Symbol")(t);return l[t]=r,u[r]=t,r}})},90012:(e,t,r)=>{r.r(t),r.d(t,{clear:()=>g,copy:()=>E,diff:()=>C,each:()=>A,extend:()=>T,falsy:()=>I,get:()=>b,has:()=>N,keys:()=>y,merge:()=>S,param:()=>P,reverse:()=>w,set:()=>k,sort:()=>m,toArray:()=>L,update:()=>O});var n=r(68769),i=r.n(n),a=r(92793),o=r.n(a),s=r(18811),c=r.n(s),l=r(79843),u=r(66582),f=r(17095),p=r(93799),d=r(23712);function y(e){return(0,d.A)(e)?i()(e):[]}function h(e,t){return e.length-t.length}function x(e,t){return t.length-e.length}function m(e,t){var r;return o()(r=y(e)).call(r,t?x:h)}function A(e,t){for(let r in e)if(t(e[r],r)===f.W8)break}function g(e){A(e,(function(t,r){delete e[r]}))}function v(e,t){return l.object(e)?l.object(t)?(A(t,(function(t,r){e[r]=t})),e):e:t}function T(e,t,r){return v(v(e,t),r)}function S(e,t){return e&&t?T(T({},e),t):e||t}function E(e,t){let r=e;return l.array(e)?t?(r=[],u.each(e,(function(e,n){r[n]=E(e,t)}))):r=c()(e).call(e):l.object(e)&&(r={},A(e,(function(e,n){r[n]=t?E(e,t):e}))),r}function b(e,t,r){let n;return p.__(t,(function(t,r){if(e==f.Cq)return n=f.ZH,f.W8;{let i=e[t],a=i!==f.ZH;r?n=a?i:f.ZH:e=i}})),n===f.ZH&&(n=r),n}function k(e,t,r,n){p.__(t,(function(t,i){if(i)e[t]=r;else if(e[t])e=e[t];else{if(!n)return f.W8;e=e[t]={}}}))}function N(e,t){return e[t]!==f.ZH}function I(e){return!l.object(e)||l.array(e)||!y(e).length}function C(e,t){let r=[];return A(e,((e,n)=>{l.array(e)||l.isPlainObject(e)?(null==t[n]||C(e,t[n]).length>0)&&r.push(n):e!==t[n]&&r.push(n)})),r}function P(e){let t=[];const r=(e,r)=>{r=l.func(r)?r():null==r?"":r,t[t.length]=encodeURIComponent(e)+"="+encodeURIComponent(r)};return(l.array(e)||l.isPlainObject(e))&&(l.array(e)?u.each(e,((e,t)=>{r(t,e)})):A(e,((e,t)=>{r(t,e)}))),t.join("&").replace(/%20/g,"+")}function L(e){const t=[];return A(e,(e=>{t.push(e)})),t}function O(e,t){if(l.object(e)&&l.object(t))return A(t,((r,n)=>{l.object(r)&&l.object(e[n])?O(e[n],r):e[n]=t[n]})),e}function w(e){const t={};return A(e,((e,r)=>{t[e]=r})),t}},90216:(e,t,r)=>{var n=r(53457),i=r(44292),a=Array.prototype;e.exports=function(e){var t=e.reverse;return e===a||n(a,e)&&t===a.reverse?i:t}},90394:(e,t,r)=>{var n=r(53457),i=r(80076),a=String.prototype;e.exports=function(e){var t=e.startsWith;return"string"==typeof e||e===a||n(a,e)&&t===a.startsWith?i:t}},90943:(e,t,r)=>{r(88745);var n=r(42244);e.exports=n("Array","find")},91037:e=>{var t=TypeError;e.exports=function(e){if(e>9007199254740991)throw t("Maximum allowed index exceeded");return e}},91149:(e,t,r)=>{e.exports=r(10587)},91485:e=>{e.exports=function(e){return null==e}},91745:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(74093);function i(e){switch(e){case n.default.SyntaxKind.PlusEqualsToken:return n.default.SyntaxKind.PlusToken;case n.default.SyntaxKind.MinusEqualsToken:return n.default.SyntaxKind.MinusToken;case n.default.SyntaxKind.AsteriskEqualsToken:return n.default.SyntaxKind.AsteriskToken;case n.default.SyntaxKind.AsteriskAsteriskEqualsToken:return n.default.SyntaxKind.AsteriskAsteriskToken;case n.default.SyntaxKind.SlashEqualsToken:return n.default.SyntaxKind.SlashToken;case n.default.SyntaxKind.PercentEqualsToken:return n.default.SyntaxKind.PercentToken;case n.default.SyntaxKind.LessThanLessThanEqualsToken:return n.default.SyntaxKind.LessThanLessThanToken;case n.default.SyntaxKind.GreaterThanGreaterThanEqualsToken:return n.default.SyntaxKind.GreaterThanGreaterThanToken;case n.default.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:return n.default.SyntaxKind.GreaterThanGreaterThanGreaterThanToken;case n.default.SyntaxKind.AmpersandEqualsToken:return n.default.SyntaxKind.AmpersandToken;case n.default.SyntaxKind.BarEqualsToken:return n.default.SyntaxKind.BarToken;case n.default.SyntaxKind.CaretEqualsToken:return n.default.SyntaxKind.CaretToken;default:return n.default.SyntaxKind.EqualsToken}}},92518:(e,t,r)=>{var n=r(73012),i=r(81767);e.exports=n&&i((function(){return 42!==Object.defineProperty((function(){}),"prototype",{value:42,writable:!1}).prototype}))},92793:(e,t,r)=>{e.exports=r(32951)},92833:(e,t,r)=>{r(71768);var n=r(9760),i=r(58184),a=r(3975),o=r(77221);for(var s in n)a(i[s],s),o[s]=o.Array},92983:(e,t,r)=>{e.exports=r(99845)},93142:(e,t,r)=>{r(25680)},93309:(e,t,r)=>{var n=r(76157),i=r(84418),a=r(32606);e.exports=function(e){for(var t=n(this),r=a(t),o=arguments.length,s=i(o>1?arguments[1]:void 0,r),c=o>2?arguments[2]:void 0,l=void 0===c?r:i(c,r);l>s;)t[s++]=e;return t}},93799:(e,t,r)=>{r.d(t,{__:()=>a}),r(83022);var n=r(17095);const i={};function a(e,t){const r=i.hasOwnProperty(e)?i[e]:i[e]=e.split(n.ZG);for(let e=0,i=r.length-1;e<=i&&t(r[e],e===i)!==n.W8;e++);}},94651:(e,t,r)=>{Math.pow(2,32)},94797:(e,t,r)=>{var n=r(66415),i=r(45188),a=r(91485),o=r(25563)("species");e.exports=function(e,t){var r,s=n(e).constructor;return void 0===s||a(r=n(s)[o])?t:i(r)}},94914:(e,t,r)=>{var n=r(27569).IteratorPrototype,i=r(20272),a=r(57884),o=r(3975),s=r(77221),c=function(){return this};e.exports=function(e,t,r,l){var u=t+" Iterator";return e.prototype=i(n,{next:a(+!l,r)}),o(e,u,!1,!0),s[u]=c,e}},95397:(e,t,r)=>{var n=r(58184),i=r(81767),a=n.RegExp,o=!i((function(){var e=!0;try{a(".","d")}catch(t){e=!1}var t={},r="",n=e?"dgimsy":"gimsy",i=function(e,n){Object.defineProperty(t,e,{get:function(){return r+=n,!0}})},o={dotAll:"s",global:"g",ignoreCase:"i",multiline:"m",sticky:"y"};for(var s in e&&(o.hasIndices="d"),o)i(s,o[s]);return Object.getOwnPropertyDescriptor(a.prototype,"flags").get.call(t)!==n||r!==n}));e.exports={correct:o}},95497:(e,t,r)=>{var n=r(89624),i=r(76157),a=n({}.hasOwnProperty);e.exports=Object.hasOwn||function(e,t){return a(i(e),t)}},95522:(e,t,r)=>{r(79843),r(25081),r(44891)},95809:(e,t,r)=>{var n=r(89838),i=r(58184);n({global:!0,forced:i.globalThis!==i},{globalThis:i})},95948:(e,t,r)=>{var n=r(76280),i=r(89624);e.exports=function(e){if("Function"===n(e))return i(e)}},95998:(e,t,r)=>{r.d(t,{A:()=>i});var n=r(74093);function i(e,t,r){var i;return null===(i=n.default.resolveModuleName(r,t,e.getCompilerOptions(),n.default.sys).resolvedModule)||void 0===i?void 0:i.resolvedFileName}},96959:e=>{e.exports=["constructor","hasOwnProperty","isPrototypeOf","propertyIsEnumerable","toLocaleString","toString","valueOf"]},97131:(e,t,r)=>{r.d(t,{A:()=>s});var n=r(74093),i=r(80807),a=r(17275),o=r(43095);function s(e,t){if(n.default.visitNode(e.condition,a.p)&&n.default.visitNode(e.condition,a.hS)){if(a.XC(e.condition,t)){if(i.Ay.cheapCompilerOptions.defined.WASM_64){const r=i.Ay.typeChecker.getTypeAtLocation(e.whenFalse);if(o.sV(r))return a.bk(n.default.visitNode(e.whenTrue,t))}return n.default.visitNode(e.whenTrue,t)}if(i.Ay.cheapCompilerOptions.defined.WASM_64){const r=i.Ay.typeChecker.getTypeAtLocation(e.whenTrue);if(o.sV(r))return a.bk(n.default.visitNode(e.whenFalse,t))}return n.default.visitNode(e.whenFalse,t)}if(i.Ay.cheapCompilerOptions.defined.WASM_64){const t=i.Ay.typeChecker.getTypeAtLocation(e.whenTrue),r=i.Ay.typeChecker.getTypeAtLocation(e.whenFalse);if(o.sV(t)&&!o.sV(r))return i.Ay.context.factory.createConditionalExpression(n.default.visitNode(e.condition,i.Ay.visitor),e.questionToken,n.default.visitNode(e.whenTrue,i.Ay.visitor),e.colonToken,a.bk(n.default.visitNode(e.whenFalse,i.Ay.visitor)));if(!o.sV(t)&&o.sV(r))return i.Ay.context.factory.createConditionalExpression(n.default.visitNode(e.condition,i.Ay.visitor),e.questionToken,a.bk(n.default.visitNode(e.whenTrue,i.Ay.visitor)),e.colonToken,n.default.visitNode(e.whenFalse,i.Ay.visitor))}return n.default.visitEachChild(e,t,i.Ay.context)}},97228:(e,t,r)=>{var n=r(9815),i=r(26842);n("toPrimitive"),i()},97749:(e,t,r)=>{var n=r(86927),i=r(9815),a=r(3975);i("toStringTag"),a(n("Symbol"),"Symbol")},97851:(e,t,r)=>{var n=r(89838),i=r(51219),a=r(74652),o=r(32542),s=r(86927),c=r(35021),l=r(87632),u=o&&o.prototype;if(n({target:"Promise",proto:!0,forced:a,real:!0},{catch:function(e){return this.then(void 0,e)}}),!i&&c(o)){var f=s("Promise").prototype.catch;u.catch!==f&&l(u,"catch",f,{unsafe:!0})}},97899:(e,t,r)=>{r(1329),r(89902),r(71852),r(41630),r(5765)},97939:(e,t,r)=>{var n=r(58184);r(3975)(n.JSON,"JSON",!0)},97960:(e,t,r)=>{var n=r(95948),i=r(50850),a=r(3872),o=n(n.bind);e.exports=function(e,t){return i(e),void 0===t?e:a?o(e,t):function(){return e.apply(t,arguments)}}},97975:(e,t,r)=>{var n=r(79843),i=r(90012),a=r(17095);const o="object"==typeof window&&void 0!==window.localStorage;let s=a.x7,c=null,l=null;o&&(s=function(e,t){if(n.isPlainObject(e))i.each(e,((e,t)=>{s(t,e)}));else try{localStorage[e]=t}catch(e){}},function(e){let t;try{t=localStorage[e]}catch(e){}return t})},98052:(e,t,r)=>{var n=r(39133);e.exports=n},98276:e=>{e.exports="\t\n\v\f\r                　\u2028\u2029\ufeff"},98518:(e,t,r)=>{var n=r(70163);e.exports=n},98722:(e,t,r)=>{r(18811),r(98796)},98796:(e,t,r)=>{"function"==typeof TextEncoder&&new TextEncoder,"function"==typeof TextDecoder&&new TextDecoder},99280:(e,t,r)=>{r.d(t,{xF:()=>c});var n=r(1178),i=r(12720),a=r(89696),o=r(21473),s=r(54046);const c=(e,t,r={})=>((0,i.f)(t),!(!r.nocomment&&"#"===t.charAt(0))&&new _(t,r).match(e)),l=/^\*+([^+@!?\*\[\(]*)$/,u=e=>t=>!t.startsWith(".")&&t.endsWith(e),f=e=>t=>t.endsWith(e),p=e=>(e=e.toLowerCase(),t=>!t.startsWith(".")&&t.toLowerCase().endsWith(e)),d=e=>(e=e.toLowerCase(),t=>t.toLowerCase().endsWith(e)),y=/^\*+\.\*+$/,h=e=>!e.startsWith(".")&&e.includes("."),x=e=>"."!==e&&".."!==e&&e.includes("."),m=/^\.\*+$/,A=e=>"."!==e&&".."!==e&&e.startsWith("."),g=/^\*+$/,v=e=>0!==e.length&&!e.startsWith("."),T=e=>0!==e.length&&"."!==e&&".."!==e,S=/^\?+([^+@!?\*\[\(]*)?$/,E=([e,t=""])=>{const r=I([e]);return t?(t=t.toLowerCase(),e=>r(e)&&e.toLowerCase().endsWith(t)):r},b=([e,t=""])=>{const r=C([e]);return t?(t=t.toLowerCase(),e=>r(e)&&e.toLowerCase().endsWith(t)):r},k=([e,t=""])=>{const r=C([e]);return t?e=>r(e)&&e.endsWith(t):r},N=([e,t=""])=>{const r=I([e]);return t?e=>r(e)&&e.endsWith(t):r},I=([e])=>{const t=e.length;return e=>e.length===t&&!e.startsWith(".")},C=([e])=>{const t=e.length;return e=>e.length===t&&"."!==e&&".."!==e},P="object"==typeof process&&process?"object"==typeof process.env&&process.env&&process.env.__MINIMATCH_TESTING_PLATFORM__||process.platform:"posix",L="win32"===P?"\\":"/";c.sep=L;const O=Symbol("globstar **");c.GLOBSTAR=O,c.filter=(e,t={})=>r=>c(r,e,t);const w=(e,t={})=>Object.assign({},e,t);c.defaults=e=>{if(!e||"object"!=typeof e||!Object.keys(e).length)return c;const t=c;return Object.assign(((r,n,i={})=>t(r,n,w(e,i))),{Minimatch:class extends t.Minimatch{constructor(t,r={}){super(t,w(e,r))}static defaults(r){return t.defaults(w(e,r)).Minimatch}},AST:class extends t.AST{constructor(t,r,n={}){super(t,r,w(e,n))}static fromGlob(r,n={}){return t.AST.fromGlob(r,w(e,n))}},unescape:(r,n={})=>t.unescape(r,w(e,n)),escape:(r,n={})=>t.escape(r,w(e,n)),filter:(r,n={})=>t.filter(r,w(e,n)),defaults:r=>t.defaults(w(e,r)),makeRe:(r,n={})=>t.makeRe(r,w(e,n)),braceExpand:(r,n={})=>t.braceExpand(r,w(e,n)),match:(r,n,i={})=>t.match(r,n,w(e,i)),sep:t.sep,GLOBSTAR:O})};const F=(e,t={})=>((0,i.f)(e),t.nobrace||!/\{(?:(?!\{).)*\}/.test(e)?[e]:(0,n.f)(e));c.braceExpand=F,c.makeRe=(e,t={})=>new _(e,t).makeRe(),c.match=(e,t,r={})=>{const n=new _(t,r);return e=e.filter((e=>n.match(e))),n.options.nonull&&!e.length&&e.push(t),e};const K=/[?*]|[+@!]\(.*?\)|\[|\]/;class _{options;set;pattern;windowsPathsNoEscape;nonegate;negate;comment;empty;preserveMultipleSlashes;partial;globSet;globParts;nocase;isWindows;platform;windowsNoMagicRoot;regexp;constructor(e,t={}){(0,i.f)(e),t=t||{},this.options=t,this.pattern=e,this.platform=t.platform||P,this.isWindows="win32"===this.platform,this.windowsPathsNoEscape=!!t.windowsPathsNoEscape||!1===t.allowWindowsEscape,this.windowsPathsNoEscape&&(this.pattern=this.pattern.replace(/\\/g,"/")),this.preserveMultipleSlashes=!!t.preserveMultipleSlashes,this.regexp=null,this.negate=!1,this.nonegate=!!t.nonegate,this.comment=!1,this.empty=!1,this.partial=!!t.partial,this.nocase=!!this.options.nocase,this.windowsNoMagicRoot=void 0!==t.windowsNoMagicRoot?t.windowsNoMagicRoot:!(!this.isWindows||!this.nocase),this.globSet=[],this.globParts=[],this.set=[],this.make()}hasMagic(){if(this.options.magicalBraces&&this.set.length>1)return!0;for(const e of this.set)for(const t of e)if("string"!=typeof t)return!0;return!1}debug(...e){}make(){const e=this.pattern,t=this.options;if(!t.nocomment&&"#"===e.charAt(0))return void(this.comment=!0);if(!e)return void(this.empty=!0);this.parseNegate(),this.globSet=[...new Set(this.braceExpand())],t.debug&&(this.debug=(...e)=>console.error(...e)),this.debug(this.pattern,this.globSet);const r=this.globSet.map((e=>this.slashSplit(e)));this.globParts=this.preprocess(r),this.debug(this.pattern,this.globParts);let n=this.globParts.map(((e,t,r)=>{if(this.isWindows&&this.windowsNoMagicRoot){const t=!(""!==e[0]||""!==e[1]||"?"!==e[2]&&K.test(e[2])||K.test(e[3])),r=/^[a-z]:/i.test(e[0]);if(t)return[...e.slice(0,4),...e.slice(4).map((e=>this.parse(e)))];if(r)return[e[0],...e.slice(1).map((e=>this.parse(e)))]}return e.map((e=>this.parse(e)))}));if(this.debug(this.pattern,n),this.set=n.filter((e=>-1===e.indexOf(!1))),this.isWindows)for(let e=0;e<this.set.length;e++){const t=this.set[e];""===t[0]&&""===t[1]&&"?"===this.globParts[e][2]&&"string"==typeof t[3]&&/^[a-z]:$/i.test(t[3])&&(t[2]="?")}this.debug(this.pattern,this.set)}preprocess(e){if(this.options.noglobstar)for(let t=0;t<e.length;t++)for(let r=0;r<e[t].length;r++)"**"===e[t][r]&&(e[t][r]="*");const{optimizationLevel:t=1}=this.options;return t>=2?(e=this.firstPhasePreProcess(e),e=this.secondPhasePreProcess(e)):e=t>=1?this.levelOneOptimize(e):this.adjascentGlobstarOptimize(e),e}adjascentGlobstarOptimize(e){return e.map((e=>{let t=-1;for(;-1!==(t=e.indexOf("**",t+1));){let r=t;for(;"**"===e[r+1];)r++;r!==t&&e.splice(t,r-t)}return e}))}levelOneOptimize(e){return e.map((e=>0===(e=e.reduce(((e,t)=>{const r=e[e.length-1];return"**"===t&&"**"===r?e:".."===t&&r&&".."!==r&&"."!==r&&"**"!==r?(e.pop(),e):(e.push(t),e)}),[])).length?[""]:e))}levelTwoFileOptimize(e){Array.isArray(e)||(e=this.slashSplit(e));let t=!1;do{if(t=!1,!this.preserveMultipleSlashes){for(let r=1;r<e.length-1;r++){const n=e[r];1===r&&""===n&&""===e[0]||"."!==n&&""!==n||(t=!0,e.splice(r,1),r--)}"."!==e[0]||2!==e.length||"."!==e[1]&&""!==e[1]||(t=!0,e.pop())}let r=0;for(;-1!==(r=e.indexOf("..",r+1));){const n=e[r-1];n&&"."!==n&&".."!==n&&"**"!==n&&(t=!0,e.splice(r-1,2),r-=2)}}while(t);return 0===e.length?[""]:e}firstPhasePreProcess(e){let t=!1;do{t=!1;for(let r of e){let n=-1;for(;-1!==(n=r.indexOf("**",n+1));){let i=n;for(;"**"===r[i+1];)i++;i>n&&r.splice(n+1,i-n);let a=r[n+1];const o=r[n+2],s=r[n+3];if(".."!==a)continue;if(!o||"."===o||".."===o||!s||"."===s||".."===s)continue;t=!0,r.splice(n,1);const c=r.slice(0);c[n]="**",e.push(c),n--}if(!this.preserveMultipleSlashes){for(let e=1;e<r.length-1;e++){const n=r[e];1===e&&""===n&&""===r[0]||"."!==n&&""!==n||(t=!0,r.splice(e,1),e--)}"."!==r[0]||2!==r.length||"."!==r[1]&&""!==r[1]||(t=!0,r.pop())}let i=0;for(;-1!==(i=r.indexOf("..",i+1));){const e=r[i-1];if(e&&"."!==e&&".."!==e&&"**"!==e){t=!0;const e=1===i&&"**"===r[i+1]?["."]:[];r.splice(i-1,2,...e),0===r.length&&r.push(""),i-=2}}}}while(t);return e}secondPhasePreProcess(e){for(let t=0;t<e.length-1;t++)for(let r=t+1;r<e.length;r++){const n=this.partsMatch(e[t],e[r],!this.preserveMultipleSlashes);if(n){e[t]=[],e[r]=n;break}}return e.filter((e=>e.length))}partsMatch(e,t,r=!1){let n=0,i=0,a=[],o="";for(;n<e.length&&i<t.length;)if(e[n]===t[i])a.push("b"===o?t[i]:e[n]),n++,i++;else if(r&&"**"===e[n]&&t[i]===e[n+1])a.push(e[n]),n++;else if(r&&"**"===t[i]&&e[n]===t[i+1])a.push(t[i]),i++;else if("*"!==e[n]||!t[i]||!this.options.dot&&t[i].startsWith(".")||"**"===t[i]){if("*"!==t[i]||!e[n]||!this.options.dot&&e[n].startsWith(".")||"**"===e[n])return!1;if("a"===o)return!1;o="b",a.push(t[i]),n++,i++}else{if("b"===o)return!1;o="a",a.push(e[n]),n++,i++}return e.length===t.length&&a}parseNegate(){if(this.nonegate)return;const e=this.pattern;let t=!1,r=0;for(let n=0;n<e.length&&"!"===e.charAt(n);n++)t=!t,r++;r&&(this.pattern=e.slice(r)),this.negate=t}matchOne(e,t,r=!1){const n=this.options;if(this.isWindows){const r="string"==typeof e[0]&&/^[a-z]:$/i.test(e[0]),n=!r&&""===e[0]&&""===e[1]&&"?"===e[2]&&/^[a-z]:$/i.test(e[3]),i="string"==typeof t[0]&&/^[a-z]:$/i.test(t[0]),a=n?3:r?0:void 0,o=!i&&""===t[0]&&""===t[1]&&"?"===t[2]&&"string"==typeof t[3]&&/^[a-z]:$/i.test(t[3])?3:i?0:void 0;if("number"==typeof a&&"number"==typeof o){const[r,n]=[e[a],t[o]];r.toLowerCase()===n.toLowerCase()&&(t[o]=r,o>a?t=t.slice(o):a>o&&(e=e.slice(a)))}}const{optimizationLevel:i=1}=this.options;i>=2&&(e=this.levelTwoFileOptimize(e)),this.debug("matchOne",this,{file:e,pattern:t}),this.debug("matchOne",e.length,t.length);for(var a=0,o=0,s=e.length,c=t.length;a<s&&o<c;a++,o++){this.debug("matchOne loop");var l=t[o],u=e[a];if(this.debug(t,l,u),!1===l)return!1;if(l===O){this.debug("GLOBSTAR",[t,l,u]);var f=a,p=o+1;if(p===c){for(this.debug("** at the end");a<s;a++)if("."===e[a]||".."===e[a]||!n.dot&&"."===e[a].charAt(0))return!1;return!0}for(;f<s;){var d=e[f];if(this.debug("\nglobstar while",e,f,t,p,d),this.matchOne(e.slice(f),t.slice(p),r))return this.debug("globstar found match!",f,s,d),!0;if("."===d||".."===d||!n.dot&&"."===d.charAt(0)){this.debug("dot detected!",e,f,t,p);break}this.debug("globstar swallow a segment, and continue"),f++}return!(!r||(this.debug("\n>>> no match, partial?",e,f,t,p),f!==s))}let i;if("string"==typeof l?(i=u===l,this.debug("string match",l,u,i)):(i=l.test(u),this.debug("pattern match",l,u,i)),!i)return!1}if(a===s&&o===c)return!0;if(a===s)return r;if(o===c)return a===s-1&&""===e[a];throw new Error("wtf?")}braceExpand(){return F(this.pattern,this.options)}parse(e){(0,i.f)(e);const t=this.options;if("**"===e)return O;if(""===e)return"";let r,n=null;(r=e.match(g))?n=t.dot?T:v:(r=e.match(l))?n=(t.nocase?t.dot?d:p:t.dot?f:u)(r[1]):(r=e.match(S))?n=(t.nocase?t.dot?b:E:t.dot?k:N)(r):(r=e.match(y))?n=t.dot?x:h:(r=e.match(m))&&(n=A);const o=a.d.fromGlob(e,this.options).toMMPattern();return n&&"object"==typeof o&&Reflect.defineProperty(o,"test",{value:n}),o}makeRe(){if(this.regexp||!1===this.regexp)return this.regexp;const e=this.set;if(!e.length)return this.regexp=!1,this.regexp;const t=this.options,r=t.noglobstar?"[^/]*?":t.dot?"(?:(?!(?:\\/|^)(?:\\.{1,2})($|\\/)).)*?":"(?:(?!(?:\\/|^)\\.).)*?",n=new Set(t.nocase?["i"]:[]);let i=e.map((e=>{const t=e.map((e=>{if(e instanceof RegExp)for(const t of e.flags.split(""))n.add(t);return"string"==typeof e?e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"):e===O?O:e._src}));t.forEach(((e,n)=>{const i=t[n+1],a=t[n-1];e===O&&a!==O&&(void 0===a?void 0!==i&&i!==O?t[n+1]="(?:\\/|"+r+"\\/)?"+i:t[n]=r:void 0===i?t[n-1]=a+"(?:\\/|\\/"+r+")?":i!==O&&(t[n-1]=a+"(?:\\/|\\/"+r+"\\/)"+i,t[n+1]=O))}));const i=t.filter((e=>e!==O));if(this.partial&&i.length>=1){const e=[];for(let t=1;t<=i.length;t++)e.push(i.slice(0,t).join("/"));return"(?:"+e.join("|")+")"}return i.join("/")})).join("|");const[a,o]=e.length>1?["(?:",")"]:["",""];i="^"+a+i+o+"$",this.partial&&(i="^(?:\\/|"+a+i.slice(1,-1)+o+")$"),this.negate&&(i="^(?!"+i+").+$");try{this.regexp=new RegExp(i,[...n].join(""))}catch(e){this.regexp=!1}return this.regexp}slashSplit(e){return this.preserveMultipleSlashes?e.split("/"):this.isWindows&&/^\/\/[^\/]+/.test(e)?["",...e.split(/\/+/)]:e.split(/\/+/)}match(e,t=this.partial){if(this.debug("match",e,this.pattern),this.comment)return!1;if(this.empty)return""===e;if("/"===e&&t)return!0;const r=this.options;this.isWindows&&(e=e.split("\\").join("/"));const n=this.slashSplit(e);this.debug(this.pattern,"split",n);const i=this.set;this.debug(this.pattern,"set",i);let a=n[n.length-1];if(!a)for(let e=n.length-2;!a&&e>=0;e--)a=n[e];for(let e=0;e<i.length;e++){const o=i[e];let s=n;if(r.matchBase&&1===o.length&&(s=[a]),this.matchOne(s,o,t))return!!r.flipNegate||!this.negate}return!r.flipNegate&&this.negate}static defaults(e){return c.defaults(e).Minimatch}}c.AST=a.d,c.Minimatch=_,c.escape=o.i,c.unescape=s.x},99302:(e,t,r)=>{var n=r(21951),i=TypeError;e.exports=function(e,t){if(!delete e[t])throw new i("Cannot delete property "+n(t)+" of "+n(e))}},99309:(e,t,r)=>{r.d(t,{A:()=>a});var n=r(23712),i=r(72551);function a(){return!("object"==typeof window&&(0,n.A)(window.document)||(0,i.A)())}},99616:(e,t,r)=>{var n=r(86927),i=r(47035),a=n("Map");e.exports={Map:a,set:i("set",2),get:i("get",1),has:i("has",1),remove:i("delete",1),proto:a.prototype}},99627:()=>{},99669:(e,t,r)=>{r(58819);var n=r(42244);e.exports=n("Array","fill")},99845:(e,t,r)=>{var n=r(84636);e.exports=n},99937:(e,t,r)=>{r(9135)}},s={};function c(e){var t=s[e];if(void 0!==t)return t.exports;var r=s[e]={exports:{}};return o[e].call(r.exports,r,r.exports,c),r.exports}c.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return c.d(t,{a:t}),t},c.d=(e,t)=>{for(var r in t)c.o(t,r)&&!c.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},c.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),c.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),c.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var l={};c.d(l,{Pl:()=>z,c3:()=>R,gM:()=>$});var u=c(85349),f=c.n(u),p=c(9105),d=c.n(p),y=c(74093),h=c(80807),x=c(87982),m=c(50164),A=c(84478),g=c(16561),v=c(50549),T=c(67704),S=c(48829),E=c(50573),b=c(46912),k=c(48527),N=c(70307),I=c(62948),C=c(42957),P=c(26644),L=c(52788),O=c(85961),w=c(23581),F=c(35491),K=c(78686),_=c(12521),B=c(8116),M=c(35879);const D=f()("createNumericLiteral"),j={ENV_NODE:!1,ENV_CSP:!1,ENV_CJS:!1,ENABLE_THREADS:!0,ENABLE_THREADS_SPLIT:!1,DEBUG:!1,BIGINT_LITERAL:!0,CHEAP_HEAP_INITIAL:256,ENABLE_SYNCHRONIZE_API:!1,ENABLE_LOG_PATH:!0,ENV_WEBPACK:!1,WASM_64:!1};function $(e,t,r){var n,i;if(K.is.func(t)&&(r=t,t={}),t||(t={}),t.projectPath||(t.projectPath=e.getCurrentDirectory()),!t.wat2wasm){let e=_.default.resolve((0,M.A)("file:///Users/zhaogaoxing/Documents/github/libmedia/src/cheap/transformer/index.ts"),"./asm/ubuntu")+"/wat2wasm";"win32"===B.default.platform()?e=_.default.resolve((0,M.A)("file:///Users/zhaogaoxing/Documents/github/libmedia/src/cheap/transformer/index.ts"),"./asm/win")+"/wat2wasm.exe":"darwin"===B.default.platform()&&(e=_.default.resolve((0,M.A)("file:///Users/zhaogaoxing/Documents/github/libmedia/src/cheap/transformer/index.ts"),"./asm/macos")+"/wat2wasm"),t.wat2wasm=e}const a=y.default.findConfigFile(t.projectPath,y.default.sys.fileExists,"tsconfig.json"),o=a&&y.default.readConfigFile(a,y.default.sys.readFile);let s={defined:{},structPaths:{}};const c=K.Ik.extend({},j),l={};null!=o&&null!==(n=o.config)&&void 0!==n&&n.cheap&&(K.Ik.extend(c,o.config.cheap.defined||{}),o.config.cheap.structPaths&&K.Ik.each(o.config.cheap.structPaths,((e,t)=>{l[_.default.resolve(_.default.dirname(a),t)]=e})),s=K.Ik.extend(s,o.config.cheap||{})),t.defined&&K.Ik.extend(c,t.defined),c.ENV_CSP&&(c.ENABLE_THREADS_SPLIT=!0),s.defined=c,s.structPaths=l,h.Ay.options=t,h.Ay.cheapCompilerOptions=s,h.Ay.compilerOptions=e.getCompilerOptions();const u=K.is.array(t.exclude)?t.exclude:t.exclude?[t.exclude]:[];return L.oP(null!==(i=t.cheapPacketName)&&void 0!==i?i:"@libmedia/cheap"),h.Ay.cheapCompilerOptions.defined.WASM_64?(w.i[20]=8,w._[20]=3,w.i[25]=8,w._[25]=3,F.D.push(L.E9),h.Ay.cheapCompilerOptions.defined.BIGINT_LITERAL=!0):(w.i[20]=4,w._[20]=3,w.i[25]=4,w._[25]=3,K.YO.remove(F.D,L.E9),!1===c.BIGINT_LITERAL&&(h.Ay.cheapCompilerOptions.defined.BIGINT_LITERAL=!1)),(0,O.ng)(),t=>{h.Ay.context=t;const n=t.getCompilerOptions();h.Ay.moduleType=n.module,h.Ay.esModuleInterop=n.esModuleInterop;const i=t.factory.createNumericLiteral;return i[D]||(t.factory.createNumericLiteral=(e,t)=>K.is.number(e)&&e<0?h.Ay.context.factory.createPrefixUnaryExpression(y.default.SyntaxKind.MinusToken,h.Ay.context.factory.createNumericLiteral(Math.abs(e))):i(e,t),t.factory.createNumericLiteral[D]=!0),n=>d()(u).call(u,(e=>e.test(n.fileName)))?n:(r?(h.Ay.program=r(),h.Ay.typeChecker=h.Ay.program.getTypeChecker()):(h.Ay.program=e,h.Ay.typeChecker=e.getTypeChecker()),h.Ay.start(n),h.Ay.visitor=e=>y.default.isPropertyDeclaration(e)?(0,I.A)(e,h.Ay.visitor):y.default.isPropertyAssignment(e)?(0,C.A)(e,h.Ay.visitor):y.default.isBindingElement(e)?(0,P.A)(e,h.Ay.visitor):y.default.isBlock(e)?(0,x.A)(e,h.Ay.visitor):y.default.isIdentifier(e)?(0,m.A)(e,h.Ay.visitor):y.default.isDecorator(e)?(0,A.A)(e,h.Ay.visitor):e.kind===y.default.SyntaxKind.AsyncKeyword?(0,A.X)(e,h.Ay.visitor):y.default.isClassDeclaration(e)&&e.name&&y.default.isIdentifier(e.name)?(0,g.A)(e,h.Ay.visitor):y.default.isIfStatement(e)?(0,v.A)(e,h.Ay.visitor):y.default.isParameter(e)?(0,T.A)(e,h.Ay.visitor):y.default.isVariableDeclaration(e)?(0,S.A)(e,h.Ay.visitor):y.default.isFunctionDeclaration(e)?(0,E.A)(e,h.Ay.visitor):y.default.isExpressionStatement(e)?(0,b.A)(e,h.Ay.visitor):y.default.isBigIntLiteral(e)?(0,k.A)(e,h.Ay.visitor):y.default.isExpression(e)?(0,N.A)(e,h.Ay.visitor):y.default.visitEachChild(e,h.Ay.visitor,t),h.Ay.end(y.default.visitEachChild(n,h.Ay.visitor,h.Ay.context)))}}function z(e,t,r){K.is.func(t)&&(t={}),t||(t={});const n=K.is.array(t.exclude)?t.exclude:t.exclude?[t.exclude]:[];return e=>t=>{if(d()(n).call(n,(e=>e.test(t.fileName))))return t;const r=t=>y.default.visitEachChild(t,r,e);return y.default.visitEachChild(t,r,e)}}function R(e,t,r){K.is.func(t)&&(t={}),t||(t={});const n=K.is.array(t.exclude)?t.exclude:t.exclude?[t.exclude]:[];return e=>t=>{if(d()(n).call(n,(e=>e.test(t.fileName))))return t;const r=(0,O.s1)(t.fileName),i=t=>{if(y.default.isClassDeclaration(t)&&t.name&&y.default.isIdentifier(t.name)){var n;let i=t.name.escapedText;if(t.modifiers&&d()(n=t.modifiers).call(n,(e=>e.kind===y.default.SyntaxKind.DefaultKeyword))&&(i="default"),r&&K.YO.has(r,i)){const r=t.modifiers?[...t.modifiers]:[];return r.unshift(e.factory.createDecorator(e.factory.createIdentifier(L.aS))),e.factory.createClassDeclaration(r,t.name,t.typeParameters,t.heritageClauses,t.members)}}return y.default.visitEachChild(t,i,e)};return y.default.visitEachChild(t,i,e)}}const W=l.Pl,q=l.c3,G=l.gM;export{W as after,q as afterDeclarations,G as before};
+import ts from 'typescript';
+import path$1, { dirname } from 'path';
+import * as fs from 'fs';
+import fs__default from 'fs';
+import { array, object, is, isLittleEndian, isDef, toString } from '@libmedia/common';
+import { execSync } from 'child_process';
+import os from 'os';
+import { fileURLToPath } from 'url';
+
+function getFilePath(program, current, target) {
+    var _a;
+    const path = ts.resolveModuleName(target, current, program.getCompilerOptions(), ts.sys);
+    return (_a = path.resolvedModule) === null || _a === void 0 ? void 0 : _a.resolvedFileName;
+}
+
+function parseImports(file, program, typeChecker, locals) {
+    const map = new Map();
+    file.statements.forEach((node) => {
+        if (ts.isImportDeclaration(node)) {
+            const ext = path$1.extname(node.moduleSpecifier.text);
+            if (!ext || ext === '.ts') {
+                const specifier = node.moduleSpecifier.text.split('!').pop();
+                const filePath = getFilePath(program, file.fileName, specifier);
+                if (filePath) {
+                    const m = map.get(filePath) || {
+                        map: new Map(),
+                        specifier
+                    };
+                    if (node.importClause && ts.isImportClause(node.importClause)) {
+                        if (node.importClause.isTypeOnly
+                            || node.importClause.phaseModifier === ts.SyntaxKind.TypeKeyword) {
+                            return;
+                        }
+                        if (node.importClause.name && ts.isIdentifier(node.importClause.name)) {
+                            m.map.set('default', node.importClause.name.escapedText);
+                            locals.set(node.importClause.name.escapedText, typeChecker.getSymbolAtLocation(node.importClause.name));
+                        }
+                        if (node.importClause.namedBindings) {
+                            if (ts.isNamedImports(node.importClause.namedBindings)) {
+                                node.importClause.namedBindings.elements.forEach((element) => {
+                                    if (element.isTypeOnly) {
+                                        return;
+                                    }
+                                    if (element.propertyName && ts.isIdentifier(element.propertyName)) {
+                                        m.map.set(element.propertyName.escapedText, element.name.escapedText);
+                                        locals.set(element.propertyName.escapedText, typeChecker.getSymbolAtLocation(element.propertyName));
+                                    }
+                                    else {
+                                        m.map.set(element.name.escapedText, element.name.escapedText);
+                                        locals.set(element.name.escapedText, typeChecker.getSymbolAtLocation(element.name));
+                                    }
+                                });
+                            }
+                            else if (ts.isNamespaceImport(node.importClause.namedBindings)) {
+                                m.map.set('all', node.importClause.namedBindings.name.escapedText);
+                            }
+                        }
+                    }
+                    map.set(filePath, m);
+                }
+            }
+        }
+    });
+    return map;
+}
+
+function pushImport(keys, name, path, formatName, defaultExport) {
+    for (let i = 0; i < keys.length; i++) {
+        if (keys[i].name === name && keys[i].path === path) {
+            return keys[i];
+        }
+    }
+    const item = {
+        name,
+        path,
+        default: defaultExport,
+        formatName
+    };
+    keys.push(item);
+    return item;
+}
+function pushRequire(keys, formatName, path, defaultExport, esModule) {
+    for (let i = 0; i < keys.length; i++) {
+        if (keys[i].path === path && keys[i].default === defaultExport) {
+            return keys[i];
+        }
+    }
+    const item = {
+        formatName,
+        path,
+        default: defaultExport,
+        esModule
+    };
+    keys.push(item);
+    return item;
+}
+
+const accessof = 'accessof';
+const addressof = 'addressof';
+const offsetof = 'offsetof';
+const memcpy = 'memcpy';
+const sizeof = 'sizeof';
+const move = 'move';
+const staticCast = 'static_cast';
+const assert = 'assert';
+const indexOf = 'indexOf';
+const reinterpretCast = 'reinterpret_cast';
+const sharedPtr = 'SharedPtr';
+const structAccess = 'mapStruct';
+const ctypeEnumWrite = 'CTypeEnumWrite';
+const ctypeEnumRead = 'CTypeEnumRead';
+const definedMetaProperty = 'definedMetaProperty';
+const symbolStructAddress = 'symbolStructAddress';
+const symbolStruct = 'symbolStruct';
+const symbolStructMaxBaseTypeByteLength$1 = 'symbolStructMaxBaseTypeByteLength';
+const symbolStructLength$1 = 'symbolStructLength';
+const symbolStructKeysMeta = 'symbolStructKeysMeta';
+const createThreadFromClass = 'createThreadFromClass';
+const createThreadFromFunction = 'createThreadFromFunction';
+const createThreadFromModule = 'createThreadFromModule';
+const typeArray = 'array';
+const typeBit = 'bit';
+const typePointer = 'pointer';
+const typeSize = 'size';
+const typeAnyptr = 'anyptr';
+const typeNullptr = 'nullptr';
+const typeMultiPointer = 'multiPointer';
+const typeUnion = 'union';
+const typeStruct = 'struct';
+const defined = 'defined';
+const args = 'args';
+const enableArgs = 'enableArgs';
+const enumPointer = 'typeptr';
+const tagAsm = 'asm';
+const tagAsm64 = 'asm64';
+const prototype = 'prototype';
+const cstruct = 'struct';
+const cunion = 'union';
+const ctype = 'type';
+const cpointer = 'pointer';
+const carray = 'array';
+const cbitField = 'bit';
+const cignore = 'ignore';
+const cinline = 'inline';
+const cdeasync = 'deasync';
+const make = 'make';
+const unmake = 'unmake';
+const malloc = 'malloc';
+const calloc = 'calloc';
+const realloc = 'realloc';
+const alignedAlloc = 'aligned_alloc';
+const free = 'free';
+const Allocator = 'Allocator';
+const makeSharedPtr = 'make_shared_ptr';
+const makeSharedPtrImportName = 'makeSharedPtr';
+const smartPointerProperty = ['get', 'reset', 'unique', 'useCount', 'has', 'transferable', 'clone'];
+const typeProperty = 'zzztype__';
+const levelProperty = 'zzzlevel__';
+const structProperty = 'zzzstruct__';
+const LINE = '___LINE__';
+const LINE_2 = '__LINE__';
+const FILE = '___FILE__';
+const FILE_2 = '__FILE__';
+const importStar = '__importStar';
+const importDefault = '__importDefault';
+let PACKET_NAME = '';
+let RootPath = '';
+let InternalPath = '';
+let AllocatorPath = '';
+let makePath = '';
+let unmakePath = '';
+let makeSharedPtrPath = '';
+let atomicsPath = '';
+let sizeofPath = '';
+let definedMetaPropertyPath = '';
+let memoryPath = '';
+let symbolPath = '';
+let structAccessPath = '';
+let ctypeEnumReadPath = '';
+let ctypeEnumWritePath = '';
+let cheapThreadPath = '';
+function setPacketName(name) {
+    PACKET_NAME = name;
+    RootPath = PACKET_NAME;
+    InternalPath = PACKET_NAME + '/internal';
+    AllocatorPath = PACKET_NAME + '/heap';
+    makePath = PACKET_NAME + '/std/make';
+    unmakePath = PACKET_NAME + '/std/unmake';
+    makeSharedPtrPath = PACKET_NAME + '/std/smartPtr/SharedPtr';
+    atomicsPath = PACKET_NAME + '/thread/atomics';
+    sizeofPath = PACKET_NAME + '/std/sizeof';
+    definedMetaPropertyPath = PACKET_NAME + '/function/definedMetaProperty';
+    memoryPath = PACKET_NAME + '/std/memory';
+    symbolPath = PACKET_NAME + '/symbol';
+    structAccessPath = PACKET_NAME + '/std/mapStruct';
+    ctypeEnumReadPath = PACKET_NAME + '/ctypeEnumRead';
+    ctypeEnumWritePath = PACKET_NAME + '/ctypeEnumWrite';
+    cheapThreadPath = PACKET_NAME + '/thread/thread';
+}
+
+function addImportStatements(imports, path, updatedStatements) {
+    if (imports.length) {
+        const importElements = [];
+        imports.forEach((item) => {
+            importElements.push(statement.context.factory.createImportSpecifier(false, statement.context.factory.createIdentifier(item.name), statement.context.factory.createIdentifier(item.formatName)));
+        });
+        const importDeclaration = statement.context.factory.createImportDeclaration(undefined, statement.context.factory.createImportClause(false, undefined, statement.context.factory.createNamedImports(importElements)), statement.context.factory.createStringLiteral(path));
+        updatedStatements.push(importDeclaration);
+    }
+}
+
+function relativePath(a, b) {
+    let p = path$1.relative(path$1.dirname(a), b);
+    // 去掉 d.ts .ts .js 后缀
+    p = p.replace(/(\.d)?\.[t|j]s$/, '');
+    if (path$1.isAbsolute(p)) {
+        return p;
+    }
+    else if (/\.\.\//.test(p)) {
+        return p;
+    }
+    return './' + p;
+}
+
+const balanced = (a, b, str) => {
+    const ma = a instanceof RegExp ? maybeMatch(a, str) : a;
+    const mb = b instanceof RegExp ? maybeMatch(b, str) : b;
+    const r = ma !== null && mb != null && range(ma, mb, str);
+    return (r && {
+        start: r[0],
+        end: r[1],
+        pre: str.slice(0, r[0]),
+        body: str.slice(r[0] + ma.length, r[1]),
+        post: str.slice(r[1] + mb.length),
+    });
+};
+const maybeMatch = (reg, str) => {
+    const m = str.match(reg);
+    return m ? m[0] : null;
+};
+const range = (a, b, str) => {
+    let begs, beg, left, right = undefined, result;
+    let ai = str.indexOf(a);
+    let bi = str.indexOf(b, ai + 1);
+    let i = ai;
+    if (ai >= 0 && bi > 0) {
+        if (a === b) {
+            return [ai, bi];
+        }
+        begs = [];
+        left = str.length;
+        while (i >= 0 && !result) {
+            if (i === ai) {
+                begs.push(i);
+                ai = str.indexOf(a, i + 1);
+            }
+            else if (begs.length === 1) {
+                const r = begs.pop();
+                if (r !== undefined)
+                    result = [r, bi];
+            }
+            else {
+                beg = begs.pop();
+                if (beg !== undefined && beg < left) {
+                    left = beg;
+                    right = bi;
+                }
+                bi = str.indexOf(b, i + 1);
+            }
+            i = ai < bi && ai >= 0 ? ai : bi;
+        }
+        if (begs.length && right !== undefined) {
+            result = [left, right];
+        }
+    }
+    return result;
+};
+
+const escSlash = '\0SLASH' + Math.random() + '\0';
+const escOpen = '\0OPEN' + Math.random() + '\0';
+const escClose = '\0CLOSE' + Math.random() + '\0';
+const escComma = '\0COMMA' + Math.random() + '\0';
+const escPeriod = '\0PERIOD' + Math.random() + '\0';
+const escSlashPattern = new RegExp(escSlash, 'g');
+const escOpenPattern = new RegExp(escOpen, 'g');
+const escClosePattern = new RegExp(escClose, 'g');
+const escCommaPattern = new RegExp(escComma, 'g');
+const escPeriodPattern = new RegExp(escPeriod, 'g');
+const slashPattern = /\\\\/g;
+const openPattern = /\\{/g;
+const closePattern = /\\}/g;
+const commaPattern = /\\,/g;
+const periodPattern = /\\./g;
+function numeric(str) {
+    return !isNaN(str) ? parseInt(str, 10) : str.charCodeAt(0);
+}
+function escapeBraces(str) {
+    return str
+        .replace(slashPattern, escSlash)
+        .replace(openPattern, escOpen)
+        .replace(closePattern, escClose)
+        .replace(commaPattern, escComma)
+        .replace(periodPattern, escPeriod);
+}
+function unescapeBraces(str) {
+    return str
+        .replace(escSlashPattern, '\\')
+        .replace(escOpenPattern, '{')
+        .replace(escClosePattern, '}')
+        .replace(escCommaPattern, ',')
+        .replace(escPeriodPattern, '.');
+}
+/**
+ * Basically just str.split(","), but handling cases
+ * where we have nested braced sections, which should be
+ * treated as individual members, like {a,{b,c},d}
+ */
+function parseCommaParts(str) {
+    if (!str) {
+        return [''];
+    }
+    const parts = [];
+    const m = balanced('{', '}', str);
+    if (!m) {
+        return str.split(',');
+    }
+    const { pre, body, post } = m;
+    const p = pre.split(',');
+    p[p.length - 1] += '{' + body + '}';
+    const postParts = parseCommaParts(post);
+    if (post.length) {
+        p[p.length - 1] += postParts.shift();
+        p.push.apply(p, postParts);
+    }
+    parts.push.apply(parts, p);
+    return parts;
+}
+function expand(str) {
+    if (!str) {
+        return [];
+    }
+    // I don't know why Bash 4.3 does this, but it does.
+    // Anything starting with {} will have the first two bytes preserved
+    // but *only* at the top level, so {},a}b will not expand to anything,
+    // but a{},b}c will be expanded to [a}c,abc].
+    // One could argue that this is a bug in Bash, but since the goal of
+    // this module is to match Bash's rules, we escape a leading {}
+    if (str.slice(0, 2) === '{}') {
+        str = '\\{\\}' + str.slice(2);
+    }
+    return expand_(escapeBraces(str), true).map(unescapeBraces);
+}
+function embrace(str) {
+    return '{' + str + '}';
+}
+function isPadded(el) {
+    return /^-?0\d/.test(el);
+}
+function lte(i, y) {
+    return i <= y;
+}
+function gte(i, y) {
+    return i >= y;
+}
+function expand_(str, isTop) {
+    /** @type {string[]} */
+    const expansions = [];
+    const m = balanced('{', '}', str);
+    if (!m)
+        return [str];
+    // no need to expand pre, since it is guaranteed to be free of brace-sets
+    const pre = m.pre;
+    const post = m.post.length ? expand_(m.post, false) : [''];
+    if (/\$$/.test(m.pre)) {
+        for (let k = 0; k < post.length; k++) {
+            const expansion = pre + '{' + m.body + '}' + post[k];
+            expansions.push(expansion);
+        }
+    }
+    else {
+        const isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
+        const isAlphaSequence = /^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(m.body);
+        const isSequence = isNumericSequence || isAlphaSequence;
+        const isOptions = m.body.indexOf(',') >= 0;
+        if (!isSequence && !isOptions) {
+            // {a},b}
+            if (m.post.match(/,(?!,).*\}/)) {
+                str = m.pre + '{' + m.body + escClose + m.post;
+                return expand_(str);
+            }
+            return [str];
+        }
+        let n;
+        if (isSequence) {
+            n = m.body.split(/\.\./);
+        }
+        else {
+            n = parseCommaParts(m.body);
+            if (n.length === 1 && n[0] !== undefined) {
+                // x{{a,b}}y ==> x{a}y x{b}y
+                n = expand_(n[0], false).map(embrace);
+                //XXX is this necessary? Can't seem to hit it in tests.
+                /* c8 ignore start */
+                if (n.length === 1) {
+                    return post.map(p => m.pre + n[0] + p);
+                }
+                /* c8 ignore stop */
+            }
+        }
+        // at this point, n is the parts, and we know it's not a comma set
+        // with a single entry.
+        let N;
+        if (isSequence && n[0] !== undefined && n[1] !== undefined) {
+            const x = numeric(n[0]);
+            const y = numeric(n[1]);
+            const width = Math.max(n[0].length, n[1].length);
+            let incr = n.length === 3 && n[2] !== undefined ? Math.abs(numeric(n[2])) : 1;
+            let test = lte;
+            const reverse = y < x;
+            if (reverse) {
+                incr *= -1;
+                test = gte;
+            }
+            const pad = n.some(isPadded);
+            N = [];
+            for (let i = x; test(i, y); i += incr) {
+                let c;
+                if (isAlphaSequence) {
+                    c = String.fromCharCode(i);
+                    if (c === '\\') {
+                        c = '';
+                    }
+                }
+                else {
+                    c = String(i);
+                    if (pad) {
+                        const need = width - c.length;
+                        if (need > 0) {
+                            const z = new Array(need + 1).join('0');
+                            if (i < 0) {
+                                c = '-' + z + c.slice(1);
+                            }
+                            else {
+                                c = z + c;
+                            }
+                        }
+                    }
+                }
+                N.push(c);
+            }
+        }
+        else {
+            N = [];
+            for (let j = 0; j < n.length; j++) {
+                N.push.apply(N, expand_(n[j], false));
+            }
+        }
+        for (let j = 0; j < N.length; j++) {
+            for (let k = 0; k < post.length; k++) {
+                const expansion = pre + N[j] + post[k];
+                if (!isTop || isSequence || expansion) {
+                    expansions.push(expansion);
+                }
+            }
+        }
+    }
+    return expansions;
+}
+
+const MAX_PATTERN_LENGTH = 1024 * 64;
+const assertValidPattern = (pattern) => {
+    if (typeof pattern !== 'string') {
+        throw new TypeError('invalid pattern');
+    }
+    if (pattern.length > MAX_PATTERN_LENGTH) {
+        throw new TypeError('pattern is too long');
+    }
+};
+
+// translate the various posix character classes into unicode properties
+// this works across all unicode locales
+// { <posix class>: [<translation>, /u flag required, negated]
+const posixClasses = {
+    '[:alnum:]': ['\\p{L}\\p{Nl}\\p{Nd}', true],
+    '[:alpha:]': ['\\p{L}\\p{Nl}', true],
+    '[:ascii:]': ['\\x' + '00-\\x' + '7f', false],
+    '[:blank:]': ['\\p{Zs}\\t', true],
+    '[:cntrl:]': ['\\p{Cc}', true],
+    '[:digit:]': ['\\p{Nd}', true],
+    '[:graph:]': ['\\p{Z}\\p{C}', true, true],
+    '[:lower:]': ['\\p{Ll}', true],
+    '[:print:]': ['\\p{C}', true],
+    '[:punct:]': ['\\p{P}', true],
+    '[:space:]': ['\\p{Z}\\t\\r\\n\\v\\f', true],
+    '[:upper:]': ['\\p{Lu}', true],
+    '[:word:]': ['\\p{L}\\p{Nl}\\p{Nd}\\p{Pc}', true],
+    '[:xdigit:]': ['A-Fa-f0-9', false],
+};
+// only need to escape a few things inside of brace expressions
+// escapes: [ \ ] -
+const braceEscape = (s) => s.replace(/[[\]\\-]/g, '\\$&');
+// escape all regexp magic characters
+const regexpEscape = (s) => s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+// everything has already been escaped, we just have to join
+const rangesToString = (ranges) => ranges.join('');
+// takes a glob string at a posix brace expression, and returns
+// an equivalent regular expression source, and boolean indicating
+// whether the /u flag needs to be applied, and the number of chars
+// consumed to parse the character class.
+// This also removes out of order ranges, and returns ($.) if the
+// entire class just no good.
+const parseClass = (glob, position) => {
+    const pos = position;
+    /* c8 ignore start */
+    if (glob.charAt(pos) !== '[') {
+        throw new Error('not in a brace expression');
+    }
+    /* c8 ignore stop */
+    const ranges = [];
+    const negs = [];
+    let i = pos + 1;
+    let sawStart = false;
+    let uflag = false;
+    let escaping = false;
+    let negate = false;
+    let endPos = pos;
+    let rangeStart = '';
+    WHILE: while (i < glob.length) {
+        const c = glob.charAt(i);
+        if ((c === '!' || c === '^') && i === pos + 1) {
+            negate = true;
+            i++;
+            continue;
+        }
+        if (c === ']' && sawStart && !escaping) {
+            endPos = i + 1;
+            break;
+        }
+        sawStart = true;
+        if (c === '\\') {
+            if (!escaping) {
+                escaping = true;
+                i++;
+                continue;
+            }
+            // escaped \ char, fall through and treat like normal char
+        }
+        if (c === '[' && !escaping) {
+            // either a posix class, a collation equivalent, or just a [
+            for (const [cls, [unip, u, neg]] of Object.entries(posixClasses)) {
+                if (glob.startsWith(cls, i)) {
+                    // invalid, [a-[] is fine, but not [a-[:alpha]]
+                    if (rangeStart) {
+                        return ['$.', false, glob.length - pos, true];
+                    }
+                    i += cls.length;
+                    if (neg)
+                        negs.push(unip);
+                    else
+                        ranges.push(unip);
+                    uflag = uflag || u;
+                    continue WHILE;
+                }
+            }
+        }
+        // now it's just a normal character, effectively
+        escaping = false;
+        if (rangeStart) {
+            // throw this range away if it's not valid, but others
+            // can still match.
+            if (c > rangeStart) {
+                ranges.push(braceEscape(rangeStart) + '-' + braceEscape(c));
+            }
+            else if (c === rangeStart) {
+                ranges.push(braceEscape(c));
+            }
+            rangeStart = '';
+            i++;
+            continue;
+        }
+        // now might be the start of a range.
+        // can be either c-d or c-] or c<more...>] or c] at this point
+        if (glob.startsWith('-]', i + 1)) {
+            ranges.push(braceEscape(c + '-'));
+            i += 2;
+            continue;
+        }
+        if (glob.startsWith('-', i + 1)) {
+            rangeStart = c;
+            i += 2;
+            continue;
+        }
+        // not the start of a range, just a single character
+        ranges.push(braceEscape(c));
+        i++;
+    }
+    if (endPos < i) {
+        // didn't see the end of the class, not a valid class,
+        // but might still be valid as a literal match.
+        return ['', false, 0, false];
+    }
+    // if we got no ranges and no negates, then we have a range that
+    // cannot possibly match anything, and that poisons the whole glob
+    if (!ranges.length && !negs.length) {
+        return ['$.', false, glob.length - pos, true];
+    }
+    // if we got one positive range, and it's a single character, then that's
+    // not actually a magic pattern, it's just that one literal character.
+    // we should not treat that as "magic", we should just return the literal
+    // character. [_] is a perfectly valid way to escape glob magic chars.
+    if (negs.length === 0 &&
+        ranges.length === 1 &&
+        /^\\?.$/.test(ranges[0]) &&
+        !negate) {
+        const r = ranges[0].length === 2 ? ranges[0].slice(-1) : ranges[0];
+        return [regexpEscape(r), false, endPos - pos, false];
+    }
+    const sranges = '[' + (negate ? '^' : '') + rangesToString(ranges) + ']';
+    const snegs = '[' + (negate ? '' : '^') + rangesToString(negs) + ']';
+    const comb = ranges.length && negs.length
+        ? '(' + sranges + '|' + snegs + ')'
+        : ranges.length
+            ? sranges
+            : snegs;
+    return [comb, uflag, endPos - pos, true];
+};
+
+/**
+ * Un-escape a string that has been escaped with {@link escape}.
+ *
+ * If the {@link MinimatchOptions.windowsPathsNoEscape} option is used, then
+ * square-bracket escapes are removed, but not backslash escapes.
+ *
+ * For example, it will turn the string `'[*]'` into `*`, but it will not
+ * turn `'\\*'` into `'*'`, because `\` is a path separator in
+ * `windowsPathsNoEscape` mode.
+ *
+ * When `windowsPathsNoEscape` is not set, then both square-bracket escapes and
+ * backslash escapes are removed.
+ *
+ * Slashes (and backslashes in `windowsPathsNoEscape` mode) cannot be escaped
+ * or unescaped.
+ *
+ * When `magicalBraces` is not set, escapes of braces (`{` and `}`) will not be
+ * unescaped.
+ */
+const unescape = (s, { windowsPathsNoEscape = false, magicalBraces = true, } = {}) => {
+    if (magicalBraces) {
+        return windowsPathsNoEscape
+            ? s.replace(/\[([^\/\\])\]/g, '$1')
+            : s
+                .replace(/((?!\\).|^)\[([^\/\\])\]/g, '$1$2')
+                .replace(/\\([^\/])/g, '$1');
+    }
+    return windowsPathsNoEscape
+        ? s.replace(/\[([^\/\\{}])\]/g, '$1')
+        : s
+            .replace(/((?!\\).|^)\[([^\/\\{}])\]/g, '$1$2')
+            .replace(/\\([^\/{}])/g, '$1');
+};
+
+// parse a single path portion
+const types = new Set(['!', '?', '+', '*', '@']);
+const isExtglobType = (c) => types.has(c);
+// Patterns that get prepended to bind to the start of either the
+// entire string, or just a single path portion, to prevent dots
+// and/or traversal patterns, when needed.
+// Exts don't need the ^ or / bit, because the root binds that already.
+const startNoTraversal = '(?!(?:^|/)\\.\\.?(?:$|/))';
+const startNoDot = '(?!\\.)';
+// characters that indicate a start of pattern needs the "no dots" bit,
+// because a dot *might* be matched. ( is not in the list, because in
+// the case of a child extglob, it will handle the prevention itself.
+const addPatternStart = new Set(['[', '.']);
+// cases where traversal is A-OK, no dot prevention needed
+const justDots = new Set(['..', '.']);
+const reSpecials = new Set('().*{}+?[]^$\\!');
+const regExpEscape$1 = (s) => s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+// any single thing other than /
+const qmark$1 = '[^/]';
+// * => any number of characters
+const star$1 = qmark$1 + '*?';
+// use + when we need to ensure that *something* matches, because the * is
+// the only thing in the path portion.
+const starNoEmpty = qmark$1 + '+?';
+// remove the \ chars that we added if we end up doing a nonmagic compare
+// const deslash = (s: string) => s.replace(/\\(.)/g, '$1')
+class AST {
+    type;
+    #root;
+    #hasMagic;
+    #uflag = false;
+    #parts = [];
+    #parent;
+    #parentIndex;
+    #negs;
+    #filledNegs = false;
+    #options;
+    #toString;
+    // set to true if it's an extglob with no children
+    // (which really means one child of '')
+    #emptyExt = false;
+    constructor(type, parent, options = {}) {
+        this.type = type;
+        // extglobs are inherently magical
+        if (type)
+            this.#hasMagic = true;
+        this.#parent = parent;
+        this.#root = this.#parent ? this.#parent.#root : this;
+        this.#options = this.#root === this ? options : this.#root.#options;
+        this.#negs = this.#root === this ? [] : this.#root.#negs;
+        if (type === '!' && !this.#root.#filledNegs)
+            this.#negs.push(this);
+        this.#parentIndex = this.#parent ? this.#parent.#parts.length : 0;
+    }
+    get hasMagic() {
+        /* c8 ignore start */
+        if (this.#hasMagic !== undefined)
+            return this.#hasMagic;
+        /* c8 ignore stop */
+        for (const p of this.#parts) {
+            if (typeof p === 'string')
+                continue;
+            if (p.type || p.hasMagic)
+                return (this.#hasMagic = true);
+        }
+        // note: will be undefined until we generate the regexp src and find out
+        return this.#hasMagic;
+    }
+    // reconstructs the pattern
+    toString() {
+        if (this.#toString !== undefined)
+            return this.#toString;
+        if (!this.type) {
+            return (this.#toString = this.#parts.map(p => String(p)).join(''));
+        }
+        else {
+            return (this.#toString =
+                this.type + '(' + this.#parts.map(p => String(p)).join('|') + ')');
+        }
+    }
+    #fillNegs() {
+        /* c8 ignore start */
+        if (this !== this.#root)
+            throw new Error('should only call on root');
+        if (this.#filledNegs)
+            return this;
+        /* c8 ignore stop */
+        // call toString() once to fill this out
+        this.toString();
+        this.#filledNegs = true;
+        let n;
+        while ((n = this.#negs.pop())) {
+            if (n.type !== '!')
+                continue;
+            // walk up the tree, appending everthing that comes AFTER parentIndex
+            let p = n;
+            let pp = p.#parent;
+            while (pp) {
+                for (let i = p.#parentIndex + 1; !pp.type && i < pp.#parts.length; i++) {
+                    for (const part of n.#parts) {
+                        /* c8 ignore start */
+                        if (typeof part === 'string') {
+                            throw new Error('string part in extglob AST??');
+                        }
+                        /* c8 ignore stop */
+                        part.copyIn(pp.#parts[i]);
+                    }
+                }
+                p = pp;
+                pp = p.#parent;
+            }
+        }
+        return this;
+    }
+    push(...parts) {
+        for (const p of parts) {
+            if (p === '')
+                continue;
+            /* c8 ignore start */
+            if (typeof p !== 'string' && !(p instanceof AST && p.#parent === this)) {
+                throw new Error('invalid part: ' + p);
+            }
+            /* c8 ignore stop */
+            this.#parts.push(p);
+        }
+    }
+    toJSON() {
+        const ret = this.type === null
+            ? this.#parts.slice().map(p => (typeof p === 'string' ? p : p.toJSON()))
+            : [this.type, ...this.#parts.map(p => p.toJSON())];
+        if (this.isStart() && !this.type)
+            ret.unshift([]);
+        if (this.isEnd() &&
+            (this === this.#root ||
+                (this.#root.#filledNegs && this.#parent?.type === '!'))) {
+            ret.push({});
+        }
+        return ret;
+    }
+    isStart() {
+        if (this.#root === this)
+            return true;
+        // if (this.type) return !!this.#parent?.isStart()
+        if (!this.#parent?.isStart())
+            return false;
+        if (this.#parentIndex === 0)
+            return true;
+        // if everything AHEAD of this is a negation, then it's still the "start"
+        const p = this.#parent;
+        for (let i = 0; i < this.#parentIndex; i++) {
+            const pp = p.#parts[i];
+            if (!(pp instanceof AST && pp.type === '!')) {
+                return false;
+            }
+        }
+        return true;
+    }
+    isEnd() {
+        if (this.#root === this)
+            return true;
+        if (this.#parent?.type === '!')
+            return true;
+        if (!this.#parent?.isEnd())
+            return false;
+        if (!this.type)
+            return this.#parent?.isEnd();
+        // if not root, it'll always have a parent
+        /* c8 ignore start */
+        const pl = this.#parent ? this.#parent.#parts.length : 0;
+        /* c8 ignore stop */
+        return this.#parentIndex === pl - 1;
+    }
+    copyIn(part) {
+        if (typeof part === 'string')
+            this.push(part);
+        else
+            this.push(part.clone(this));
+    }
+    clone(parent) {
+        const c = new AST(this.type, parent);
+        for (const p of this.#parts) {
+            c.copyIn(p);
+        }
+        return c;
+    }
+    static #parseAST(str, ast, pos, opt) {
+        let escaping = false;
+        let inBrace = false;
+        let braceStart = -1;
+        let braceNeg = false;
+        if (ast.type === null) {
+            // outside of a extglob, append until we find a start
+            let i = pos;
+            let acc = '';
+            while (i < str.length) {
+                const c = str.charAt(i++);
+                // still accumulate escapes at this point, but we do ignore
+                // starts that are escaped
+                if (escaping || c === '\\') {
+                    escaping = !escaping;
+                    acc += c;
+                    continue;
+                }
+                if (inBrace) {
+                    if (i === braceStart + 1) {
+                        if (c === '^' || c === '!') {
+                            braceNeg = true;
+                        }
+                    }
+                    else if (c === ']' && !(i === braceStart + 2 && braceNeg)) {
+                        inBrace = false;
+                    }
+                    acc += c;
+                    continue;
+                }
+                else if (c === '[') {
+                    inBrace = true;
+                    braceStart = i;
+                    braceNeg = false;
+                    acc += c;
+                    continue;
+                }
+                if (!opt.noext && isExtglobType(c) && str.charAt(i) === '(') {
+                    ast.push(acc);
+                    acc = '';
+                    const ext = new AST(c, ast);
+                    i = AST.#parseAST(str, ext, i, opt);
+                    ast.push(ext);
+                    continue;
+                }
+                acc += c;
+            }
+            ast.push(acc);
+            return i;
+        }
+        // some kind of extglob, pos is at the (
+        // find the next | or )
+        let i = pos + 1;
+        let part = new AST(null, ast);
+        const parts = [];
+        let acc = '';
+        while (i < str.length) {
+            const c = str.charAt(i++);
+            // still accumulate escapes at this point, but we do ignore
+            // starts that are escaped
+            if (escaping || c === '\\') {
+                escaping = !escaping;
+                acc += c;
+                continue;
+            }
+            if (inBrace) {
+                if (i === braceStart + 1) {
+                    if (c === '^' || c === '!') {
+                        braceNeg = true;
+                    }
+                }
+                else if (c === ']' && !(i === braceStart + 2 && braceNeg)) {
+                    inBrace = false;
+                }
+                acc += c;
+                continue;
+            }
+            else if (c === '[') {
+                inBrace = true;
+                braceStart = i;
+                braceNeg = false;
+                acc += c;
+                continue;
+            }
+            if (isExtglobType(c) && str.charAt(i) === '(') {
+                part.push(acc);
+                acc = '';
+                const ext = new AST(c, part);
+                part.push(ext);
+                i = AST.#parseAST(str, ext, i, opt);
+                continue;
+            }
+            if (c === '|') {
+                part.push(acc);
+                acc = '';
+                parts.push(part);
+                part = new AST(null, ast);
+                continue;
+            }
+            if (c === ')') {
+                if (acc === '' && ast.#parts.length === 0) {
+                    ast.#emptyExt = true;
+                }
+                part.push(acc);
+                acc = '';
+                ast.push(...parts, part);
+                return i;
+            }
+            acc += c;
+        }
+        // unfinished extglob
+        // if we got here, it was a malformed extglob! not an extglob, but
+        // maybe something else in there.
+        ast.type = null;
+        ast.#hasMagic = undefined;
+        ast.#parts = [str.substring(pos - 1)];
+        return i;
+    }
+    static fromGlob(pattern, options = {}) {
+        const ast = new AST(null, undefined, options);
+        AST.#parseAST(pattern, ast, 0, options);
+        return ast;
+    }
+    // returns the regular expression if there's magic, or the unescaped
+    // string if not.
+    toMMPattern() {
+        // should only be called on root
+        /* c8 ignore start */
+        if (this !== this.#root)
+            return this.#root.toMMPattern();
+        /* c8 ignore stop */
+        const glob = this.toString();
+        const [re, body, hasMagic, uflag] = this.toRegExpSource();
+        // if we're in nocase mode, and not nocaseMagicOnly, then we do
+        // still need a regular expression if we have to case-insensitively
+        // match capital/lowercase characters.
+        const anyMagic = hasMagic ||
+            this.#hasMagic ||
+            (this.#options.nocase &&
+                !this.#options.nocaseMagicOnly &&
+                glob.toUpperCase() !== glob.toLowerCase());
+        if (!anyMagic) {
+            return body;
+        }
+        const flags = (this.#options.nocase ? 'i' : '') + (uflag ? 'u' : '');
+        return Object.assign(new RegExp(`^${re}$`, flags), {
+            _src: re,
+            _glob: glob,
+        });
+    }
+    get options() {
+        return this.#options;
+    }
+    // returns the string match, the regexp source, whether there's magic
+    // in the regexp (so a regular expression is required) and whether or
+    // not the uflag is needed for the regular expression (for posix classes)
+    // TODO: instead of injecting the start/end at this point, just return
+    // the BODY of the regexp, along with the start/end portions suitable
+    // for binding the start/end in either a joined full-path makeRe context
+    // (where we bind to (^|/), or a standalone matchPart context (where
+    // we bind to ^, and not /).  Otherwise slashes get duped!
+    //
+    // In part-matching mode, the start is:
+    // - if not isStart: nothing
+    // - if traversal possible, but not allowed: ^(?!\.\.?$)
+    // - if dots allowed or not possible: ^
+    // - if dots possible and not allowed: ^(?!\.)
+    // end is:
+    // - if not isEnd(): nothing
+    // - else: $
+    //
+    // In full-path matching mode, we put the slash at the START of the
+    // pattern, so start is:
+    // - if first pattern: same as part-matching mode
+    // - if not isStart(): nothing
+    // - if traversal possible, but not allowed: /(?!\.\.?(?:$|/))
+    // - if dots allowed or not possible: /
+    // - if dots possible and not allowed: /(?!\.)
+    // end is:
+    // - if last pattern, same as part-matching mode
+    // - else nothing
+    //
+    // Always put the (?:$|/) on negated tails, though, because that has to be
+    // there to bind the end of the negated pattern portion, and it's easier to
+    // just stick it in now rather than try to inject it later in the middle of
+    // the pattern.
+    //
+    // We can just always return the same end, and leave it up to the caller
+    // to know whether it's going to be used joined or in parts.
+    // And, if the start is adjusted slightly, can do the same there:
+    // - if not isStart: nothing
+    // - if traversal possible, but not allowed: (?:/|^)(?!\.\.?$)
+    // - if dots allowed or not possible: (?:/|^)
+    // - if dots possible and not allowed: (?:/|^)(?!\.)
+    //
+    // But it's better to have a simpler binding without a conditional, for
+    // performance, so probably better to return both start options.
+    //
+    // Then the caller just ignores the end if it's not the first pattern,
+    // and the start always gets applied.
+    //
+    // But that's always going to be $ if it's the ending pattern, or nothing,
+    // so the caller can just attach $ at the end of the pattern when building.
+    //
+    // So the todo is:
+    // - better detect what kind of start is needed
+    // - return both flavors of starting pattern
+    // - attach $ at the end of the pattern when creating the actual RegExp
+    //
+    // Ah, but wait, no, that all only applies to the root when the first pattern
+    // is not an extglob. If the first pattern IS an extglob, then we need all
+    // that dot prevention biz to live in the extglob portions, because eg
+    // +(*|.x*) can match .xy but not .yx.
+    //
+    // So, return the two flavors if it's #root and the first child is not an
+    // AST, otherwise leave it to the child AST to handle it, and there,
+    // use the (?:^|/) style of start binding.
+    //
+    // Even simplified further:
+    // - Since the start for a join is eg /(?!\.) and the start for a part
+    // is ^(?!\.), we can just prepend (?!\.) to the pattern (either root
+    // or start or whatever) and prepend ^ or / at the Regexp construction.
+    toRegExpSource(allowDot) {
+        const dot = allowDot ?? !!this.#options.dot;
+        if (this.#root === this)
+            this.#fillNegs();
+        if (!this.type) {
+            const noEmpty = this.isStart() &&
+                this.isEnd() &&
+                !this.#parts.some(s => typeof s !== 'string');
+            const src = this.#parts
+                .map(p => {
+                const [re, _, hasMagic, uflag] = typeof p === 'string'
+                    ? AST.#parseGlob(p, this.#hasMagic, noEmpty)
+                    : p.toRegExpSource(allowDot);
+                this.#hasMagic = this.#hasMagic || hasMagic;
+                this.#uflag = this.#uflag || uflag;
+                return re;
+            })
+                .join('');
+            let start = '';
+            if (this.isStart()) {
+                if (typeof this.#parts[0] === 'string') {
+                    // this is the string that will match the start of the pattern,
+                    // so we need to protect against dots and such.
+                    // '.' and '..' cannot match unless the pattern is that exactly,
+                    // even if it starts with . or dot:true is set.
+                    const dotTravAllowed = this.#parts.length === 1 && justDots.has(this.#parts[0]);
+                    if (!dotTravAllowed) {
+                        const aps = addPatternStart;
+                        // check if we have a possibility of matching . or ..,
+                        // and prevent that.
+                        const needNoTrav = 
+                        // dots are allowed, and the pattern starts with [ or .
+                        (dot && aps.has(src.charAt(0))) ||
+                            // the pattern starts with \., and then [ or .
+                            (src.startsWith('\\.') && aps.has(src.charAt(2))) ||
+                            // the pattern starts with \.\., and then [ or .
+                            (src.startsWith('\\.\\.') && aps.has(src.charAt(4)));
+                        // no need to prevent dots if it can't match a dot, or if a
+                        // sub-pattern will be preventing it anyway.
+                        const needNoDot = !dot && !allowDot && aps.has(src.charAt(0));
+                        start = needNoTrav ? startNoTraversal : needNoDot ? startNoDot : '';
+                    }
+                }
+            }
+            // append the "end of path portion" pattern to negation tails
+            let end = '';
+            if (this.isEnd() &&
+                this.#root.#filledNegs &&
+                this.#parent?.type === '!') {
+                end = '(?:$|\\/)';
+            }
+            const final = start + src + end;
+            return [
+                final,
+                unescape(src),
+                (this.#hasMagic = !!this.#hasMagic),
+                this.#uflag,
+            ];
+        }
+        // We need to calculate the body *twice* if it's a repeat pattern
+        // at the start, once in nodot mode, then again in dot mode, so a
+        // pattern like *(?) can match 'x.y'
+        const repeated = this.type === '*' || this.type === '+';
+        // some kind of extglob
+        const start = this.type === '!' ? '(?:(?!(?:' : '(?:';
+        let body = this.#partsToRegExp(dot);
+        if (this.isStart() && this.isEnd() && !body && this.type !== '!') {
+            // invalid extglob, has to at least be *something* present, if it's
+            // the entire path portion.
+            const s = this.toString();
+            this.#parts = [s];
+            this.type = null;
+            this.#hasMagic = undefined;
+            return [s, unescape(this.toString()), false, false];
+        }
+        // XXX abstract out this map method
+        let bodyDotAllowed = !repeated || allowDot || dot || !startNoDot
+            ? ''
+            : this.#partsToRegExp(true);
+        if (bodyDotAllowed === body) {
+            bodyDotAllowed = '';
+        }
+        if (bodyDotAllowed) {
+            body = `(?:${body})(?:${bodyDotAllowed})*?`;
+        }
+        // an empty !() is exactly equivalent to a starNoEmpty
+        let final = '';
+        if (this.type === '!' && this.#emptyExt) {
+            final = (this.isStart() && !dot ? startNoDot : '') + starNoEmpty;
+        }
+        else {
+            const close = this.type === '!'
+                ? // !() must match something,but !(x) can match ''
+                    '))' +
+                        (this.isStart() && !dot && !allowDot ? startNoDot : '') +
+                        star$1 +
+                        ')'
+                : this.type === '@'
+                    ? ')'
+                    : this.type === '?'
+                        ? ')?'
+                        : this.type === '+' && bodyDotAllowed
+                            ? ')'
+                            : this.type === '*' && bodyDotAllowed
+                                ? `)?`
+                                : `)${this.type}`;
+            final = start + body + close;
+        }
+        return [
+            final,
+            unescape(body),
+            (this.#hasMagic = !!this.#hasMagic),
+            this.#uflag,
+        ];
+    }
+    #partsToRegExp(dot) {
+        return this.#parts
+            .map(p => {
+            // extglob ASTs should only contain parent ASTs
+            /* c8 ignore start */
+            if (typeof p === 'string') {
+                throw new Error('string type in extglob ast??');
+            }
+            /* c8 ignore stop */
+            // can ignore hasMagic, because extglobs are already always magic
+            const [re, _, _hasMagic, uflag] = p.toRegExpSource(dot);
+            this.#uflag = this.#uflag || uflag;
+            return re;
+        })
+            .filter(p => !(this.isStart() && this.isEnd()) || !!p)
+            .join('|');
+    }
+    static #parseGlob(glob, hasMagic, noEmpty = false) {
+        let escaping = false;
+        let re = '';
+        let uflag = false;
+        for (let i = 0; i < glob.length; i++) {
+            const c = glob.charAt(i);
+            if (escaping) {
+                escaping = false;
+                re += (reSpecials.has(c) ? '\\' : '') + c;
+                continue;
+            }
+            if (c === '\\') {
+                if (i === glob.length - 1) {
+                    re += '\\\\';
+                }
+                else {
+                    escaping = true;
+                }
+                continue;
+            }
+            if (c === '[') {
+                const [src, needUflag, consumed, magic] = parseClass(glob, i);
+                if (consumed) {
+                    re += src;
+                    uflag = uflag || needUflag;
+                    i += consumed - 1;
+                    hasMagic = hasMagic || magic;
+                    continue;
+                }
+            }
+            if (c === '*') {
+                re += noEmpty && glob === '*' ? starNoEmpty : star$1;
+                hasMagic = true;
+                continue;
+            }
+            if (c === '?') {
+                re += qmark$1;
+                hasMagic = true;
+                continue;
+            }
+            re += regExpEscape$1(c);
+        }
+        return [re, unescape(glob), !!hasMagic, uflag];
+    }
+}
+
+/**
+ * Escape all magic characters in a glob pattern.
+ *
+ * If the {@link MinimatchOptions.windowsPathsNoEscape}
+ * option is used, then characters are escaped by wrapping in `[]`, because
+ * a magic character wrapped in a character class can only be satisfied by
+ * that exact character.  In this mode, `\` is _not_ escaped, because it is
+ * not interpreted as a magic character, but instead as a path separator.
+ *
+ * If the {@link MinimatchOptions.magicalBraces} option is used,
+ * then braces (`{` and `}`) will be escaped.
+ */
+const escape = (s, { windowsPathsNoEscape = false, magicalBraces = false, } = {}) => {
+    // don't need to escape +@! because we escape the parens
+    // that make those magic, and escaping ! as [!] isn't valid,
+    // because [!]] is a valid glob class meaning not ']'.
+    if (magicalBraces) {
+        return windowsPathsNoEscape
+            ? s.replace(/[?*()[\]{}]/g, '[$&]')
+            : s.replace(/[?*()[\]\\{}]/g, '\\$&');
+    }
+    return windowsPathsNoEscape
+        ? s.replace(/[?*()[\]]/g, '[$&]')
+        : s.replace(/[?*()[\]\\]/g, '\\$&');
+};
+
+const minimatch = (p, pattern, options = {}) => {
+    assertValidPattern(pattern);
+    // shortcut: comments match nothing.
+    if (!options.nocomment && pattern.charAt(0) === '#') {
+        return false;
+    }
+    return new Minimatch(pattern, options).match(p);
+};
+// Optimized checking for the most common glob patterns.
+const starDotExtRE = /^\*+([^+@!?\*\[\(]*)$/;
+const starDotExtTest = (ext) => (f) => !f.startsWith('.') && f.endsWith(ext);
+const starDotExtTestDot = (ext) => (f) => f.endsWith(ext);
+const starDotExtTestNocase = (ext) => {
+    ext = ext.toLowerCase();
+    return (f) => !f.startsWith('.') && f.toLowerCase().endsWith(ext);
+};
+const starDotExtTestNocaseDot = (ext) => {
+    ext = ext.toLowerCase();
+    return (f) => f.toLowerCase().endsWith(ext);
+};
+const starDotStarRE = /^\*+\.\*+$/;
+const starDotStarTest = (f) => !f.startsWith('.') && f.includes('.');
+const starDotStarTestDot = (f) => f !== '.' && f !== '..' && f.includes('.');
+const dotStarRE = /^\.\*+$/;
+const dotStarTest = (f) => f !== '.' && f !== '..' && f.startsWith('.');
+const starRE = /^\*+$/;
+const starTest = (f) => f.length !== 0 && !f.startsWith('.');
+const starTestDot = (f) => f.length !== 0 && f !== '.' && f !== '..';
+const qmarksRE = /^\?+([^+@!?\*\[\(]*)?$/;
+const qmarksTestNocase = ([$0, ext = '']) => {
+    const noext = qmarksTestNoExt([$0]);
+    if (!ext)
+        return noext;
+    ext = ext.toLowerCase();
+    return (f) => noext(f) && f.toLowerCase().endsWith(ext);
+};
+const qmarksTestNocaseDot = ([$0, ext = '']) => {
+    const noext = qmarksTestNoExtDot([$0]);
+    if (!ext)
+        return noext;
+    ext = ext.toLowerCase();
+    return (f) => noext(f) && f.toLowerCase().endsWith(ext);
+};
+const qmarksTestDot = ([$0, ext = '']) => {
+    const noext = qmarksTestNoExtDot([$0]);
+    return !ext ? noext : (f) => noext(f) && f.endsWith(ext);
+};
+const qmarksTest = ([$0, ext = '']) => {
+    const noext = qmarksTestNoExt([$0]);
+    return !ext ? noext : (f) => noext(f) && f.endsWith(ext);
+};
+const qmarksTestNoExt = ([$0]) => {
+    const len = $0.length;
+    return (f) => f.length === len && !f.startsWith('.');
+};
+const qmarksTestNoExtDot = ([$0]) => {
+    const len = $0.length;
+    return (f) => f.length === len && f !== '.' && f !== '..';
+};
+/* c8 ignore start */
+const defaultPlatform = (typeof process === 'object' && process
+    ? (typeof process.env === 'object' &&
+        process.env &&
+        process.env.__MINIMATCH_TESTING_PLATFORM__) ||
+        process.platform
+    : 'posix');
+const path = {
+    win32: { sep: '\\' },
+    posix: { sep: '/' },
+};
+/* c8 ignore stop */
+const sep = defaultPlatform === 'win32' ? path.win32.sep : path.posix.sep;
+minimatch.sep = sep;
+const GLOBSTAR = Symbol('globstar **');
+minimatch.GLOBSTAR = GLOBSTAR;
+// any single thing other than /
+// don't need to escape / when using new RegExp()
+const qmark = '[^/]';
+// * => any number of characters
+const star = qmark + '*?';
+// ** when dots are allowed.  Anything goes, except .. and .
+// not (^ or / followed by one or two dots followed by $ or /),
+// followed by anything, any number of times.
+const twoStarDot = '(?:(?!(?:\\/|^)(?:\\.{1,2})($|\\/)).)*?';
+// not a ^ or / followed by a dot,
+// followed by anything, any number of times.
+const twoStarNoDot = '(?:(?!(?:\\/|^)\\.).)*?';
+const filter = (pattern, options = {}) => (p) => minimatch(p, pattern, options);
+minimatch.filter = filter;
+const ext = (a, b = {}) => Object.assign({}, a, b);
+const defaults = (def) => {
+    if (!def || typeof def !== 'object' || !Object.keys(def).length) {
+        return minimatch;
+    }
+    const orig = minimatch;
+    const m = (p, pattern, options = {}) => orig(p, pattern, ext(def, options));
+    return Object.assign(m, {
+        Minimatch: class Minimatch extends orig.Minimatch {
+            constructor(pattern, options = {}) {
+                super(pattern, ext(def, options));
+            }
+            static defaults(options) {
+                return orig.defaults(ext(def, options)).Minimatch;
+            }
+        },
+        AST: class AST extends orig.AST {
+            /* c8 ignore start */
+            constructor(type, parent, options = {}) {
+                super(type, parent, ext(def, options));
+            }
+            /* c8 ignore stop */
+            static fromGlob(pattern, options = {}) {
+                return orig.AST.fromGlob(pattern, ext(def, options));
+            }
+        },
+        unescape: (s, options = {}) => orig.unescape(s, ext(def, options)),
+        escape: (s, options = {}) => orig.escape(s, ext(def, options)),
+        filter: (pattern, options = {}) => orig.filter(pattern, ext(def, options)),
+        defaults: (options) => orig.defaults(ext(def, options)),
+        makeRe: (pattern, options = {}) => orig.makeRe(pattern, ext(def, options)),
+        braceExpand: (pattern, options = {}) => orig.braceExpand(pattern, ext(def, options)),
+        match: (list, pattern, options = {}) => orig.match(list, pattern, ext(def, options)),
+        sep: orig.sep,
+        GLOBSTAR: GLOBSTAR,
+    });
+};
+minimatch.defaults = defaults;
+// Brace expansion:
+// a{b,c}d -> abd acd
+// a{b,}c -> abc ac
+// a{0..3}d -> a0d a1d a2d a3d
+// a{b,c{d,e}f}g -> abg acdfg acefg
+// a{b,c}d{e,f}g -> abdeg acdeg abdeg abdfg
+//
+// Invalid sets are not expanded.
+// a{2..}b -> a{2..}b
+// a{b}c -> a{b}c
+const braceExpand = (pattern, options = {}) => {
+    assertValidPattern(pattern);
+    // Thanks to Yeting Li <https://github.com/yetingli> for
+    // improving this regexp to avoid a ReDOS vulnerability.
+    if (options.nobrace || !/\{(?:(?!\{).)*\}/.test(pattern)) {
+        // shortcut. no need to expand.
+        return [pattern];
+    }
+    return expand(pattern);
+};
+minimatch.braceExpand = braceExpand;
+// parse a component of the expanded set.
+// At this point, no pattern may contain "/" in it
+// so we're going to return a 2d array, where each entry is the full
+// pattern, split on '/', and then turned into a regular expression.
+// A regexp is made at the end which joins each array with an
+// escaped /, and another full one which joins each regexp with |.
+//
+// Following the lead of Bash 4.1, note that "**" only has special meaning
+// when it is the *only* thing in a path portion.  Otherwise, any series
+// of * is equivalent to a single *.  Globstar behavior is enabled by
+// default, and can be disabled by setting options.noglobstar.
+const makeRe = (pattern, options = {}) => new Minimatch(pattern, options).makeRe();
+minimatch.makeRe = makeRe;
+const match = (list, pattern, options = {}) => {
+    const mm = new Minimatch(pattern, options);
+    list = list.filter(f => mm.match(f));
+    if (mm.options.nonull && !list.length) {
+        list.push(pattern);
+    }
+    return list;
+};
+minimatch.match = match;
+// replace stuff like \* with *
+const globMagic = /[?*]|[+@!]\(.*?\)|\[|\]/;
+const regExpEscape = (s) => s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+class Minimatch {
+    options;
+    set;
+    pattern;
+    windowsPathsNoEscape;
+    nonegate;
+    negate;
+    comment;
+    empty;
+    preserveMultipleSlashes;
+    partial;
+    globSet;
+    globParts;
+    nocase;
+    isWindows;
+    platform;
+    windowsNoMagicRoot;
+    regexp;
+    constructor(pattern, options = {}) {
+        assertValidPattern(pattern);
+        options = options || {};
+        this.options = options;
+        this.pattern = pattern;
+        this.platform = options.platform || defaultPlatform;
+        this.isWindows = this.platform === 'win32';
+        this.windowsPathsNoEscape =
+            !!options.windowsPathsNoEscape || options.allowWindowsEscape === false;
+        if (this.windowsPathsNoEscape) {
+            this.pattern = this.pattern.replace(/\\/g, '/');
+        }
+        this.preserveMultipleSlashes = !!options.preserveMultipleSlashes;
+        this.regexp = null;
+        this.negate = false;
+        this.nonegate = !!options.nonegate;
+        this.comment = false;
+        this.empty = false;
+        this.partial = !!options.partial;
+        this.nocase = !!this.options.nocase;
+        this.windowsNoMagicRoot =
+            options.windowsNoMagicRoot !== undefined
+                ? options.windowsNoMagicRoot
+                : !!(this.isWindows && this.nocase);
+        this.globSet = [];
+        this.globParts = [];
+        this.set = [];
+        // make the set of regexps etc.
+        this.make();
+    }
+    hasMagic() {
+        if (this.options.magicalBraces && this.set.length > 1) {
+            return true;
+        }
+        for (const pattern of this.set) {
+            for (const part of pattern) {
+                if (typeof part !== 'string')
+                    return true;
+            }
+        }
+        return false;
+    }
+    debug(..._) { }
+    make() {
+        const pattern = this.pattern;
+        const options = this.options;
+        // empty patterns and comments match nothing.
+        if (!options.nocomment && pattern.charAt(0) === '#') {
+            this.comment = true;
+            return;
+        }
+        if (!pattern) {
+            this.empty = true;
+            return;
+        }
+        // step 1: figure out negation, etc.
+        this.parseNegate();
+        // step 2: expand braces
+        this.globSet = [...new Set(this.braceExpand())];
+        if (options.debug) {
+            this.debug = (...args) => console.error(...args);
+        }
+        this.debug(this.pattern, this.globSet);
+        // step 3: now we have a set, so turn each one into a series of
+        // path-portion matching patterns.
+        // These will be regexps, except in the case of "**", which is
+        // set to the GLOBSTAR object for globstar behavior,
+        // and will not contain any / characters
+        //
+        // First, we preprocess to make the glob pattern sets a bit simpler
+        // and deduped.  There are some perf-killing patterns that can cause
+        // problems with a glob walk, but we can simplify them down a bit.
+        const rawGlobParts = this.globSet.map(s => this.slashSplit(s));
+        this.globParts = this.preprocess(rawGlobParts);
+        this.debug(this.pattern, this.globParts);
+        // glob --> regexps
+        let set = this.globParts.map((s, _, __) => {
+            if (this.isWindows && this.windowsNoMagicRoot) {
+                // check if it's a drive or unc path.
+                const isUNC = s[0] === '' &&
+                    s[1] === '' &&
+                    (s[2] === '?' || !globMagic.test(s[2])) &&
+                    !globMagic.test(s[3]);
+                const isDrive = /^[a-z]:/i.test(s[0]);
+                if (isUNC) {
+                    return [...s.slice(0, 4), ...s.slice(4).map(ss => this.parse(ss))];
+                }
+                else if (isDrive) {
+                    return [s[0], ...s.slice(1).map(ss => this.parse(ss))];
+                }
+            }
+            return s.map(ss => this.parse(ss));
+        });
+        this.debug(this.pattern, set);
+        // filter out everything that didn't compile properly.
+        this.set = set.filter(s => s.indexOf(false) === -1);
+        // do not treat the ? in UNC paths as magic
+        if (this.isWindows) {
+            for (let i = 0; i < this.set.length; i++) {
+                const p = this.set[i];
+                if (p[0] === '' &&
+                    p[1] === '' &&
+                    this.globParts[i][2] === '?' &&
+                    typeof p[3] === 'string' &&
+                    /^[a-z]:$/i.test(p[3])) {
+                    p[2] = '?';
+                }
+            }
+        }
+        this.debug(this.pattern, this.set);
+    }
+    // various transforms to equivalent pattern sets that are
+    // faster to process in a filesystem walk.  The goal is to
+    // eliminate what we can, and push all ** patterns as far
+    // to the right as possible, even if it increases the number
+    // of patterns that we have to process.
+    preprocess(globParts) {
+        // if we're not in globstar mode, then turn all ** into *
+        if (this.options.noglobstar) {
+            for (let i = 0; i < globParts.length; i++) {
+                for (let j = 0; j < globParts[i].length; j++) {
+                    if (globParts[i][j] === '**') {
+                        globParts[i][j] = '*';
+                    }
+                }
+            }
+        }
+        const { optimizationLevel = 1 } = this.options;
+        if (optimizationLevel >= 2) {
+            // aggressive optimization for the purpose of fs walking
+            globParts = this.firstPhasePreProcess(globParts);
+            globParts = this.secondPhasePreProcess(globParts);
+        }
+        else if (optimizationLevel >= 1) {
+            // just basic optimizations to remove some .. parts
+            globParts = this.levelOneOptimize(globParts);
+        }
+        else {
+            // just collapse multiple ** portions into one
+            globParts = this.adjascentGlobstarOptimize(globParts);
+        }
+        return globParts;
+    }
+    // just get rid of adjascent ** portions
+    adjascentGlobstarOptimize(globParts) {
+        return globParts.map(parts => {
+            let gs = -1;
+            while (-1 !== (gs = parts.indexOf('**', gs + 1))) {
+                let i = gs;
+                while (parts[i + 1] === '**') {
+                    i++;
+                }
+                if (i !== gs) {
+                    parts.splice(gs, i - gs);
+                }
+            }
+            return parts;
+        });
+    }
+    // get rid of adjascent ** and resolve .. portions
+    levelOneOptimize(globParts) {
+        return globParts.map(parts => {
+            parts = parts.reduce((set, part) => {
+                const prev = set[set.length - 1];
+                if (part === '**' && prev === '**') {
+                    return set;
+                }
+                if (part === '..') {
+                    if (prev && prev !== '..' && prev !== '.' && prev !== '**') {
+                        set.pop();
+                        return set;
+                    }
+                }
+                set.push(part);
+                return set;
+            }, []);
+            return parts.length === 0 ? [''] : parts;
+        });
+    }
+    levelTwoFileOptimize(parts) {
+        if (!Array.isArray(parts)) {
+            parts = this.slashSplit(parts);
+        }
+        let didSomething = false;
+        do {
+            didSomething = false;
+            // <pre>/<e>/<rest> -> <pre>/<rest>
+            if (!this.preserveMultipleSlashes) {
+                for (let i = 1; i < parts.length - 1; i++) {
+                    const p = parts[i];
+                    // don't squeeze out UNC patterns
+                    if (i === 1 && p === '' && parts[0] === '')
+                        continue;
+                    if (p === '.' || p === '') {
+                        didSomething = true;
+                        parts.splice(i, 1);
+                        i--;
+                    }
+                }
+                if (parts[0] === '.' &&
+                    parts.length === 2 &&
+                    (parts[1] === '.' || parts[1] === '')) {
+                    didSomething = true;
+                    parts.pop();
+                }
+            }
+            // <pre>/<p>/../<rest> -> <pre>/<rest>
+            let dd = 0;
+            while (-1 !== (dd = parts.indexOf('..', dd + 1))) {
+                const p = parts[dd - 1];
+                if (p && p !== '.' && p !== '..' && p !== '**') {
+                    didSomething = true;
+                    parts.splice(dd - 1, 2);
+                    dd -= 2;
+                }
+            }
+        } while (didSomething);
+        return parts.length === 0 ? [''] : parts;
+    }
+    // First phase: single-pattern processing
+    // <pre> is 1 or more portions
+    // <rest> is 1 or more portions
+    // <p> is any portion other than ., .., '', or **
+    // <e> is . or ''
+    //
+    // **/.. is *brutal* for filesystem walking performance, because
+    // it effectively resets the recursive walk each time it occurs,
+    // and ** cannot be reduced out by a .. pattern part like a regexp
+    // or most strings (other than .., ., and '') can be.
+    //
+    // <pre>/**/../<p>/<p>/<rest> -> {<pre>/../<p>/<p>/<rest>,<pre>/**/<p>/<p>/<rest>}
+    // <pre>/<e>/<rest> -> <pre>/<rest>
+    // <pre>/<p>/../<rest> -> <pre>/<rest>
+    // **/**/<rest> -> **/<rest>
+    //
+    // **/*/<rest> -> */**/<rest> <== not valid because ** doesn't follow
+    // this WOULD be allowed if ** did follow symlinks, or * didn't
+    firstPhasePreProcess(globParts) {
+        let didSomething = false;
+        do {
+            didSomething = false;
+            // <pre>/**/../<p>/<p>/<rest> -> {<pre>/../<p>/<p>/<rest>,<pre>/**/<p>/<p>/<rest>}
+            for (let parts of globParts) {
+                let gs = -1;
+                while (-1 !== (gs = parts.indexOf('**', gs + 1))) {
+                    let gss = gs;
+                    while (parts[gss + 1] === '**') {
+                        // <pre>/**/**/<rest> -> <pre>/**/<rest>
+                        gss++;
+                    }
+                    // eg, if gs is 2 and gss is 4, that means we have 3 **
+                    // parts, and can remove 2 of them.
+                    if (gss > gs) {
+                        parts.splice(gs + 1, gss - gs);
+                    }
+                    let next = parts[gs + 1];
+                    const p = parts[gs + 2];
+                    const p2 = parts[gs + 3];
+                    if (next !== '..')
+                        continue;
+                    if (!p ||
+                        p === '.' ||
+                        p === '..' ||
+                        !p2 ||
+                        p2 === '.' ||
+                        p2 === '..') {
+                        continue;
+                    }
+                    didSomething = true;
+                    // edit parts in place, and push the new one
+                    parts.splice(gs, 1);
+                    const other = parts.slice(0);
+                    other[gs] = '**';
+                    globParts.push(other);
+                    gs--;
+                }
+                // <pre>/<e>/<rest> -> <pre>/<rest>
+                if (!this.preserveMultipleSlashes) {
+                    for (let i = 1; i < parts.length - 1; i++) {
+                        const p = parts[i];
+                        // don't squeeze out UNC patterns
+                        if (i === 1 && p === '' && parts[0] === '')
+                            continue;
+                        if (p === '.' || p === '') {
+                            didSomething = true;
+                            parts.splice(i, 1);
+                            i--;
+                        }
+                    }
+                    if (parts[0] === '.' &&
+                        parts.length === 2 &&
+                        (parts[1] === '.' || parts[1] === '')) {
+                        didSomething = true;
+                        parts.pop();
+                    }
+                }
+                // <pre>/<p>/../<rest> -> <pre>/<rest>
+                let dd = 0;
+                while (-1 !== (dd = parts.indexOf('..', dd + 1))) {
+                    const p = parts[dd - 1];
+                    if (p && p !== '.' && p !== '..' && p !== '**') {
+                        didSomething = true;
+                        const needDot = dd === 1 && parts[dd + 1] === '**';
+                        const splin = needDot ? ['.'] : [];
+                        parts.splice(dd - 1, 2, ...splin);
+                        if (parts.length === 0)
+                            parts.push('');
+                        dd -= 2;
+                    }
+                }
+            }
+        } while (didSomething);
+        return globParts;
+    }
+    // second phase: multi-pattern dedupes
+    // {<pre>/*/<rest>,<pre>/<p>/<rest>} -> <pre>/*/<rest>
+    // {<pre>/<rest>,<pre>/<rest>} -> <pre>/<rest>
+    // {<pre>/**/<rest>,<pre>/<rest>} -> <pre>/**/<rest>
+    //
+    // {<pre>/**/<rest>,<pre>/**/<p>/<rest>} -> <pre>/**/<rest>
+    // ^-- not valid because ** doens't follow symlinks
+    secondPhasePreProcess(globParts) {
+        for (let i = 0; i < globParts.length - 1; i++) {
+            for (let j = i + 1; j < globParts.length; j++) {
+                const matched = this.partsMatch(globParts[i], globParts[j], !this.preserveMultipleSlashes);
+                if (matched) {
+                    globParts[i] = [];
+                    globParts[j] = matched;
+                    break;
+                }
+            }
+        }
+        return globParts.filter(gs => gs.length);
+    }
+    partsMatch(a, b, emptyGSMatch = false) {
+        let ai = 0;
+        let bi = 0;
+        let result = [];
+        let which = '';
+        while (ai < a.length && bi < b.length) {
+            if (a[ai] === b[bi]) {
+                result.push(which === 'b' ? b[bi] : a[ai]);
+                ai++;
+                bi++;
+            }
+            else if (emptyGSMatch && a[ai] === '**' && b[bi] === a[ai + 1]) {
+                result.push(a[ai]);
+                ai++;
+            }
+            else if (emptyGSMatch && b[bi] === '**' && a[ai] === b[bi + 1]) {
+                result.push(b[bi]);
+                bi++;
+            }
+            else if (a[ai] === '*' &&
+                b[bi] &&
+                (this.options.dot || !b[bi].startsWith('.')) &&
+                b[bi] !== '**') {
+                if (which === 'b')
+                    return false;
+                which = 'a';
+                result.push(a[ai]);
+                ai++;
+                bi++;
+            }
+            else if (b[bi] === '*' &&
+                a[ai] &&
+                (this.options.dot || !a[ai].startsWith('.')) &&
+                a[ai] !== '**') {
+                if (which === 'a')
+                    return false;
+                which = 'b';
+                result.push(b[bi]);
+                ai++;
+                bi++;
+            }
+            else {
+                return false;
+            }
+        }
+        // if we fall out of the loop, it means they two are identical
+        // as long as their lengths match
+        return a.length === b.length && result;
+    }
+    parseNegate() {
+        if (this.nonegate)
+            return;
+        const pattern = this.pattern;
+        let negate = false;
+        let negateOffset = 0;
+        for (let i = 0; i < pattern.length && pattern.charAt(i) === '!'; i++) {
+            negate = !negate;
+            negateOffset++;
+        }
+        if (negateOffset)
+            this.pattern = pattern.slice(negateOffset);
+        this.negate = negate;
+    }
+    // set partial to true to test if, for example,
+    // "/a/b" matches the start of "/*/b/*/d"
+    // Partial means, if you run out of file before you run
+    // out of pattern, then that's fine, as long as all
+    // the parts match.
+    matchOne(file, pattern, partial = false) {
+        const options = this.options;
+        // UNC paths like //?/X:/... can match X:/... and vice versa
+        // Drive letters in absolute drive or unc paths are always compared
+        // case-insensitively.
+        if (this.isWindows) {
+            const fileDrive = typeof file[0] === 'string' && /^[a-z]:$/i.test(file[0]);
+            const fileUNC = !fileDrive &&
+                file[0] === '' &&
+                file[1] === '' &&
+                file[2] === '?' &&
+                /^[a-z]:$/i.test(file[3]);
+            const patternDrive = typeof pattern[0] === 'string' && /^[a-z]:$/i.test(pattern[0]);
+            const patternUNC = !patternDrive &&
+                pattern[0] === '' &&
+                pattern[1] === '' &&
+                pattern[2] === '?' &&
+                typeof pattern[3] === 'string' &&
+                /^[a-z]:$/i.test(pattern[3]);
+            const fdi = fileUNC ? 3 : fileDrive ? 0 : undefined;
+            const pdi = patternUNC ? 3 : patternDrive ? 0 : undefined;
+            if (typeof fdi === 'number' && typeof pdi === 'number') {
+                const [fd, pd] = [file[fdi], pattern[pdi]];
+                if (fd.toLowerCase() === pd.toLowerCase()) {
+                    pattern[pdi] = fd;
+                    if (pdi > fdi) {
+                        pattern = pattern.slice(pdi);
+                    }
+                    else if (fdi > pdi) {
+                        file = file.slice(fdi);
+                    }
+                }
+            }
+        }
+        // resolve and reduce . and .. portions in the file as well.
+        // don't need to do the second phase, because it's only one string[]
+        const { optimizationLevel = 1 } = this.options;
+        if (optimizationLevel >= 2) {
+            file = this.levelTwoFileOptimize(file);
+        }
+        this.debug('matchOne', this, { file, pattern });
+        this.debug('matchOne', file.length, pattern.length);
+        for (var fi = 0, pi = 0, fl = file.length, pl = pattern.length; fi < fl && pi < pl; fi++, pi++) {
+            this.debug('matchOne loop');
+            var p = pattern[pi];
+            var f = file[fi];
+            this.debug(pattern, p, f);
+            // should be impossible.
+            // some invalid regexp stuff in the set.
+            /* c8 ignore start */
+            if (p === false) {
+                return false;
+            }
+            /* c8 ignore stop */
+            if (p === GLOBSTAR) {
+                this.debug('GLOBSTAR', [pattern, p, f]);
+                // "**"
+                // a/**/b/**/c would match the following:
+                // a/b/x/y/z/c
+                // a/x/y/z/b/c
+                // a/b/x/b/x/c
+                // a/b/c
+                // To do this, take the rest of the pattern after
+                // the **, and see if it would match the file remainder.
+                // If so, return success.
+                // If not, the ** "swallows" a segment, and try again.
+                // This is recursively awful.
+                //
+                // a/**/b/**/c matching a/b/x/y/z/c
+                // - a matches a
+                // - doublestar
+                //   - matchOne(b/x/y/z/c, b/**/c)
+                //     - b matches b
+                //     - doublestar
+                //       - matchOne(x/y/z/c, c) -> no
+                //       - matchOne(y/z/c, c) -> no
+                //       - matchOne(z/c, c) -> no
+                //       - matchOne(c, c) yes, hit
+                var fr = fi;
+                var pr = pi + 1;
+                if (pr === pl) {
+                    this.debug('** at the end');
+                    // a ** at the end will just swallow the rest.
+                    // We have found a match.
+                    // however, it will not swallow /.x, unless
+                    // options.dot is set.
+                    // . and .. are *never* matched by **, for explosively
+                    // exponential reasons.
+                    for (; fi < fl; fi++) {
+                        if (file[fi] === '.' ||
+                            file[fi] === '..' ||
+                            (!options.dot && file[fi].charAt(0) === '.'))
+                            return false;
+                    }
+                    return true;
+                }
+                // ok, let's see if we can swallow whatever we can.
+                while (fr < fl) {
+                    var swallowee = file[fr];
+                    this.debug('\nglobstar while', file, fr, pattern, pr, swallowee);
+                    // XXX remove this slice.  Just pass the start index.
+                    if (this.matchOne(file.slice(fr), pattern.slice(pr), partial)) {
+                        this.debug('globstar found match!', fr, fl, swallowee);
+                        // found a match.
+                        return true;
+                    }
+                    else {
+                        // can't swallow "." or ".." ever.
+                        // can only swallow ".foo" when explicitly asked.
+                        if (swallowee === '.' ||
+                            swallowee === '..' ||
+                            (!options.dot && swallowee.charAt(0) === '.')) {
+                            this.debug('dot detected!', file, fr, pattern, pr);
+                            break;
+                        }
+                        // ** swallows a segment, and continue.
+                        this.debug('globstar swallow a segment, and continue');
+                        fr++;
+                    }
+                }
+                // no match was found.
+                // However, in partial mode, we can't say this is necessarily over.
+                /* c8 ignore start */
+                if (partial) {
+                    // ran out of file
+                    this.debug('\n>>> no match, partial?', file, fr, pattern, pr);
+                    if (fr === fl) {
+                        return true;
+                    }
+                }
+                /* c8 ignore stop */
+                return false;
+            }
+            // something other than **
+            // non-magic patterns just have to match exactly
+            // patterns with magic have been turned into regexps.
+            let hit;
+            if (typeof p === 'string') {
+                hit = f === p;
+                this.debug('string match', p, f, hit);
+            }
+            else {
+                hit = p.test(f);
+                this.debug('pattern match', p, f, hit);
+            }
+            if (!hit)
+                return false;
+        }
+        // Note: ending in / means that we'll get a final ""
+        // at the end of the pattern.  This can only match a
+        // corresponding "" at the end of the file.
+        // If the file ends in /, then it can only match a
+        // a pattern that ends in /, unless the pattern just
+        // doesn't have any more for it. But, a/b/ should *not*
+        // match "a/b/*", even though "" matches against the
+        // [^/]*? pattern, except in partial mode, where it might
+        // simply not be reached yet.
+        // However, a/b/ should still satisfy a/*
+        // now either we fell off the end of the pattern, or we're done.
+        if (fi === fl && pi === pl) {
+            // ran out of pattern and filename at the same time.
+            // an exact hit!
+            return true;
+        }
+        else if (fi === fl) {
+            // ran out of file, but still had pattern left.
+            // this is ok if we're doing the match as part of
+            // a glob fs traversal.
+            return partial;
+        }
+        else if (pi === pl) {
+            // ran out of pattern, still have file left.
+            // this is only acceptable if we're on the very last
+            // empty segment of a file with a trailing slash.
+            // a/* should match a/b/
+            return fi === fl - 1 && file[fi] === '';
+            /* c8 ignore start */
+        }
+        else {
+            // should be unreachable.
+            throw new Error('wtf?');
+        }
+        /* c8 ignore stop */
+    }
+    braceExpand() {
+        return braceExpand(this.pattern, this.options);
+    }
+    parse(pattern) {
+        assertValidPattern(pattern);
+        const options = this.options;
+        // shortcuts
+        if (pattern === '**')
+            return GLOBSTAR;
+        if (pattern === '')
+            return '';
+        // far and away, the most common glob pattern parts are
+        // *, *.*, and *.<ext>  Add a fast check method for those.
+        let m;
+        let fastTest = null;
+        if ((m = pattern.match(starRE))) {
+            fastTest = options.dot ? starTestDot : starTest;
+        }
+        else if ((m = pattern.match(starDotExtRE))) {
+            fastTest = (options.nocase
+                ? options.dot
+                    ? starDotExtTestNocaseDot
+                    : starDotExtTestNocase
+                : options.dot
+                    ? starDotExtTestDot
+                    : starDotExtTest)(m[1]);
+        }
+        else if ((m = pattern.match(qmarksRE))) {
+            fastTest = (options.nocase
+                ? options.dot
+                    ? qmarksTestNocaseDot
+                    : qmarksTestNocase
+                : options.dot
+                    ? qmarksTestDot
+                    : qmarksTest)(m);
+        }
+        else if ((m = pattern.match(starDotStarRE))) {
+            fastTest = options.dot ? starDotStarTestDot : starDotStarTest;
+        }
+        else if ((m = pattern.match(dotStarRE))) {
+            fastTest = dotStarTest;
+        }
+        const re = AST.fromGlob(pattern, this.options).toMMPattern();
+        if (fastTest && typeof re === 'object') {
+            // Avoids overriding in frozen environments
+            Reflect.defineProperty(re, 'test', { value: fastTest });
+        }
+        return re;
+    }
+    makeRe() {
+        if (this.regexp || this.regexp === false)
+            return this.regexp;
+        // at this point, this.set is a 2d array of partial
+        // pattern strings, or "**".
+        //
+        // It's better to use .match().  This function shouldn't
+        // be used, really, but it's pretty convenient sometimes,
+        // when you just want to work with a regex.
+        const set = this.set;
+        if (!set.length) {
+            this.regexp = false;
+            return this.regexp;
+        }
+        const options = this.options;
+        const twoStar = options.noglobstar
+            ? star
+            : options.dot
+                ? twoStarDot
+                : twoStarNoDot;
+        const flags = new Set(options.nocase ? ['i'] : []);
+        // regexpify non-globstar patterns
+        // if ** is only item, then we just do one twoStar
+        // if ** is first, and there are more, prepend (\/|twoStar\/)? to next
+        // if ** is last, append (\/twoStar|) to previous
+        // if ** is in the middle, append (\/|\/twoStar\/) to previous
+        // then filter out GLOBSTAR symbols
+        let re = set
+            .map(pattern => {
+            const pp = pattern.map(p => {
+                if (p instanceof RegExp) {
+                    for (const f of p.flags.split(''))
+                        flags.add(f);
+                }
+                return typeof p === 'string'
+                    ? regExpEscape(p)
+                    : p === GLOBSTAR
+                        ? GLOBSTAR
+                        : p._src;
+            });
+            pp.forEach((p, i) => {
+                const next = pp[i + 1];
+                const prev = pp[i - 1];
+                if (p !== GLOBSTAR || prev === GLOBSTAR) {
+                    return;
+                }
+                if (prev === undefined) {
+                    if (next !== undefined && next !== GLOBSTAR) {
+                        pp[i + 1] = '(?:\\/|' + twoStar + '\\/)?' + next;
+                    }
+                    else {
+                        pp[i] = twoStar;
+                    }
+                }
+                else if (next === undefined) {
+                    pp[i - 1] = prev + '(?:\\/|\\/' + twoStar + ')?';
+                }
+                else if (next !== GLOBSTAR) {
+                    pp[i - 1] = prev + '(?:\\/|\\/' + twoStar + '\\/)' + next;
+                    pp[i + 1] = GLOBSTAR;
+                }
+            });
+            const filtered = pp.filter(p => p !== GLOBSTAR);
+            // For partial matches, we need to make the pattern match
+            // any prefix of the full path. We do this by generating
+            // alternative patterns that match progressively longer prefixes.
+            if (this.partial && filtered.length >= 1) {
+                const prefixes = [];
+                for (let i = 1; i <= filtered.length; i++) {
+                    prefixes.push(filtered.slice(0, i).join('/'));
+                }
+                return '(?:' + prefixes.join('|') + ')';
+            }
+            return filtered.join('/');
+        })
+            .join('|');
+        // need to wrap in parens if we had more than one thing with |,
+        // otherwise only the first will be anchored to ^ and the last to $
+        const [open, close] = set.length > 1 ? ['(?:', ')'] : ['', ''];
+        // must match entire pattern
+        // ending in a * or ** will make it less strict.
+        re = '^' + open + re + close + '$';
+        // In partial mode, '/' should always match as it's a valid prefix for any pattern
+        if (this.partial) {
+            re = '^(?:\\/|' + open + re.slice(1, -1) + close + ')$';
+        }
+        // can match anything, as long as it's not this.
+        if (this.negate)
+            re = '^(?!' + re + ').+$';
+        try {
+            this.regexp = new RegExp(re, [...flags].join(''));
+            /* c8 ignore start */
+        }
+        catch (ex) {
+            // should be impossible
+            this.regexp = false;
+        }
+        /* c8 ignore stop */
+        return this.regexp;
+    }
+    slashSplit(p) {
+        // if p starts with // on windows, we preserve that
+        // so that UNC paths aren't broken.  Otherwise, any number of
+        // / characters are coalesced into one, unless
+        // preserveMultipleSlashes is set to true.
+        if (this.preserveMultipleSlashes) {
+            return p.split('/');
+        }
+        else if (this.isWindows && /^\/\/[^\/]+/.test(p)) {
+            // add an extra '' for the one we lose
+            return ['', ...p.split(/\/+/)];
+        }
+        else {
+            return p.split(/\/+/);
+        }
+    }
+    match(f, partial = this.partial) {
+        this.debug('match', f, this.pattern);
+        // short-circuit in the case of busted things.
+        // comments, etc.
+        if (this.comment) {
+            return false;
+        }
+        if (this.empty) {
+            return f === '';
+        }
+        if (f === '/' && partial) {
+            return true;
+        }
+        const options = this.options;
+        // windows: need to use /, not \
+        if (this.isWindows) {
+            f = f.split('\\').join('/');
+        }
+        // treat the test path as a set of pathparts.
+        const ff = this.slashSplit(f);
+        this.debug(this.pattern, 'split', ff);
+        // just ONE of the pattern sets in this.set needs to match
+        // in order for it to be valid.  If negating, then just one
+        // match means that we have failed.
+        // Either way, return on the first hit.
+        const set = this.set;
+        this.debug(this.pattern, 'set', set);
+        // Find the basename of the path by looking for the last non-empty segment
+        let filename = ff[ff.length - 1];
+        if (!filename) {
+            for (let i = ff.length - 2; !filename && i >= 0; i--) {
+                filename = ff[i];
+            }
+        }
+        for (let i = 0; i < set.length; i++) {
+            const pattern = set[i];
+            let file = ff;
+            if (options.matchBase && pattern.length === 1) {
+                file = [filename];
+            }
+            const hit = this.matchOne(file, pattern, partial);
+            if (hit) {
+                if (options.flipNegate) {
+                    return true;
+                }
+                return !this.negate;
+            }
+        }
+        // didn't get any hits.  this is success if it's a negative
+        // pattern, failure otherwise.
+        if (options.flipNegate) {
+            return false;
+        }
+        return this.negate;
+    }
+    static defaults(def) {
+        return minimatch.defaults(def).Minimatch;
+    }
+}
+/* c8 ignore stop */
+minimatch.AST = AST;
+minimatch.Minimatch = Minimatch;
+minimatch.escape = escape;
+minimatch.unescape = unescape;
+
+function reportError(file, node, message, code = 9000, startPos = 0, endPos = 0) {
+    if (!startPos && node.pos > -1) {
+        startPos = node.getStart();
+    }
+    if (!endPos && node.end > -1) {
+        endPos = node.getEnd();
+    }
+    const format = ts.formatDiagnostic({
+        file: file,
+        start: startPos,
+        length: endPos - startPos,
+        category: ts.DiagnosticCategory.Error,
+        code,
+        messageText: message
+    }, {
+        getCurrentDirectory: ts.sys.getCurrentDirectory,
+        getCanonicalFileName: function (fileName) {
+            return fileName;
+        },
+        getNewLine: function () {
+            return ts.sys.newLine;
+        }
+    });
+    if (statement.options.reportError) {
+        const start = file.getLineAndCharacterOfPosition(startPos);
+        const end = file.getLineAndCharacterOfPosition(endPos);
+        statement.options.reportError({
+            file: file.fileName,
+            loc: {
+                start: {
+                    line: start.line + 1,
+                    column: start.character + 1
+                },
+                end: {
+                    line: end.line + 1,
+                    column: end.character + 1
+                }
+            },
+            code,
+            message: format
+        });
+    }
+    else {
+        console.error('\x1b[31m%s\x1b[0m', format);
+    }
+}
+
+const packageJsonCache = new Map();
+function formatIdentifier(identifier, index) {
+    return `cheap__${identifier}__${index}`;
+}
+function isIdentifier(name, identifier) {
+    return name === identifier || name.indexOf(`cheap__${identifier}__`) === 0;
+}
+var StageStatus;
+(function (StageStatus) {
+    StageStatus[StageStatus["NONE"] = 0] = "NONE";
+    StageStatus[StageStatus["CALL"] = 1] = "CALL";
+    StageStatus[StageStatus["EqualLeft"] = 2] = "EqualLeft";
+    StageStatus[StageStatus["EqualRight"] = 3] = "EqualRight";
+    StageStatus[StageStatus["SingleArrowRight"] = 4] = "SingleArrowRight";
+    StageStatus[StageStatus["PointerPlusMinusIgnore"] = 5] = "PointerPlusMinusIgnore";
+    StageStatus[StageStatus["AddressOf"] = 6] = "AddressOf";
+    StageStatus[StageStatus["Parameter"] = 7] = "Parameter";
+    StageStatus[StageStatus["VariableDeclaration"] = 8] = "VariableDeclaration";
+})(StageStatus || (StageStatus = {}));
+var BlockType;
+(function (BlockType) {
+    BlockType[BlockType["UNKNOWN"] = 0] = "UNKNOWN";
+    BlockType[BlockType["FUNCTION"] = 1] = "FUNCTION";
+    BlockType[BlockType["IF"] = 2] = "IF";
+    BlockType[BlockType["LOOP"] = 3] = "LOOP";
+})(BlockType || (BlockType = {}));
+class Stage {
+}
+class BlockStack {
+    constructor(type = BlockType.UNKNOWN) {
+        this.type = BlockType.UNKNOWN;
+        this.topDeclaration = [];
+        this.definedStruct = [];
+        this.stages = [];
+        this.locals = new Map();
+        this.funcs = new Map();
+        this.synchronize = false;
+        this.type = type;
+    }
+    pushStage(stage, data) {
+        const s = new Stage();
+        s.stage = stage;
+        s.data = data;
+        this.stages.push(s);
+    }
+    popStage() {
+        this.stages.pop();
+    }
+    lookupStage(stage) {
+        for (let i = this.stages.length - 1; i >= 0; i--) {
+            if (this.stages[i].stage === stage) {
+                return this.stages[i];
+            }
+        }
+    }
+    getCurrentStage() {
+        return this.stages[this.stages.length - 1];
+    }
+    hasStruct(name) {
+        return array.has(this.definedStruct, name);
+    }
+    getDeclaration(name) {
+        return this.topDeclaration.find((item) => {
+            return item.name === name;
+        });
+    }
+}
+class Statement {
+    start(file) {
+        this.currentFile = file;
+        this.identifierIndex = 0;
+        this.memoryImports = [];
+        this.symbolImports = [];
+        this.stdImports = [];
+        this.identifierImports = [];
+        this.requires = [];
+        this.isCheapSource = false;
+        this.stacks = [];
+        this.pushStack();
+        this.imports = parseImports(file, this.program, this.typeChecker, this.getCurrentStack().locals);
+        this.currentFilePath = path$1.relative(this.options.projectPath, file.fileName);
+        if (this.options.cheapSourcePath) {
+            const relative = path$1.relative(this.options.cheapSourcePath, file.fileName);
+            this.isCheapSource = !!relative && !relative.startsWith('..') && !path$1.isAbsolute(relative);
+        }
+        if (this.moduleType === ts.ModuleKind.Node16
+            || this.moduleType === ts.ModuleKind.Node18
+            || this.moduleType === ts.ModuleKind.Node20
+            || this.moduleType === ts.ModuleKind.NodeNext) {
+            const jsonInfo = this.findNearestPackageJson(this.currentFile.fileName);
+            if (jsonInfo === null || jsonInfo === void 0 ? void 0 : jsonInfo.content.type) {
+                this.packageModule = jsonInfo.content.type;
+            }
+        }
+    }
+    isOutputCJS() {
+        return this.moduleType === ts.ModuleKind.CommonJS
+            || this.moduleType === ts.ModuleKind.UMD
+            || this.moduleType === ts.ModuleKind.AMD
+            || this.options.module === 'commonjs'
+            || (this.moduleType === ts.ModuleKind.Node16
+                || this.moduleType === ts.ModuleKind.Node18
+                || this.moduleType === ts.ModuleKind.Node20
+                || this.moduleType === ts.ModuleKind.NodeNext)
+                && this.packageModule === 'commonjs';
+    }
+    end(newFile) {
+        const stack = this.getCurrentStack();
+        const updatedStatements = [];
+        array.each(stack.topDeclaration, (item) => {
+            updatedStatements.push(this.context.factory.createVariableStatement(undefined, this.context.factory.createVariableDeclarationList([
+                this.context.factory.createVariableDeclaration(item.formatName, undefined, undefined, item.initializer)
+            ], ts.NodeFlags.Const)));
+        });
+        addImportStatements(this.memoryImports, RootPath, updatedStatements);
+        addImportStatements(this.symbolImports, InternalPath, updatedStatements);
+        const cheapReg = new RegExp(`^\\S*/node_modules/${PACKET_NAME}/dist/((esm|cjs)/)?`);
+        if (this.identifierImports.length) {
+            this.identifierImports.forEach((item) => {
+                let p = item.path.replace(/(\.d)?\.[t|j]s$/, '');
+                p = p.replace(cheapReg, PACKET_NAME + '/');
+                if (this.options.importPath) {
+                    p = this.options.importPath(p);
+                }
+                const importDeclaration = this.context.factory.createImportDeclaration(undefined, this.context.factory.createImportClause(false, item.default
+                    ? this.context.factory.createIdentifier(item.formatName)
+                    : undefined, item.default
+                    ? undefined
+                    : this.context.factory.createNamedImports([
+                        this.context.factory.createImportSpecifier(false, this.context.factory.createIdentifier(item.name), this.context.factory.createIdentifier(item.formatName))
+                    ])), this.context.factory.createStringLiteral(p));
+                updatedStatements.push(importDeclaration);
+            });
+        }
+        if (this.requires.length) {
+            this.requires.forEach((item) => {
+                let p = item.path.replace(/(\.d)?\.[t|j]s$/, '');
+                p = p.replace(cheapReg, PACKET_NAME + '/');
+                if (this.options.importPath) {
+                    p = this.options.importPath(p);
+                }
+                const requireValue = this.context.factory.createCallExpression(this.context.factory.createIdentifier('require'), undefined, [
+                    this.context.factory.createStringLiteral(p)
+                ]);
+                const requireDeclaration = this.context.factory.createVariableStatement(undefined, this.context.factory.createVariableDeclarationList([
+                    this.context.factory.createVariableDeclaration(this.context.factory.createIdentifier(item.formatName), undefined, undefined, this.esModuleInterop && !item.esModule
+                        ? this.context.factory.createCallExpression(this.context.factory.createIdentifier(item.default ? importDefault : importStar), undefined, [
+                            requireValue
+                        ])
+                        : requireValue)
+                ], ts.NodeFlags.Const));
+                updatedStatements.push(requireDeclaration);
+            });
+        }
+        if (updatedStatements.length) {
+            newFile = this.context.factory.updateSourceFile(newFile, [...updatedStatements, ...newFile.statements]);
+        }
+        this.popStack();
+        this.program = null;
+        this.typeChecker = null;
+        this.context = null;
+        this.currentFile = null;
+        this.visitor = null;
+        this.memoryImports = [];
+        this.symbolImports = [];
+        this.stdImports = [];
+        this.identifierImports = [];
+        this.requires = [];
+        this.stacks = [];
+        return newFile;
+    }
+    pushStack(type) {
+        this.stacks.push(new BlockStack(type));
+    }
+    popStack() {
+        this.stacks.pop();
+    }
+    getCurrentStack() {
+        return this.stacks[this.stacks.length - 1];
+    }
+    pushStage(status, data = {}) {
+        var _a;
+        (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.pushStage(status, data);
+    }
+    popStage() {
+        var _a;
+        (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.popStage();
+    }
+    getCurrentStage() {
+        var _a;
+        return (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.getCurrentStage();
+    }
+    lookupStage(stage) {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            const s = stack.lookupStage(stage);
+            if (s) {
+                return s;
+            }
+        }
+    }
+    hasStruct(name) {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            const s = stack.hasStruct(name);
+            if (s) {
+                return s;
+            }
+        }
+        return false;
+    }
+    addStruct(name) {
+        this.getCurrentStack().definedStruct.push(name);
+    }
+    getDeclaration(name) {
+        var _a;
+        return (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.getDeclaration(name);
+    }
+    addDeclaration(name, initializer) {
+        const stack = this.getCurrentStack();
+        for (let i = 0; i < stack.topDeclaration.length; i++) {
+            if (stack.topDeclaration[i].name === name) {
+                return stack.topDeclaration[i];
+            }
+        }
+        const item = {
+            name,
+            formatName: formatIdentifier(name, this.identifierIndex++),
+            initializer
+        };
+        stack.topDeclaration.push(item);
+        return item;
+    }
+    addModuleDeclaration(name, initializer) {
+        const stack = this.stacks[0];
+        for (let i = 0; i < stack.topDeclaration.length; i++) {
+            if (stack.topDeclaration[i].name === name) {
+                return stack.topDeclaration[i];
+            }
+        }
+        const item = {
+            name,
+            formatName: formatIdentifier(name, this.identifierIndex++),
+            initializer
+        };
+        stack.topDeclaration.push(item);
+        return item;
+    }
+    relativePath(file) {
+        if (file.indexOf(PACKET_NAME) === 0) {
+            file = file.replace(PACKET_NAME + '/', '');
+        }
+        return relativePath(this.currentFile.fileName, path$1.resolve(this.options.cheapSourcePath, file));
+    }
+    modulePath2RelativePath(name, modulePath, defaultExport) {
+        if (modulePath === InternalPath) {
+            if (name === ctypeEnumRead) {
+                modulePath = this.relativePath(ctypeEnumReadPath);
+                defaultExport = false;
+            }
+            else if (name === ctypeEnumWrite) {
+                modulePath = this.relativePath(ctypeEnumWritePath);
+                defaultExport = false;
+            }
+            else if (name === Allocator) {
+                modulePath = this.relativePath(AllocatorPath);
+                defaultExport = false;
+            }
+            else if (name === makeSharedPtr) {
+                modulePath = this.relativePath(makeSharedPtrPath);
+                defaultExport = false;
+            }
+            else if (name === definedMetaProperty) {
+                modulePath = this.relativePath(definedMetaPropertyPath);
+                defaultExport = true;
+            }
+        }
+        else if (modulePath === RootPath) {
+            if (name === make) {
+                modulePath = this.relativePath(makePath);
+                defaultExport = true;
+            }
+            else if (name === unmake) {
+                modulePath = this.relativePath(unmakePath);
+                defaultExport = true;
+            }
+            else if (name === sizeof) {
+                modulePath = this.relativePath(sizeofPath);
+                defaultExport = true;
+            }
+            else if (name === structAccess) {
+                modulePath = this.relativePath(structAccessPath);
+                defaultExport = true;
+            }
+        }
+        return {
+            modulePath,
+            defaultExport
+        };
+    }
+    addMemoryImport(name) {
+        if (name === ctypeEnumRead) {
+            return this.addIdentifierImport(name, InternalPath, false);
+        }
+        else if (name === ctypeEnumWrite) {
+            return this.addIdentifierImport(name, InternalPath, false);
+        }
+        if (this.isOutputCJS()) {
+            let { formatName } = pushRequire(this.requires, formatIdentifier('identifier', this.identifierIndex++), this.isCheapSource
+                ? this.relativePath(memoryPath)
+                : RootPath, false, true);
+            return this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(formatName), this.context.factory.createIdentifier(name));
+        }
+        else {
+            let { formatName } = pushImport(this.memoryImports, name, this.isCheapSource
+                ? this.relativePath(memoryPath)
+                : RootPath, this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++), false);
+            return this.context.factory.createIdentifier(formatName);
+        }
+    }
+    addSymbolImport(name) {
+        if (this.isOutputCJS()) {
+            let { formatName } = pushRequire(this.requires, formatIdentifier('identifier', this.identifierIndex++), this.isCheapSource
+                ? this.relativePath(symbolPath)
+                : InternalPath, false, true);
+            return this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(formatName), this.context.factory.createIdentifier(name));
+        }
+        else {
+            let { formatName } = pushImport(this.symbolImports, name, this.isCheapSource
+                ? this.relativePath(symbolPath)
+                : InternalPath, this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++), false);
+            return this.context.factory.createIdentifier(formatName);
+        }
+    }
+    addIdentifierImport(name, modulePath, defaultExport, esModule = true) {
+        if (this.isCheapSource) {
+            const result = this.modulePath2RelativePath(name, modulePath, defaultExport);
+            modulePath = result.modulePath;
+            defaultExport = result.defaultExport;
+        }
+        if (this.isOutputCJS()) {
+            let item = pushRequire(this.requires, formatIdentifier('identifier', this.identifierIndex++), modulePath, defaultExport, true);
+            if (defaultExport) {
+                item.defaultName = name;
+            }
+            if (defaultExport && !esModule) {
+                return this.context.factory.createIdentifier(item.formatName);
+            }
+            else {
+                return this.context.factory.createPropertyAccessExpression(this.context.factory.createIdentifier(item.formatName), this.context.factory.createIdentifier(defaultExport ? 'default' : name));
+            }
+        }
+        else {
+            let { formatName } = pushImport(this.identifierImports, name, modulePath, this.options.formatIdentifier === false ? name : formatIdentifier(name, this.identifierIndex++), defaultExport);
+            return this.context.factory.createIdentifier(formatName);
+        }
+    }
+    resolveSourceSymbol(symbol) {
+        let current = symbol;
+        while (current.flags & ts.SymbolFlags.Alias) {
+            current = this.typeChecker.getAliasedSymbol(current);
+        }
+        return current;
+    }
+    getAliasedNameFromModule(module, symbol, name) {
+        const fileName = getFilePath(this.program, this.currentFile.fileName, module);
+        if (fileName) {
+            const sf = this.program.getSourceFile(fileName);
+            if (sf) {
+                const ss = this.typeChecker.getSymbolAtLocation(sf);
+                if (ss === null || ss === void 0 ? void 0 : ss.exports) {
+                    if (ss.exports.has(name)) {
+                        if (this.resolveSourceSymbol(ss.exports.get(name)) === symbol) {
+                            return name;
+                        }
+                    }
+                    if (ss.exports.has('default')) {
+                        if (this.resolveSourceSymbol(ss.exports.get('default')) === symbol) {
+                            return 'default';
+                        }
+                    }
+                    for (let en of ss.exports) {
+                        if (this.resolveSourceSymbol(en[1]) === symbol) {
+                            return en[0];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    addStructImport(symbol, target) {
+        if (!this.isOutputCJS()) {
+            let local = this.lookupLocalSymbol(symbol);
+            if (local) {
+                return this.context.factory.createIdentifier(local);
+            }
+        }
+        let pathString = relativePath(this.currentFile.fileName, target.fileName);
+        let name = symbol.escapedName;
+        object.each(this.cheapCompilerOptions.structPaths, (value, key) => {
+            if (minimatch(target.fileName, key) && !minimatch(this.currentFile.fileName, key)) {
+                let importName = this.getAliasedNameFromModule(value, symbol, name);
+                if (importName) {
+                    pathString = value;
+                    name = importName;
+                }
+                else {
+                    reportError(statement.currentFile, this.currentFile, `not found struct ${name} from module ${value}`);
+                }
+                return false;
+            }
+        });
+        if (/[\\/]node_modules[\\/]/.test(target.fileName)) {
+            const match = target.fileName.match(/[\\/]node_modules[\\/](?:@[^\\/]+[\\/][^\\/]+|[^\\/]+)/);
+            if (match) {
+                let packageName = match[0].replace(/.*node_modules[\\/]/, '');
+                let importName = this.getAliasedNameFromModule(packageName, symbol, name);
+                if (importName) {
+                    pathString = packageName;
+                    name = importName;
+                }
+            }
+        }
+        return this.addIdentifierImport(name, pathString, name === 'default');
+    }
+    isIdentifier(name, identifier, path, importPath) {
+        var _a, _b;
+        if (this.isCheapSource) {
+            const result = this.modulePath2RelativePath(identifier, importPath, false);
+            importPath = result.modulePath;
+        }
+        if (ts.isIdentifier(name)) {
+            if (name.escapedText === identifier) {
+                const symbol = this.typeChecker.getSymbolAtLocation(name);
+                if (symbol) {
+                    const targetSource = (_a = symbol.valueDeclaration) === null || _a === void 0 ? void 0 : _a.getSourceFile();
+                    if (targetSource) {
+                        if (targetSource.fileName.indexOf(path) >= 0
+                            || targetSource.fileName.indexOf(PACKET_NAME) >= 0
+                                && targetSource.fileName.indexOf(path.replace(PACKET_NAME, '')) >= 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return isIdentifier(name.escapedText, identifier) && this.identifierImports.some((item) => {
+                return item.formatName === name.escapedText
+                    && item.name === identifier
+                    && item.path === importPath;
+            })
+                || isIdentifier(name.escapedText, 'identifier') && this.requires.some((item) => {
+                    return item.defaultName === identifier
+                        && item.path === importPath;
+                });
+        }
+        else {
+            if (name.name.escapedText === identifier) {
+                const symbol = this.typeChecker.getSymbolAtLocation(name);
+                if (symbol) {
+                    const targetSource = (_b = symbol.valueDeclaration) === null || _b === void 0 ? void 0 : _b.getSourceFile();
+                    if (targetSource) {
+                        if (targetSource.fileName.indexOf(path) >= 0
+                            || targetSource.fileName.indexOf(PACKET_NAME) >= 0
+                                && targetSource.fileName.indexOf(path.replace(PACKET_NAME, '')) >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                else if (ts.isIdentifier(name.expression)
+                    && isIdentifier(name.expression.escapedText, 'identifier')) {
+                    return this.requires.some((item) => {
+                        return item.formatName === name.expression.escapedText
+                            && item.path === importPath;
+                    });
+                }
+            }
+            else if (name.name.escapedText === 'default'
+                && ts.isIdentifier(name.expression)
+                && isIdentifier(name.expression.escapedText, 'identifier')) {
+                return this.requires.some((item) => {
+                    return item.defaultName === identifier
+                        && item.path === importPath;
+                });
+            }
+        }
+        return false;
+    }
+    addLocal(name, symbol) {
+        var _a;
+        (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.locals.set(name, symbol);
+    }
+    addFunc(name, node) {
+        var _a;
+        (_a = this.getCurrentStack()) === null || _a === void 0 ? void 0 : _a.funcs.set(name, node);
+    }
+    lookupLocal(name) {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            const s = stack.locals.get(name);
+            if (s) {
+                return s;
+            }
+        }
+    }
+    lookupLocalSymbol(symbol) {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            for (let entry of stack.locals) {
+                if (this.resolveSourceSymbol(entry[1]) === symbol) {
+                    return entry[0];
+                }
+            }
+        }
+    }
+    lookupFunc(name) {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            const s = stack.funcs.get(name);
+            if (s) {
+                return s;
+            }
+        }
+    }
+    lookupSynchronized() {
+        for (let i = this.stacks.length - 1; i >= 0; i--) {
+            const stack = this.stacks[i];
+            if (stack.type === BlockType.FUNCTION) {
+                return stack.synchronize;
+            }
+        }
+        return false;
+    }
+    findNearestPackageJson(filePath) {
+        const absPath = path$1.resolve(filePath);
+        // 检查缓存
+        if (packageJsonCache.has(absPath)) {
+            return packageJsonCache.get(absPath);
+        }
+        let dir = path$1.dirname(absPath);
+        while (true) {
+            const pkgPath = path$1.join(dir, 'package.json');
+            if (packageJsonCache.get(pkgPath)) {
+                return packageJsonCache.get(pkgPath);
+            }
+            if (!packageJsonCache.has(pkgPath) && fs__default.existsSync(pkgPath)) {
+                try {
+                    const content = JSON.parse(fs__default.readFileSync(pkgPath, 'utf8'));
+                    const result = { path: pkgPath, content };
+                    packageJsonCache.set(pkgPath, result);
+                    return result;
+                }
+                catch (e) {
+                    // 忽略解析错误，继续往上查找
+                    packageJsonCache.set(pkgPath, null);
+                }
+            }
+            const parent = path$1.dirname(dir);
+            if (parent === dir) {
+                break;
+            }
+            dir = parent;
+        }
+        // 找不到
+        packageJsonCache.set(absPath, null);
+        return null;
+    }
+}
+const statement = new Statement();
+
+const BuiltinType = [
+    'i32',
+    'i64',
+    'f32',
+    'f64',
+    'uint8',
+    'uint16',
+    'uint32',
+    'uint64',
+    'int8',
+    'int16',
+    'int32',
+    'int64',
+    'float',
+    'float64',
+    'double',
+    'char',
+    'size',
+    'void',
+    'bool',
+    'size',
+    'atomic_char',
+    'atomic_uint8',
+    'atomic_uint16',
+    'atomic_uint32',
+    'atomic_int8',
+    'atomic_int16',
+    'atomic_int32',
+    'atomic_int64',
+    'atomic_uint64',
+    'atomic_bool'
+];
+const BuiltinDecorator = [
+    cstruct,
+    cunion,
+    cignore,
+    ctype,
+    cpointer,
+    carray,
+    cbitField,
+    cinline,
+    cdeasync
+];
+const AtomicCall = [
+    'add',
+    'sub',
+    'and',
+    'or',
+    'xor',
+    'store',
+    'load',
+    'compareExchange',
+    'exchange'
+];
+const BuiltinFloat = [
+    'float',
+    'float64',
+    'double',
+    'f32',
+    'f64'
+];
+const BuiltinBigInt = [
+    'i64',
+    'int64',
+    'uint64',
+    'atomic_int64',
+    'atomic_uint64'
+];
+const BuiltinUint = [
+    'uint8',
+    'atomic_uint8',
+    'uint16',
+    'atomic_uint16',
+    'uint32',
+    'atomic_uint32',
+    'uint64',
+    'atomic_uint64',
+    'size'
+];
+const BuiltinBool = [
+    'bool',
+    'atomic_bool'
+];
+const CTypeEnum2Type = {
+    [2 /* CTypeEnum.uint8 */]: 'uint8',
+    [3 /* CTypeEnum.atomic_uint8 */]: 'atomic_uint8',
+    [4 /* CTypeEnum.char */]: 'char',
+    [5 /* CTypeEnum.atomic_char */]: 'atomic_char',
+    [6 /* CTypeEnum.uint16 */]: 'uint16',
+    [7 /* CTypeEnum.atomic_uint16 */]: 'atomic_uint16',
+    [8 /* CTypeEnum.uint32 */]: 'uint32',
+    [9 /* CTypeEnum.atomic_uint32 */]: 'atomic_uint32',
+    [10 /* CTypeEnum.uint64 */]: 'uint64',
+    [11 /* CTypeEnum.int8 */]: 'int8',
+    [12 /* CTypeEnum.atomic_int8 */]: 'atomic_int8',
+    [13 /* CTypeEnum.int16 */]: 'int16',
+    [14 /* CTypeEnum.atomic_int16 */]: 'atomic_int16',
+    [15 /* CTypeEnum.int32 */]: 'int32',
+    [16 /* CTypeEnum.atomic_int32 */]: 'atomic_int32',
+    [17 /* CTypeEnum.int64 */]: 'int64',
+    [18 /* CTypeEnum.float */]: 'float',
+    [19 /* CTypeEnum.double */]: 'double',
+    [20 /* CTypeEnum.pointer */]: 'pointer',
+    [1 /* CTypeEnum.void */]: 'void',
+    [0 /* CTypeEnum.null */]: 'nullptr',
+    [22 /* CTypeEnum.atomic_uint64 */]: 'atomic_uint64',
+    [21 /* CTypeEnum.atomic_int64 */]: 'atomic_int64',
+    [23 /* CTypeEnum.bool */]: 'bool',
+    [24 /* CTypeEnum.atomic_bool */]: 'atomic_bool',
+    [25 /* CTypeEnum.size */]: 'size'
+};
+const Type2CTypeEnum = {
+    typeptr: 20 /* CTypeEnum.pointer */,
+    i32: 15 /* CTypeEnum.int32 */,
+    i64: 17 /* CTypeEnum.int64 */,
+    f32: 18 /* CTypeEnum.float */,
+    f64: 19 /* CTypeEnum.double */
+};
+object.each(CTypeEnum2Type, (value, key) => {
+    Type2CTypeEnum[value] = +key;
+});
+const BuiltinNumber = array.exclude(array.exclude(array.exclude(BuiltinType, BuiltinFloat), BuiltinBigInt), BuiltinBool);
+
+const CTypeEnum2Bytes = {
+    [2 /* CTypeEnum.uint8 */]: 1,
+    [3 /* CTypeEnum.atomic_uint8 */]: 1,
+    [4 /* CTypeEnum.char */]: 1,
+    [5 /* CTypeEnum.atomic_char */]: 1,
+    [6 /* CTypeEnum.uint16 */]: 2,
+    [7 /* CTypeEnum.atomic_uint16 */]: 2,
+    [8 /* CTypeEnum.uint32 */]: 4,
+    [9 /* CTypeEnum.atomic_uint32 */]: 4,
+    [10 /* CTypeEnum.uint64 */]: 8,
+    [11 /* CTypeEnum.int8 */]: 1,
+    [12 /* CTypeEnum.atomic_int8 */]: 1,
+    [13 /* CTypeEnum.int16 */]: 2,
+    [14 /* CTypeEnum.atomic_int16 */]: 2,
+    [15 /* CTypeEnum.int32 */]: 4,
+    [16 /* CTypeEnum.atomic_int32 */]: 4,
+    [17 /* CTypeEnum.int64 */]: 8,
+    [18 /* CTypeEnum.float */]: 4,
+    [19 /* CTypeEnum.double */]: 8,
+    [20 /* CTypeEnum.pointer */]: 4,
+    [0 /* CTypeEnum.null */]: 4,
+    [1 /* CTypeEnum.void */]: 4,
+    [22 /* CTypeEnum.atomic_uint64 */]: 8,
+    [21 /* CTypeEnum.atomic_int64 */]: 8,
+    [23 /* CTypeEnum.bool */]: 1,
+    [24 /* CTypeEnum.atomic_bool */]: 1,
+    [25 /* CTypeEnum.size */]: 4
+};
+
+const symbolStructLength = Symbol('StructLength');
+const symbolStructMaxBaseTypeByteLength = Symbol('StructMaxBaseTypeByteLength');
+
+/**
+ * 获取结构体最大基本类型的长度
+ *
+ * @param target
+ * @returns
+ */
+function getMaxBaseTypeByteLength(keysMeta) {
+    let max = 0;
+    keysMeta.forEach((value) => {
+        if (value[1 /* KeyMetaKey.Pointer */]) {
+            if (CTypeEnum2Bytes[20 /* CTypeEnum.pointer */] > max) {
+                max = CTypeEnum2Bytes[20 /* CTypeEnum.pointer */];
+            }
+        }
+        else {
+            if (is.func(value.getTypeMeta)) {
+                const typeMeta = value.getTypeMeta();
+                if (typeMeta.maxBaseTypeByteLength > max) {
+                    max = typeMeta.maxBaseTypeByteLength;
+                }
+            }
+            else if (is.func(value[0 /* KeyMetaKey.Type */])) {
+                if (value[0 /* KeyMetaKey.Type */][symbolStructMaxBaseTypeByteLength] > max) {
+                    max = value[0 /* KeyMetaKey.Type */][symbolStructMaxBaseTypeByteLength];
+                }
+            }
+            else if (CTypeEnum2Bytes[value[0 /* KeyMetaKey.Type */]] > max) {
+                max = CTypeEnum2Bytes[value[0 /* KeyMetaKey.Type */]];
+            }
+        }
+    });
+    return max;
+}
+/**
+ * 获取结构体最大成员的长度
+ *
+ * @param target
+ * @returns
+ */
+function getMaxTypeByteLength(keysMeta) {
+    let max = 0;
+    keysMeta.forEach((value) => {
+        if (value[1 /* KeyMetaKey.Pointer */]) {
+            if (CTypeEnum2Bytes[20 /* CTypeEnum.pointer */] > max) {
+                max = CTypeEnum2Bytes[20 /* CTypeEnum.pointer */];
+            }
+        }
+        else {
+            if (is.func(value.getTypeMeta)) {
+                const typeMeta = value.getTypeMeta();
+                if (typeMeta.length > max) {
+                    max = typeMeta.length;
+                }
+            }
+            else if (is.func(value[0 /* KeyMetaKey.Type */])) {
+                if (value[0 /* KeyMetaKey.Type */][symbolStructLength] > max) {
+                    max = value[0 /* KeyMetaKey.Type */][symbolStructLength];
+                }
+            }
+            else if (CTypeEnum2Bytes[value[0 /* KeyMetaKey.Type */]] > max) {
+                max = CTypeEnum2Bytes[value[0 /* KeyMetaKey.Type */]];
+            }
+        }
+    });
+    return max;
+}
+/**
+ * 对结构体进行内存布局
+ *
+ * 1. 结构体变量的首地址能够被其最宽基本类型成员的大小 (sizeof)  所整除 （这个由 malloc 保证）
+ * 2. 结构体每个成员相对结构体首地址的偏移量 offset 都是成员大小的整数倍，如有需要编译器会在成员之间加上填充字节
+ * 3. 结构体的总大小 sizeof 为结构体最宽基本成员大小的整数倍，如有需要编译器会在最末一个成员之后加上填充字节。
+ *
+ * 位域：
+ *
+ * 4.  如果相邻位域字段的类型相同，且位宽之和小于类型的 sizeof 大小，则后一个字段将紧邻前一个字段存储，直到不能容纳为止。
+ * 5.  如果相邻位域字段的类型相同，但位宽之和大于类型的 sizeof 大小，则后一个字段将从新的存储单元开始，其偏移量为其类型大小的整数倍。
+ * 6.  如果相邻的位域字段的类型不同，则各编译器的具体实现有差异。（此处采取不压缩）
+ * 7.  如果位域字段之间穿插着非位域字段，则不进行压缩。
+ *
+ * @param target
+ * @returns
+ */
+function layout(keysQueue, keysMeta, padding, offset = 0) {
+    let lastBitFieldType = 0 /* CTypeEnum.null */;
+    let bitFieldRemaining = 0;
+    let lastOffset = offset;
+    if (keysQueue && keysMeta) {
+        array.each(keysQueue, (key) => {
+            const meta = keysMeta.get(key);
+            let padding = 0;
+            let length = 0;
+            if (meta[1 /* KeyMetaKey.Pointer */]) {
+                padding = CTypeEnum2Bytes[20 /* CTypeEnum.pointer */];
+                length = CTypeEnum2Bytes[20 /* CTypeEnum.pointer */];
+            }
+            else {
+                if (is.func(meta.getTypeMeta)) {
+                    const typeMeta = meta.getTypeMeta();
+                    padding = typeMeta.maxBaseTypeByteLength;
+                    length = typeMeta.length;
+                }
+                else if (is.func(meta[0 /* KeyMetaKey.Type */])) {
+                    padding = meta[0 /* KeyMetaKey.Type */].prototype[symbolStructMaxBaseTypeByteLength];
+                    length = meta[0 /* KeyMetaKey.Type */].prototype[symbolStructLength];
+                }
+                else {
+                    // 与上一个字段类型相同且有足够 bit 数（条件 4，6）
+                    if (meta[5 /* KeyMetaKey.BitField */]
+                        && meta[0 /* KeyMetaKey.Type */] === lastBitFieldType
+                        && bitFieldRemaining >= meta[6 /* KeyMetaKey.BitFieldLength */]) {
+                        meta[7 /* KeyMetaKey.BaseAddressOffset */] = lastOffset;
+                        meta[8 /* KeyMetaKey.BaseBitOffset */] = CTypeEnum2Bytes[lastBitFieldType] * 8 - bitFieldRemaining;
+                        bitFieldRemaining -= meta[6 /* KeyMetaKey.BitFieldLength */];
+                        if (meta[6 /* KeyMetaKey.BitFieldLength */] === 0) {
+                            meta[6 /* KeyMetaKey.BitFieldLength */] = bitFieldRemaining;
+                            lastBitFieldType = 0 /* CTypeEnum.null */;
+                            bitFieldRemaining = 0;
+                        }
+                        if (isLittleEndian()) {
+                            meta[8 /* KeyMetaKey.BaseBitOffset */] = CTypeEnum2Bytes[lastBitFieldType] * 8
+                                - meta[8 /* KeyMetaKey.BaseBitOffset */] - meta[6 /* KeyMetaKey.BitFieldLength */];
+                        }
+                        return true;
+                    }
+                    else {
+                        // 不满足，重新开启空间（条件 5）
+                        padding = CTypeEnum2Bytes[meta[0 /* KeyMetaKey.Type */]];
+                        length = CTypeEnum2Bytes[meta[0 /* KeyMetaKey.Type */]];
+                    }
+                }
+            }
+            // 对当前字段类型对齐（条件 2）
+            while (offset % padding !== 0) {
+                offset++;
+            }
+            meta[7 /* KeyMetaKey.BaseAddressOffset */] = offset;
+            if (meta[5 /* KeyMetaKey.BitField */]) {
+                lastBitFieldType = meta[0 /* KeyMetaKey.Type */];
+                meta[8 /* KeyMetaKey.BaseBitOffset */] = 0;
+                bitFieldRemaining = CTypeEnum2Bytes[lastBitFieldType] * 8 - meta[6 /* KeyMetaKey.BitFieldLength */];
+                if (isLittleEndian()) {
+                    meta[8 /* KeyMetaKey.BaseBitOffset */] = CTypeEnum2Bytes[lastBitFieldType] * 8 - meta[6 /* KeyMetaKey.BitFieldLength */];
+                }
+            }
+            else {
+                // 不是位域重置（条件 7）
+                lastBitFieldType = 0 /* CTypeEnum.null */;
+                bitFieldRemaining = 0;
+            }
+            lastOffset = offset;
+            offset += meta[3 /* KeyMetaKey.Array */] ? (length * meta[4 /* KeyMetaKey.ArrayLength */]) : length;
+        });
+    }
+    // 对结构体大小对齐（条件 3）
+    while (offset % padding !== 0) {
+        offset++;
+    }
+    return offset;
+}
+
+var StructType;
+(function (StructType) {
+    StructType[StructType["CSTRUCT"] = 0] = "CSTRUCT";
+    StructType[StructType["CUNION"] = 1] = "CUNION";
+    StructType[StructType["INLINE_OBJECT"] = 2] = "INLINE_OBJECT";
+})(StructType || (StructType = {}));
+class WeakRefPolyfill {
+    constructor(value) {
+        this._value = value;
+    }
+    deref() {
+        return this._value;
+    }
+}
+function createWeakRef(value) {
+    return typeof WeakRef === 'undefined' ? new WeakRefPolyfill(value) : new WeakRef(value);
+}
+const StructMap = new WeakMap();
+const StructFileIdentifiers = new Map();
+const Stack = [];
+function addFileIdentifier(symbol) {
+    if (symbol.valueDeclaration) {
+        const fileName = symbol.valueDeclaration.getSourceFile().fileName;
+        if (StructFileIdentifiers.has(fileName)) {
+            const list = StructFileIdentifiers.get(fileName);
+            if (!array.has(list, symbol.name)) {
+                list.push(symbol.name);
+            }
+        }
+        else {
+            StructFileIdentifiers.set(fileName, [symbol.name]);
+        }
+    }
+}
+function isCStruct(node) {
+    if (!node) {
+        return false;
+    }
+    let has = false;
+    // 检查是否拥有 CStruct
+    array.each(node.modifiers, (modifier) => {
+        var _a;
+        if (modifier.kind === ts.SyntaxKind.Decorator
+            && ((_a = modifier.expression) === null || _a === void 0 ? void 0 : _a.kind) === ts.SyntaxKind.Identifier
+            && (modifier.expression.escapedText === cstruct)) {
+            has = true;
+            return false;
+        }
+    });
+    return has;
+}
+function isCUnion(node) {
+    if (!node) {
+        return false;
+    }
+    let has = false;
+    // 检查是否拥有 CUnion
+    array.each(node.modifiers, (modifier) => {
+        var _a;
+        if (modifier.kind === ts.SyntaxKind.Decorator
+            && ((_a = modifier.expression) === null || _a === void 0 ? void 0 : _a.kind) === ts.SyntaxKind.Identifier
+            && (modifier.expression.escapedText === cunion)) {
+            has = true;
+            return false;
+        }
+    });
+    return has;
+}
+function analyzeModifiers(list, data) {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].kind === ts.SyntaxKind.Decorator) {
+            const decorator = list[i];
+            let hasIgnore = false;
+            if (ts.isCallExpression(decorator.expression) && ts.isIdentifier(decorator.expression.expression)) {
+                const name = decorator.expression.expression.escapedText;
+                if (name === ctype) {
+                    data.has = true;
+                    if (ts.isIdentifier(decorator.expression.arguments[0]) || ts.isExpressionWithTypeArguments(decorator.expression.arguments[0])) {
+                        data.typeIdentifier = (ts.isIdentifier(decorator.expression.arguments[0])
+                            ? decorator.expression.arguments[0].escapedText
+                            : decorator.expression
+                                .arguments[0]
+                                .expression.escapedText);
+                        data.getTypeMeta = () => {
+                            const type = ts.isIdentifier(decorator.expression.arguments[0])
+                                ? statement.typeChecker.getTypeAtLocation(decorator.expression.arguments[0])
+                                : statement.typeChecker.getTypeAtLocation(decorator.expression
+                                    .arguments[0]
+                                    .expression);
+                            if (type) {
+                                return getStruct(type.symbol);
+                            }
+                            else {
+                                return {
+                                    maxBaseTypeByteLength: 0,
+                                    length: 0,
+                                    structType: StructType.CSTRUCT,
+                                    meta: null,
+                                    symbol: null,
+                                    name: ''
+                                };
+                            }
+                        };
+                    }
+                    else if (decorator.expression.arguments[0].kind === ts.SyntaxKind.ThisKeyword) {
+                        data.typeIdentifier = decorator.parent.parent.name.escapedText;
+                        data.getTypeMeta = () => {
+                            const type = statement.typeChecker.getTypeAtLocation(decorator.parent.parent);
+                            return getStruct(type.symbol);
+                        };
+                    }
+                    else if (ts.isPropertyAccessExpression(decorator.expression.arguments[0])) {
+                        data[0 /* KeyMetaKey.Type */] = Type2CTypeEnum[decorator.expression.arguments[0].name.escapedText];
+                    }
+                }
+                else if (name === cpointer) {
+                    data[1 /* KeyMetaKey.Pointer */] = 1;
+                    if (!decorator.expression.arguments.length) {
+                        data[2 /* KeyMetaKey.PointerLevel */] = 1;
+                    }
+                    else {
+                        if (ts.isIdentifier(decorator.expression.arguments[0])) {
+                            data[2 /* KeyMetaKey.PointerLevel */] = +decorator.expression.arguments[0].escapedText;
+                        }
+                    }
+                }
+                else if (name === carray) {
+                    data[3 /* KeyMetaKey.Array */] = 1;
+                    data[4 /* KeyMetaKey.ArrayLength */] = 0;
+                    if (ts.isNumericLiteral(decorator.expression.arguments[0])) {
+                        data[4 /* KeyMetaKey.ArrayLength */] = +decorator.expression.arguments[0].text;
+                    }
+                    else if (ts.isIdentifier(decorator.expression.arguments[0])) {
+                        const symbol = statement.typeChecker.getSymbolAtLocation(decorator.expression.arguments[0]);
+                        if (symbol && ts.isVariableDeclaration(symbol.valueDeclaration) && symbol.valueDeclaration.initializer) {
+                            if (ts.isNumericLiteral(symbol.valueDeclaration.initializer)) {
+                                data[4 /* KeyMetaKey.ArrayLength */] = +symbol.valueDeclaration.initializer.text;
+                            }
+                        }
+                    }
+                    if (Number.isNaN(data[4 /* KeyMetaKey.ArrayLength */])) {
+                        data[4 /* KeyMetaKey.ArrayLength */] = 0;
+                    }
+                }
+                else if (name === cbitField) {
+                    data[5 /* KeyMetaKey.BitField */] = 1;
+                    if (ts.isIdentifier(decorator.expression.arguments[0])) {
+                        data[6 /* KeyMetaKey.BitFieldLength */] = +decorator.expression.arguments[0].escapedText;
+                    }
+                }
+                else if (name === cignore) {
+                    hasIgnore = true;
+                    if (ts.isCallExpression(decorator.expression)) {
+                        if (decorator.expression.arguments.length
+                            && !checkBool(statement.visitor(decorator.expression.arguments[0]), statement.visitor)) {
+                            hasIgnore = false;
+                        }
+                    }
+                }
+            }
+            else if (ts.isIdentifier(decorator.expression)) {
+                const name = decorator.expression.escapedText;
+                if (name === cignore) {
+                    hasIgnore = true;
+                }
+            }
+            if (hasIgnore) {
+                data.has = false;
+            }
+        }
+    }
+}
+function analyzeType(type, data) {
+    var _a, _b, _c;
+    if (type.aliasSymbol) {
+        const typeName = type.aliasSymbol.escapedName;
+        if (typeName === typeArray && ((_a = type.aliasTypeArguments[1]) === null || _a === void 0 ? void 0 : _a.isNumberLiteral())) {
+            data[3 /* KeyMetaKey.Array */] = 1;
+            data[4 /* KeyMetaKey.ArrayLength */] = (data[4 /* KeyMetaKey.ArrayLength */] ? data[4 /* KeyMetaKey.ArrayLength */] : 1) * type.aliasTypeArguments[1].value;
+            analyzeType(type.aliasTypeArguments[0], data);
+        }
+        else if (typeName === typeBit && ((_b = type.aliasTypeArguments[1]) === null || _b === void 0 ? void 0 : _b.isNumberLiteral())) {
+            data[5 /* KeyMetaKey.BitField */] = 1;
+            data[6 /* KeyMetaKey.BitFieldLength */] = type.aliasTypeArguments[1].value;
+            analyzeType(type.aliasTypeArguments[0], data);
+        }
+        else if (typeName === typePointer) {
+            data[2 /* KeyMetaKey.PointerLevel */]++;
+            data[1 /* KeyMetaKey.Pointer */] = 1;
+            analyzeType(type.aliasTypeArguments[0], data);
+        }
+        else if (typeName === typeStruct
+            || typeName === typeUnion) {
+            const struct = getInlineStruct(type.aliasTypeArguments[0], typeName === typeUnion ? StructType.CUNION : StructType.CSTRUCT);
+            if (struct) {
+                data.has = true;
+                const stack = Stack[Stack.length - 1];
+                stack.inlineStructPathMap.set(struct.symbol.deref(), stack.treePath.join('.'));
+                data.getTypeMeta = () => {
+                    return struct;
+                };
+            }
+        }
+        else if (type.aliasSymbol.valueDeclaration
+            && (ts.isEnumDeclaration(type.aliasSymbol.valueDeclaration)
+                || ts.isEnumMember(type.aliasSymbol.valueDeclaration))) {
+            data.has = true;
+            data[0 /* KeyMetaKey.Type */] = 15 /* CTypeEnum.int32 */;
+        }
+        else if (array.has(BuiltinType, typeName)) {
+            data.has = true;
+            data[0 /* KeyMetaKey.Type */] = Type2CTypeEnum[typeName];
+        }
+    }
+    else if (type.symbol
+        && (isCStruct(type.symbol.valueDeclaration)
+            || isCUnion(type.symbol.valueDeclaration))) {
+        if (!data[1 /* KeyMetaKey.Pointer */] && type.symbol === data.symbol.deref()) {
+            data.has = false;
+        }
+        else {
+            data.has = true;
+            data.typeIdentifier = type.symbol.escapedName;
+            data.getTypeMeta = () => {
+                return getStruct(type.symbol);
+            };
+        }
+    }
+    else if (((_c = type.symbol) === null || _c === void 0 ? void 0 : _c.valueDeclaration)
+        && (ts.isEnumDeclaration(type.symbol.valueDeclaration)
+            || ts.isEnumMember(type.symbol.valueDeclaration))) {
+        data.has = true;
+        data[0 /* KeyMetaKey.Type */] = 15 /* CTypeEnum.int32 */;
+    }
+    else if (data[1 /* KeyMetaKey.Pointer */]) {
+        data.has = true;
+        data[0 /* KeyMetaKey.Type */] = 1 /* CTypeEnum.void */;
+    }
+    else if (type.isUnion()) {
+        analyzeType(type.types[0], data);
+    }
+}
+function getInlineStruct(type, structType) {
+    const metaMap = new Map();
+    const metaQueue = [];
+    if (type.symbol.members) {
+        type.symbol.members.forEach((value, key) => {
+            if (value.flags & ts.SymbolFlags.Property && value.valueDeclaration && ts.isPropertySignature(value.valueDeclaration)) {
+                const stack = Stack[Stack.length - 1];
+                stack.treePath.push(key);
+                const metaData = {
+                    [0 /* KeyMetaKey.Type */]: 1 /* CTypeEnum.void */,
+                    [1 /* KeyMetaKey.Pointer */]: 0,
+                    [2 /* KeyMetaKey.PointerLevel */]: 0,
+                    [3 /* KeyMetaKey.Array */]: 0,
+                    [4 /* KeyMetaKey.ArrayLength */]: 0,
+                    [5 /* KeyMetaKey.BitField */]: 0,
+                    [6 /* KeyMetaKey.BitFieldLength */]: 0,
+                    [7 /* KeyMetaKey.BaseAddressOffset */]: 0,
+                    [8 /* KeyMetaKey.BaseBitOffset */]: 0,
+                    has: false,
+                    typeIdentifier: '',
+                    symbol: null,
+                    name: key
+                };
+                analyzeType(statement.typeChecker.getTypeOfSymbol(value), metaData);
+                if (metaData.has) {
+                    metaMap.set(key, metaData);
+                    metaQueue.push(key);
+                }
+                stack.treePath.pop();
+            }
+        });
+    }
+    if (metaMap.size) {
+        const maxBaseTypeByteLength = getMaxBaseTypeByteLength(metaMap);
+        if (!maxBaseTypeByteLength) {
+            return null;
+        }
+        const length = structType === StructType.CUNION
+            ? getMaxTypeByteLength(metaMap)
+            : layout(metaQueue, metaMap, maxBaseTypeByteLength, 0);
+        StructMap.set(type.symbol, {
+            maxBaseTypeByteLength: maxBaseTypeByteLength,
+            length: length,
+            meta: metaMap,
+            symbol: createWeakRef(type.symbol),
+            parent: null,
+            structType: StructType.INLINE_OBJECT,
+            definedClassParent: Stack[Stack.length - 1].struct,
+            name: type.symbol.name
+        });
+        addFileIdentifier(type.symbol);
+        return StructMap.get(type.symbol);
+    }
+    return null;
+}
+function analyze(symbol) {
+    var _a, _b;
+    // 检查是否是类定义
+    if (!symbol.valueDeclaration || !ts.isClassDeclaration(symbol.valueDeclaration)) {
+        StructMap.set(symbol, null);
+        return;
+    }
+    const valueDeclaration = symbol.valueDeclaration;
+    if (!isCStruct(valueDeclaration) && !isCUnion(valueDeclaration)) {
+        StructMap.set(symbol, null);
+        return;
+    }
+    const structType = isCUnion(valueDeclaration) ? StructType.CUNION : StructType.CSTRUCT;
+    const metaMap = new Map();
+    const metaQueue = [];
+    const inlineStructPathMap = new WeakMap();
+    const struct = {
+        maxBaseTypeByteLength: 0,
+        length: 0,
+        meta: null,
+        symbol: createWeakRef(symbol),
+        parent: null,
+        structType: structType,
+        name: symbol.name
+    };
+    const treePath = [];
+    Stack.length = 0;
+    Stack.push({
+        treePath,
+        struct,
+        inlineStructPathMap
+    });
+    let parentStruct;
+    if ((_a = valueDeclaration.heritageClauses) === null || _a === void 0 ? void 0 : _a.length) {
+        for (let i = 0; i < valueDeclaration.heritageClauses.length; i++) {
+            const clause = valueDeclaration.heritageClauses[i];
+            if (clause.token === ts.SyntaxKind.ExtendsKeyword) {
+                if (clause.types.length === 1) {
+                    let parentSymbol = statement.typeChecker.getSymbolAtLocation(clause.types[0].expression);
+                    parentStruct = StructMap.get(parentSymbol);
+                    if (!parentStruct) {
+                        analyze(parentSymbol);
+                        parentStruct = StructMap.get(parentSymbol);
+                    }
+                }
+            }
+        }
+    }
+    if (symbol.members) {
+        symbol.members.forEach((value, key) => {
+            var _a;
+            if (value.flags & ts.SymbolFlags.Property && value.valueDeclaration && ts.isPropertyDeclaration(value.valueDeclaration)) {
+                const valueDeclaration = value.valueDeclaration;
+                treePath.push(key);
+                const metaData = {
+                    [0 /* KeyMetaKey.Type */]: 1 /* CTypeEnum.void */,
+                    [1 /* KeyMetaKey.Pointer */]: 0,
+                    [2 /* KeyMetaKey.PointerLevel */]: 0,
+                    [3 /* KeyMetaKey.Array */]: 0,
+                    [4 /* KeyMetaKey.ArrayLength */]: 0,
+                    [5 /* KeyMetaKey.BitField */]: 0,
+                    [6 /* KeyMetaKey.BitFieldLength */]: 0,
+                    [7 /* KeyMetaKey.BaseAddressOffset */]: 0,
+                    [8 /* KeyMetaKey.BaseBitOffset */]: 0,
+                    has: false,
+                    typeIdentifier: '',
+                    symbol: createWeakRef(symbol),
+                    name: key
+                };
+                analyzeType(statement.typeChecker.getTypeOfSymbol(value), metaData);
+                if ((_a = valueDeclaration.modifiers) === null || _a === void 0 ? void 0 : _a.length) {
+                    analyzeModifiers(valueDeclaration.modifiers, metaData);
+                }
+                if (metaData.has) {
+                    metaMap.set(key, metaData);
+                    metaQueue.push(key);
+                }
+                treePath.pop();
+            }
+        });
+    }
+    if (metaMap.size) {
+        const maxBaseTypeByteLength = Math.max(getMaxBaseTypeByteLength(metaMap), (_b = parentStruct === null || parentStruct === void 0 ? void 0 : parentStruct.maxBaseTypeByteLength) !== null && _b !== void 0 ? _b : 0);
+        if (!maxBaseTypeByteLength) {
+            StructMap.set(symbol, null);
+            return;
+        }
+        let offset = 0;
+        if (parentStruct) {
+            offset = parentStruct.length;
+        }
+        const length = structType === StructType.CUNION
+            ? getMaxTypeByteLength(metaMap)
+            : layout(metaQueue, metaMap, maxBaseTypeByteLength, offset);
+        object.extend(struct, {
+            maxBaseTypeByteLength: maxBaseTypeByteLength,
+            length,
+            meta: metaMap,
+            parent: parentStruct,
+            inlineStructPathMap
+        });
+        StructMap.set(symbol, struct);
+        addFileIdentifier(symbol);
+    }
+    else {
+        if (parentStruct) {
+            object.extend(struct, {
+                maxBaseTypeByteLength: parentStruct.maxBaseTypeByteLength,
+                length: parentStruct.length,
+                meta: metaMap,
+                parent: parentStruct
+            });
+            StructMap.set(symbol, struct);
+            addFileIdentifier(symbol);
+        }
+        else {
+            StructMap.set(symbol, null);
+        }
+    }
+    Stack.pop();
+}
+function getStruct(symbol) {
+    if (!symbol) {
+        return null;
+    }
+    if (!StructMap.has(symbol)) {
+        analyze(symbol);
+    }
+    return StructMap.get(symbol);
+}
+function hasStruct(symbol) {
+    const struct = getStruct(symbol);
+    return struct != null;
+}
+function getStructFileIdentifiers(fileName) {
+    return StructFileIdentifiers.get(fileName);
+}
+function clearStructCache() {
+    StructFileIdentifiers.clear();
+}
+
+function isCompatibleType(type1, type2) {
+    if (type1 === typePointer && type2 === typeAnyptr
+        || type1 === typeAnyptr && type2 === typePointer) {
+        return true;
+    }
+    if (type1 === 'any' || type2 === 'any') {
+        return true;
+    }
+    if (type1 === 'void' || type2 === 'void') {
+        return true;
+    }
+    return type1 === type2;
+}
+function isTypeEquals(type1, node1, type2, node2) {
+    var _a, _b;
+    if (isPointerType(type1, node1) && isPointerType(type2, node2)) {
+        if (isAnyPointer(type1) || isAnyPointer(type2)) {
+            return true;
+        }
+        return getFixTypeByType(type1, node1) === getFixTypeByType(type2, node2)
+            && getPointerLevelByType(type1, node1) === getPointerLevelByType(type2, node2);
+    }
+    else if (isBuiltinType(type1, node1) && isBuiltinType(type2, node2)) {
+        return getBuiltinByType(type1, node1) === getBuiltinByType(type2, node2);
+    }
+    else if (isStructType(type1) && isStructType(type2)) {
+        return getStructByType(type1) === getStructByType(type2);
+    }
+    if (type1.symbol && type2.symbol) {
+        return type1.symbol === type2.symbol;
+    }
+    else if (type1.aliasSymbol && type2.aliasSymbol) {
+        if (type1.aliasSymbol.escapedName === typePointer && type2.aliasSymbol.escapedName === typeAnyptr
+            || type1.aliasSymbol.escapedName === typeAnyptr && type2.aliasSymbol.escapedName === typePointer) {
+            return true;
+        }
+        if (!type1.aliasTypeArguments && !type2.aliasTypeArguments) {
+            return isCompatibleType(type1.aliasSymbol.escapedName, type2.aliasSymbol.escapedName);
+        }
+        if (((_a = type1.aliasTypeArguments) === null || _a === void 0 ? void 0 : _a.length) === ((_b = type2.aliasTypeArguments) === null || _b === void 0 ? void 0 : _b.length)) {
+            for (let i = 0; i < type1.aliasTypeArguments.length; i++) {
+                if (!isTypeEquals(type1.aliasTypeArguments[i], null, type2.aliasTypeArguments[i], null)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    // @ts-ignore
+    else if (type1.intrinsicName && type2.intrinsicName) {
+        // @ts-ignore
+        return type1.intrinsicName === type2.intrinsicName;
+    }
+    return false;
+}
+function isBuiltinType(type, node) {
+    if (!type) {
+        return false;
+    }
+    if (isPointerType(type, node)) {
+        return true;
+    }
+    if (type.aliasSymbol) {
+        if (type.aliasSymbol.escapedName === typeAnyptr
+            || type.aliasSymbol.escapedName === typeMultiPointer) {
+            return true;
+        }
+        return is.number(Type2CTypeEnum[type.aliasSymbol.escapedName]);
+    }
+    if (type.isIntersection()) {
+        const value = getSymbolTypeValue(type.getProperty(typeProperty));
+        if (value) {
+            return is.number(Type2CTypeEnum[value.replace(/\*$/g, '')]);
+        }
+    }
+    return false;
+}
+function isPointerBuiltinType(type, node) {
+    if (!type) {
+        return false;
+    }
+    return isPointerType(type, node)
+        && (type.aliasSymbol && type.aliasTypeArguments && isBuiltinType(type.aliasTypeArguments[0], null)
+            || !type.symbol && !type.aliasSymbol && !isPointerStructType(type, node));
+}
+function isStructType(type, ignoreLevel = false) {
+    var _a, _b, _c, _d, _e, _f;
+    if (!type) {
+        return false;
+    }
+    if (type.symbol) {
+        return hasStruct(type.symbol);
+    }
+    else if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typeStruct
+            || type.aliasSymbol.escapedName === typeUnion;
+    }
+    else if (type.isIntersection()) {
+        const level = getSymbolTypeValue(type.getProperty(levelProperty));
+        if (!ignoreLevel && level && level > 0) {
+            return false;
+        }
+        // pointer[x]
+        const type_ = type.getProperty(typeProperty);
+        // @ts-ignore
+        if ((_b = (_a = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _a === void 0 ? void 0 : _a.type) === null || _b === void 0 ? void 0 : _b.symbol) {
+            // @ts-ignore
+            return isStructType(type_.links.type);
+        }
+        // @ts-ignore
+        else if (((_d = (_c = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _c === void 0 ? void 0 : _c.type) === null || _d === void 0 ? void 0 : _d.aliasSymbol)
+            // @ts-ignore
+            && ((_f = (_e = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _e === void 0 ? void 0 : _e.type) === null || _f === void 0 ? void 0 : _f.aliasTypeArguments)
+            && (
+            // @ts-ignore
+            type_.links.type.aliasSymbol.escapedName === typeStruct
+                // @ts-ignore
+                || type_.links.type.aliasSymbol.escapedName === typeUnion)) {
+            // @ts-ignore
+            return isStructType(type_.links.type.aliasTypeArguments[0]);
+        }
+        // 内联 struct
+        const struct_ = type.getProperty(structProperty);
+        if (struct_) {
+            for (let i = 0; i < type.types.length; i++) {
+                if (type.types[i].symbol && hasStruct(type.types[i].symbol)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+function isAnyPointer(type) {
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typeAnyptr;
+    }
+    return false;
+}
+function isArrayType(type) {
+    var _a;
+    return type.aliasSymbol
+        && type.aliasSymbol.escapedName === typeArray
+        && ((_a = type.aliasTypeArguments[1]) === null || _a === void 0 ? void 0 : _a.isNumberLiteral());
+}
+function isNullPointer(type, node) {
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typeNullptr;
+    }
+    else if (node && ts.isIdentifier(node)) {
+        return node.escapedText === typeNullptr;
+    }
+    return false;
+}
+function isMultiPointer(type) {
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typeMultiPointer;
+    }
+    return false;
+}
+function isPointerType(type, node) {
+    if (!type) {
+        return false;
+    }
+    if (isAnyPointer(type) || isMultiPointer(type) || isNullPointer(type, node)) {
+        return true;
+    }
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typePointer;
+    }
+    if (type.symbol) {
+        return type.symbol.escapedName === typePointer;
+    }
+    if (type.isIntersection()) {
+        const value = getSymbolTypeValue(type.getProperty(levelProperty));
+        if (value != null) {
+            return value > 0;
+        }
+    }
+    return false;
+}
+function isSizeType(type, union = false) {
+    if (!type) {
+        return false;
+    }
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName === typeSize;
+    }
+    else if (type.isIntersection()) {
+        const value = getSymbolTypeValue(type.getProperty(typeProperty));
+        if (value === typeSize) {
+            return true;
+        }
+    }
+    else if (union && type.isUnion()) {
+        for (let i = 0; i < type.types.length; i++) {
+            if (isSizeType(type.types[i])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+function isPointerStructType(type, node) {
+    if (!type) {
+        return false;
+    }
+    if (isPointerType(type, node)) {
+        if (isAnyPointer(type) || isMultiPointer(type)) {
+            return false;
+        }
+        if (type.aliasSymbol && type.aliasTypeArguments) {
+            return isStructType(type.aliasTypeArguments[0]);
+        }
+        else if (!type.symbol && !type.aliasSymbol && type.isIntersection()) {
+            const level = getSymbolTypeValue(type.getProperty(levelProperty));
+            if (level && level > 1) {
+                return false;
+            }
+            return isStructType(type, true);
+        }
+    }
+    return false;
+}
+function getStructByType(type) {
+    var _a, _b, _c, _d, _e, _f;
+    if (type.aliasSymbol && type.aliasTypeArguments) {
+        if (type.aliasSymbol.escapedName === typeStruct
+            || type.aliasSymbol.escapedName === typeUnion
+            || type.aliasSymbol.escapedName === typeArray
+            || type.aliasSymbol.escapedName === typePointer
+            || type.aliasSymbol.escapedName === sharedPtr) {
+            return getStructByType(type.aliasTypeArguments[0]);
+        }
+    }
+    else if (type.symbol) {
+        return getStruct(type.symbol);
+    }
+    else if (type.isIntersection()) {
+        // pointer[x]
+        const type_ = type.getProperty(typeProperty);
+        // @ts-ignore
+        if ((_b = (_a = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _a === void 0 ? void 0 : _a.type) === null || _b === void 0 ? void 0 : _b.symbol) {
+            // @ts-ignore
+            return getStructByType(type_.links.type);
+        }
+        // @ts-ignore
+        else if (((_d = (_c = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _c === void 0 ? void 0 : _c.type) === null || _d === void 0 ? void 0 : _d.aliasSymbol)
+            // @ts-ignore
+            && ((_f = (_e = type_ === null || type_ === void 0 ? void 0 : type_.links) === null || _e === void 0 ? void 0 : _e.type) === null || _f === void 0 ? void 0 : _f.aliasTypeArguments)
+            && (
+            // @ts-ignore
+            type_.links.type.aliasSymbol.escapedName === typeStruct
+                // @ts-ignore
+                || type_.links.type.aliasSymbol.escapedName === typeUnion)) {
+            // @ts-ignore
+            return getStructByType(type_.links.type.aliasTypeArguments[0]);
+        }
+        // 内联 struct
+        const struct_ = type.getProperty(structProperty);
+        if (struct_) {
+            for (let i = 0; i < type.types.length; i++) {
+                if (type.types[i].symbol && hasStruct(type.types[i].symbol)) {
+                    return getStruct(type.types[i].symbol);
+                }
+            }
+        }
+    }
+}
+function getPointerStructByType(type, node) {
+    if (getPointerLevelByType(type, node) > 1) {
+        return null;
+    }
+    return type.aliasSymbol && type.aliasTypeArguments && !isPointerType(type.aliasTypeArguments[0], null) && getStructByType(type.aliasTypeArguments[0])
+        || !type.symbol && !type.aliasSymbol && getStructByType(type);
+}
+function getSmartPointerStructByType(type) {
+    var _a;
+    return type.aliasSymbol && ((_a = type.aliasTypeArguments) === null || _a === void 0 ? void 0 : _a.length) === 1 && getStruct(type.aliasTypeArguments[0].symbol);
+}
+function getBuiltinNameByType(type) {
+    if (type.aliasSymbol) {
+        return type.aliasSymbol.escapedName;
+    }
+    if (type.isIntersection()) {
+        const value = getSymbolTypeValue(type.getProperty(typeProperty));
+        if (value) {
+            if (/\*+$/.test(value)) {
+                return CTypeEnum2Type[20 /* CTypeEnum.pointer */];
+            }
+            return value;
+        }
+    }
+}
+function getBuiltinByType(type, node) {
+    if (isPointerType(type, node)) {
+        return 20 /* CTypeEnum.pointer */;
+    }
+    const name = getBuiltinNameByType(type);
+    if (name) {
+        return Type2CTypeEnum[name];
+    }
+}
+function getPointerBuiltinByType(type, node) {
+    let builtinType = type.aliasSymbol && type.aliasTypeArguments && getBuiltinByType(type.aliasTypeArguments[0], null);
+    if (!is.number(builtinType) && !type.symbol && !type.aliasSymbol && type.isIntersection()) {
+        if (getPointerLevelByType(type, node) > 1) {
+            return 20 /* CTypeEnum.pointer */;
+        }
+        const value = getSymbolTypeValue(type.getProperty(typeProperty));
+        if (value) {
+            if (/\*{2}$/.test(value)) {
+                return 20 /* CTypeEnum.pointer */;
+            }
+            return Type2CTypeEnum[value.replace(/\**$/, '')];
+        }
+    }
+    return builtinType;
+}
+function getFixTypeByType(type, node) {
+    if (isPointerType(type, node)) {
+        if (type.aliasSymbol && type.aliasTypeArguments) {
+            return getFixTypeByType(type.aliasTypeArguments[0], null);
+        }
+        else {
+            const value = getSymbolTypeValue(type.getProperty(typeProperty));
+            if (value) {
+                return Type2CTypeEnum[value.replace(/\**$/, '')];
+            }
+            else {
+                return getStructByType(type);
+            }
+        }
+    }
+    else if (isStructType(type)) {
+        return getStructByType(type);
+    }
+    else if (isBuiltinType(type, node)) {
+        return getBuiltinByType(type, node);
+    }
+}
+function getPointerLevelByType(type, node) {
+    if (isPointerType(type, node) && type.isIntersection()) {
+        const value = getSymbolTypeValue(type.getProperty(levelProperty));
+        if (value) {
+            return value;
+        }
+    }
+    return 0;
+}
+function isSmartPointerType(type) {
+    if (!type) {
+        return false;
+    }
+    if (type.aliasSymbol) {
+        const value = getSymbolTypeValue(type.getProperty(typeProperty));
+        return type.aliasSymbol.escapedName === sharedPtr && value === sharedPtr;
+    }
+    return false;
+}
+function getSymbolTypeValue(type) {
+    var _a, _b, _c, _d;
+    if (!type) {
+        return;
+    }
+    // @ts-ignore
+    if ((_b = (_a = type === null || type === void 0 ? void 0 : type.links) === null || _a === void 0 ? void 0 : _a.type) === null || _b === void 0 ? void 0 : _b.value) {
+        // @ts-ignore
+        return type.links.type.value;
+    }
+    // @ts-ignore
+    else if ((_d = (_c = type === null || type === void 0 ? void 0 : type.valueDeclaration) === null || _c === void 0 ? void 0 : _c.type) === null || _d === void 0 ? void 0 : _d.literal) {
+        // @ts-ignore
+        return type.valueDeclaration.type.literal.text;
+    }
+}
+
+function getEqualsBinaryExpressionRight(node) {
+    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+        return getEqualsBinaryExpressionRight(node.right);
+    }
+    return node;
+}
+function isExpressionPointer(node) {
+    let root = getPropertyAccessExpressionRootNode(node);
+    while (root && root !== node) {
+        const type = statement.typeChecker.getTypeAtLocation(root);
+        if (isPointerType(type, root)) {
+            return true;
+        }
+        root = root.parent;
+    }
+    if (!root) {
+        return false;
+    }
+    const type = statement.typeChecker.getTypeAtLocation(root);
+    if (isPointerType(type, root)) {
+        return true;
+    }
+    return false;
+}
+function isExpressionSmartPointer(node) {
+    let root = getPropertyAccessExpressionRootNode(node);
+    while (root && root !== node) {
+        const type = statement.typeChecker.getTypeAtLocation(root);
+        if (isSmartPointerType(type)) {
+            return true;
+        }
+        root = root.parent;
+    }
+    if (!root) {
+        return false;
+    }
+    const type = statement.typeChecker.getTypeAtLocation(root);
+    if (isSmartPointerType(type)) {
+        return true;
+    }
+    return false;
+}
+function getPointerExpressionType(node) {
+    if (ts.isBinaryExpression(node)) {
+        const type = statement.typeChecker.getTypeAtLocation(node.right);
+        if (isPointerType(type, node.right)) {
+            return type;
+        }
+        return getPointerExpressionType(node.left);
+    }
+    return statement.typeChecker.getTypeAtLocation(node);
+}
+function isPointerNode(node) {
+    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+        return isPointerNode(node.left) || isPointerNode(node.right);
+    }
+    // 检查表达式类型
+    let type = statement.typeChecker.getTypeAtLocation(node);
+    if (isPointerType(type, node)) {
+        return true;
+    }
+    // 检查二元操作符 (pointer 参与的运算结果为 pointer)
+    type = getPointerExpressionType(node);
+    if (isPointerType(type, node)) {
+        return true;
+    }
+    // 检查属性访问中是否有 pointer
+    if (ts.isPropertyAccessExpression(node)) {
+        return isExpressionPointer(node);
+    }
+    // xx.xx[]
+    else if (ts.isElementAccessExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
+        return isExpressionPointer(node.expression);
+    }
+    // xx[][]
+    else if (ts.isElementAccessExpression(node)) {
+        return isPointerNode(node.expression);
+    }
+    return false;
+}
+function isSmartPointerNode(node) {
+    // 检查表达式类型
+    let type = statement.typeChecker.getTypeAtLocation(node);
+    if (isSmartPointerType(type)) {
+        return true;
+    }
+    if (ts.isPropertyAccessExpression(node)) {
+        return isExpressionSmartPointer(node);
+    }
+    else if (ts.isElementAccessExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
+        return isExpressionSmartPointer(node.expression);
+    }
+    else if (ts.isElementAccessExpression(node)) {
+        return isSmartPointerNode(node.expression);
+    }
+    return false;
+}
+function isJSDocTypeAlias(node) {
+    return node.kind === ts.SyntaxKind.JSDocTypedefTag || node.kind === ts.SyntaxKind.JSDocCallbackTag || node.kind === ts.SyntaxKind.JSDocEnumTag;
+}
+function getContainerNode(node) {
+    if (isJSDocTypeAlias(node)) {
+        node = node.parent.parent;
+    }
+    while (true) {
+        node = node.parent;
+        if (!node) {
+            return void 0;
+        }
+        switch (node.kind) {
+            case ts.SyntaxKind.SourceFile:
+            case ts.SyntaxKind.MethodDeclaration:
+            case ts.SyntaxKind.MethodSignature:
+            case ts.SyntaxKind.FunctionDeclaration:
+            case ts.SyntaxKind.FunctionExpression:
+            case ts.SyntaxKind.GetAccessor:
+            case ts.SyntaxKind.SetAccessor:
+            case ts.SyntaxKind.ClassDeclaration:
+            case ts.SyntaxKind.InterfaceDeclaration:
+            case ts.SyntaxKind.EnumDeclaration:
+            case ts.SyntaxKind.ModuleDeclaration:
+                return node;
+        }
+    }
+}
+function isParseTreeNode(node) {
+    return (node.flags & ts.NodeFlags.Synthesized) === 0;
+}
+function getParseTreeNode(node, nodeTest) {
+    if (node == null || isParseTreeNode(node)) {
+        return node;
+    }
+    node = ts.getOriginalNode(node);
+    while (node) {
+        if (isParseTreeNode(node)) {
+            return !nodeTest || nodeTest(node) ? node : undefined;
+        }
+        node = ts.getOriginalNode(node);
+    }
+}
+function isPointerIndexOfCall(node) {
+    if (ts.isPropertyAccessExpression(node.expression)) {
+        const type = statement.typeChecker.getTypeAtLocation(node.expression.expression);
+        return isPointerType(type, node.expression.expression) && node.expression.name.escapedText === indexOf;
+    }
+    return false;
+}
+function isPointerElementAccess(node) {
+    return ts.isElementAccessExpression(node) && isPointerNode(node.expression);
+}
+function isSmartPointerElementAccess(node) {
+    return ts.isElementAccessExpression(node) && isSmartPointerNode(node.expression);
+}
+function getPropertyAccessExpressionRootNode(node) {
+    if (ts.isPropertyAccessExpression(node)
+        || ts.isCallExpression(node)
+        || ts.isElementAccessExpression(node)) {
+        return getPropertyAccessExpressionRootNode(node.expression);
+    }
+    return node;
+}
+function getParameterDefaultValue(symbol, index) {
+    var _a;
+    const declarations = symbol.declarations;
+    if (declarations === null || declarations === void 0 ? void 0 : declarations.length) {
+        for (let i = 0; i < declarations.length; i++) {
+            const declaration = declarations[i];
+            if ((ts.isFunctionDeclaration(declaration)
+                || ts.isMethodDeclaration(declaration))
+                && declaration.parameters
+                && ((_a = declaration.parameters[index]) === null || _a === void 0 ? void 0 : _a.initializer)) {
+                return declaration.parameters[index].initializer;
+            }
+        }
+    }
+}
+function checkBool(node, visitor) {
+    function compute(node) {
+        if (ts.isParenthesizedExpression(node)) {
+            return ts.visitNode(node.expression, compute);
+        }
+        else if (ts.isPrefixUnaryExpression(node)) {
+            if (node.operator === ts.SyntaxKind.ExclamationToken) {
+                return !ts.visitNode(node.operand, compute);
+            }
+            return true;
+        }
+        else if (ts.isBinaryExpression(node)) {
+            const left = ts.visitNode(node.left, compute);
+            const right = ts.visitNode(node.right, compute);
+            if (node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken) {
+                return left && right;
+            }
+            else if (node.operatorToken.kind === ts.SyntaxKind.BarBarToken) {
+                return left || right;
+            }
+            return true;
+        }
+        else {
+            const newNode = ts.visitNode(node, visitor);
+            if (newNode.kind === ts.SyntaxKind.TrueKeyword) {
+                return true;
+            }
+            else if (newNode.kind === ts.SyntaxKind.FalseKeyword) {
+                return false;
+            }
+            else if (ts.isNumericLiteral(newNode)) {
+                return (+newNode.text) !== 0;
+            }
+            else if (ts.isStringLiteral(newNode)) {
+                return newNode.text !== '';
+            }
+            return true;
+        }
+    }
+    return ts.visitNode(node, compute);
+}
+function getBinaryBuiltinTypeName(node) {
+    if (!node) {
+        return '';
+    }
+    const type = statement.typeChecker.getTypeAtLocation(node);
+    if (isSizeType(type)) {
+        return statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32';
+    }
+    else if (type.aliasSymbol && array.has(BuiltinType, type.aliasSymbol.escapedName)) {
+        return type.aliasSymbol.escapedName;
+    }
+    else if (isPointerType(type, node)) {
+        return statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32';
+    }
+    if (node.kind === ts.SyntaxKind.TrueKeyword || node.kind === ts.SyntaxKind.FalseKeyword) {
+        return 'bool';
+    }
+    if (ts.isBinaryExpression(node)) {
+        const leftType = getBinaryBuiltinTypeName(node.left);
+        const rightType = getBinaryBuiltinTypeName(node.right);
+        if (array.has(BuiltinFloat, leftType)) {
+            return leftType;
+        }
+        if (array.has(BuiltinFloat, rightType)) {
+            return rightType;
+        }
+        if (array.has(BuiltinBigInt, leftType)) {
+            if (node.operatorToken.kind === ts.SyntaxKind.MinusToken) {
+                return 'int64';
+            }
+            return leftType;
+        }
+        if (array.has(BuiltinBigInt, rightType)) {
+            if (node.operatorToken.kind === ts.SyntaxKind.MinusToken) {
+                return 'int64';
+            }
+            return rightType;
+        }
+        if (node.operatorToken.kind === ts.SyntaxKind.MinusToken) {
+            return 'int32';
+        }
+        return 'uint32';
+    }
+    if (type.flags & ts.TypeFlags.BigInt || type.flags & ts.TypeFlags.BigIntLiteral) {
+        if (type.flags & ts.TypeFlags.BigIntLiteral) {
+            if (node.parent && ts.isPrefixUnaryExpression(node.parent) && node.parent.operator === ts.SyntaxKind.MinusToken) {
+                return 'int64';
+            }
+        }
+        if (type.flags & ts.TypeFlags.BigInt) {
+            if (ts.isCallExpression(node) && node.arguments[0]) {
+                const type = getBinaryBuiltinTypeName(node.arguments[0]);
+                if (!array.has(BuiltinUint, type)) {
+                    return 'int64';
+                }
+            }
+        }
+        return 'uint64';
+    }
+    if (type.flags & ts.TypeFlags.Enum || type.flags & ts.TypeFlags.EnumLiteral) {
+        return 'int32';
+    }
+    if (type.flags & ts.TypeFlags.Number || type.flags & ts.TypeFlags.NumberLiteral) {
+        if (type.flags & ts.TypeFlags.NumberLiteral) {
+            // @ts-ignore
+            if ((type.value + '').indexOf('.') > -1) {
+                return 'double';
+            }
+            if (node.parent && ts.isPrefixUnaryExpression(node.parent) && node.parent.operator === ts.SyntaxKind.MinusToken) {
+                return 'int32';
+            }
+            if (type.flags & ts.TypeFlags.Number) {
+                if (ts.isCallExpression(node) && node.arguments[0]) {
+                    const type = getBinaryBuiltinTypeName(node.arguments[0]);
+                    if (!array.has(BuiltinUint, type)) {
+                        return 'int32';
+                    }
+                }
+            }
+            return 'uint32';
+        }
+        return 'double';
+    }
+    if (type.isUnion()) {
+        for (let i = 0; i < type.types.length; i++) {
+            if (type.types[i].aliasSymbol && array.has(BuiltinType, type.types[i].aliasSymbol.escapedName)) {
+                return type.types[i].aliasSymbol.escapedName;
+            }
+        }
+    }
+    return '';
+}
+function getParentMethodDeclaration(node, method) {
+    var _a;
+    if ((_a = node.members) === null || _a === void 0 ? void 0 : _a.length) {
+        for (let i = 0; i < node.members.length; i++) {
+            if (ts.isMethodDeclaration(node.members[i])
+                && ts.isIdentifier(node.members[i].name)
+                && node.members[i].name.escapedText === method) {
+                return node.members[i];
+            }
+        }
+    }
+    if (node.heritageClauses) {
+        for (let i = 0; i < node.heritageClauses.length; i++) {
+            const types = node.heritageClauses[i].types;
+            for (let j = 0; j < types.length; j++) {
+                if (ts.isExpressionWithTypeArguments(types[j])) {
+                    const type = statement.typeChecker.getTypeAtLocation(types[j].expression);
+                    if ((type === null || type === void 0 ? void 0 : type.symbol)
+                        && type.symbol.valueDeclaration
+                        && (ts.isClassDeclaration(type.symbol.valueDeclaration)
+                            || ts.isInterfaceDeclaration(type.symbol.valueDeclaration))) {
+                        const declaration = getParentMethodDeclaration(type.symbol.valueDeclaration, method);
+                        if (declaration) {
+                            return declaration;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+function isSynchronizeFunction(node) {
+    if (!node) {
+        return false;
+    }
+    if (node.modifiers) {
+        for (let i = 0; i < node.modifiers.length; i++) {
+            const modifier = node.modifiers[i];
+            if (ts.isDecorator(modifier)
+                && ts.isIdentifier(modifier.expression)
+                && modifier.expression.escapedText === cdeasync) {
+                return true;
+            }
+        }
+    }
+    if (node.name && ts.isIdentifier(node.name) && ts.isClassDeclaration(node.parent) && node.parent.heritageClauses) {
+        for (let i = 0; i < node.parent.heritageClauses.length; i++) {
+            for (let i = 0; i < node.parent.heritageClauses.length; i++) {
+                const types = node.parent.heritageClauses[i].types;
+                for (let j = 0; j < types.length; j++) {
+                    if (ts.isExpressionWithTypeArguments(types[j])) {
+                        const type = statement.typeChecker.getTypeAtLocation(types[j].expression);
+                        if ((type === null || type === void 0 ? void 0 : type.symbol)
+                            && type.symbol.valueDeclaration
+                            && (ts.isClassDeclaration(type.symbol.valueDeclaration)
+                                || ts.isInterfaceDeclaration(type.symbol.valueDeclaration))) {
+                            const declaration = getParentMethodDeclaration(type.symbol.valueDeclaration, node.name.escapedText);
+                            if (declaration) {
+                                return isSynchronizeFunction(declaration);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+function isAtomicCallExpression(node) {
+    const callName = ts.isPropertyAccessExpression(node.expression)
+        ? node.expression.name.escapedText
+        : (ts.isIdentifier(node.expression)
+            ? node.expression.escapedText
+            : '');
+    if (!array.has(AtomicCall, callName)) {
+        return false;
+    }
+    const symbol = statement.typeChecker.getSymbolAtLocation(node.expression);
+    const file = symbol.valueDeclaration.getSourceFile();
+    const atomicPathReg = new RegExp(`${atomicsPath}\\.ts$`);
+    return atomicPathReg.test(file.fileName)
+        || file.fileName.indexOf(PACKET_NAME) >= 0
+            && file.fileName.indexOf(atomicsPath.replace(PACKET_NAME, '')) >= 0;
+}
+function checkConditionCompile(node) {
+    if (ts.isParenthesizedExpression(node)) {
+        return ts.visitNode(node.expression, checkConditionCompile);
+    }
+    else if (ts.isPrefixUnaryExpression(node)) {
+        return ts.visitNode(node.operand, checkConditionCompile);
+    }
+    else if (ts.isBinaryExpression(node)) {
+        const left = ts.visitNode(node.left, checkConditionCompile);
+        if (!left) {
+            return false;
+        }
+        return ts.visitNode(node.right, checkConditionCompile);
+    }
+    if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.escapedText === defined
+        || node.kind === ts.SyntaxKind.TrueKeyword
+        || node.kind === ts.SyntaxKind.FalseKeyword) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function hasDefined(node) {
+    if (ts.isParenthesizedExpression(node)) {
+        return ts.visitNode(node.expression, hasDefined);
+    }
+    else if (ts.isPrefixUnaryExpression(node)) {
+        return ts.visitNode(node.operand, hasDefined);
+    }
+    else if (ts.isBinaryExpression(node)) {
+        return ts.visitNode(node.left, hasDefined) || ts.visitNode(node.right, hasDefined);
+    }
+    if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.escapedText === defined) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function createBitInt(value) {
+    if (statement.cheapCompilerOptions.defined.BIGINT_LITERAL) {
+        return statement.context.factory.createBigIntLiteral(value + 'n');
+    }
+    return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+        statement.context.factory.createNumericLiteral(value)
+    ]);
+}
+function createPointerOperand(value) {
+    if (is.number(value)) {
+        if (statement.cheapCompilerOptions.defined.WASM_64) {
+            return createBitInt(value);
+        }
+        return statement.context.factory.createNumericLiteral(value);
+    }
+    else if (ts.isNumericLiteral(value)) {
+        if (statement.cheapCompilerOptions.defined.WASM_64) {
+            return createBitInt(+value.text);
+        }
+        return value;
+    }
+    else if (isBigIntNode(value)) {
+        const num = getBigIntValue(value);
+        if (statement.cheapCompilerOptions.defined.WASM_64) {
+            return createBitInt(Number(num));
+        }
+        return statement.context.factory.createNumericLiteral(Number(num));
+    }
+    else {
+        const typeName = getBinaryBuiltinTypeName(value);
+        if (statement.cheapCompilerOptions.defined.WASM_64
+            && (!typeName || !array.has(BuiltinBigInt, typeName) && typeName !== typeSize)) {
+            return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+                value
+            ]);
+        }
+        return value;
+    }
+}
+function isBigIntNode(node) {
+    return ts.isBigIntLiteral(node)
+        || ts.isCallExpression(node)
+            && ts.isIdentifier(node.expression)
+            && node.expression.escapedText === 'BigInt'
+            && node.arguments.length === 1
+            && ts.isNumericLiteral(node.arguments[0]);
+}
+function getBigIntValue(node) {
+    if (ts.isBigIntLiteral(node)) {
+        return BigInt(node.text.substring(0, node.text.length - 1));
+    }
+    else {
+        return BigInt(node.arguments[0].text);
+    }
+}
+function getTypeAtLocation(node) {
+    if (node.pos >= 0) {
+        return statement.typeChecker.getTypeAtLocation(node);
+    }
+    if (ts.isParenthesizedExpression(node)) {
+        return getTypeAtLocation(node.expression);
+    }
+    return statement.typeChecker.getTypeAtLocation(node);
+}
+
+function blockVisitor (node, visitor) {
+    let type = BlockType.UNKNOWN;
+    if (node.parent) {
+        if (ts.isFunctionDeclaration(node.parent)
+            || ts.isFunctionExpression(node.parent)
+            || ts.isArrowFunction(node.parent)
+            || ts.isMethodDeclaration(node.parent)) {
+            type = BlockType.FUNCTION;
+        }
+        else if (ts.isIfStatement(node.parent)) {
+            type = BlockType.IF;
+        }
+        else if (ts.isForStatement(node.parent) || ts.isForOfStatement(node.parent) || ts.isWhileStatement(node.parent)) {
+            type = BlockType.LOOP;
+        }
+    }
+    statement.pushStack(type);
+    if (statement.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API
+        && node.parent
+        && (ts.isFunctionDeclaration(node.parent)
+            || ts.isFunctionExpression(node.parent)
+            || ts.isArrowFunction(node.parent)
+            || ts.isMethodDeclaration(node.parent))
+        && isSynchronizeFunction(node.parent)) {
+        statement.getCurrentStack().synchronize = true;
+    }
+    let nodes = ts.visitEachChild(node, visitor, statement.context);
+    const stack = statement.getCurrentStack();
+    const updatedStatements = [];
+    array.each(stack.topDeclaration, (item) => {
+        updatedStatements.push(statement.context.factory.createVariableStatement(undefined, statement.context.factory.createVariableDeclarationList([
+            statement.context.factory.createVariableDeclaration(item.formatName, undefined, undefined, item.initializer)
+        ])));
+    });
+    if (updatedStatements.length) {
+        nodes = statement.context.factory.createBlock([...updatedStatements, ...nodes.statements], true);
+    }
+    statement.popStack();
+    return nodes;
+}
+
+function identifierVisitor (node, visitor) {
+    var _a, _b;
+    if ((statement.lookupStage(StageStatus.Parameter) || statement.lookupStage(StageStatus.VariableDeclaration))
+        && node.parent
+        && (ts.isVariableDeclaration(node.parent) && node.parent.name === node
+            || ts.isBindingElement(node.parent) && node.parent.name === node
+            || ts.isParameter(node.parent) && node.parent.name === node)) {
+        statement.getCurrentStack().locals.set(node.escapedText, statement.typeChecker.getSymbolAtLocation(node));
+    }
+    let parent = node.parent;
+    if (parent && ts.isAsExpression(parent)) {
+        parent = node.parent.parent;
+    }
+    if (node.escapedText === CTypeEnum2Type[0 /* CTypeEnum.null */]
+        && !statement.lookupLocal(node.escapedText)
+        && parent && (parent.initializer === node
+        || ts.isBinaryExpression(parent)
+        || ts.isCallExpression(parent)
+        || ts.isReturnStatement(parent)
+        || ts.isConditionalExpression(parent)
+        || ts.isCaseClause(parent)
+        || ts.isComputedPropertyName(parent)
+        || ts.isArrayLiteralExpression(parent)
+        || ts.isAsExpression(parent)
+        || ((_a = statement.getCurrentStage()) === null || _a === void 0 ? void 0 : _a.stage) === StageStatus.SingleArrowRight && !ts.isTypeReferenceNode(parent))) {
+        if (statement.cheapCompilerOptions.defined.WASM_64) {
+            return createBitInt(0);
+        }
+        else {
+            return statement.context.factory.createNumericLiteral(0);
+        }
+    }
+    else if (is.number(Type2CTypeEnum[node.escapedText])
+        && !statement.lookupLocal(node.escapedText)
+        && parent && (parent.initializer === node
+        || ts.isBinaryExpression(parent)
+        || (ts.isCallExpression(parent) && parent.expression !== node)
+        || ts.isReturnStatement(parent)
+        || ts.isConditionalExpression(parent)
+        || ts.isCaseClause(parent)
+        || ts.isComputedPropertyName(parent)
+        || ts.isElementAccessExpression(parent) && parent.argumentExpression === node
+        || ((_b = statement.getCurrentStage()) === null || _b === void 0 ? void 0 : _b.stage) === StageStatus.SingleArrowRight && !ts.isTypeReferenceNode(parent))) {
+        return statement.context.factory.createNumericLiteral(Type2CTypeEnum[node.escapedText]);
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function decoratorVisitor (node, visitor) {
+    if (ts.isIdentifier(node.expression)) {
+        const name = node.expression.escapedText;
+        if (array.has(BuiltinDecorator, name)) {
+            return undefined;
+        }
+    }
+    else if (ts.isCallExpression(node.expression) && ts.isIdentifier(node.expression.expression)) {
+        const name = node.expression.expression.escapedText;
+        if (array.has(BuiltinDecorator, name)) {
+            return undefined;
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+function asyncVisitor(node, visitor) {
+    if (statement.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API
+        && node.parent
+        && (ts.isFunctionDeclaration(node.parent)
+            || ts.isFunctionExpression(node.parent)
+            || ts.isArrowFunction(node.parent)
+            || ts.isMethodDeclaration(node.parent))
+        && isSynchronizeFunction(node.parent)) {
+        return undefined;
+    }
+    return node;
+}
+
+function generateStruct(struct) {
+    const definedMetaProperty$1 = statement.addIdentifierImport(definedMetaProperty, InternalPath, false);
+    const symbolStruct$1 = statement.addSymbolImport(symbolStruct);
+    const symbolStructMaxBaseTypeByteLength = statement.addSymbolImport(symbolStructMaxBaseTypeByteLength$1);
+    const symbolStructLength = statement.addSymbolImport(symbolStructLength$1);
+    const symbolStructKeysMeta$1 = statement.addSymbolImport(symbolStructKeysMeta);
+    const list = [];
+    // const map = new Map()
+    list.push(statement.context.factory.createVariableStatement(undefined, statement.context.factory.createVariableDeclarationList([
+        statement.context.factory.createVariableDeclaration(statement.context.factory.createIdentifier('map'), undefined, undefined, statement.context.factory.createNewExpression(statement.context.factory.createIdentifier('Map'), undefined, []))
+    ])));
+    const meta = struct.meta;
+    meta.forEach((data, key) => {
+        var _a;
+        let type;
+        if (is.func(data.getTypeMeta)) {
+            if (data.typeIdentifier) {
+                const targetSymbol = (_a = data.getTypeMeta()) === null || _a === void 0 ? void 0 : _a.symbol.deref();
+                const targetSource = targetSymbol === null || targetSymbol === void 0 ? void 0 : targetSymbol.valueDeclaration.getSourceFile();
+                if (targetSource && targetSource.fileName !== statement.currentFile.fileName) {
+                    type = statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(0 /* KeyMetaKey.Type */), statement.addStructImport(targetSymbol, targetSource));
+                }
+                else {
+                    if (statement.hasStruct(data.typeIdentifier)) {
+                        type = statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(0 /* KeyMetaKey.Type */), statement.context.factory.createIdentifier(data.typeIdentifier));
+                    }
+                    else {
+                        type = statement.context.factory.createGetAccessorDeclaration(undefined, statement.context.factory.createNumericLiteral(0 /* KeyMetaKey.Type */), [], undefined, statement.context.factory.createBlock([statement.context.factory.createReturnStatement(statement.context.factory.createIdentifier(data.typeIdentifier))], false));
+                    }
+                }
+            }
+            else {
+                const inlineStruct = data.getTypeMeta();
+                if (inlineStruct && inlineStruct.structType === StructType.INLINE_OBJECT) {
+                    const body = generateStruct(inlineStruct);
+                    body.push(statement.context.factory.createReturnStatement(statement.context.factory.createIdentifier(prototype)));
+                    type = statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(0 /* KeyMetaKey.Type */), statement.context.factory.createCallExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(undefined, undefined, undefined, undefined, [
+                        statement.context.factory.createParameterDeclaration(undefined, undefined, statement.context.factory.createIdentifier(prototype))
+                    ], undefined, 
+                    // @ts-ignore
+                    statement.context.factory.createBlock(body, true))), undefined, [
+                        statement.context.factory.createObjectLiteralExpression()
+                    ]));
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        else {
+            type = statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(0 /* KeyMetaKey.Type */), statement.context.factory.createNumericLiteral(data[0 /* KeyMetaKey.Type */]));
+        }
+        list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('map'), statement.context.factory.createIdentifier('set')), undefined, [
+            statement.context.factory.createStringLiteral(key),
+            statement.context.factory.createObjectLiteralExpression([
+                type,
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(1 /* KeyMetaKey.Pointer */), statement.context.factory.createNumericLiteral(data[1 /* KeyMetaKey.Pointer */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(2 /* KeyMetaKey.PointerLevel */), statement.context.factory.createNumericLiteral(data[2 /* KeyMetaKey.PointerLevel */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(3 /* KeyMetaKey.Array */), statement.context.factory.createNumericLiteral(data[3 /* KeyMetaKey.Array */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(4 /* KeyMetaKey.ArrayLength */), statement.context.factory.createNumericLiteral(data[4 /* KeyMetaKey.ArrayLength */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(5 /* KeyMetaKey.BitField */), statement.context.factory.createNumericLiteral(data[5 /* KeyMetaKey.BitField */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(6 /* KeyMetaKey.BitFieldLength */), statement.context.factory.createNumericLiteral(data[6 /* KeyMetaKey.BitFieldLength */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(7 /* KeyMetaKey.BaseAddressOffset */), statement.context.factory.createNumericLiteral(data[7 /* KeyMetaKey.BaseAddressOffset */])),
+                statement.context.factory.createPropertyAssignment(statement.context.factory.createNumericLiteral(8 /* KeyMetaKey.BaseBitOffset */), statement.context.factory.createNumericLiteral(data[8 /* KeyMetaKey.BaseBitOffset */]))
+            ])
+        ])));
+    });
+    // definedMetaProperty(proto, symbolStruct, true)
+    list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(definedMetaProperty$1, undefined, [
+        statement.context.factory.createIdentifier(prototype),
+        symbolStruct$1,
+        statement.context.factory.createTrue()
+    ])));
+    // definedMetaProperty(proto, symbolStructMaxBaseTypeByteLength, 0)
+    list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(definedMetaProperty$1, undefined, [
+        statement.context.factory.createIdentifier(prototype),
+        symbolStructMaxBaseTypeByteLength,
+        statement.context.factory.createNumericLiteral(struct.maxBaseTypeByteLength)
+    ])));
+    // definedMetaProperty(proto, symbolStructLength, 0)
+    list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(definedMetaProperty$1, undefined, [
+        statement.context.factory.createIdentifier(prototype),
+        symbolStructLength,
+        statement.context.factory.createNumericLiteral(struct.length)
+    ])));
+    // definedMetaProperty(proto, symbolStructKeysMeta, map)
+    list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(definedMetaProperty$1, undefined, [
+        statement.context.factory.createIdentifier(prototype),
+        symbolStructKeysMeta$1,
+        statement.context.factory.createIdentifier('map')
+    ])));
+    return list;
+}
+
+function classDeclarationVisitor (node, visitor) {
+    const type = statement.typeChecker.getTypeAtLocation(node);
+    const struct = getStructByType(type);
+    if (struct && (!node.modifiers || !node.modifiers.some((modifier) => modifier.kind === ts.SyntaxKind.DeclareKeyword))) {
+        const structName = node.name.escapedText;
+        if (!statement.hasStruct(structName)) {
+            statement.addStruct(structName);
+        }
+        const newNode = [
+            ts.visitEachChild(node, visitor, statement.context),
+            statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(undefined, undefined, undefined, undefined, [
+                statement.context.factory.createParameterDeclaration(undefined, undefined, statement.context.factory.createIdentifier(prototype))
+            ], undefined, statement.context.factory.createBlock(generateStruct(struct), true))), undefined, [
+                statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier(structName), statement.context.factory.createIdentifier('prototype'))
+            ]))
+        ];
+        const item = statement.getDeclaration(structName);
+        if (item) {
+            newNode.push(statement.context.factory.createExpressionStatement(statement.context.factory.createBinaryExpression(statement.context.factory.createIdentifier(item.formatName), ts.SyntaxKind.EqualsToken, statement.context.factory.createIdentifier(item.name))));
+        }
+        return newNode;
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function check(node) {
+    if (ts.isBlock(node)
+        && !node.statements.some((n) => !ts.isImportDeclaration(n))) {
+        if (node.statements.length === 1) {
+            return node.statements[0];
+        }
+        return node.statements;
+    }
+    return node;
+}
+function ifStatementVisitor (node, visitor) {
+    if (ts.visitNode(node.expression, hasDefined) && ts.visitNode(node.expression, checkConditionCompile)) {
+        if (checkBool(node.expression, visitor)) {
+            return check(ts.visitNode(node.thenStatement, visitor));
+        }
+        else if (node.elseStatement) {
+            return check(ts.visitNode(node.elseStatement, visitor));
+        }
+        else {
+            return undefined;
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function parameterVisitor (node, visitor) {
+    statement.pushStage(StageStatus.Parameter);
+    if (node.initializer && node.type && node.pos > -1) {
+        const type = statement.typeChecker.getTypeAtLocation(node.type);
+        if (isSizeType(type)) {
+            return ts.visitNode(statement.context.factory.createParameterDeclaration(node.modifiers, node.dotDotDotToken, node.name, node.questionToken, node.type, createPointerOperand(node.initializer)), statement.visitor);
+        }
+    }
+    const newNode = ts.visitEachChild(node, visitor, statement.context);
+    statement.popStage();
+    return newNode;
+}
+
+const TYPE_MISMATCH = 10000;
+const INVALID_OPERATE = 20000;
+const SYNTAX_ERROR = 30000;
+
+function variableDeclarationVisitor (node, visitor) {
+    statement.pushStage(StageStatus.VariableDeclaration);
+    if (node.initializer && node.type && node.pos > -1) {
+        const type = statement.typeChecker.getTypeAtLocation(node.type);
+        const initType = statement.typeChecker.getTypeAtLocation(node.initializer);
+        if (isPointerType(type, null)
+            && (isBuiltinType(initType, node.initializer) || (initType.flags & ts.TypeFlags.NumberLike))
+            && !isPointerType(initType, node.initializer)
+            && !isNullPointer(initType, node.initializer)) {
+            reportError(statement.currentFile, node, `type ${getBuiltinNameByType(initType) || 'number'} is not assignable to variable declaration of type ${getBuiltinNameByType(type)}`, TYPE_MISMATCH);
+        }
+        else if (isSizeType(type)) {
+            return ts.visitNode(statement.context.factory.createVariableDeclaration(node.name, node.exclamationToken, node.type, createPointerOperand(node.initializer)), statement.visitor);
+        }
+    }
+    const newNode = ts.visitEachChild(node, visitor, statement.context);
+    statement.popStage();
+    return newNode;
+}
+
+function functionDeclarationVisitor (node, visitor) {
+    if (node.name) {
+        statement.addFunc(node.name.escapedText, node);
+    }
+    statement.pushStack();
+    let newNode = ts.visitEachChild(node, visitor, statement.context);
+    statement.popStack();
+    return newNode;
+}
+
+function expressionStatementVisitor (node, visitor) {
+    if (ts.isCallExpression(node.expression)
+        && ts.isIdentifier(node.expression.expression)
+        && node.expression.expression.escapedText === assert) {
+        if (statement.cheapCompilerOptions.defined['DEBUG'] && node.expression.arguments.length >= 1) {
+            const newNode = ts.visitEachChild(node.expression, visitor, statement.context);
+            const list = [];
+            const { line } = ts.getLineAndCharacterOfPosition(statement.currentFile, node.getStart());
+            const args = [
+                statement.context.factory.createStringLiteral(`[${statement.currentFilePath} line: ${line + 1}]`),
+                statement.context.factory.createStringLiteral(`Assertion failed: ${node.expression.arguments[0].getText()}`)
+            ];
+            if (newNode.arguments[1]) {
+                args.push(newNode.arguments[1]);
+            }
+            list.push(statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('console'), statement.context.factory.createIdentifier('error')), undefined, args)));
+            list.push(statement.context.factory.createDebuggerStatement());
+            return statement.context.factory.createIfStatement(statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.ExclamationToken, statement.context.factory.createParenthesizedExpression(newNode.arguments[0])), statement.context.factory.createBlock(list, true));
+        }
+        else {
+            return undefined;
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function bigIntLiteralVisitor (node, visitor) {
+    if (statement.cheapCompilerOptions.defined.BIGINT_LITERAL === false) {
+        return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+            statement.context.factory.createNumericLiteral(node.text.replace(/n$/, ''))
+        ]);
+    }
+    return node;
+}
+
+function getStructMeta(struct, key) {
+    let meta = struct.meta.get(key);
+    if (meta) {
+        return meta;
+    }
+    let next = struct.parent;
+    while (next) {
+        meta = next.meta.get(key);
+        if (meta) {
+            return meta;
+        }
+        next = next.parent;
+    }
+    return null;
+}
+
+function definedReplace(name, node) {
+    if (name === LINE || name === LINE_2) {
+        const { line } = ts.getLineAndCharacterOfPosition(statement.currentFile, node.getStart());
+        return statement.context.factory.createNumericLiteral(line + 1);
+    }
+    else if (name === FILE || name === FILE_2) {
+        const { formatName } = statement.addModuleDeclaration('fileName', statement.context.factory.createStringLiteral(statement.currentFilePath));
+        return statement.context.factory.createIdentifier(formatName);
+    }
+    else if (isDef(statement.cheapCompilerOptions.defined[name])) {
+        const value = statement.cheapCompilerOptions.defined[name];
+        if (is.boolean(value)) {
+            return value ? statement.context.factory.createTrue() : statement.context.factory.createFalse();
+        }
+        else if (is.number(value)) {
+            return statement.context.factory.createNumericLiteral(value);
+        }
+        else if (is.string(value)) {
+            return statement.context.factory.createStringLiteral(value);
+        }
+        else if (node) {
+            reportError(statement.currentFile, node, `the type(${typeof value}) of defined not support`);
+            return node;
+        }
+    }
+    else if (node) {
+        reportError(statement.currentFile, node, `cannot found the defined(${name})`);
+        return node;
+    }
+}
+function definedString(name, node) {
+    if (name === LINE || name === LINE_2) {
+        const { line } = ts.getLineAndCharacterOfPosition(statement.currentFile, node.getStart());
+        return toString(line + 1);
+    }
+    else if (name === FILE || name === FILE_2) {
+        return statement.currentFilePath;
+    }
+    else if (isDef(statement.cheapCompilerOptions.defined[name])) {
+        const value = statement.cheapCompilerOptions.defined[name];
+        return toString(value, '');
+    }
+    return '';
+}
+function hasTypeArgs(args$1) {
+    if (!args$1) {
+        return false;
+    }
+    for (let i = 0; i < args$1.length; i++) {
+        const node = args$1[i];
+        if (node.name.escapedText === args) {
+            return true;
+        }
+    }
+    return false;
+}
+function getTypeArgs(target, sig) {
+    let index = -1;
+    for (let i = 0; i < target.length; i++) {
+        const node = target[i];
+        if (node.name.escapedText === args) {
+            index = i;
+            break;
+        }
+    }
+    if (index > -1) {
+        return sig[index];
+    }
+}
+function isArgsEnable(target, sig, call) {
+    for (let i = 0; i < target.length; i++) {
+        const node = target[i];
+        if (node.name.escapedText === enableArgs && node.default) {
+            const args = [];
+            addArgs(args, sig[i], call);
+            if (args[0].kind === ts.SyntaxKind.FalseKeyword
+                || ts.isStringLiteral(args[0]) && args[0].text === ''
+                || ts.isNumericLiteral(args[0]) && args[0].text === '0') {
+                return false;
+            }
+            break;
+        }
+    }
+    return true;
+}
+function addArgs(args, node, call) {
+    var _a, _b, _c, _d, _e, _f, _g;
+    if (ts.isTypeReferenceNode(node)) {
+        // @ts-ignore
+        if (ts.isIdentifier(node.typeName) && node.typeName.symbol) {
+            // @ts-ignore
+            const type = statement.typeChecker.getTypeOfSymbol(node.typeName.symbol);
+            // @ts-ignore
+            if (isBuiltinType(type, (_a = node.typeName.symbol) === null || _a === void 0 ? void 0 : _a.valueDeclaration)) {
+                // @ts-ignore
+                args.push(statement.context.factory.createNumericLiteral(getBuiltinByType(type, (_b = node.typeName.symbol) === null || _b === void 0 ? void 0 : _b.valueDeclaration)));
+            }
+            else if (type.aliasSymbol) {
+                const name = type.aliasSymbol.escapedName;
+                args.push(statement.context.factory.createIdentifier(name));
+            }
+            else if (type.symbol && type.symbol.valueDeclaration && ts.isClassDeclaration(type.symbol.valueDeclaration)) {
+                let key;
+                const targetSource = (_c = type.symbol.valueDeclaration) === null || _c === void 0 ? void 0 : _c.getSourceFile();
+                if (targetSource !== statement.currentFile) {
+                    key = statement.addStructImport(type.symbol, targetSource);
+                }
+                else {
+                    key = statement.context.factory.createIdentifier(type.symbol.escapedName);
+                }
+                args.push(key);
+            }
+            else if (type.symbol) {
+                args.push(statement.context.factory.createIdentifier(type.symbol.escapedName));
+            }
+            else {
+                args.push(statement.context.factory.createIdentifier('undefined'));
+            }
+        }
+        else {
+            args.push(statement.context.factory.createIdentifier('undefined'));
+        }
+    }
+    else if (ts.isLiteralTypeNode(node)) {
+        if (ts.isNumericLiteral(node.literal)) {
+            args.push(statement.context.factory.createNumericLiteral(+node.literal.text));
+        }
+        else if (ts.isStringLiteral(node.literal)) {
+            if (/^defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)$/.test(node.literal.text)) {
+                const match = node.literal.text.match(/^defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)$/);
+                const newNode = definedReplace(match[1], call);
+                if (newNode) {
+                    args.push(newNode);
+                }
+                else {
+                    args.push(statement.context.factory.createIdentifier('undefined'));
+                }
+            }
+            else if (/^moduleId\(([0-9]+)\)$/.test(node.literal.text)) {
+                if (statement.cheapCompilerOptions.defined.ENV_WEBPACK) {
+                    const match = node.literal.text.match(/^moduleId\(([0-9]+)\)$/);
+                    const index = +match[1];
+                    const arg = call.arguments[index];
+                    if (arg) {
+                        const type = statement.typeChecker.getTypeAtLocation(arg);
+                        const targetSource = (_d = type.symbol.valueDeclaration) === null || _d === void 0 ? void 0 : _d.getSourceFile();
+                        if (targetSource) {
+                            const callType = statement.typeChecker.getTypeAtLocation(call.expression);
+                            const callPath = (_f = (_e = callType === null || callType === void 0 ? void 0 : callType.symbol) === null || _e === void 0 ? void 0 : _e.valueDeclaration) === null || _f === void 0 ? void 0 : _f.getSourceFile().fileName;
+                            let cheapThreadPath$1 = cheapThreadPath;
+                            if (statement.options.cheapSourcePath) {
+                                cheapThreadPath$1 = statement.options.cheapSourcePath + cheapThreadPath$1.replace(PACKET_NAME, '');
+                            }
+                            if (statement.cheapCompilerOptions.defined.ENABLE_THREADS
+                                && statement.cheapCompilerOptions.defined.ENABLE_THREADS_SPLIT
+                                && (callPath.indexOf(cheapThreadPath$1) >= 0
+                                    || callPath.indexOf(PACKET_NAME) >= 0
+                                        && callPath.indexOf(cheapThreadPath$1.replace(PACKET_NAME, '')) >= 0)
+                                && (callType.symbol.escapedName === createThreadFromClass
+                                    || callType.symbol.escapedName === createThreadFromFunction
+                                    || callType.symbol.escapedName === createThreadFromModule)) {
+                                const initType = callType.symbol.escapedName === createThreadFromClass
+                                    ? 'class'
+                                    : (callType.symbol.escapedName === createThreadFromModule ? 'module' : 'function');
+                                let point = ts.isIdentifier(call.arguments[0]) ? call.arguments[0].escapedText
+                                    : (ts.isPropertyAccessExpression(call.arguments[0]) ? call.arguments[0].name.escapedText : 'unknown');
+                                if (initType === 'class' || initType === 'function') {
+                                    let type;
+                                    if (ts.isIdentifier(call.arguments[0])) {
+                                        type = statement.typeChecker.getTypeAtLocation(call.arguments[0]);
+                                    }
+                                    else if (ts.isPropertyAccessExpression(call.arguments[0])) {
+                                        type = statement.typeChecker.getTypeAtLocation(call.arguments[0].name);
+                                    }
+                                    if ((_g = type === null || type === void 0 ? void 0 : type.symbol) === null || _g === void 0 ? void 0 : _g.valueDeclaration) {
+                                        if (ts.isClassDeclaration(type.symbol.valueDeclaration)) {
+                                            if (type.symbol.valueDeclaration.name) {
+                                                point = type.symbol.valueDeclaration.name.escapedText;
+                                            }
+                                            else {
+                                                reportError(statement.currentFile, node, 'The thread class must have a class name');
+                                                return node;
+                                            }
+                                        }
+                                        else if (ts.isFunctionDeclaration(type.symbol.valueDeclaration)) {
+                                            if (type.symbol.valueDeclaration.name) {
+                                                point = type.symbol.valueDeclaration.name.escapedText;
+                                            }
+                                            else {
+                                                reportError(statement.currentFile, node, 'The thread function must has a function name');
+                                                return node;
+                                            }
+                                        }
+                                    }
+                                }
+                                let name = `${point}Thread`;
+                                if (call.arguments[1] && ts.isObjectLiteralExpression(call.arguments[1])) {
+                                    call.arguments[1].properties.forEach((node) => {
+                                        if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.escapedText === 'name') {
+                                            let text = node.initializer.getText();
+                                            if (text) {
+                                                text = text.replace(/^['|"]/, '');
+                                                text = text.replace(/['|"]$/, '');
+                                                if (text) {
+                                                    name = text;
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                                const loader = `cheap-worker-loader?type=${initType}&point=${point}&name=${name}`;
+                                const identifier = statement.addIdentifierImport('worker', `${loader}!${relativePath(statement.currentFile.fileName, targetSource.fileName)}`, true);
+                                args.push(identifier);
+                            }
+                            else {
+                                args.push(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('require'), statement.context.factory.createIdentifier('resolveWeak')), undefined, [
+                                    statement.context.factory.createStringLiteral(relativePath(statement.currentFile.fileName, targetSource.fileName))
+                                ]));
+                            }
+                        }
+                    }
+                }
+                else {
+                    reportError(statement.currentFile, call, 'moduleId only support in webpack');
+                }
+            }
+            else {
+                let text = node.literal.text.replace(/defined\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)/g, (s1, s2) => {
+                    return definedString(s2, call);
+                });
+                args.push(statement.context.factory.createStringLiteral(text));
+            }
+        }
+        else if (node.literal.kind === ts.SyntaxKind.TrueKeyword) {
+            args.push(statement.context.factory.createTrue());
+        }
+        else if (node.literal.kind === ts.SyntaxKind.FalseKeyword) {
+            args.push(statement.context.factory.createFalse());
+        }
+    }
+    else if (node.kind === ts.SyntaxKind.UndefinedKeyword) {
+        args.push(statement.context.factory.createIdentifier('undefined'));
+    }
+}
+function accessCType(pointer, type) {
+    return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), type), undefined, [
+        pointer
+    ]);
+}
+function accessStruct(pointer, struct) {
+    var _a;
+    const targetStruct = struct;
+    let targetSymbol = targetStruct.symbol.deref();
+    let targetPath = '';
+    if (targetStruct.structType === StructType.INLINE_OBJECT) {
+        targetSymbol = targetStruct.definedClassParent.symbol.deref();
+        targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref());
+    }
+    const targetSource = (_a = targetSymbol.valueDeclaration) === null || _a === void 0 ? void 0 : _a.getSourceFile();
+    if (targetSource) {
+        let key;
+        if (targetSource !== statement.currentFile) {
+            key = statement.addStructImport(targetSymbol, targetSource);
+        }
+        else {
+            key = statement.context.factory.createIdentifier(targetSymbol.escapedName);
+        }
+        const args = [
+            pointer,
+            key
+        ];
+        if (targetPath) {
+            args.push(statement.context.factory.createStringLiteral(targetPath));
+        }
+        return statement.context.factory.createCallExpression(statement.addIdentifierImport(structAccess, RootPath, false), undefined, args);
+    }
+}
+function getTypeSize(nameType, node) {
+    var _a, _b;
+    if (isStructType(nameType)) {
+        const struct = getStructByType(nameType);
+        if (struct) {
+            return struct.length;
+        }
+    }
+    else if (isBuiltinType(nameType, node)) {
+        return CTypeEnum2Bytes[getBuiltinByType(nameType, node)];
+    }
+    else if (nameType.aliasSymbol) {
+        const type = nameType.aliasSymbol.escapedName;
+        if (type === typeArray && ((_a = nameType.aliasTypeArguments[1]) === null || _a === void 0 ? void 0 : _a.isNumberLiteral())) {
+            return getTypeSize(nameType.aliasTypeArguments[0], null) * nameType.aliasTypeArguments[1].value;
+        }
+        else if (type === typeBit && ((_b = nameType.aliasTypeArguments[1]) === null || _b === void 0 ? void 0 : _b.isNumberLiteral())) {
+            return nameType.aliasTypeArguments[1].value;
+        }
+    }
+    return 0;
+}
+function formatArgument(signature, args) {
+    const newArgument = [];
+    let hasSizeParameter = false;
+    for (let i = 0; i < args.length; i++) {
+        if (signature.parameters[i]) {
+            const argumentType = statement.typeChecker.getTypeAtLocation(args[i]);
+            const parameterType = statement.typeChecker.getTypeOfSymbol(signature.parameters[i]);
+            if (isPointerType(argumentType, args[i])
+                && isBuiltinType(parameterType, signature.parameters[i].valueDeclaration)
+                && !isPointerType(parameterType, signature.parameters[i].valueDeclaration)
+                && !isNullPointer(parameterType, signature.parameters[i].valueDeclaration)
+                || isBuiltinType(argumentType, args[i])
+                    && !isPointerType(argumentType, args[i])
+                    && !isNullPointer(argumentType, args[i])
+                    && isPointerType(parameterType, signature.parameters[i].valueDeclaration)) {
+                reportError(statement.currentFile, args[i], `type ${getBuiltinNameByType(argumentType)} is not assignable to parameter of type ${getBuiltinNameByType(parameterType)}`, TYPE_MISMATCH);
+            }
+            if (isSizeType(parameterType)) {
+                newArgument.push(createPointerOperand(args[i]));
+                hasSizeParameter = true;
+            }
+            else {
+                newArgument.push(args[i]);
+            }
+        }
+    }
+    return {
+        newArgument,
+        hasSizeParameter
+    };
+}
+function callVisitor (node, visitor) {
+    var _a, _b, _c, _d, _e, _f, _g;
+    let callName = '';
+    if (ts.isIdentifier(node.expression)) {
+        callName = node.expression.escapedText;
+    }
+    else if (ts.isPropertyAccessExpression(node.expression)) {
+        callName = node.expression.name.escapedText;
+    }
+    const signature = statement.typeChecker.getResolvedSignature(node);
+    const target = signature === null || signature === void 0 ? void 0 : signature.getDeclaration();
+    if (target && hasTypeArgs(target.typeParameters)) {
+        const sig = statement.typeChecker.signatureToSignatureDeclaration(signature, ts.SyntaxKind.CallSignature, getParseTreeNode(getContainerNode(node)), ts.NodeBuilderFlags.WriteTypeArgumentsOfSignature
+            | ts.NodeBuilderFlags.IgnoreErrors
+            | ts.NodeBuilderFlags.WriteTypeParametersInQualifiedName
+            | ts.NodeBuilderFlags.UseAliasDefinedOutsideCurrentScope
+            | ts.NodeBuilderFlags.MultilineObjectLiterals
+            | ts.NodeBuilderFlags.OmitParameterModifiers);
+        if (sig === null || sig === void 0 ? void 0 : sig.typeArguments) {
+            const typeNode = getTypeArgs(target.typeParameters, sig.typeArguments);
+            if (typeNode && isArgsEnable(target.typeParameters, sig.typeArguments, node)) {
+                const args = [];
+                let padding = (((_a = target.parameters) === null || _a === void 0 ? void 0 : _a.length) || 0) - node.arguments.length;
+                while (padding > 0) {
+                    args.push((_b = getParameterDefaultValue(statement.typeChecker.getSymbolAtLocation(target.name), node.arguments.length + args.length)) !== null && _b !== void 0 ? _b : statement.context.factory.createIdentifier('undefined'));
+                    padding--;
+                }
+                if (ts.isTupleTypeNode(typeNode)) {
+                    typeNode.elements.forEach((item) => {
+                        if (padding < 0) {
+                            padding++;
+                        }
+                        else {
+                            addArgs(args, item, node);
+                        }
+                    });
+                }
+                else {
+                    if (padding < 0) {
+                        padding++;
+                    }
+                    else {
+                        addArgs(args, typeNode, node);
+                    }
+                }
+                if (isAtomicCallExpression(node)
+                    && getPointerBuiltinByType(statement.typeChecker.getTypeAtLocation(node.arguments[0]), node.arguments[0]) === 24 /* CTypeEnum.atomic_bool */) {
+                    if (callName === 'load') {
+                        return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(staticCast), [
+                            statement.context.factory.createTypeReferenceNode(statement.context.factory.createIdentifier(CTypeEnum2Type[24 /* CTypeEnum.atomic_bool */]), undefined)
+                        ], [
+                            statement.context.factory.createCallExpression(node.expression, undefined, [
+                                ...node.arguments,
+                                ...args
+                            ])
+                        ]), visitor);
+                    }
+                    else if (callName === 'store' || callName === 'exchange') {
+                        return ts.visitNode(statement.context.factory.createCallExpression(node.expression, undefined, [
+                            node.arguments[0],
+                            statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(staticCast), [
+                                statement.context.factory.createTypeReferenceNode(statement.context.factory.createIdentifier(CTypeEnum2Type[16 /* CTypeEnum.atomic_int32 */]), undefined)
+                            ], [
+                                node.arguments[1]
+                            ]),
+                            ...args
+                        ]), visitor);
+                    }
+                    else if (callName === 'compareExchange') {
+                        return ts.visitNode(statement.context.factory.createCallExpression(node.expression, undefined, [
+                            node.arguments[0],
+                            statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(staticCast), [
+                                statement.context.factory.createTypeReferenceNode(statement.context.factory.createIdentifier(CTypeEnum2Type[16 /* CTypeEnum.atomic_int32 */]), undefined)
+                            ], [
+                                node.arguments[1]
+                            ]),
+                            statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(staticCast), [
+                                statement.context.factory.createTypeReferenceNode(statement.context.factory.createIdentifier(CTypeEnum2Type[16 /* CTypeEnum.atomic_int32 */]), undefined)
+                            ], [
+                                node.arguments[2]
+                            ]),
+                            ...args
+                        ]), visitor);
+                    }
+                    else {
+                        reportError(statement.currentFile, node, `atomic_bool not support to ${callName} operate`);
+                        return node;
+                    }
+                }
+                return ts.visitNode(statement.context.factory.createCallExpression(node.expression, node.typeArguments, [
+                    ...node.arguments,
+                    ...args
+                ]), visitor);
+            }
+        }
+    }
+    // 全局函数
+    if (ts.isIdentifier(node.expression)) {
+        if (callName === sizeof && !statement.lookupFunc(sizeof)) {
+            const arg = node.arguments[0];
+            let nameType = statement.typeChecker.getTypeAtLocation(arg);
+            if (nameType) {
+                const size = getTypeSize(nameType, arg);
+                if (size) {
+                    return createPointerOperand(statement.context.factory.createNumericLiteral(size));
+                }
+                else {
+                    return statement.context.factory.createCallExpression(statement.addIdentifierImport(sizeof, RootPath, false), undefined, node.arguments);
+                }
+            }
+        }
+        else if (callName === addressof && !statement.lookupFunc(addressof)) {
+            const arg = node.arguments[0];
+            if (ts.isCallExpression(arg)
+                // addressof(accessof(p))
+                && (ts.isIdentifier(arg.expression) && arg.expression.escapedText === accessof
+                    // addressof(CTypeEnumRead[type](p))
+                    || ts.isElementAccessExpression(arg.expression)
+                        && (ts.isIdentifier(arg.expression.expression) || ts.isPropertyAccessExpression(arg.expression.expression))
+                        && statement.isIdentifier(arg.expression.expression, ctypeEnumRead, ctypeEnumReadPath, InternalPath)
+                    // addressof(structAccess(p, A))
+                    || (ts.isIdentifier(arg.expression) || ts.isPropertyAccessExpression(arg.expression))
+                        && statement.isIdentifier(arg.expression, structAccess, structAccessPath, RootPath))) {
+                return ts.visitNode(arg.arguments[0], visitor);
+            }
+            // addressof(struct)
+            if (ts.isIdentifier(arg)) {
+                // 只支持 struct 取地址
+                if (!hasStruct((_c = statement.typeChecker.getTypeAtLocation(arg)) === null || _c === void 0 ? void 0 : _c.symbol)) {
+                    reportError(statement.currentFile, arg, 'addressof only support with struct instance Identifier');
+                    return node;
+                }
+                return statement.context.factory.createElementAccessExpression(ts.visitNode(arg, visitor), statement.addSymbolImport(symbolStructAddress));
+            }
+            // addressof(struct.p)
+            else if (ts.isPropertyAccessExpression(arg)
+                || ts.isCallExpression(arg) && isPointerIndexOfCall(arg)
+                // pointer[x]
+                || ts.isElementAccessExpression(arg) && isPointerType(statement.typeChecker.getTypeAtLocation(arg.expression), arg.expression)) {
+                const newArg = ts.visitNode(arg, visitor);
+                if (ts.isCallExpression(newArg)
+                    && (ts.isIdentifier(newArg.expression)
+                        && statement.isIdentifier(newArg.expression, structAccess, structAccessPath, RootPath)
+                        || ts.isPropertyAccessExpression(newArg.expression)
+                            && statement.isIdentifier(newArg.expression, structAccess, structAccessPath, RootPath))) {
+                    return newArg.arguments[0];
+                }
+                else if (ts.isCallExpression(newArg)
+                    && ts.isElementAccessExpression(newArg.expression)
+                    && (ts.isIdentifier(newArg.expression.expression)
+                        && statement.isIdentifier(newArg.expression.expression, ctypeEnumRead, ctypeEnumReadPath, InternalPath)
+                        || ts.isPropertyAccessExpression(newArg.expression.expression)
+                            && statement.isIdentifier(newArg.expression.expression, ctypeEnumRead, ctypeEnumReadPath, InternalPath))) {
+                    return newArg.arguments[0];
+                }
+                else if (ts.isPropertyAccessExpression(newArg)) {
+                    let type = statement.typeChecker.getTypeAtLocation(arg.expression);
+                    let struct = getStructByType(type);
+                    if (!struct) {
+                        type = statement.typeChecker.getTypeAtLocation(arg);
+                        struct = getStructByType(type);
+                        if (struct) {
+                            return statement.context.factory.createElementAccessExpression(newArg, statement.addSymbolImport(symbolStructAddress));
+                        }
+                        reportError(statement.currentFile, arg, 'addressof only support with struct instance or struct property');
+                        return node;
+                    }
+                    const meta = getStructMeta(struct, newArg.name.escapedText);
+                    if (!meta) {
+                        reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${newArg.name.escapedText}`);
+                        return node;
+                    }
+                    if (meta[5 /* KeyMetaKey.BitField */]) {
+                        reportError(statement.currentFile, arg, 'addressof not support with bit field property');
+                        return node;
+                    }
+                    if (meta[7 /* KeyMetaKey.BaseAddressOffset */]) {
+                        return statement.context.factory.createBinaryExpression(statement.context.factory.createElementAccessExpression(newArg.expression, statement.addSymbolImport(symbolStructAddress)), ts.SyntaxKind.PlusToken, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]));
+                    }
+                    else {
+                        if (ts.isCallExpression(newArg.expression)
+                            && ts.isIdentifier(newArg.expression.expression)
+                            && newArg.expression.expression.escapedText === structAccess) {
+                            return newArg.expression.arguments[0];
+                        }
+                        return statement.context.factory.createElementAccessExpression(newArg.expression, statement.addSymbolImport(symbolStructAddress));
+                    }
+                }
+                else if (ts.isElementAccessExpression(newArg)
+                    && ts.isCallExpression(newArg.expression)
+                    && ts.isIdentifier(newArg.expression.expression)
+                    && newArg.expression.expression.escapedText === structAccess) {
+                    return newArg.expression.arguments[0];
+                }
+                else {
+                    reportError(statement.currentFile, arg, 'invalid operation');
+                    return node;
+                }
+            }
+            // addressof(struct.p[x])
+            else if (ts.isElementAccessExpression(arg)) {
+                const address = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                    arg.expression
+                ]), visitor);
+                let offset;
+                let size = 0;
+                const type = statement.typeChecker.getTypeAtLocation(arg);
+                if (isBuiltinType(type, arg)) {
+                    size = CTypeEnum2Bytes[getBuiltinByType(type, arg)];
+                }
+                else if (isStructType(type)) {
+                    const struct = getStructByType(type);
+                    size = struct.length;
+                }
+                else if (isArrayType(type)) {
+                    size = getTypeSize(type.aliasTypeArguments[0], null) * type.aliasTypeArguments[1].value;
+                }
+                if (!size) {
+                    reportError(statement.currentFile, arg, 'type mismatch');
+                    return node;
+                }
+                if (ts.isNumericLiteral(arg.argumentExpression)) {
+                    if (+arg.argumentExpression.text) {
+                        offset = createPointerOperand(+arg.argumentExpression.text * size);
+                    }
+                }
+                else {
+                    offset = createPointerOperand(statement.context.factory.createBinaryExpression(ts.visitNode(arg.argumentExpression, visitor), ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(size)));
+                }
+                if (offset) {
+                    return statement.context.factory.createBinaryExpression(address, ts.SyntaxKind.PlusToken, offset);
+                }
+                return address;
+            }
+            else {
+                const type = statement.typeChecker.getTypeAtLocation(arg);
+                if (type.symbol && hasStruct(type.symbol)) {
+                    return statement.context.factory.createElementAccessExpression(ts.visitNode(arg, visitor), statement.addSymbolImport(symbolStructAddress));
+                }
+                reportError(statement.currentFile, arg, 'addressof only support in related to struct');
+                return node;
+            }
+        }
+        else if (callName === accessof && !statement.lookupFunc(accessof) && isPointerNode(node.arguments[0])) {
+            const arg = node.arguments[0];
+            if (ts.isCallExpression(arg) && ts.isIdentifier(arg.expression) && arg.expression.escapedText === addressof) {
+                return ts.visitNode(arg.arguments[0], visitor);
+            }
+            const type = getPointerExpressionType(arg);
+            if (isPointerType(type, arg)) {
+                const newArg = ts.visitNode(arg, visitor);
+                if (isPointerStructType(type, arg)) {
+                    const struct = getPointerStructByType(type, arg);
+                    return accessStruct(newArg, struct);
+                }
+                else if (isPointerBuiltinType(type, arg)) {
+                    return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), getPointerBuiltinByType(type, arg)), undefined, [
+                        newArg
+                    ]);
+                }
+                else {
+                    reportError(statement.currentFile, node, 'accessof only support in cheap builtin type or struct type');
+                    return node;
+                }
+            }
+            else {
+                reportError(statement.currentFile, node, `the type of ${arg.getText()} is not pointer`);
+                return node;
+            }
+        }
+        else if (callName === offsetof && !statement.lookupFunc(offsetof)) {
+            if (node.arguments.length === 2) {
+                const type = statement.typeChecker.getTypeAtLocation(node.arguments[0]);
+                if (isStructType(type) && ts.isStringLiteral(node.arguments[1])) {
+                    const struct = getStructByType(type);
+                    const meta = getStructMeta(struct, node.arguments[1].text);
+                    if (meta) {
+                        return statement.context.factory.createNumericLiteral(meta[7 /* KeyMetaKey.BaseAddressOffset */]);
+                    }
+                    else {
+                        reportError(statement.currentFile, node, `struct ${struct.name} has not property ${node.arguments[1].text}`);
+                        return node;
+                    }
+                }
+                else {
+                    reportError(statement.currentFile, node, 'offsetof invalid arguments');
+                    return node;
+                }
+            }
+            else {
+                reportError(statement.currentFile, node, 'offsetof invalid arguments');
+                return node;
+            }
+        }
+        else if (callName === staticCast && !statement.lookupFunc(staticCast)) {
+            const newNode = ts.visitNode(node.arguments[0], visitor);
+            let sourceType = getBinaryBuiltinTypeName(node.arguments[0]);
+            let targetType = node.typeArguments[0]
+                && ((_e = (_d = statement.typeChecker.getTypeAtLocation(node.typeArguments[0])) === null || _d === void 0 ? void 0 : _d.aliasSymbol) === null || _e === void 0 ? void 0 : _e.escapedName) || '';
+            if (!targetType && ts.isTypeReferenceNode(node.typeArguments[0]) && ts.isIdentifier(node.typeArguments[0].typeName)) {
+                targetType = node.typeArguments[0].typeName.escapedText;
+            }
+            if (targetType === typePointer
+                || targetType === typeSize) {
+                targetType = statement.cheapCompilerOptions.defined.WASM_64 ? 'uint64' : 'uint32';
+            }
+            const argType = statement.typeChecker.getTypeAtLocation(node.arguments[0]);
+            // uint 字面量直接不做转换
+            if (array.has(BuiltinUint, sourceType)
+                && (argType.flags & ts.TypeFlags.BigIntLiteral || argType.flags & ts.TypeFlags.NumberLiteral)
+                && CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === CTypeEnum2Bytes[Type2CTypeEnum[sourceType]]) {
+                sourceType = targetType;
+            }
+            if (array.has(BuiltinNumber, targetType)) {
+                let exp = newNode;
+                // float double -> int32
+                // a >> 0
+                if (array.has(BuiltinFloat, sourceType)) {
+                    exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(newNode), ts.SyntaxKind.GreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(0)));
+                    sourceType = 'int32';
+                }
+                // uint64 int64, bigint -> int32 uint32, number
+                // Number(a)
+                else if (array.has(BuiltinBigInt, sourceType)) {
+                    let bits = CTypeEnum2Bytes[Type2CTypeEnum[targetType]] * 8;
+                    if (!array.has(BuiltinFloat, targetType)) {
+                        if (array.has(BuiltinUint, targetType)) {
+                            exp = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('BigInt'), statement.context.factory.createIdentifier('asUintN')), undefined, [
+                                statement.context.factory.createNumericLiteral(bits),
+                                newNode
+                            ]);
+                        }
+                        else {
+                            exp = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('BigInt'), statement.context.factory.createIdentifier('asIntN')), undefined, [
+                                statement.context.factory.createNumericLiteral(bits),
+                                newNode
+                            ]);
+                        }
+                        exp = statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                            exp
+                        ]);
+                    }
+                    else {
+                        exp = statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                            newNode
+                        ]);
+                    }
+                    sourceType = targetType;
+                }
+                // 8 bit
+                // a & 0xff
+                if (CTypeEnum2Bytes[Type2CTypeEnum[sourceType]] > 1
+                    && CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 1) {
+                    exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0xff', ts.TokenFlags.HexSpecifier)));
+                    sourceType = 'uint8';
+                }
+                // 16 bit
+                // a & 0xffff
+                else if (CTypeEnum2Bytes[Type2CTypeEnum[sourceType]] > 2
+                    && CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 2) {
+                    exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0xffff', ts.TokenFlags.HexSpecifier)));
+                    sourceType = 'uint16';
+                }
+                if (array.has(BuiltinUint, sourceType) && !array.has(BuiltinUint, targetType)) {
+                    // uint -> int
+                    // a >> 0
+                    if (CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 1) {
+                        exp = statement.context.factory.createConditionalExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0x80', ts.TokenFlags.HexSpecifier))), statement.context.factory.createToken(ts.SyntaxKind.QuestionToken), statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.MinusToken, statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(statement.context.factory.createNumericLiteral('0x100', ts.TokenFlags.HexSpecifier), ts.SyntaxKind.MinusToken, exp))), statement.context.factory.createToken(ts.SyntaxKind.ColonToken), exp);
+                    }
+                    else if (CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 2) {
+                        exp = statement.context.factory.createConditionalExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0x80000', ts.TokenFlags.HexSpecifier))), statement.context.factory.createToken(ts.SyntaxKind.QuestionToken), statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.MinusToken, statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(statement.context.factory.createNumericLiteral('0x10000', ts.TokenFlags.HexSpecifier), ts.SyntaxKind.MinusToken, exp))), statement.context.factory.createToken(ts.SyntaxKind.ColonToken), exp);
+                    }
+                    else {
+                        exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.GreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(0)));
+                    }
+                }
+                else if (!array.has(BuiltinUint, sourceType) && !array.has(BuiltinBool, sourceType) && array.has(BuiltinUint, targetType)) {
+                    // int -> uint
+                    // a >>> 0
+                    if (CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 1) {
+                        exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0xff', ts.TokenFlags.HexSpecifier)));
+                    }
+                    else if (CTypeEnum2Bytes[Type2CTypeEnum[targetType]] === 2) {
+                        exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.AmpersandToken, statement.context.factory.createNumericLiteral('0xffff', ts.TokenFlags.HexSpecifier)));
+                    }
+                    else {
+                        exp = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(0)));
+                    }
+                }
+                if (array.has(BuiltinBool, sourceType)) {
+                    if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+                        exp = statement.context.factory.createNumericLiteral(1);
+                    }
+                    else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+                        exp = statement.context.factory.createNumericLiteral(0);
+                    }
+                    else {
+                        exp = statement.context.factory.createConditionalExpression(statement.context.factory.createParenthesizedExpression(exp), statement.context.factory.createToken(ts.SyntaxKind.QuestionToken), statement.context.factory.createNumericLiteral(1), statement.context.factory.createToken(ts.SyntaxKind.ColonToken), statement.context.factory.createNumericLiteral(0));
+                    }
+                }
+                if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+                    exp = statement.context.factory.createParenthesizedExpression(exp);
+                }
+                return exp;
+            }
+            else if (array.has(BuiltinBigInt, targetType)) {
+                let exp = newNode;
+                const sourceBytes = CTypeEnum2Bytes[Type2CTypeEnum[sourceType]];
+                // float double -> int32
+                if (array.has(BuiltinFloat, sourceType)) {
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('Math'), statement.context.factory.createIdentifier('floor')), undefined, [
+                        exp
+                    ]);
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+                        exp
+                    ]);
+                    sourceType = 'int64';
+                }
+                // int32 uint32 -> bigint
+                if (array.has(BuiltinNumber, sourceType)) {
+                    let isInt64 = false;
+                    if (!array.has(BuiltinUint, sourceType)) {
+                        if (array.has(BuiltinUint, targetType)) {
+                            exp = statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(0));
+                        }
+                        else {
+                            exp = statement.context.factory.createBinaryExpression(exp, ts.SyntaxKind.GreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(0));
+                            isInt64 = true;
+                        }
+                    }
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+                        exp
+                    ]);
+                    sourceType = isInt64 ? 'int64' : 'uint64';
+                }
+                if (array.has(BuiltinUint, sourceType) && !array.has(BuiltinUint, targetType) && sourceBytes === 8) {
+                    // uint64 -> int64
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('BigInt'), statement.context.factory.createIdentifier('asIntN')), undefined, [
+                        statement.context.factory.createNumericLiteral(64),
+                        exp
+                    ]);
+                }
+                else if (!array.has(BuiltinUint, sourceType) && !array.has(BuiltinBool, sourceType) && array.has(BuiltinUint, targetType)) {
+                    // int64 -> uint64
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier('BigInt'), statement.context.factory.createIdentifier('asUintN')), undefined, [
+                        statement.context.factory.createNumericLiteral(64),
+                        exp
+                    ]);
+                }
+                if (array.has(BuiltinBool, sourceType)) {
+                    if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+                        exp = statement.context.factory.createBigIntLiteral('1n');
+                    }
+                    else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+                        exp = statement.context.factory.createBigIntLiteral('0n');
+                    }
+                    else {
+                        exp = statement.context.factory.createConditionalExpression(statement.context.factory.createParenthesizedExpression(exp), statement.context.factory.createToken(ts.SyntaxKind.QuestionToken), statement.context.factory.createBigIntLiteral('1n'), statement.context.factory.createToken(ts.SyntaxKind.ColonToken), statement.context.factory.createBigIntLiteral('0n'));
+                    }
+                }
+                if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+                    exp = statement.context.factory.createParenthesizedExpression(exp);
+                }
+                return exp;
+            }
+            else if (array.has(BuiltinFloat, targetType)) {
+                let exp = newNode;
+                if (array.has(BuiltinBigInt, sourceType)) {
+                    exp = statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                        exp
+                    ]);
+                }
+                if (array.has(BuiltinBool, sourceType)) {
+                    if (exp.kind === ts.SyntaxKind.TrueKeyword) {
+                        exp = statement.context.factory.createNumericLiteral(1.0);
+                    }
+                    else if (exp.kind === ts.SyntaxKind.FalseKeyword) {
+                        exp = statement.context.factory.createNumericLiteral(0.0);
+                    }
+                    else {
+                        exp = statement.context.factory.createConditionalExpression(statement.context.factory.createParenthesizedExpression(exp), statement.context.factory.createToken(ts.SyntaxKind.QuestionToken), statement.context.factory.createNumericLiteral(1.0), statement.context.factory.createToken(ts.SyntaxKind.ColonToken), statement.context.factory.createNumericLiteral(0.0));
+                    }
+                }
+                if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+                    exp = statement.context.factory.createParenthesizedExpression(exp);
+                }
+                return exp;
+            }
+            else if (array.has(BuiltinBool, targetType)) {
+                let exp = newNode;
+                if (ts.isBinaryExpression(exp) || ts.isConditionalExpression(exp)) {
+                    exp = statement.context.factory.createParenthesizedExpression(exp);
+                }
+                return statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.ExclamationToken, statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.ExclamationToken, exp));
+            }
+            return statement.context.factory.createParenthesizedExpression(newNode);
+        }
+        else if (callName === reinterpretCast && !statement.lookupFunc(reinterpretCast)) {
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+                let targetType = node.typeArguments[0]
+                    && ((_g = (_f = statement.typeChecker.getTypeAtLocation(node.typeArguments[0])) === null || _f === void 0 ? void 0 : _f.aliasSymbol) === null || _g === void 0 ? void 0 : _g.escapedName) || '';
+                // 转 size 和 pointer 64 位需要变成 bigint
+                if (targetType === typeSize
+                    || targetType === typePointer) {
+                    const sourceType = getBinaryBuiltinTypeName(node.arguments[0]);
+                    if (!array.has(BuiltinBigInt, sourceType)) {
+                        return createPointerOperand(ts.visitNode(node.arguments[0], visitor));
+                    }
+                }
+                // size 和 pointer 转 number
+                const sourceType = statement.typeChecker.getTypeAtLocation(node.arguments[0]);
+                if ((isSizeType(sourceType) || isPointerType(sourceType, node.arguments[0]))
+                    && !array.has(BuiltinBigInt, targetType)
+                    && targetType !== typePointer
+                    && targetType !== typeSize) {
+                    const result = ts.visitNode(node.arguments[0], visitor);
+                    if (isBigIntNode(result)) {
+                        return statement.context.factory.createNumericLiteral(Number(getBigIntValue(result)));
+                    }
+                    return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                        result
+                    ]);
+                }
+            }
+            return ts.visitNode(node.arguments[0], visitor);
+        }
+        else if (callName === defined
+            && !statement.lookupFunc(defined)
+            && node.arguments.length === 1 && ts.isIdentifier(node.arguments[0])) {
+            const name = node.arguments[0].escapedText;
+            return definedReplace(name, node);
+        }
+        else if (callName === move && !statement.lookupFunc(move)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, newArgument), visitor);
+        }
+        else if (callName === malloc && !statement.lookupFunc(malloc)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.addIdentifierImport(Allocator, InternalPath, false), statement.context.factory.createIdentifier(malloc)), undefined, newArgument), visitor);
+        }
+        else if (callName === calloc && !statement.lookupFunc(calloc)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.addIdentifierImport(Allocator, InternalPath, false), statement.context.factory.createIdentifier(calloc)), undefined, newArgument), visitor);
+        }
+        else if (callName === realloc && !statement.lookupFunc(realloc)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.addIdentifierImport(Allocator, InternalPath, false), statement.context.factory.createIdentifier(realloc)), undefined, newArgument), visitor);
+        }
+        else if (callName === alignedAlloc && !statement.lookupFunc(alignedAlloc)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.addIdentifierImport(Allocator, InternalPath, false), statement.context.factory.createIdentifier('alignedAlloc')), undefined, newArgument), visitor);
+        }
+        else if (callName === free && !statement.lookupFunc(free)) {
+            const { newArgument } = formatArgument(signature, node.arguments);
+            return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(statement.addIdentifierImport(Allocator, InternalPath, false), statement.context.factory.createIdentifier(free)), undefined, newArgument), visitor);
+        }
+        else if (callName === make && !statement.lookupFunc(make)) {
+            if (node.arguments.length < 2) {
+                if (!node.typeArguments
+                    || node.typeArguments.length !== 1
+                    || !ts.isTypeReferenceNode(node.typeArguments[0])
+                    || !ts.isIdentifier(node.typeArguments[0].typeName)) {
+                    reportError(statement.currentFile, node, 'invalid typeArguments', INVALID_OPERATE);
+                    return node;
+                }
+                const type = statement.typeChecker.getTypeAtLocation(node.typeArguments[0].typeName);
+                const isValid = type.symbol
+                    && type.symbol.valueDeclaration
+                    && ts.isClassDeclaration(type.symbol.valueDeclaration)
+                    && hasStruct(type.symbol);
+                if (!isValid) {
+                    reportError(statement.currentFile, node, `invalid typeArguments, not found struct defined of ${node.typeArguments[0].typeName.escapedText}`, INVALID_OPERATE);
+                    return node;
+                }
+            }
+            const tree = ts.visitEachChild(node, statement.visitor, statement.context);
+            return statement.context.factory.createCallExpression(statement.addIdentifierImport(make, RootPath, false), undefined, tree.arguments);
+        }
+        else if (callName === makeSharedPtr && !statement.lookupFunc(makeSharedPtr)) {
+            if (node.arguments.length < 3) {
+                if (!node.typeArguments
+                    || node.typeArguments.length !== 1
+                    || !ts.isTypeReferenceNode(node.typeArguments[0])
+                    || !ts.isIdentifier(node.typeArguments[0].typeName)) {
+                    reportError(statement.currentFile, node, 'invalid typeArguments', INVALID_OPERATE);
+                    return node;
+                }
+                const type = statement.typeChecker.getTypeAtLocation(node.typeArguments[0].typeName);
+                const isValid = type.symbol
+                    && type.symbol.valueDeclaration
+                    && ts.isClassDeclaration(type.symbol.valueDeclaration)
+                    && hasStruct(type.symbol)
+                    || isBuiltinType(type, null);
+                if (!isValid) {
+                    reportError(statement.currentFile, node, `invalid typeArguments, not found struct defined of ${node.typeArguments[0].typeName.escapedText} or ${node.typeArguments[0].typeName.escapedText} is not builtin type`, INVALID_OPERATE);
+                    return node;
+                }
+            }
+            const tree = ts.visitEachChild(node, statement.visitor, statement.context);
+            return statement.context.factory.createCallExpression(statement.addIdentifierImport(makeSharedPtrImportName, InternalPath, false), undefined, tree.arguments);
+        }
+        else if (callName === unmake && !statement.lookupFunc(unmake)) {
+            const tree = ts.visitEachChild(node, statement.visitor, statement.context);
+            return statement.context.factory.createCallExpression(statement.addIdentifierImport(unmake, RootPath, false), undefined, tree.arguments);
+        }
+    }
+    else if (ts.isPropertyAccessExpression(node.expression)) {
+        if (callName === indexOf) {
+            const type = statement.typeChecker.getTypeAtLocation(node.expression.expression);
+            if (isPointerType(type, node.expression.expression) && node.arguments[0]) {
+                let tree = ts.visitNode(node.expression.expression, visitor);
+                if (isPointerStructType(type, node.expression.expression)) {
+                    const struct = getPointerStructByType(type, node.expression.expression);
+                    if (struct) {
+                        let offset = null;
+                        if (ts.isNumericLiteral(node.arguments[0])) {
+                            if (+node.arguments[0].text) {
+                                offset = createPointerOperand(+node.arguments[0].text * struct.length);
+                            }
+                        }
+                        else {
+                            offset = createPointerOperand(statement.context.factory.createBinaryExpression(ts.visitNode(node.arguments[0], visitor), ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(struct.length)));
+                        }
+                        tree = offset ? statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, offset) : tree;
+                        return accessStruct(tree, struct);
+                    }
+                }
+                else if (isPointerBuiltinType(type, node.expression.expression)) {
+                    const ctype = getPointerBuiltinByType(type, node.expression.expression);
+                    const byteLength = CTypeEnum2Bytes[ctype];
+                    if (byteLength) {
+                        let offset = null;
+                        if (ts.isNumericLiteral(node.arguments[0])) {
+                            if (+node.arguments[0].text) {
+                                offset = createPointerOperand(+node.arguments[0].text * byteLength);
+                            }
+                        }
+                        else {
+                            offset = createPointerOperand(statement.context.factory.createBinaryExpression(ts.visitNode(node.arguments[0], visitor), ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(byteLength)));
+                        }
+                        tree = offset ? statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, offset) : tree;
+                        return accessCType(tree, ctype);
+                    }
+                }
+            }
+        }
+    }
+    if (signature && node.arguments.length) {
+        const { hasSizeParameter, newArgument } = formatArgument(signature, node.arguments);
+        if (hasSizeParameter) {
+            return ts.visitNode(statement.context.factory.createCallExpression(node.expression, node.typeArguments, [
+                ...newArgument
+            ]), visitor);
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function createPlusExpress(tree, right) {
+    // 合并 a + 2 + 3
+    if (ts.isBinaryExpression(tree)
+        && tree.operatorToken.kind === ts.SyntaxKind.PlusToken
+        && (ts.isNumericLiteral(tree.right) || isBigIntNode(tree.right)
+            || ts.isNumericLiteral(tree.left) || isBigIntNode(tree.left))
+        && (ts.isNumericLiteral(right) || isBigIntNode(right))) {
+        if (ts.isNumericLiteral(tree.right)) {
+            return statement.context.factory.createBinaryExpression(tree.left, ts.SyntaxKind.PlusToken, statement.context.factory.createNumericLiteral((+tree.right.text) + (+right.text)));
+        }
+        else if (isBigIntNode(tree.right)) {
+            return statement.context.factory.createBinaryExpression(tree.left, ts.SyntaxKind.PlusToken, createBitInt(Number(getBigIntValue(tree.right)
+                + getBigIntValue(right))));
+        }
+        else if (ts.isNumericLiteral(tree.left)) {
+            return statement.context.factory.createBinaryExpression(statement.context.factory.createNumericLiteral((+tree.left.text) + (+right.text)), ts.SyntaxKind.PlusToken, tree.right);
+        }
+        else if (isBigIntNode(tree.left)) {
+            return statement.context.factory.createBinaryExpression(createBitInt(Number(getBigIntValue(tree.left)
+                + getBigIntValue(right))), ts.SyntaxKind.PlusToken, tree.right);
+        }
+    }
+    return statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, createPointerOperand(right));
+}
+function handleMeta(node, tree, meta) {
+    var _a;
+    if (meta[1 /* KeyMetaKey.Pointer */]) {
+        tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), 20 /* CTypeEnum.pointer */), undefined, [
+            meta[7 /* KeyMetaKey.BaseAddressOffset */]
+                ? createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]))
+                : tree
+        ]);
+        return tree;
+    }
+    else if (is.number(meta[0 /* KeyMetaKey.Type */]) && !is.func(meta.getTypeMeta)) {
+        tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), meta[0 /* KeyMetaKey.Type */]), undefined, [
+            meta[7 /* KeyMetaKey.BaseAddressOffset */]
+                ? createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]))
+                : tree
+        ]);
+        if (meta[5 /* KeyMetaKey.BitField */] && !statement.lookupStage(StageStatus.AddressOf)) {
+            const shift = CTypeEnum2Bytes[meta[0 /* KeyMetaKey.Type */]] * 8 - meta[8 /* KeyMetaKey.BaseBitOffset */] - meta[6 /* KeyMetaKey.BitFieldLength */];
+            let isBigInt = array.has(BuiltinBigInt, CTypeEnum2Type[meta[0 /* KeyMetaKey.Type */]]);
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+                if (meta[0 /* KeyMetaKey.Type */] === 20 /* CTypeEnum.pointer */
+                    || meta[0 /* KeyMetaKey.Type */] === 25 /* CTypeEnum.size */) {
+                    isBigInt = true;
+                }
+            }
+            const mask = Math.pow(2, meta[6 /* KeyMetaKey.BitFieldLength */]) - 1;
+            tree = statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken, isBigInt
+                ? createBitInt(shift)
+                : statement.context.factory.createNumericLiteral(shift))), ts.SyntaxKind.AmpersandToken, isBigInt
+                ? createBitInt(shift)
+                : statement.context.factory.createNumericLiteral(mask));
+        }
+        return tree;
+    }
+    else if (is.func(meta.getTypeMeta)) {
+        const targetStruct = meta.getTypeMeta();
+        let targetSymbol = targetStruct.symbol.deref();
+        let targetPath = '';
+        if (targetStruct.structType === StructType.INLINE_OBJECT) {
+            targetSymbol = targetStruct.definedClassParent.symbol.deref();
+            targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref());
+        }
+        const targetSource = (_a = targetSymbol.valueDeclaration) === null || _a === void 0 ? void 0 : _a.getSourceFile();
+        if (targetSource) {
+            let key;
+            if (targetSource !== statement.currentFile) {
+                // addressof(pointer.struct) 不需要导入
+                if (node.parent
+                    && ts.isCallExpression(node.parent)
+                    && ts.isIdentifier(node.parent.expression)
+                    && node.parent.expression.escapedText === addressof
+                    && !statement.lookupFunc(addressof)) {
+                    key = statement.context.factory.createIdentifier('undefined');
+                }
+                else {
+                    key = statement.addStructImport(targetSymbol, targetSource);
+                }
+            }
+            else {
+                key = statement.context.factory.createIdentifier(targetSymbol.escapedName);
+            }
+            const args = [
+                meta[7 /* KeyMetaKey.BaseAddressOffset */]
+                    ? createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]))
+                    : tree,
+                key
+            ];
+            if (targetPath) {
+                args.push(statement.context.factory.createStringLiteral(targetPath));
+            }
+            return statement.context.factory.createCallExpression(statement.addIdentifierImport(structAccess, RootPath, false), undefined, args);
+        }
+    }
+    else {
+        reportError(statement.currentFile, node, 'struct type mismatch');
+        return node;
+    }
+}
+function propertyAccessExpressionVisitor (node, visitor) {
+    var _a, _b, _c, _d;
+    if (isPointerNode(node)
+        && !(array.has(smartPointerProperty, node.name.escapedText) && isSmartPointerNode(node.expression))) {
+        if (((_a = statement.getCurrentStage()) === null || _a === void 0 ? void 0 : _a.stage) !== StageStatus.EqualLeft) {
+            let root = getPropertyAccessExpressionRootNode(node);
+            let tree = root;
+            let next = root.parent;
+            let lastIsIndexOf = false;
+            let hasPointerIndex = isPointerNode(root);
+            while (next !== node) {
+                const type = statement.typeChecker.getTypeAtLocation(root);
+                if (lastIsIndexOf
+                    || isPointerType(type, root)
+                    || isSmartPointerType(type)
+                    || ((_b = type.aliasSymbol) === null || _b === void 0 ? void 0 : _b.escapedName) === typeArray) {
+                    let struct = lastIsIndexOf
+                        ? getStructByType(type)
+                        : (isSmartPointerType(type)
+                            ? getSmartPointerStructByType(type)
+                            : (isPointerType(type, root)
+                                ? getPointerStructByType(type, root)
+                                : (isPointerType(type.aliasTypeArguments[0], null)
+                                    ? null
+                                    : getStructByType(type.aliasTypeArguments[0]))));
+                    if (struct) {
+                        if (ts.isPropertyAccessExpression(next)) {
+                            if (ts.isCallExpression(next.parent)) {
+                                next = next.parent;
+                                continue;
+                            }
+                            else {
+                                const meta = getStructMeta(struct, next.name.escapedText);
+                                if (!meta) {
+                                    reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${next.name.escapedText}`);
+                                    return node;
+                                }
+                                if (isSmartPointerType(type)) {
+                                    tree = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(tree, statement.context.factory.createIdentifier('get')), undefined, []);
+                                }
+                                if (meta[1 /* KeyMetaKey.Pointer */] && !meta[3 /* KeyMetaKey.Array */]) {
+                                    tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), 20 /* CTypeEnum.pointer */), undefined, [
+                                        meta[7 /* KeyMetaKey.BaseAddressOffset */]
+                                            ? createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]))
+                                            : tree
+                                    ]);
+                                }
+                                else if (meta[7 /* KeyMetaKey.BaseAddressOffset */]) {
+                                    tree = createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]));
+                                }
+                            }
+                            lastIsIndexOf = false;
+                        }
+                        else if (ts.isCallExpression(next)) {
+                            if (ts.isNumericLiteral(next.arguments[0]) && +next.arguments[0].text !== 0) {
+                                tree = createPlusExpress(tree, createPointerOperand(+next.arguments[0].text * struct.length));
+                            }
+                            else if (!ts.isNumericLiteral(next.arguments[0])) {
+                                tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, createPointerOperand(statement.context.factory.createBinaryExpression(next.arguments[0], ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(struct.length))));
+                            }
+                            lastIsIndexOf = true;
+                            hasPointerIndex = true;
+                        }
+                        else if (ts.isElementAccessExpression(next)) {
+                            if (ts.isNumericLiteral(next.argumentExpression) && +next.argumentExpression.text !== 0) {
+                                tree = createPlusExpress(tree, createPointerOperand(+next.argumentExpression.text * struct.length));
+                            }
+                            else if (!ts.isNumericLiteral(next.argumentExpression)) {
+                                tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, createPointerOperand(statement.context.factory.createBinaryExpression(next.argumentExpression, ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(struct.length))));
+                            }
+                            lastIsIndexOf = true;
+                            hasPointerIndex = true;
+                        }
+                    }
+                    // [] 操作
+                    else if ((((_c = type.aliasSymbol) === null || _c === void 0 ? void 0 : _c.escapedName) === typeArray || isPointerType(type, root))
+                        && isPointerType(type.aliasTypeArguments[0], null)
+                        && ts.isElementAccessExpression(next)) {
+                        if (ts.isNumericLiteral(next.argumentExpression) && +next.argumentExpression.text !== 0) {
+                            tree = createPlusExpress(tree, createPointerOperand(+next.argumentExpression.text * CTypeEnum2Bytes[20 /* CTypeEnum.pointer */]));
+                        }
+                        else if (!ts.isNumericLiteral(next.argumentExpression)) {
+                            tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, createPointerOperand(statement.context.factory.createBinaryExpression(next.argumentExpression, ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[20 /* CTypeEnum.pointer */]))));
+                        }
+                        tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), 20 /* CTypeEnum.pointer */), undefined, [
+                            tree
+                        ]);
+                        hasPointerIndex = true;
+                    }
+                    // 指针的 indexOf
+                    else if (isPointerType(type, root)
+                        && ts.isPropertyAccessExpression(next) && next.name.escapedText === indexOf
+                        && ts.isCallExpression(next.parent)) {
+                        next = next.parent;
+                        let step = 0;
+                        if (isPointerType(type.aliasTypeArguments[0], null)) {
+                            step = CTypeEnum2Bytes[20 /* CTypeEnum.pointer */];
+                        }
+                        else {
+                            const struct = getStructByType(type.aliasTypeArguments[0]);
+                            if (struct) {
+                                step = struct.length;
+                            }
+                            else {
+                                reportError(statement.currentFile, node, 'the pointer type only allowed in builtin type or struct type');
+                                return node;
+                            }
+                        }
+                        if (ts.isNumericLiteral(next.arguments[0]) && +next.arguments[0].text !== 0) {
+                            tree = createPlusExpress(tree, createPointerOperand(+next.arguments[0].text * step));
+                        }
+                        else if (!ts.isNumericLiteral(next.arguments[0])) {
+                            tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, createPointerOperand(statement.context.factory.createBinaryExpression(next.arguments[0], ts.SyntaxKind.AsteriskToken, statement.context.factory.createNumericLiteral(step))));
+                        }
+                        // 二级指针
+                        if (isPointerType(type.aliasTypeArguments[0], null)) {
+                            tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), 20 /* CTypeEnum.pointer */), undefined, [
+                                tree
+                            ]);
+                        }
+                        lastIsIndexOf = true;
+                        hasPointerIndex = true;
+                    }
+                    else {
+                        reportError(statement.currentFile, node, 'invalid pointer operate');
+                        return node;
+                    }
+                }
+                else {
+                    let struct = getStructByType(type);
+                    // pointer.struct.xx
+                    if (struct && hasPointerIndex && ts.isPropertyAccessExpression(next)) {
+                        const meta = getStructMeta(struct, next.name.escapedText);
+                        if (!meta) {
+                            reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${next.name.escapedText}`);
+                            return node;
+                        }
+                        if (meta[1 /* KeyMetaKey.Pointer */] && !meta[3 /* KeyMetaKey.Array */]) {
+                            tree = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), 20 /* CTypeEnum.pointer */), undefined, [
+                                meta[7 /* KeyMetaKey.BaseAddressOffset */]
+                                    ? createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]))
+                                    : tree
+                            ]);
+                        }
+                        else if (meta[7 /* KeyMetaKey.BaseAddressOffset */]) {
+                            tree = createPlusExpress(tree, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */]));
+                        }
+                        lastIsIndexOf = false;
+                    }
+                    else {
+                        tree = next;
+                    }
+                }
+                root = next;
+                next = next.parent;
+            }
+            if (!isPointerNode(root) && !hasPointerIndex) {
+                return node;
+            }
+            const type = statement.typeChecker.getTypeAtLocation(root);
+            let struct = isPointerType(type, root) ? getPointerStructByType(type, root) : getStructByType(type);
+            if (!struct) {
+                reportError(statement.currentFile, node, 'struct type mismatch');
+                return node;
+            }
+            const meta = getStructMeta(struct, node.name.escapedText);
+            if (!meta) {
+                reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.name.escapedText}`);
+                return node;
+            }
+            statement.pushStage(StageStatus.PointerPlusMinusIgnore);
+            tree = ts.visitNode(tree, visitor);
+            statement.popStage();
+            if (ts.isCallExpression(tree)
+                && ts.isIdentifier(tree.expression)
+                && statement.isIdentifier(tree.expression, structAccess, structAccessPath, RootPath)) {
+                return statement.context.factory.createPropertyAccessExpression(tree, node.name);
+            }
+            return handleMeta(node, tree, meta);
+        }
+    }
+    else if (isSmartPointerNode(node)) {
+        const expressionType = statement.typeChecker.getTypeAtLocation(node.expression);
+        if (isSmartPointerType(expressionType)
+            && ts.isIdentifier(node.name)
+            && !array.has(smartPointerProperty, node.name.escapedText)
+            && ((_d = expressionType.aliasTypeArguments) === null || _d === void 0 ? void 0 : _d.length) === 1) {
+            const struct = getStructByType(expressionType);
+            if (!struct) {
+                reportError(statement.currentFile, node, 'struct type mismatch');
+                return node;
+            }
+            const meta = getStructMeta(struct, node.name.escapedText);
+            if (!meta) {
+                reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.name.escapedText}`);
+                return node;
+            }
+            let tree = ts.visitNode(node.expression, visitor);
+            tree = statement.context.factory.createCallExpression(statement.context.factory.createPropertyAccessExpression(tree, statement.context.factory.createIdentifier('get')), undefined, []);
+            return handleMeta(node, tree, meta);
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function isMergeOperator(operator) {
+    return operator === ts.SyntaxKind.PlusEqualsToken
+        || operator === ts.SyntaxKind.MinusEqualsToken
+        || operator === ts.SyntaxKind.AsteriskEqualsToken
+        || operator === ts.SyntaxKind.AsteriskAsteriskEqualsToken
+        || operator === ts.SyntaxKind.SlashEqualsToken
+        || operator === ts.SyntaxKind.PercentEqualsToken
+        || operator === ts.SyntaxKind.LessThanLessThanEqualsToken
+        || operator === ts.SyntaxKind.GreaterThanGreaterThanEqualsToken
+        || operator === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken
+        || operator === ts.SyntaxKind.AmpersandEqualsToken
+        || operator === ts.SyntaxKind.BarEqualsToken
+        || operator === ts.SyntaxKind.CaretEqualsToken;
+}
+
+function mergeOperator2Operator(operator) {
+    switch (operator) {
+        case ts.SyntaxKind.PlusEqualsToken:
+            return ts.SyntaxKind.PlusToken;
+        case ts.SyntaxKind.MinusEqualsToken:
+            return ts.SyntaxKind.MinusToken;
+        case ts.SyntaxKind.AsteriskEqualsToken:
+            return ts.SyntaxKind.AsteriskToken;
+        case ts.SyntaxKind.AsteriskAsteriskEqualsToken:
+            return ts.SyntaxKind.AsteriskAsteriskToken;
+        case ts.SyntaxKind.SlashEqualsToken:
+            return ts.SyntaxKind.SlashToken;
+        case ts.SyntaxKind.PercentEqualsToken:
+            return ts.SyntaxKind.PercentToken;
+        case ts.SyntaxKind.LessThanLessThanEqualsToken:
+            return ts.SyntaxKind.LessThanLessThanToken;
+        case ts.SyntaxKind.GreaterThanGreaterThanEqualsToken:
+            return ts.SyntaxKind.GreaterThanGreaterThanToken;
+        case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+            return ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken;
+        case ts.SyntaxKind.AmpersandEqualsToken:
+            return ts.SyntaxKind.AmpersandToken;
+        case ts.SyntaxKind.BarEqualsToken:
+            return ts.SyntaxKind.BarToken;
+        case ts.SyntaxKind.CaretEqualsToken:
+            return ts.SyntaxKind.CaretToken;
+        default:
+            return ts.SyntaxKind.EqualsToken;
+    }
+}
+
+function compute(a, b, token) {
+    if (token === ts.SyntaxKind.PlusToken) {
+        return (a + b);
+    }
+    else if (token === ts.SyntaxKind.MinusToken) {
+        return (a - b);
+    }
+    else if (token === ts.SyntaxKind.AsteriskToken) {
+        return (a * b);
+    }
+    else if (token === ts.SyntaxKind.AsteriskAsteriskToken) {
+        return (Math.pow(a, b));
+    }
+    else if (token === ts.SyntaxKind.SlashToken) {
+        return (a / b);
+    }
+    else if (token === ts.SyntaxKind.PercentToken) {
+        return (a % b);
+    }
+    else if (token === ts.SyntaxKind.LessThanLessThanToken) {
+        return (a << b);
+    }
+    else if (token === ts.SyntaxKind.GreaterThanGreaterThanToken) {
+        return (a >> b);
+    }
+    else if (token === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken) {
+        return (a >>> b);
+    }
+    else if (token === ts.SyntaxKind.AmpersandToken) {
+        return (a & b);
+    }
+    else if (token === ts.SyntaxKind.BarToken) {
+        return (a | b);
+    }
+}
+
+function visitorLeft(node, visitor, operatorToken) {
+    let push = false;
+    if (operatorToken === ts.SyntaxKind.EqualsToken) {
+        statement.pushStage(StageStatus.EqualLeft);
+        push = true;
+    }
+    const newNode = ts.visitNode(node, visitor);
+    if (push) {
+        statement.popStage();
+    }
+    return newNode;
+}
+function visitorRight(node, visitor, operatorToken) {
+    let push = false;
+    if (operatorToken === ts.SyntaxKind.EqualsToken) {
+        statement.pushStage(StageStatus.EqualRight);
+        push = true;
+    }
+    const newNode = ts.visitNode(node, visitor);
+    if (push) {
+        statement.popStage();
+    }
+    return newNode;
+}
+function generateWritePropertyNode(address, value, meta) {
+    if (meta[5 /* KeyMetaKey.BitField */]) {
+        let mask1 = 0;
+        let len = CTypeEnum2Bytes[meta[0 /* KeyMetaKey.Type */]] * 8;
+        for (let i = 0; i < meta[6 /* KeyMetaKey.BitFieldLength */]; i++) {
+            mask1 |= (1 << (len - 1 - (i + meta[8 /* KeyMetaKey.BaseBitOffset */])));
+        }
+        let oldValue = statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), meta[0 /* KeyMetaKey.Type */]), undefined, [
+            address
+        ]);
+        const mask2 = (Math.pow(2, meta[6 /* KeyMetaKey.BitFieldLength */]) - 1);
+        const shift = len - meta[8 /* KeyMetaKey.BaseBitOffset */] - meta[6 /* KeyMetaKey.BitFieldLength */];
+        let isBigInt = array.has(BuiltinBigInt, CTypeEnum2Type[meta[0 /* KeyMetaKey.Type */]]);
+        if (statement.cheapCompilerOptions.defined.WASM_64) {
+            if (meta[0 /* KeyMetaKey.Type */] === 20 /* CTypeEnum.pointer */
+                || meta[0 /* KeyMetaKey.Type */] === 25 /* CTypeEnum.size */) {
+                isBigInt = true;
+                if (meta[0 /* KeyMetaKey.Type */] === 25 /* CTypeEnum.size */) {
+                    value = createPointerOperand(value);
+                }
+            }
+        }
+        value = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(value, ts.SyntaxKind.AmpersandToken, isBigInt
+            ? createBitInt(mask2)
+            : statement.context.factory.createNumericLiteral(mask2)));
+        value = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(value, ts.SyntaxKind.LessThanLessThanToken, isBigInt
+            ? createBitInt(shift)
+            : statement.context.factory.createNumericLiteral(shift)));
+        oldValue = statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(oldValue, ts.SyntaxKind.AmpersandToken, statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.TildeToken, isBigInt
+            ? createBitInt(mask1)
+            : statement.context.factory.createNumericLiteral(mask1))));
+        value = statement.context.factory.createBinaryExpression(oldValue, ts.SyntaxKind.BarToken, value);
+    }
+    return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumWrite), meta[1 /* KeyMetaKey.Pointer */] ? 20 /* CTypeEnum.pointer */ : meta[0 /* KeyMetaKey.Type */]), undefined, [
+        address,
+        value
+    ]);
+}
+function singleArrowVisitor(node, visitor) {
+    if (ts.isPrefixUnaryExpression(node.right)) {
+        if (node.parent && ts.isExpressionStatement(node.parent) && ((ts.isCallExpression(node.left)
+            && (ts.isIdentifier(node.left.expression) && node.left.expression.escapedText === accessof
+                || ts.isPropertyAccessExpression(node.left.expression)
+                    && node.left.expression.name.escapedText === indexOf
+                    && isPointerNode(node.left.expression.expression)))
+            || ts.isElementAccessExpression(node.left) && isPointerElementAccess(node.left))) {
+            const type1 = statement.typeChecker.getTypeAtLocation(node.left);
+            const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand);
+            if (isTypeEquals(type1, node.left, type2, node.right.operand) || isPointerType(type1, node.left) && isNullPointer(type2, node.right.operand)) {
+                let left = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                    node.left
+                ]), visitor);
+                if (isStructType(type1)) {
+                    const struct = getStructByType(type1);
+                    statement.pushStage(StageStatus.SingleArrowRight);
+                    const right = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                        node.right.operand
+                    ]), visitor);
+                    statement.popStage();
+                    return statement.context.factory.createCallExpression(statement.addMemoryImport(memcpy), undefined, [
+                        left,
+                        right,
+                        createPointerOperand(struct.length)
+                    ]);
+                }
+                else if (isBuiltinType(type1, node.left)) {
+                    const type = getBuiltinByType(type1, node.left);
+                    statement.pushStage(StageStatus.SingleArrowRight);
+                    const right = ts.visitNode(node.right.operand, visitor);
+                    statement.popStage();
+                    return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumWrite), type), undefined, [
+                        left,
+                        right
+                    ]);
+                }
+                else {
+                    reportError(statement.currentFile, node, 'operator \'<-\' only allowed between two builtin type or struct type');
+                    return node;
+                }
+            }
+            else {
+                reportError(statement.currentFile, node, 'The types on the left and right sides of the operator \'<-\' are not equal');
+                return node;
+            }
+        }
+        else {
+            const type1 = statement.typeChecker.getTypeAtLocation(node.left);
+            const type2 = statement.typeChecker.getTypeAtLocation(node.right.operand);
+            if (isStructType(type1) && isTypeEquals(type1, node.left, type2, node.right.operand)) {
+                const struct = getStructByType(type1);
+                statement.pushStage(StageStatus.SingleArrowRight);
+                const right = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                    node.right.operand
+                ]), visitor);
+                statement.popStage();
+                const left = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                    node.left
+                ]), visitor);
+                return statement.context.factory.createCallExpression(statement.addMemoryImport(memcpy), undefined, [
+                    left,
+                    right,
+                    createPointerOperand(struct.length)
+                ]);
+            }
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+function equalVisitor(node, visitor) {
+    var _a, _b, _c, _d, _e, _f, _g;
+    const leftType = statement.typeChecker.getTypeAtLocation(node.left);
+    const rightType = statement.typeChecker.getTypeAtLocation(node.right);
+    if (isPointerType(leftType, node.left)
+        && (isBuiltinType(rightType, node.right) || rightType.flags & ts.TypeFlags.NumberLike)
+        && !isPointerType(rightType, node.right)
+        && !isNullPointer(rightType, node.right)
+        || isBuiltinType(leftType, node.left)
+            && !isPointerType(leftType, node.left)
+            && !isNullPointer(leftType, node.left)
+            && isPointerType(rightType, node.right)) {
+        reportError(statement.currentFile, node, `type ${getBuiltinNameByType(leftType) || 'number'} is not assignable to value of type ${getBuiltinNameByType(rightType) || 'number'}`, TYPE_MISMATCH);
+        return node;
+    }
+    if (ts.isIdentifier(node.left) && ts.isIdentifier(node.right)) {
+        return ts.visitEachChild(node, visitor, statement.context);
+    }
+    else {
+        if (ts.isPropertyAccessExpression(node.left)
+            && isExpressionPointer(node.left)
+            && ts.isObjectLiteralExpression(node.right)
+            && isStructType(statement.typeChecker.getTypeAtLocation(node.left))) {
+            const list = [];
+            const addr = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                node.left
+            ]), visitor);
+            function each(base, struct, properties) {
+                properties.forEach((ele) => {
+                    if (ts.isPropertyAssignment(ele) && ts.isIdentifier(ele.name)) {
+                        if (!struct) {
+                            reportError(statement.currentFile, ele, 'struct not found ');
+                            return;
+                        }
+                        const meta = getStructMeta(struct, ele.name.escapedText);
+                        if (ts.isObjectLiteralExpression(ele.initializer) && meta.getTypeMeta) {
+                            each(base + meta[7 /* KeyMetaKey.BaseAddressOffset */], meta.getTypeMeta(), ele.initializer.properties);
+                        }
+                        else if (is.number(meta[0 /* KeyMetaKey.Type */])) {
+                            list.push(generateWritePropertyNode((ts.isBinaryExpression(addr)
+                                && ts.isNumericLiteral(addr.right)
+                                && addr.operatorToken.kind === ts.SyntaxKind.PlusToken)
+                                ? statement.context.factory.createBinaryExpression(addr.left, ts.SyntaxKind.PlusToken, createPointerOperand((meta[7 /* KeyMetaKey.BaseAddressOffset */] + base) + (+addr.right.text)))
+                                : statement.context.factory.createBinaryExpression(addr, ts.SyntaxKind.PlusToken, createPointerOperand(meta[7 /* KeyMetaKey.BaseAddressOffset */] + base)), ele.initializer, meta));
+                        }
+                        else {
+                            reportError(statement.currentFile, ele, 'struct found invalid property value');
+                        }
+                    }
+                    else {
+                        reportError(statement.currentFile, ele, 'struct found invalid property');
+                    }
+                });
+            }
+            each(0, getStructByType(statement.typeChecker.getTypeAtLocation(node.left)), node.right.properties);
+            if (list.length === 0) {
+                return undefined;
+            }
+            if (list.length === 1) {
+                return list[0];
+            }
+            else {
+                let left = list[0];
+                for (let i = 1; i < list.length; i++) {
+                    left = statement.context.factory.createBinaryExpression(left, ts.SyntaxKind.CommaToken, list[i]);
+                }
+                return left;
+            }
+        }
+        if (ts.isPropertyAccessExpression(node.left)
+            || ts.isElementAccessExpression(node.left)) {
+            const hasPointer = isExpressionPointer(node.left.expression);
+            const hasSmartPointer = ts.isPropertyAccessExpression(node.left) && isSmartPointerNode(node.left.expression);
+            if (hasPointer || hasSmartPointer) {
+                const type1 = statement.typeChecker.getTypeAtLocation(node.left);
+                const type2 = statement.typeChecker.getTypeAtLocation(node.right);
+                statement.pushStage(StageStatus.AddressOf);
+                const address = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                    node.left
+                ]), visitor);
+                statement.popStage();
+                if (isStructType(type1) && isTypeEquals(type1, node.left, type2, node.right)
+                    || type1.aliasSymbol && (type1.aliasSymbol.escapedName === typeStruct
+                        || (type1.aliasSymbol.escapedName === typeUnion))
+                        && type1.aliasTypeArguments
+                        && type2.aliasTypeArguments
+                        && hasStruct(type1.aliasTypeArguments[0].symbol)
+                        && isTypeEquals(type1.aliasTypeArguments[0], null, type2.aliasTypeArguments[0], null)) {
+                    const struct = getStructByType(type1);
+                    const valueAddress = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+                        node.right
+                    ]), visitor);
+                    return statement.context.factory.createCallExpression(statement.addMemoryImport(memcpy), undefined, [
+                        address,
+                        valueAddress,
+                        createPointerOperand(struct.length)
+                    ]);
+                }
+                else if (isBuiltinType(type1, node.left)
+                    || (type1.aliasSymbol
+                        && type1.aliasSymbol.escapedName === typeBit)
+                    || (((_a = type1.symbol) === null || _a === void 0 ? void 0 : _a.valueDeclaration)
+                        && (ts.isEnumDeclaration(type1.symbol.valueDeclaration)
+                            || ts.isEnumMember(type1.symbol.valueDeclaration)))
+                    || (type1.isUnion() && ((_c = (_b = type1.types[0]) === null || _b === void 0 ? void 0 : _b.symbol) === null || _c === void 0 ? void 0 : _c.valueDeclaration)
+                        && (ts.isEnumDeclaration((_e = (_d = type1.types[0]) === null || _d === void 0 ? void 0 : _d.symbol) === null || _e === void 0 ? void 0 : _e.valueDeclaration)
+                            || ts.isEnumMember((_g = (_f = type1.types[0]) === null || _f === void 0 ? void 0 : _f.symbol) === null || _g === void 0 ? void 0 : _g.valueDeclaration)))) {
+                    let newValue = visitorRight(node.right, visitor, node.operatorToken.kind);
+                    if (isSizeType(type1)) {
+                        newValue = createPointerOperand(newValue);
+                    }
+                    if (ts.isPropertyAccessExpression(node.left)) {
+                        const type = statement.typeChecker.getTypeAtLocation(node.left.expression);
+                        const struct = getStructByType(type);
+                        if (struct == null) {
+                            reportError(statement.currentFile, node, `${node.left.expression.getText()} is not struct`);
+                            return node;
+                        }
+                        const meta = getStructMeta(struct, node.left.name.escapedText);
+                        if (!meta) {
+                            reportError(statement.currentFile, node, `struct ${struct.symbol.deref().escapedName} not has property ${node.left.name.escapedText}`);
+                            return node;
+                        }
+                        return generateWritePropertyNode(address, newValue, meta);
+                    }
+                    else if (ts.isElementAccessExpression(node.left)) {
+                        if (isBuiltinType(type1, node.left)) {
+                            return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumWrite), getBuiltinByType(type1, node.left)), undefined, [
+                                address,
+                                newValue
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+        if (isSizeType(leftType)
+            && !isAllSizeOrPointer(node.right)) {
+            if (ts.isNumericLiteral(node.right)) {
+                return statement.context.factory.createBinaryExpression(ts.visitNode(node.left, statement.visitor), node.operatorToken, createPointerOperand(ts.visitNode(node.right, statement.visitor)));
+            }
+            reportError(statement.currentFile, node, `type ${getBuiltinNameByType(leftType) || 'number'} is not assignable to value of type ${getBuiltinNameByType(rightType) || 'number'}`, TYPE_MISMATCH);
+            return node;
+        }
+        return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), ts.SyntaxKind.EqualsToken, visitorRight(node.right, visitor, node.operatorToken.kind));
+    }
+}
+function isAllSizeOrPointer(node) {
+    if (ts.isBinaryExpression(node)) {
+        if (!isAllSizeOrPointer(node.left)) {
+            return false;
+        }
+        return isAllSizeOrPointer(node.right);
+    }
+    else if (ts.isParenthesizedExpression(node)) {
+        return isAllSizeOrPointer(node.expression);
+    }
+    const type = statement.typeChecker.getTypeAtLocation(node);
+    if (isSizeType(type) || isPointerType(type, node)) {
+        return true;
+    }
+    return false;
+}
+function hasSizeNode(node) {
+    if (ts.isBinaryExpression(node)) {
+        if (hasSizeNode(node.left)) {
+            return true;
+        }
+        return hasSizeNode(node.right);
+    }
+    else if (ts.isParenthesizedExpression(node)) {
+        return hasSizeNode(node.expression);
+    }
+    const type = statement.typeChecker.getTypeAtLocation(node);
+    if (isSizeType(type)) {
+        return true;
+    }
+    return false;
+}
+function handle(node, visitor) {
+    var _a;
+    /**
+     * 将多个等号变成逗号运算符
+     */
+    if (node.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        && ts.isBinaryExpression(node.right)
+        && node.right.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        && (isPointerNode(node.right)
+            || isPointerNode(node.left))) {
+        const right = getEqualsBinaryExpressionRight(node);
+        let tree = statement.context.factory.createBinaryExpression(node.left, ts.SyntaxKind.EqualsToken, right);
+        let next = node.right;
+        while (next && ts.isBinaryExpression(next) && next.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+            tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.CommaToken, statement.context.factory.createBinaryExpression(next.left, ts.SyntaxKind.EqualsToken, right));
+            next = next.right;
+        }
+        return ts.visitEachChild(tree, visitor, statement.context);
+    }
+    // 指针复合运算
+    else if (isPointerNode(node.left) && isMergeOperator(node.operatorToken.kind)) {
+        return ts.visitNode(statement.context.factory.createBinaryExpression(node.left, ts.SyntaxKind.EqualsToken, statement.context.factory.createBinaryExpression(node.left, mergeOperator2Operator(node.operatorToken.kind), node.right)), visitor);
+    }
+    // 赋值运算
+    else if (node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+        return equalVisitor(node, visitor);
+    }
+    // 单箭头运算
+    else if (node.operatorToken.kind === ts.SyntaxKind.LessThanToken
+        && ts.isPrefixUnaryExpression(node.right)
+        && node.right.operator === ts.SyntaxKind.MinusToken) {
+        return singleArrowVisitor(node, visitor);
+    }
+    // size 运算
+    else if ((hasSizeNode(node.right) || hasSizeNode(node.left))
+        && node.operatorToken.kind !== ts.SyntaxKind.AmpersandAmpersandToken
+        && node.operatorToken.kind !== ts.SyntaxKind.BarBarToken
+        && node.operatorToken.kind !== ts.SyntaxKind.GreaterThanToken
+        && node.operatorToken.kind !== ts.SyntaxKind.GreaterThanEqualsToken
+        && node.operatorToken.kind !== ts.SyntaxKind.LessThanToken
+        && node.operatorToken.kind !== ts.SyntaxKind.LessThanEqualsToken) {
+        if (hasSizeNode(node.left) && !isAllSizeOrPointer(node.right)) {
+            if (ts.isNumericLiteral(node.right) && (!node.parent || !ts.isBinaryExpression(node.parent))) {
+                return statement.context.factory.createBinaryExpression(ts.visitNode(node.left, statement.visitor), node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+                    ? ts.SyntaxKind.GreaterThanGreaterThanToken
+                    : node.operatorToken.kind, createPointerOperand(node.right));
+            }
+            reportError(statement.currentFile, node, 'size type in binary expression must convert to other base type');
+            return node;
+        }
+        if (!isAllSizeOrPointer(node.left) && hasSizeNode(node.right)) {
+            if (ts.isNumericLiteral(node.left) && (!node.parent || !ts.isBinaryExpression(node.parent))) {
+                return statement.context.factory.createBinaryExpression(createPointerOperand(node.left), node.operatorToken, ts.visitNode(node.right, statement.visitor));
+            }
+            reportError(statement.currentFile, node, 'size type in binary expression must convert to other base type');
+            return node;
+        }
+    }
+    // 指针加减运算
+    else if ((node.operatorToken.kind === ts.SyntaxKind.PlusToken
+        || node.operatorToken.kind === ts.SyntaxKind.MinusToken)
+        && !statement.lookupStage(StageStatus.PointerPlusMinusIgnore)) {
+        const type1 = getTypeAtLocation(node.left);
+        const type2 = getTypeAtLocation(node.right);
+        if (isPointerType(type1, node.left)
+            && (ts.isNumericLiteral(node.right)
+                || type2.flags & ts.TypeFlags.NumberLike
+                || array.has(BuiltinNumber, getBuiltinNameByType(type2)))) {
+            let step = 1;
+            if (isPointerStructType(type1, node.left)) {
+                const struct = getPointerStructByType(type1, node.left);
+                step = struct.length;
+            }
+            else if (isPointerBuiltinType(type1, node.left)) {
+                step = CTypeEnum2Bytes[getPointerBuiltinByType(type1, node.left)];
+            }
+            if (step > 1) {
+                const right = visitorRight(node.right, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, ts.isNumericLiteral(right)
+                    ? createPointerOperand(+right.text * step)
+                    : statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(createPointerOperand(right), ts.SyntaxKind.AsteriskToken, createPointerOperand(step))));
+            }
+            else if (statement.cheapCompilerOptions.defined.WASM_64) {
+                const right = visitorRight(node.right, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, createPointerOperand(right));
+            }
+        }
+        else if (isPointerType(type2, node.right)
+            && (ts.isNumericLiteral(node.left)
+                || type1.flags & ts.TypeFlags.NumberLike
+                || array.has(BuiltinNumber, (_a = type1.aliasSymbol) === null || _a === void 0 ? void 0 : _a.escapedName))) {
+            let step = 1;
+            if (isPointerBuiltinType(type2, node.right)) {
+                step = CTypeEnum2Bytes[getPointerBuiltinByType(type2, node.right)];
+            }
+            else if (isPointerStructType(type2, node.right)) {
+                const struct = getPointerStructByType(type2, node.right);
+                step = struct.length;
+            }
+            if (step > 1) {
+                const left = visitorRight(node.left, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(ts.isNumericLiteral(left)
+                    ? createPointerOperand(+left.text * step)
+                    : statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(createPointerOperand(left), ts.SyntaxKind.AsteriskToken, createPointerOperand(step))), node.operatorToken.kind, visitorLeft(node.right, visitor, node.operatorToken.kind));
+            }
+            else if (statement.cheapCompilerOptions.defined.WASM_64) {
+                const left = visitorRight(node.left, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(createPointerOperand(left), node.operatorToken.kind, visitorLeft(node.right, visitor, node.operatorToken.kind));
+            }
+        }
+        else if (isPointerType(type1, node.left) && isPointerType(type2, node.right)) {
+            if (node.operatorToken.kind === ts.SyntaxKind.MinusToken && isTypeEquals(type1, node.left, type2, node.right)) {
+                let step = 1;
+                if (isPointerBuiltinType(type1, node.left)) {
+                    step = CTypeEnum2Bytes[getPointerBuiltinByType(type1, node.left)];
+                }
+                else if (isPointerStructType(type1, node.left)) {
+                    const struct = getPointerStructByType(type1, node.left);
+                    step = struct.length;
+                }
+                if (step > 1) {
+                    if (step & (step - 1)) {
+                        if (statement.cheapCompilerOptions.defined.WASM_64) {
+                            return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                                statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind))), ts.SyntaxKind.SlashToken, createBitInt(step))
+                            ]);
+                        }
+                        else {
+                            return statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind))), ts.SyntaxKind.SlashToken, statement.context.factory.createNumericLiteral(step)));
+                        }
+                    }
+                    else {
+                        let exponent = 0;
+                        while (step > 1) {
+                            exponent++;
+                            step >>>= 1;
+                        }
+                        if (statement.cheapCompilerOptions.defined.WASM_64) {
+                            return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                                statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind))), ts.SyntaxKind.GreaterThanGreaterThanToken, createBitInt(exponent))
+                            ]);
+                        }
+                        return statement.context.factory.createBinaryExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind))), ts.SyntaxKind.GreaterThanGreaterThanToken, statement.context.factory.createNumericLiteral(exponent));
+                    }
+                }
+                else if (statement.cheapCompilerOptions.defined.WASM_64) {
+                    return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('Number'), undefined, [
+                        statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind))
+                    ]);
+                }
+            }
+            else {
+                reportError(statement.currentFile, node, 'The operation between two pointer types only allowed subtraction');
+            }
+        }
+    }
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+        const type1 = statement.typeChecker.getTypeAtLocation(node.left);
+        if (isPointerType(type1, node.left)
+            && (!ts.isIdentifier(node.right)
+                || node.right.escapedText === enumPointer
+                    && !statement.lookupLocal(enumPointer))) {
+            if (node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+                || node.operatorToken.kind === ts.SyntaxKind.PercentToken) {
+                const right = visitorRight(node.right, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind === ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken
+                    ? ts.SyntaxKind.GreaterThanGreaterThanToken
+                    : node.operatorToken.kind, ts.isNumericLiteral(right)
+                    ? createPointerOperand(+right.text)
+                    : createPointerOperand(right));
+            }
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+function computeVisitor(node) {
+    if (ts.isBinaryExpression(node)) {
+        if (ts.isNumericLiteral(node.left) && ts.isNumericLiteral(node.right)) {
+            const r = compute(+node.left.text, +node.right.text, node.operatorToken.kind);
+            if (is.number(r)) {
+                return statement.context.factory.createNumericLiteral(r);
+            }
+        }
+        if (isBigIntNode(node.left) && isBigIntNode(node.right)) {
+            const r = compute(getBigIntValue(node.left), getBigIntValue(node.right), node.operatorToken.kind);
+            if (is.bigint(r) && r <= Number.MAX_SAFE_INTEGER && r >= Number.MIN_SAFE_INTEGER) {
+                if (statement.cheapCompilerOptions.defined.BIGINT_LITERAL) {
+                    return statement.context.factory.createBigIntLiteral(r.toString() + 'n');
+                }
+                else {
+                    return statement.context.factory.createCallExpression(statement.context.factory.createIdentifier('BigInt'), undefined, [
+                        statement.context.factory.createNumericLiteral(r.toString())
+                    ]);
+                }
+            }
+        }
+        if (node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
+            if (ts.isNumericLiteral(node.right) && node.right.text === '0') {
+                return node.left;
+            }
+            else if (ts.isNumericLiteral(node.left) && node.left.text === '0') {
+                return node.right;
+            }
+        }
+        if (node.operatorToken.kind === ts.SyntaxKind.MinusToken) {
+            if (ts.isNumericLiteral(node.right) && node.right.text === '0') {
+                return node.left;
+            }
+        }
+        if (node.operatorToken.kind === ts.SyntaxKind.AsteriskToken) {
+            if (ts.isNumericLiteral(node.right) && node.right.text === '1') {
+                return node.left;
+            }
+            else if (ts.isNumericLiteral(node.left) && node.left.text === '1') {
+                return node.right;
+            }
+            if (ts.isNumericLiteral(node.right) && node.right.text === '0') {
+                return node.right;
+            }
+            else if (ts.isNumericLiteral(node.left) && node.left.text === '0') {
+                return node.left;
+            }
+        }
+        if (node.operatorToken.kind === ts.SyntaxKind.SlashToken) {
+            if (ts.isNumericLiteral(node.right) && node.right.text === '1') {
+                return node.left;
+            }
+            if (ts.isNumericLiteral(node.left) && node.left.text === '0') {
+                return node.left;
+            }
+        }
+    }
+    return ts.visitEachChild(node, computeVisitor, statement.context);
+}
+function binaryExpressionVisitor (node, visitor) {
+    let result = handle(node, visitor);
+    result = ts.isBinaryExpression(result) ? computeVisitor(result) : result;
+    return result;
+}
+
+function unaryExpressionVisitor (node, visitor) {
+    var _a;
+    if (ts.isPrefixUnaryExpression(node) && isPointerNode(node.operand)) {
+        const type = statement.typeChecker.getTypeAtLocation(node.operand);
+        let step = 1;
+        // if (typeUtils.isPointerType(type)) {
+        //   if (typeUtils.isPointerBuiltinType(type)) {
+        //     step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
+        //   }
+        //   else if (typeUtils.isPointerStructType(type)) {
+        //     const struct = typeUtils.getPointerStructByType(type)
+        //     step = struct.length
+        //   }
+        // }
+        const stepNode = array.has(BuiltinBigInt, (_a = type.aliasSymbol) === null || _a === void 0 ? void 0 : _a.escapedName)
+            ? statement.context.factory.createBigIntLiteral({
+                negative: false,
+                base10Value: toString(step)
+            })
+            : statement.context.factory.createNumericLiteral(step);
+        if (node.operator === ts.SyntaxKind.PlusPlusToken) {
+            if (ts.isExpressionStatement(node.parent)) {
+                return ts.visitNode(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.PlusEqualsToken, stepNode), visitor);
+            }
+            return ts.visitNode(statement.context.factory.createBinaryExpression(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.PlusEqualsToken, stepNode), ts.SyntaxKind.CommaToken, node.operand), visitor);
+        }
+        else if (node.operator === ts.SyntaxKind.MinusMinusToken) {
+            if (ts.isExpressionStatement(node.parent)) {
+                return ts.visitNode(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.MinusEqualsToken, stepNode), visitor);
+            }
+            return ts.visitNode(statement.context.factory.createBinaryExpression(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.MinusEqualsToken, stepNode), ts.SyntaxKind.CommaToken, node.operand), visitor);
+        }
+        else if (node.operator !== ts.SyntaxKind.ExclamationToken) {
+            reportError(statement.currentFile, node, 'The unary operation width pointer only allowed ++ -- !');
+            return node;
+        }
+    }
+    else if (ts.isPostfixUnaryExpression(node) && isPointerNode(node.operand)) {
+        const type = statement.typeChecker.getTypeAtLocation(node.operand);
+        let step = 1;
+        // if (typeUtils.isPointerType(type)) {
+        //   if (typeUtils.isPointerBuiltinType(type)) {
+        //     step = CTypeEnum2Bytes[typeUtils.getPointerBuiltinByType(type)]
+        //   }
+        //   else if (typeUtils.isPointerStructType(type)) {
+        //     const struct = typeUtils.getPointerStructByType(type)
+        //     step = struct.length
+        //   }
+        // }
+        const stepNode = array.has(BuiltinBigInt, getBuiltinNameByType(type))
+            ? statement.context.factory.createBigIntLiteral({
+                negative: false,
+                base10Value: toString(step)
+            })
+            : statement.context.factory.createNumericLiteral(step);
+        if (node.operator === ts.SyntaxKind.PlusPlusToken) {
+            if (ts.isExpressionStatement(node.parent)) {
+                return ts.visitNode(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.PlusEqualsToken, stepNode), visitor);
+            }
+            return ts.visitNode(statement.context.factory.createBinaryExpression(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.PlusEqualsToken, stepNode), ts.SyntaxKind.CommaToken, statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.MinusToken, stepNode)), visitor);
+        }
+        else if (node.operator === ts.SyntaxKind.MinusMinusToken) {
+            if (ts.isExpressionStatement(node.parent)) {
+                return ts.visitNode(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.MinusEqualsToken, stepNode), visitor);
+            }
+            return ts.visitNode(statement.context.factory.createBinaryExpression(statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.MinusEqualsToken, stepNode), ts.SyntaxKind.CommaToken, statement.context.factory.createBinaryExpression(node.operand, ts.SyntaxKind.PlusToken, stepNode)), visitor);
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function elementAccessExpressionVisitor (node, visitor) {
+    var _a;
+    const type = statement.typeChecker.getTypeAtLocation(node.expression);
+    // pointer[]
+    if (isPointerElementAccess(node)
+        && (!type.aliasSymbol || type.aliasSymbol.escapedName !== typeArray)) {
+        return ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(accessof), undefined, [
+            statement.context.factory.createBinaryExpression(node.expression, ts.SyntaxKind.PlusToken, node.argumentExpression)
+        ]), visitor);
+    }
+    else if (isSmartPointerElementAccess(node)) {
+        reportError(statement.currentFile, node, 'smart pointer not support [] operate');
+        return node;
+    }
+    // array[]
+    else if (ts.isPropertyAccessExpression(node.expression)
+        && isPointerNode(node.expression.expression)
+        || ts.isElementAccessExpression(node.expression)
+            && isPointerNode(node.expression)) {
+        const type = statement.typeChecker.getTypeAtLocation(node);
+        const expressionType = statement.typeChecker.getTypeAtLocation(node.expression);
+        if (isArrayType(expressionType) && ts.isNumericLiteral(node.argumentExpression)) {
+            const index = +node.argumentExpression.text;
+            const max = +expressionType.aliasTypeArguments[1].value;
+            if (index < 0 || index >= max) {
+                reportError(statement.currentFile, node, `type array access invalid index ${index}, range [0, ${max - 1}]`);
+                return node;
+            }
+        }
+        let tree = ts.visitNode(statement.context.factory.createCallExpression(statement.context.factory.createIdentifier(addressof), undefined, [
+            node.expression
+        ]), visitor);
+        if (isStructType(type)) {
+            let targetStruct = getStructByType(type);
+            let targetSymbol = targetStruct.symbol.deref();
+            let targetPath = '';
+            if (targetStruct.structType === StructType.INLINE_OBJECT) {
+                targetSymbol = targetStruct.definedClassParent.symbol.deref();
+                targetPath = targetStruct.definedClassParent.inlineStructPathMap.get(targetStruct.symbol.deref());
+            }
+            if (!(ts.isNumericLiteral(node.argumentExpression) && (+node.argumentExpression.text) === 0)) {
+                tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, ts.isNumericLiteral(node.argumentExpression)
+                    ? createPointerOperand(targetStruct.length * (+node.argumentExpression.text))
+                    : createPointerOperand(statement.context.factory.createBinaryExpression(statement.context.factory.createNumericLiteral(targetStruct.length), ts.SyntaxKind.AsteriskToken, statement.context.factory.createParenthesizedExpression(node.argumentExpression))));
+            }
+            const targetSource = (_a = targetSymbol.valueDeclaration) === null || _a === void 0 ? void 0 : _a.getSourceFile();
+            if (targetSource) {
+                let key;
+                if (targetSource !== statement.currentFile) {
+                    // addressof(array[]) 不需要导入
+                    if (node.parent
+                        && ts.isCallExpression(node.parent)
+                        && ts.isIdentifier(node.parent.expression)
+                        && node.parent.expression.escapedText === addressof
+                        && !statement.lookupFunc(addressof)) {
+                        key = statement.context.factory.createIdentifier('undefined');
+                    }
+                    else {
+                        key = statement.addStructImport(targetSymbol, targetSource);
+                    }
+                }
+                else {
+                    key = statement.context.factory.createIdentifier(targetSymbol.escapedName);
+                }
+                const args = [
+                    tree,
+                    key
+                ];
+                if (targetPath) {
+                    args.push(statement.context.factory.createStringLiteral(targetPath));
+                }
+                return statement.context.factory.createCallExpression(statement.addIdentifierImport(structAccess, RootPath, false), undefined, args);
+            }
+        }
+        else if (isBuiltinType(type, node)) {
+            if (!(ts.isNumericLiteral(node.argumentExpression) && (+node.argumentExpression.text) === 0)) {
+                tree = statement.context.factory.createBinaryExpression(tree, ts.SyntaxKind.PlusToken, ts.isNumericLiteral(node.argumentExpression)
+                    ? createPointerOperand(CTypeEnum2Bytes[getBuiltinByType(type, node)] * (+node.argumentExpression.text))
+                    : createPointerOperand(statement.context.factory.createBinaryExpression(statement.context.factory.createNumericLiteral(CTypeEnum2Bytes[getBuiltinByType(type, node)]), ts.SyntaxKind.AsteriskToken, statement.context.factory.createParenthesizedExpression(node.argumentExpression))));
+            }
+            return statement.context.factory.createCallExpression(statement.context.factory.createElementAccessExpression(statement.addMemoryImport(ctypeEnumRead), getBuiltinByType(type, node)), undefined, [
+                tree
+            ]);
+        }
+        else {
+            reportError(statement.currentFile, node, 'struct type mismatch');
+            return node;
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+const input = '__cheap__transformer_tmp.wat';
+const output = '__cheap__transformer_tmp.wasm';
+function processAsm(template, node, wasm64) {
+    let text = '';
+    let startPos = node.template.getStart();
+    if (ts.isNoSubstitutionTemplateLiteral(template)) {
+        text = template.text;
+    }
+    else {
+        if (template.head) {
+            text += template.head.text;
+        }
+        for (let i = 0; i < template.templateSpans.length; i++) {
+            const span = template.templateSpans[i];
+            if (ts.isStringLiteral(span.expression)
+                || ts.isNumericLiteral(span.expression)) {
+                text += span.expression.text;
+                text += span.literal.text;
+            }
+            else {
+                reportError(statement.currentFile, span.expression, `expression ${span.expression.getText()} not support in asm`);
+                return statement.context.factory.createStringLiteral('compile asm error');
+            }
+        }
+    }
+    const distPath = `${statement.options.tmpPath ? `${statement.options.tmpPath}/` : ''}`;
+    if (distPath && !ts.sys.directoryExists(distPath)) {
+        ts.sys.createDirectory(distPath);
+    }
+    const inputPath = `${distPath}${input}`;
+    const outputPath = `${distPath}${output}`;
+    const cmd = `${statement.options.wat2wasm} ${inputPath} --enable-all -o ${outputPath}`;
+    const source = `
+    (module
+      (import "env" "memory" (memory${wasm64 ? ' i64 ' : ' '}1 65536 shared))
+      ${text}
+    )
+  `;
+    ts.sys.writeFile(inputPath, source);
+    try {
+        execSync(cmd, {
+            stdio: 'pipe'
+        });
+        const buffer = fs.readFileSync(outputPath);
+        return statement.context.factory.createStringLiteral(buffer.toString('base64'));
+    }
+    catch (error) {
+        let messages = error.message.split('\n');
+        messages.shift();
+        let errorMessage = '';
+        let line = 0;
+        function getPos(line) {
+            let pos = 0;
+            while (line && pos < text.length) {
+                if (text[pos++] === '\n') {
+                    line--;
+                }
+            }
+            while (pos < text.length) {
+                if (!/\s/.test(text[pos])) {
+                    break;
+                }
+                pos++;
+            }
+            const start = startPos + pos;
+            while (pos < text.length) {
+                if (text[pos] === '\n') {
+                    break;
+                }
+                pos++;
+            }
+            const end = startPos + pos;
+            return {
+                start, end
+            };
+        }
+        array.each(messages, (message) => {
+            const match = message.match(/__cheap__transformer_tmp.wat:(\d+)/);
+            if (match) {
+                if (errorMessage) {
+                    const { start, end } = getPos(line);
+                    reportError(statement.currentFile, node, errorMessage, SYNTAX_ERROR, start, end);
+                }
+                errorMessage = `${message.split('error: ').pop()}`;
+                line = +match[1] - 4;
+            }
+            else if (message) {
+                errorMessage += `\n${message}`;
+            }
+        });
+        if (errorMessage) {
+            const { start, end } = getPos(line);
+            reportError(statement.currentFile, node, errorMessage, SYNTAX_ERROR, start, end);
+        }
+        return statement.context.factory.createStringLiteral('compile asm error');
+    }
+}
+
+function taggedTemplateExpressionVisitor (node, visitor) {
+    if (ts.isIdentifier(node.tag) && (node.tag.escapedText === tagAsm || node.tag.escapedText === tagAsm64)) {
+        const template = ts.visitNode(node.template, visitor);
+        return processAsm(template, node, node.tag.escapedText === tagAsm64);
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function conditionalExpressionVisitor (node, visitor) {
+    if (ts.visitNode(node.condition, hasDefined) && ts.visitNode(node.condition, checkConditionCompile)) {
+        if (checkBool(node.condition, visitor)) {
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+                const type = statement.typeChecker.getTypeAtLocation(node.whenFalse);
+                if (isSizeType(type)) {
+                    return createPointerOperand(ts.visitNode(node.whenTrue, visitor));
+                }
+            }
+            return ts.visitNode(node.whenTrue, visitor);
+        }
+        else {
+            if (statement.cheapCompilerOptions.defined.WASM_64) {
+                const type = statement.typeChecker.getTypeAtLocation(node.whenTrue);
+                if (isSizeType(type)) {
+                    return createPointerOperand(ts.visitNode(node.whenFalse, visitor));
+                }
+            }
+            return ts.visitNode(node.whenFalse, visitor);
+        }
+    }
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+        const type1 = statement.typeChecker.getTypeAtLocation(node.whenTrue);
+        const type2 = statement.typeChecker.getTypeAtLocation(node.whenFalse);
+        if (isSizeType(type1) && !isSizeType(type2)) {
+            return statement.context.factory.createConditionalExpression(ts.visitNode(node.condition, statement.visitor), node.questionToken, ts.visitNode(node.whenTrue, statement.visitor), node.colonToken, createPointerOperand(ts.visitNode(node.whenFalse, statement.visitor)));
+        }
+        else if (!isSizeType(type1) && isSizeType(type2)) {
+            return statement.context.factory.createConditionalExpression(ts.visitNode(node.condition, statement.visitor), node.questionToken, createPointerOperand(ts.visitNode(node.whenTrue, statement.visitor)), node.colonToken, ts.visitNode(node.whenFalse, statement.visitor));
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function expressionVisitor (node, visitor) {
+    var _a;
+    if (ts.isBinaryExpression(node)) {
+        return binaryExpressionVisitor(node, visitor);
+    }
+    else if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
+        return unaryExpressionVisitor(node, visitor);
+    }
+    else if (ts.isCallExpression(node)) {
+        return callVisitor(node, visitor);
+    }
+    else if (ts.isPropertyAccessExpression(node)) {
+        return propertyAccessExpressionVisitor(node, visitor);
+    }
+    else if (ts.isElementAccessExpression(node)) {
+        return elementAccessExpressionVisitor(node, visitor);
+    }
+    else if (statement.cheapCompilerOptions.defined.ENABLE_SYNCHRONIZE_API
+        && ts.isAwaitExpression(node)
+        && node.expression
+        && ts.isCallExpression(node.expression)
+        && (statement.lookupSynchronized()
+            || isSynchronizeFunction((_a = statement.typeChecker.getSymbolAtLocation(ts.isPropertyAccessExpression(node.expression.expression)
+                ? node.expression.expression.name
+                : node.expression.expression)) === null || _a === void 0 ? void 0 : _a.valueDeclaration))) {
+        return ts.visitEachChild(node.expression, visitor, statement.context);
+    }
+    else if (ts.isTaggedTemplateExpression(node)) {
+        return taggedTemplateExpressionVisitor(node, visitor);
+    }
+    else if (ts.isConditionalExpression(node)) {
+        return conditionalExpressionVisitor(node, visitor);
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function propertyDeclarationVisitor (node, visitor) {
+    if (node.initializer && node.type && node.pos > -1) {
+        const type = statement.typeChecker.getTypeAtLocation(node.type);
+        const initType = statement.typeChecker.getTypeAtLocation(node.initializer);
+        if (isPointerType(type, null)
+            && (isBuiltinType(initType, node.initializer) || initType.flags & ts.TypeFlags.NumberLike)
+            && !isPointerType(initType, node.initializer)
+            && !isNullPointer(initType, node.initializer)) {
+            reportError(statement.currentFile, node, `type ${getBuiltinNameByType(initType) || 'number'} is not assignable to property declaration of type ${getBuiltinNameByType(type)}`, TYPE_MISMATCH);
+            return node;
+        }
+        else if (isSizeType(type)) {
+            return ts.visitNode(statement.context.factory.createPropertyDeclaration(node.modifiers, node.name, node.questionToken || node.exclamationToken, node.type, createPointerOperand(node.initializer)), statement.visitor);
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function propertyAssignmentVisitor (node, visitor) {
+    if (node.initializer && node.pos > -1) {
+        const type = statement.typeChecker.getTypeAtLocation(node.name);
+        const initType = statement.typeChecker.getTypeAtLocation(node.initializer);
+        if (isPointerType(type, node.name)
+            && (isBuiltinType(initType, node.initializer) || initType.flags & ts.TypeFlags.NumberLike)
+            && !isPointerType(initType, node.initializer)
+            && !isNullPointer(initType, node.initializer)) {
+            reportError(statement.currentFile, node, `type ${getBuiltinNameByType(initType) || 'number'} is not assignable to property assignment of type ${getBuiltinNameByType(type)}`, TYPE_MISMATCH);
+            return node;
+        }
+        else if (isSizeType(type, true)) {
+            return statement.context.factory.createPropertyAssignment(node.name, ts.visitNode(createPointerOperand(node.initializer), statement.visitor));
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function bindingElementVisitor (node, visitor) {
+    if (node.initializer && node.pos > -1) {
+        const type = statement.typeChecker.getTypeAtLocation(node.name);
+        if (isSizeType(type, true)) {
+            return statement.context.factory.createBindingElement(node.dotDotDotToken, node.propertyName, node.name, ts.visitNode(createPointerOperand(node.initializer), statement.visitor));
+        }
+    }
+    return ts.visitEachChild(node, visitor, statement.context);
+}
+
+function getDirname(meta) {
+    if (typeof __dirname !== 'undefined') {
+        // CJS 环境
+        return __dirname;
+    }
+    return dirname(fileURLToPath(meta));
+}
+
+const importUrl = import.meta.url;
+const createNumericLiteralSymbol = Symbol('createNumericLiteral');
+const DefaultDefined = {
+    ENV_NODE: false,
+    ENV_CSP: false,
+    ENV_CJS: false,
+    ENABLE_THREADS: true,
+    ENABLE_THREADS_SPLIT: false,
+    DEBUG: false,
+    BIGINT_LITERAL: true,
+    CHEAP_HEAP_INITIAL: 256,
+    ENABLE_SYNCHRONIZE_API: false,
+    ENABLE_LOG_PATH: true,
+    ENV_WEBPACK: false,
+    WASM_64: false
+};
+function before(program, options, getProgram) {
+    var _a, _b;
+    if (is.func(options)) {
+        getProgram = options;
+        options = {};
+    }
+    if (!options) {
+        options = {};
+    }
+    if (!options.projectPath) {
+        options.projectPath = program.getCurrentDirectory();
+    }
+    if (!options.wat2wasm) {
+        let wat2wasmPath = path$1.resolve(getDirname(importUrl), './asm/ubuntu') + '/wat2wasm';
+        if (os.platform() === 'win32') {
+            wat2wasmPath = path$1.resolve(getDirname(importUrl), './asm/win') + '/wat2wasm.exe';
+        }
+        else if (os.platform() === 'darwin') {
+            wat2wasmPath = path$1.resolve(getDirname(importUrl), './asm/macos') + '/wat2wasm';
+        }
+        options.wat2wasm = wat2wasmPath;
+    }
+    const configFileName = ts.findConfigFile(options.projectPath, ts.sys.fileExists, 'tsconfig.json');
+    const configFile = configFileName && ts.readConfigFile(configFileName, ts.sys.readFile);
+    let compilerOptions = {
+        defined: {},
+        structPaths: {}
+    };
+    const defined = object.extend({}, DefaultDefined);
+    const structPaths = {};
+    if ((_a = configFile === null || configFile === void 0 ? void 0 : configFile.config) === null || _a === void 0 ? void 0 : _a.cheap) {
+        object.extend(defined, configFile.config.cheap.defined || {});
+        if (configFile.config.cheap.structPaths) {
+            object.each(configFile.config.cheap.structPaths, (value, key) => {
+                structPaths[path$1.resolve(path$1.dirname(configFileName), key)] = value;
+            });
+        }
+        compilerOptions = object.extend(compilerOptions, configFile.config['cheap'] || {});
+    }
+    if (options.defined) {
+        object.extend(defined, options.defined);
+    }
+    if (defined.ENV_CSP) {
+        defined.ENABLE_THREADS_SPLIT = true;
+    }
+    compilerOptions.defined = defined;
+    compilerOptions.structPaths = structPaths;
+    statement.options = options;
+    statement.cheapCompilerOptions = compilerOptions;
+    statement.compilerOptions = program.getCompilerOptions();
+    const excludes = is.array(options.exclude)
+        ? options.exclude
+        : (options.exclude
+            ? [options.exclude]
+            : []);
+    setPacketName((_b = options.cheapPacketName) !== null && _b !== void 0 ? _b : '@libmedia/cheap');
+    if (statement.cheapCompilerOptions.defined.WASM_64) {
+        CTypeEnum2Bytes[20 /* typedef.CTypeEnum.pointer */] = 8;
+        CTypeEnum2Bytes[25 /* typedef.CTypeEnum.size */] = 8;
+        BuiltinBigInt.push(typeSize);
+        statement.cheapCompilerOptions.defined.BIGINT_LITERAL = true;
+    }
+    else {
+        CTypeEnum2Bytes[20 /* typedef.CTypeEnum.pointer */] = 4;
+        CTypeEnum2Bytes[25 /* typedef.CTypeEnum.size */] = 4;
+        array.remove(BuiltinBigInt, typeSize);
+        if (defined.BIGINT_LITERAL === false) {
+            statement.cheapCompilerOptions.defined.BIGINT_LITERAL = false;
+        }
+    }
+    clearStructCache();
+    return (context) => {
+        statement.context = context;
+        const options = context.getCompilerOptions();
+        statement.moduleType = options.module;
+        statement.esModuleInterop = options.esModuleInterop;
+        const createNumericLiteral = context.factory.createNumericLiteral;
+        if (!createNumericLiteral[createNumericLiteralSymbol]) {
+            // @ts-ignore
+            context.factory.createNumericLiteral = (value, numericLiteralFlags) => {
+                if (is.number(value) && value < 0) {
+                    return statement.context.factory.createPrefixUnaryExpression(ts.SyntaxKind.MinusToken, statement.context.factory.createNumericLiteral(Math.abs(value)));
+                }
+                return createNumericLiteral(value, numericLiteralFlags);
+            };
+            context.factory.createNumericLiteral[createNumericLiteralSymbol] = true;
+        }
+        return (file) => {
+            if (excludes.some((exclude) => {
+                return exclude.test(file.fileName);
+            })) {
+                return file;
+            }
+            if (getProgram) {
+                statement.program = getProgram();
+                statement.typeChecker = statement.program.getTypeChecker();
+            }
+            else {
+                statement.program = program;
+                statement.typeChecker = program.getTypeChecker();
+            }
+            statement.start(file);
+            statement.visitor = (node) => {
+                if (ts.isPropertyDeclaration(node)) {
+                    return propertyDeclarationVisitor(node, statement.visitor);
+                }
+                else if (ts.isPropertyAssignment(node)) {
+                    return propertyAssignmentVisitor(node, statement.visitor);
+                }
+                else if (ts.isBindingElement(node)) {
+                    return bindingElementVisitor(node, statement.visitor);
+                }
+                else if (ts.isBlock(node)) {
+                    return blockVisitor(node, statement.visitor);
+                }
+                else if (ts.isIdentifier(node)) {
+                    return identifierVisitor(node, statement.visitor);
+                }
+                else if (ts.isDecorator(node)) {
+                    return decoratorVisitor(node, statement.visitor);
+                }
+                else if (node.kind === ts.SyntaxKind.AsyncKeyword) {
+                    return asyncVisitor(node, statement.visitor);
+                }
+                else if (ts.isClassDeclaration(node) && node.name && ts.isIdentifier(node.name)) {
+                    return classDeclarationVisitor(node, statement.visitor);
+                }
+                else if (ts.isIfStatement(node)) {
+                    return ifStatementVisitor(node, statement.visitor);
+                }
+                else if (ts.isParameter(node)) {
+                    return parameterVisitor(node, statement.visitor);
+                }
+                else if (ts.isVariableDeclaration(node)) {
+                    return variableDeclarationVisitor(node, statement.visitor);
+                }
+                else if (ts.isFunctionDeclaration(node)) {
+                    return functionDeclarationVisitor(node, statement.visitor);
+                }
+                else if (ts.isExpressionStatement(node)) {
+                    return expressionStatementVisitor(node, statement.visitor);
+                }
+                else if (ts.isBigIntLiteral(node)) {
+                    return bigIntLiteralVisitor(node, statement.visitor);
+                }
+                else if (ts.isExpression(node)) {
+                    return expressionVisitor(node, statement.visitor);
+                }
+                return ts.visitEachChild(node, statement.visitor, context);
+            };
+            return statement.end(ts.visitEachChild(file, statement.visitor, statement.context));
+        };
+    };
+}
+function after(program, options, getProgram) {
+    if (is.func(options)) {
+        options = {};
+    }
+    if (!options) {
+        options = {};
+    }
+    const excludes = is.array(options.exclude)
+        ? options.exclude
+        : (options.exclude
+            ? [options.exclude]
+            : []);
+    return (context) => {
+        return (file) => {
+            if (excludes.some((exclude) => {
+                return exclude.test(file.fileName);
+            })) {
+                return file;
+            }
+            const visitor = (node) => {
+                return ts.visitEachChild(node, visitor, context);
+            };
+            return ts.visitEachChild(file, visitor, context);
+        };
+    };
+}
+function afterDeclarations(program, options, getProgram) {
+    if (is.func(options)) {
+        options = {};
+    }
+    if (!options) {
+        options = {};
+    }
+    const excludes = is.array(options.exclude)
+        ? options.exclude
+        : (options.exclude
+            ? [options.exclude]
+            : []);
+    return (context) => {
+        return (file) => {
+            if (excludes.some((exclude) => {
+                return exclude.test(file.fileName);
+            })) {
+                return file;
+            }
+            const structFileIdentifiers = getStructFileIdentifiers(file.fileName);
+            const visitor = (node) => {
+                if (ts.isClassDeclaration(node) && node.name && ts.isIdentifier(node.name)) {
+                    let name = node.name.escapedText;
+                    if (node.modifiers && node.modifiers.some((modifier) => {
+                        return modifier.kind === ts.SyntaxKind.DefaultKeyword;
+                    })) {
+                        name = 'default';
+                    }
+                    if (structFileIdentifiers && array.has(structFileIdentifiers, name)) {
+                        const modifiers = node.modifiers ? [...node.modifiers] : [];
+                        modifiers.unshift(context.factory.createDecorator(context.factory.createIdentifier(typeStruct)));
+                        return context.factory.createClassDeclaration(modifiers, node.name, node.typeParameters, node.heritageClauses, node.members);
+                    }
+                }
+                return ts.visitEachChild(node, visitor, context);
+            };
+            return ts.visitEachChild(file, visitor, context);
+        };
+    };
+}
+
+export { after, afterDeclarations, before };
+//# sourceMappingURL=transformer.mjs.map

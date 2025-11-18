@@ -1,1 +1,1843 @@
-(()=>{var t={12:(t,e,r)=>{"use strict";r.d(e,{BE:()=>s,__:()=>n}),r(8769),r(2793),r(8811),r(9843),r(6582);var i=r(7095);function n(t,e){for(let r in t)if(e(t[r],r)===i.W8)break}function s(t){const e={};return n(t,((t,r)=>{e[t]=r})),e}r(3799),r(3712)},15:(t,e,r)=>{"use strict";var i=r(6927),n=r(9624),s=r(2456),o=r(4221),a=r(6415),u=n([].concat);t.exports=i("Reflect","ownKeys")||function(t){var e=s.f(a(t)),r=o.f;return r?u(e,r(t)):e}},36:(t,e,r)=>{"use strict";var i=r(9838),n=r(5948),s=r(2841).indexOf,o=r(2830),a=n([].indexOf),u=!!a&&1/a([1],1,-0)<0;i({target:"Array",proto:!0,forced:u||!o("indexOf")},{indexOf:function(t){var e=arguments.length>1?arguments[1]:void 0;return u?a(this,t,e)||0:s(this,t,e)}})},43:(t,e,r)=>{"use strict";r(7489)},64:(t,e,r)=>{"use strict";var i=r(5695);t.exports=i},71:(t,e,r)=>{t.exports=r(9197)},120:(t,e,r)=>{"use strict";r(5809)},152:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(5089).clear;i({global:!0,bind:!0,enumerable:!0,forced:n.clearImmediate!==s},{clearImmediate:s})},163:(t,e,r)=>{"use strict";var i=r(2459);t.exports=i},171:(t,e,r)=>{"use strict";var i=r(6236);r(4105),r(6426),r(8323),r(905),t.exports=i},179:(t,e,r)=>{"use strict";var i=r(8388),n=r(803);t.exports=i?{}.toString:function(){return"[object "+n(this)+"]"}},216:(t,e,r)=>{"use strict";var i=r(3457),n=r(4292),s=Array.prototype;t.exports=function(t){var e=t.reverse;return t===s||i(s,t)&&e===s.reverse?n:e}},244:(t,e,r)=>{"use strict";r.d(e,{A:()=>o});var i=r(9843),n=r(9135),s=r(3022);function o(t){return i.Pc(t)&&s.zy((0,n.A)(t),"[native code]")}},272:(t,e,r)=>{"use strict";var i,n=r(6415),s=r(4089),o=r(6959),a=r(4061),u=r(821),c=r(5967),h=r(767),f="prototype",l="script",p=h("IE_PROTO"),d=function(){},v=function(t){return"<"+l+">"+t+"</"+l+">"},g=function(t){t.write(v("")),t.close();var e=t.parentWindow.Object;return t=null,e},y=function(){try{i=new ActiveXObject("htmlfile")}catch(t){}var t,e,r;y="undefined"!=typeof document?document.domain&&i?g(i):(e=c("iframe"),r="java"+l+":",e.style.display="none",u.appendChild(e),e.src=String(r),(t=e.contentWindow.document).open(),t.write(v("document.F=Object")),t.close(),t.F):g(i);for(var n=o.length;n--;)delete y[f][o[n]];return y()};a[p]=!0,t.exports=Object.create||function(t,e){var r;return null!==t?(d[f]=n(t),r=new d,d[f]=null,r[p]=t):r=y(),void 0===e?r:s.f(r,e)}},283:(t,e,r)=>{"use strict";var i=r(803),n=r(6998),s=r(1485),o=r(7221),a=r(5563)("iterator");t.exports=function(t){if(!s(t))return n(t,a)||n(t,"@@iterator")||o[i(t)]}},300:(t,e,r)=>{"use strict";var i=r(9855);t.exports=/web0s(?!.*chrome)/i.test(i)},317:t=>{"use strict";var e=Math.ceil,r=Math.floor;t.exports=Math.trunc||function(t){var i=+t;return(i>0?r:e)(i)}},339:(t,e,r)=>{"use strict";r(6713),r(9843),r(6582),r(5884),r(12),r(3022),r(7523),r(3668),r(7095)},347:(t,e,r)=>{"use strict";var i=r(3012),n=r(5701),s=r(4877),o=r(7884),a=r(3437),u=r(7041),c=r(5497),h=r(8309),f=Object.getOwnPropertyDescriptor;e.f=i?f:function(t,e){if(t=a(t),e=u(e),h)try{return f(t,e)}catch(t){}if(c(t,e))return o(!n(s.f,t,e),t[e])}},371:(t,e,r)=>{"use strict";var i=r(2391);t.exports=function(t,e){return void 0===t?arguments.length<2?"":e:i(t)}},394:(t,e,r)=>{"use strict";r(6582),r(3668),r(4099)},409:(t,e,r)=>{"use strict";var i=r(9624),n=Error,s=i("".replace),o=String(new n("zxcasd").stack),a=/\n\s*at [^:]*:[^\n]*/,u=a.test(o);t.exports=function(t,e){if(u&&"string"==typeof t&&!n.prepareStackTrace)for(;e--;)t=s(t,a,"");return t}},446:(t,e,r)=>{"use strict";var i=r(6453);t.exports=i},469:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(5089).set,o=r(6600),a=n.setImmediate?o(s,!1):s;i({global:!0,bind:!0,enumerable:!0,forced:n.setImmediate!==a},{setImmediate:a})},522:(t,e,r)=>{"use strict";var i=r(9624),n=r(850);t.exports=function(t,e,r){try{return i(n(Object.getOwnPropertyDescriptor(t,e)[r]))}catch(t){}}},530:(t,e,r)=>{"use strict";var i=r(9624),n=r(5021),s=r(8069),o=i(Function.toString);n(s.inspectSource)||(s.inspectSource=function(t){return o(t)}),t.exports=s.inspectSource},575:(t,e,r)=>{"use strict";r(9135)},599:()=>{},665:(t,e,r)=>{"use strict";r(9838)({target:"Symbol",stat:!0,name:"isRegisteredSymbol"},{isRegistered:r(7874)})},751:(t,e,r)=>{"use strict";r(8720);var i=r(2071);t.exports=i.setImmediate},767:(t,e,r)=>{"use strict";var i=r(8377),n=r(9096),s=i("keys");t.exports=function(t){return s[t]||(s[t]=n(t))}},803:(t,e,r)=>{"use strict";var i=r(8388),n=r(5021),s=r(6280),o=r(5563)("toStringTag"),a=Object,u="Arguments"===s(function(){return arguments}());t.exports=i?s:function(t){var e,r,i;return void 0===t?"Undefined":null===t?"Null":"string"==typeof(r=function(t,e){try{return t[e]}catch(t){}}(e=a(t),o))?r:u?s(e):"Object"===(i=s(e))&&n(e.callee)?"Arguments":i}},821:(t,e,r)=>{"use strict";var i=r(6927);t.exports=i("document","documentElement")},825:(t,e,r)=>{"use strict";r(9815)("hasInstance")},850:(t,e,r)=>{"use strict";var i=r(5021),n=r(1951),s=TypeError;t.exports=function(t){if(i(t))return t;throw new s(n(t)+" is not a function")}},868:t=>{"use strict";t.exports=require("commander")},879:()=>{},887:(t,e,r)=>{"use strict";r.d(e,{A:()=>a});var i=r(2563),n=r(7523),s=r(8796);const o="src/common/io/IOReaderSync.ts";class a{constructor(t=1048576,e=!0,r){if((0,i.A)(this,"data",void 0),(0,i.A)(this,"buffer",void 0),(0,i.A)(this,"pointer",void 0),(0,i.A)(this,"endPointer",void 0),(0,i.A)(this,"pos",void 0),(0,i.A)(this,"size",void 0),(0,i.A)(this,"littleEndian",void 0),(0,i.A)(this,"fileSize_",void 0),(0,i.A)(this,"error",void 0),(0,i.A)(this,"onFlush",void 0),(0,i.A)(this,"onSeek",void 0),(0,i.A)(this,"onSize",void 0),(0,i.A)(this,"flags",void 0),this.pos=BigInt(0),this.pointer=0,this.error=0,this.endPointer=0,this.littleEndian=!e,this.flags=0,r&&r.view)this.size=r.length,this.buffer=r,this.data=r.view;else if(r&&!r.byteOffset)this.size=r.length,this.buffer=r,this.data=new DataView(this.buffer.buffer);else{if(r)throw new Error("not support subarray of ArrayBuffer");this.size=Math.max(t,102400),this.buffer=new Uint8Array(this.size),this.data=new DataView(this.buffer.buffer)}}readUint8(){this.remainingLength()<1&&this.flush(1);const t=this.data.getUint8(this.pointer);return this.pointer++,this.pos++,t}peekUint8(){return this.remainingLength()<1&&this.flush(1),this.data.getUint8(this.pointer)}readUint16(){this.remainingLength()<2&&this.flush(2);const t=this.data.getUint16(this.pointer,this.littleEndian);return this.pointer+=2,this.pos+=BigInt(2),t}peekUint16(){return this.remainingLength()<2&&this.flush(2),this.data.getUint16(this.pointer,this.littleEndian)}readUint24(){this.remainingLength()<3&&this.flush(3);const t=this.readUint16(),e=this.readUint8();return this.littleEndian?e<<16|t:t<<8|e}peekUint24(){this.remainingLength()<3&&this.flush(3);const t=this.pointer,e=this.pos,r=this.readUint16(),i=this.readUint8(),n=this.littleEndian?i<<16|r:r<<8|i;return this.pointer=t,this.pos=e,n}readUint32(){this.remainingLength()<4&&this.flush(4);const t=this.data.getUint32(this.pointer,this.littleEndian);return this.pointer+=4,this.pos+=BigInt(4),t}peekUint32(){return this.remainingLength()<4&&this.flush(4),this.data.getUint32(this.pointer,this.littleEndian)}readUint64(){this.remainingLength()<8&&this.flush(8);const t=this.data.getBigUint64(this.pointer,this.littleEndian);return this.pointer+=8,this.pos+=BigInt(8),t}peekUint64(){return this.remainingLength()<8&&this.flush(8),this.data.getBigUint64(this.pointer,this.littleEndian)}readInt8(){this.remainingLength()<1&&this.flush(1);const t=this.data.getInt8(this.pointer);return this.pointer++,this.pos++,t}peekInt8(){return this.remainingLength()<1&&this.flush(1),this.data.getInt8(this.pointer)}readInt16(){this.remainingLength()<2&&this.flush(2);const t=this.data.getInt16(this.pointer,this.littleEndian);return this.pointer+=2,this.pos+=BigInt(2),t}peekInt16(){return this.remainingLength()<2&&this.flush(2),this.data.getInt16(this.pointer,this.littleEndian)}readInt24(){const t=this.readUint24();return 8388608&t?t-16777216:t}peekInt24(){const t=this.peekUint24();return 8388608&t?t-16777216:t}readInt32(){this.remainingLength()<4&&this.flush(4);const t=this.data.getInt32(this.pointer,this.littleEndian);return this.pointer+=4,this.pos+=BigInt(4),t}peekInt32(){return this.remainingLength()<4&&this.flush(4),this.data.getInt32(this.pointer,this.littleEndian)}readInt64(){this.remainingLength()<8&&this.flush(8);const t=this.data.getBigInt64(this.pointer,this.littleEndian);return this.pointer+=8,this.pos+=BigInt(8),t}peekInt64(){return this.remainingLength()<8&&this.flush(8),this.data.getBigInt64(this.pointer,this.littleEndian)}readFloat(){this.remainingLength()<4&&this.flush(4);const t=this.data.getFloat32(this.pointer,this.littleEndian);return this.pointer+=4,this.pos+=BigInt(4),t}peekFloat(){return this.remainingLength()<4&&this.flush(4),this.data.getFloat32(this.pointer,this.littleEndian)}readDouble(){this.remainingLength()<8&&this.flush(8);const t=this.data.getFloat64(this.pointer,this.littleEndian);return this.pointer+=8,this.pos+=BigInt(8),t}peekDouble(){return this.remainingLength()<8&&this.flush(8),this.data.getFloat64(this.pointer,this.littleEndian)}readHex(t=1){let e="";for(let r=0;r<t;r++){const t=this.readUint8().toString(16);e+=1===t.length?"0"+t:t}return e}peekHex(t=1){t>this.size&&(this.error=-1048574,n.h2("peekHex, length too large",o,412)),this.remainingLength()<t&&this.flush(t);const e=this.pointer,r=this.pos;let i="";for(let e=0;e<t;e++){const t=this.readUint8().toString(16);i+=1===t.length?"0"+t:t}return this.pointer=e,this.pos=r,i}readBuffer(t,e){if(!t)return new Uint8Array(0);if(e||(e=new Uint8Array(t)),this.remainingLength()<t){let r=0;if(this.remainingLength()>0){const i=this.remainingLength();e.set(this.buffer.subarray(this.pointer,this.pointer+i),r),r+=i,this.pointer+=i,this.pos+=BigInt(i),t-=i}for(;t>0;){this.flush();const i=Math.min(this.endPointer-this.pointer,t);e.set(this.buffer.subarray(this.pointer,this.pointer+i),r),r+=i,this.pointer+=i,this.pos+=BigInt(i),t-=i}}else e.set(this.buffer.subarray(this.pointer,this.pointer+t),0),this.pointer+=t,this.pos+=BigInt(t);return e}peekBuffer(t,e){return t?(t>this.size&&(this.error=-1048574,n.h2("peekBuffer, length too large",o,505)),this.remainingLength()<t&&this.flush(t),e||(e=new Uint8Array(t)),e.set(this.buffer.subarray(this.pointer,this.pointer+t),0),e):new Uint8Array(0)}readToBuffer(t,e){if(this.remainingLength()<t){let r=0;if(this.remainingLength()>0){const i=this.remainingLength();e.set(this.buffer.subarray(this.pointer,this.pointer+i),r),r+=i,this.pointer+=i,this.pos+=BigInt(i),t-=i}for(;t>0;){try{this.flush()}catch(t){if(-1048576===this.error&&r)return r;throw t}const i=Math.min(this.endPointer-this.pointer,t);e.set(this.buffer.subarray(this.pointer,this.pointer+i),r),r+=i,this.pointer+=i,this.pos+=BigInt(i),t-=i}return r}return e.set(this.buffer.subarray(this.pointer,this.pointer+t),0),this.pointer+=t,this.pos+=BigInt(t),t}readString(t=1){const e=this.readBuffer(t);return s.D(e)}peekString(t=1){const e=this.peekBuffer(t);return s.D(e)}readLine(){let t="";for(;;){let e=!1;for(let r=this.pointer;r<this.endPointer;r++)if(10===this.buffer[r]||13===this.buffer[r]){r!==this.pointer&&(t+=this.readString(r-this.pointer)),e=!0;break}if(e)break;t+=this.readString(this.remainingLength()),this.flush()}let e=this.peekUint8();return 10!==e&&13!==e||(this.pointer++,13===e&&(e=this.peekUint8(),10===e&&this.pointer++)),t}peekLine(){this.remainingLength()<this.size&&this.flush();let t="",e=!1;for(let r=this.pointer;r<this.endPointer;r++)if(10===this.buffer[r]||13===this.buffer[r]){t+=this.peekString(r-this.pointer),e=!0;break}return e||(this.error=-1048574,n.h2("peekLine, out of buffer",o,656)),t}getPointer(){return this.pointer}getPos(){return this.pos}skip(t){const e=t;for(;this.remainingLength()<t;)t-=this.remainingLength(),this.pointer=this.endPointer,this.flush();this.remainingLength()>=t&&(this.pointer+=t),this.pos+=BigInt(e)}remainingLength(){return this.endPointer-this.pointer}flush(t=0){if(this.onFlush||(this.error=-1048574,n.h2("IOReader error, flush failed because of no flush callback",o,720)),!(this.size-this.remainingLength()<=0)){if(t=Math.min(t,this.size),this.pointer<this.endPointer?(this.buffer.set(this.buffer.subarray(this.pointer,this.endPointer),0),this.endPointer=this.endPointer-this.pointer):this.endPointer=0,this.pointer=0,t)for(;this.remainingLength()<t;){const t=this.onFlush(this.buffer.subarray(this.endPointer));if(t<0)throw this.error=t,new Error(`IOReader error, flush ${-1048576===t?"ended":"failed"}, ret: ${t}`);this.endPointer+=t}else{const t=this.onFlush(this.buffer.subarray(this.endPointer));if(t<0)throw this.error=t,new Error(`IOReader error, flush ${-1048576===t?"ended":"failed"}, ret: ${t}`);this.endPointer+=t}this.error=0}}seek(t,e=!1,r=!0){if(!e){const e=Number(t-this.pos);if(e<0&&Math.abs(e)<=this.pointer)return this.pointer+=e,void(this.pos=t);if(e>0&&this.pointer+e<this.endPointer)return this.pointer+=e,void(this.pos=t);if(0===e)return}this.onSeek||(this.error=-1048574,n.h2("IOReader error, seek failed because of no seek callback",o,790)),this.pointer=this.endPointer=0,this.pos=t;const i=this.onSeek(t);0!==i&&(this.error=i,n.h2("IOReader error, seek failed",o,799)),r&&this.flush()}getBuffer(){return this.buffer}appendBuffer(t){if(this.size-this.endPointer>=t.length)this.buffer.set(t,this.endPointer),this.endPointer+=t.length;else if(this.buffer.set(this.buffer.subarray(this.pointer,this.endPointer),0),this.endPointer=this.endPointer-this.pointer,this.pointer=0,this.size-this.endPointer>=t.length)this.buffer.set(t,this.endPointer),this.endPointer+=t.length;else{const e=Math.min(this.size-this.endPointer,t.length);this.buffer.set(t.subarray(0,e),this.endPointer),this.endPointer+=e,n.R8("IOReader, call appendBuffer but the buffer's size is lagger then the remaining size",o,838)}}reset(){this.pointer=this.endPointer=0,this.pos=BigInt(0),this.error=0}setEndian(t){this.littleEndian=!t}isBigEndian(){return!this.littleEndian}fileSize(){if(this.fileSize_)return this.fileSize_;if(!this.onSize)return n.R8("IOReader error, fileSize failed because of no onSize callback",o,880),BigInt(0);try{this.fileSize_=this.onSize()}catch(t){n.R8(`IOReader error, call fileSize failed: ${t}`,o,887),this.fileSize_=BigInt(0)}return this.fileSize_}getBufferSize(){return this.size}pipe(t,e){if(e)if(this.remainingLength()<e){if(this.remainingLength()>0){const r=this.remainingLength();t.writeBuffer(this.buffer.subarray(this.pointer,this.pointer+r)),this.pointer+=r,this.pos+=BigInt(r),e-=r}for(;e>0;){this.flush();const r=Math.min(this.endPointer-this.pointer,e);t.writeBuffer(this.buffer.subarray(this.pointer,this.pointer+r)),this.pointer+=r,this.pos+=BigInt(r),e-=r}}else t.writeBuffer(this.buffer.subarray(this.pointer,this.pointer+e)),this.pointer+=e,this.pos+=BigInt(e);else{if(this.remainingLength()>0){const e=this.remainingLength();t.writeBuffer(this.buffer.subarray(this.pointer,this.pointer+e)),this.pointer+=e,this.pos+=BigInt(e)}for(;this.onFlush(this.buffer.subarray(0))>0;){const e=this.remainingLength();t.writeBuffer(this.buffer.subarray(this.pointer,this.pointer+e)),this.pointer+=e,this.pos+=BigInt(e)}}}}},900:(t,e,r)=>{"use strict";r(8690);var i=r(2071);t.exports=i.Array.isArray},905:(t,e,r)=>{"use strict";r(9815)("metadata")},958:(t,e,r)=>{"use strict";r(2399),r(1193),r(9497),r(5463),r(2608),r(9843),r(7247),r(6582),r(12)},1014:(t,e,r)=>{"use strict";r(5634);var i=r(2244);t.exports=i("String","trim")},1026:(t,e,r)=>{"use strict";var i=r(9624),n=r(1726),s=r(2391),o=r(8276),a=i("".replace),u=RegExp("^["+o+"]+"),c=RegExp("(^|[^"+o+"])["+o+"]+$"),h=function(t){return function(e){var r=s(n(e));return 1&t&&(r=a(r,u,"")),2&t&&(r=a(r,c,"$1")),r}};t.exports={start:h(1),end:h(2),trim:h(3)}},1037:t=>{"use strict";var e=TypeError;t.exports=function(t){if(t>9007199254740991)throw e("Maximum allowed index exceeded");return t}},1061:(t,e,r)=>{"use strict";var i=r(4371),n=r(2391),s=r(1726),o=RangeError;t.exports=function(t){var e=n(s(this)),r="",a=i(t);if(a<0||a===1/0)throw new o("Wrong number of repetitions");for(;a>0;(a>>>=1)&&(e+=e))1&a&&(r+=e);return r}},1104:(t,e,r)=>{"use strict";r(2399);var i=r(6582);const n={};i.__(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"],((t,e)=>{n[t]=e}))},1193:(t,e,r)=>{r(9847)},1219:t=>{"use strict";t.exports=!0},1241:(t,e,r)=>{"use strict";var i=r(9135),n=r(7095);/common/.test((0,i.A)(n.x7))&&(!n.jf||!1!==n.jf.DEBUG)||n.jf&&n.jf.DEBUG},1265:(t,e,r)=>{"use strict";r(9815)("search")},1326:(t,e,r)=>{"use strict";r(9815)("unscopables")},1329:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(5701),o=r(9624),a=r(1219),u=r(3012),c=r(9559),h=r(1767),f=r(5497),l=r(3457),p=r(6415),d=r(3437),v=r(7041),g=r(2391),y=r(7884),b=r(272),m=r(8472),w=r(2456),x=r(1602),S=r(4221),A=r(347),E=r(7097),U=r(4089),O=r(4877),I=r(7632),B=r(8626),k=r(8377),P=r(767),j=r(4061),L=r(9096),T=r(5563),z=r(2855),_=r(9815),C=r(6842),F=r(3975),R=r(6437),D=r(3637).forEach,N=P("hidden"),M="Symbol",W="prototype",V=R.set,$=R.getterFor(M),q=Object[W],H=n.Symbol,G=H&&H[W],J=n.RangeError,K=n.TypeError,Z=n.QObject,Y=A.f,Q=E.f,X=x.f,tt=O.f,et=o([].push),rt=k("symbols"),it=k("op-symbols"),nt=k("wks"),st=!Z||!Z[W]||!Z[W].findChild,ot=function(t,e,r){var i=Y(q,e);i&&delete q[e],Q(t,e,r),i&&t!==q&&Q(q,e,i)},at=u&&h((function(){return 7!==b(Q({},"a",{get:function(){return Q(this,"a",{value:7}).a}})).a}))?ot:Q,ut=function(t,e){var r=rt[t]=b(G);return V(r,{type:M,tag:t,description:e}),u||(r.description=e),r},ct=function(t,e,r){t===q&&ct(it,e,r),p(t);var i=v(e);return p(r),f(rt,i)?(r.enumerable?(f(t,N)&&t[N][i]&&(t[N][i]=!1),r=b(r,{enumerable:y(0,!1)})):(f(t,N)||Q(t,N,y(1,b(null))),t[N][i]=!0),at(t,i,r)):Q(t,i,r)},ht=function(t,e){p(t);var r=d(e),i=m(r).concat(dt(r));return D(i,(function(e){u&&!s(ft,r,e)||ct(t,e,r[e])})),t},ft=function(t){var e=v(t),r=s(tt,this,e);return!(this===q&&f(rt,e)&&!f(it,e))&&(!(r||!f(this,e)||!f(rt,e)||f(this,N)&&this[N][e])||r)},lt=function(t,e){var r=d(t),i=v(e);if(r!==q||!f(rt,i)||f(it,i)){var n=Y(r,i);return!n||!f(rt,i)||f(r,N)&&r[N][i]||(n.enumerable=!0),n}},pt=function(t){var e=X(d(t)),r=[];return D(e,(function(t){f(rt,t)||f(j,t)||et(r,t)})),r},dt=function(t){var e=t===q,r=X(e?it:d(t)),i=[];return D(r,(function(t){!f(rt,t)||e&&!f(q,t)||et(i,rt[t])})),i};c||(I(G=(H=function(){if(l(G,this))throw new K("Symbol is not a constructor");var t=arguments.length&&void 0!==arguments[0]?g(arguments[0]):void 0,e=L(t),r=function(t){var i=void 0===this?n:this;i===q&&s(r,it,t),f(i,N)&&f(i[N],e)&&(i[N][e]=!1);var o=y(1,t);try{at(i,e,o)}catch(t){if(!(t instanceof J))throw t;ot(i,e,o)}};return u&&st&&at(q,e,{configurable:!0,set:r}),ut(e,t)})[W],"toString",(function(){return $(this).tag})),I(H,"withoutSetter",(function(t){return ut(L(t),t)})),O.f=ft,E.f=ct,U.f=ht,A.f=lt,w.f=x.f=pt,S.f=dt,z.f=function(t){return ut(T(t),t)},u&&(B(G,"description",{configurable:!0,get:function(){return $(this).description}}),a||I(q,"propertyIsEnumerable",ft,{unsafe:!0}))),i({global:!0,constructor:!0,wrap:!0,forced:!c,sham:!c},{Symbol:H}),D(m(nt),(function(t){_(t)})),i({target:M,stat:!0,forced:!c},{useSetter:function(){st=!0},useSimple:function(){st=!1}}),i({target:"Object",stat:!0,forced:!c,sham:!u},{create:function(t,e){return void 0===e?b(t):ht(b(t),e)},defineProperty:ct,defineProperties:ht,getOwnPropertyDescriptor:lt}),i({target:"Object",stat:!0,forced:!c},{getOwnPropertyNames:pt}),C(),F(H,M),j[N]=!0},1387:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(9843),n=r(7095);function s(t,e){return i.sH(t)?+t:e!==n.ZH?e:0}},1437:(t,e,r)=>{"use strict";var i=r(1767),n=r(5563),s=r(6455),o=n("species");t.exports=function(t){return s>=51||!i((function(){var e=[];return(e.constructor={})[o]=function(){return{foo:1}},1!==e[t](Boolean).foo}))}},1448:(t,e,r)=>{"use strict";var i=r(8184),n=r(1767),s=r(9624),o=r(2391),a=r(1026).trim,u=r(8276),c=s("".charAt),h=i.parseFloat,f=i.Symbol,l=f&&f.iterator,p=1/h(u+"-0")!=-1/0||l&&!n((function(){h(Object(l))}));t.exports=p?function(t){var e=a(o(t)),r=h(e);return 0===r&&"-"===c(e,0)?-0:r}:h},1472:(t,e,r)=>{r(4718)},1485:t=>{"use strict";t.exports=function(t){return null==t}},1519:(t,e,r)=>{r(9745)},1602:(t,e,r)=>{"use strict";var i=r(6280),n=r(3437),s=r(2456).f,o=r(1800),a="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[];t.exports.f=function(t){return a&&"Window"===i(t)?function(t){try{return s(t)}catch(t){return o(a)}}(t):s(n(t))}},1630:(t,e,r)=>{"use strict";var i=r(9838),n=r(6927),s=r(3105),o=r(5701),a=r(9624),u=r(1767),c=r(5021),h=r(4845),f=r(1800),l=r(1949),p=r(9559),d=String,v=n("JSON","stringify"),g=a(/./.exec),y=a("".charAt),b=a("".charCodeAt),m=a("".replace),w=a(1.1.toString),x=/[\uD800-\uDFFF]/g,S=/^[\uD800-\uDBFF]$/,A=/^[\uDC00-\uDFFF]$/,E=!p||u((function(){var t=n("Symbol")("stringify detection");return"[null]"!==v([t])||"{}"!==v({a:t})||"{}"!==v(Object(t))})),U=u((function(){return'"\\udf06\\ud834"'!==v("\udf06\ud834")||'"\\udead"'!==v("\udead")})),O=function(t,e){var r=f(arguments),i=l(e);if(c(i)||void 0!==t&&!h(t))return r[1]=function(t,e){if(c(i)&&(e=o(i,this,d(t),e)),!h(e))return e},s(v,null,r)},I=function(t,e,r){var i=y(r,e-1),n=y(r,e+1);return g(S,t)&&!g(A,n)||g(A,t)&&!g(S,i)?"\\u"+w(b(t,0),16):t};v&&i({target:"JSON",stat:!0,arity:3,forced:E||U},{stringify:function(t,e,r){var i=f(arguments),n=s(E?O:v,null,i);return U&&"string"==typeof n?m(n,x,I):n}})},1638:(t,e,r)=>{"use strict";r(9838)({target:"Symbol",stat:!0},{isRegisteredSymbol:r(7874)})},1645:t=>{"use strict";t.exports=function(){}},1725:(t,e,r)=>{"use strict";var i=r(9624),n=r(6086),s=r(2391),o=r(1061),a=r(1726),u=i(o),c=i("".slice),h=Math.ceil,f=function(t){return function(e,r,i){var o,f,l=s(a(e)),p=n(r),d=l.length,v=void 0===i?" ":s(i);return p<=d||""===v?l:((f=u(v,h((o=p-d)/v.length))).length>o&&(f=c(f,0,o)),t?l+f:f+l)}};t.exports={start:f(!1),end:f(!0)}},1726:(t,e,r)=>{"use strict";var i=r(1485),n=TypeError;t.exports=function(t){if(i(t))throw new n("Can't call method on "+t);return t}},1767:t=>{"use strict";t.exports=function(t){try{return!!t()}catch(t){return!0}}},1768:(t,e,r)=>{"use strict";var i=r(3437),n=r(1645),s=r(7221),o=r(6437),a=r(7097).f,u=r(6040),c=r(3817),h=r(1219),f=r(3012),l="Array Iterator",p=o.set,d=o.getterFor(l);t.exports=u(Array,"Array",(function(t,e){p(this,{type:l,target:i(t),index:0,kind:e})}),(function(){var t=d(this),e=t.target,r=t.index++;if(!e||r>=e.length)return t.target=null,c(void 0,!0);switch(t.kind){case"keys":return c(r,!1);case"values":return c(e[r],!1)}return c([r,e[r]],!1)}),"values");var v=s.Arguments=s.Array;if(n("keys"),n("values"),n("entries"),!h&&f&&"values"!==v.name)try{a(v,"name",{value:"values"})}catch(t){}},1788:(t,e,r)=>{"use strict";var i=r(2403);t.exports=i},1800:(t,e,r)=>{"use strict";var i=r(9624);t.exports=i([].slice)},1801:(t,e,r)=>{"use strict";r(9815)("split")},1836:(t,e,r)=>{"use strict";var i=r(9624),n=r(5497),s=r(3437),o=r(2841).indexOf,a=r(4061),u=i([].push);t.exports=function(t,e){var r,i=s(t),c=0,h=[];for(r in i)!n(a,r)&&n(i,r)&&u(h,r);for(;e.length>c;)n(i,r=e[c++])&&(~o(h,r)||u(h,r));return h}},1852:(t,e,r)=>{"use strict";var i=r(9838),n=r(5497),s=r(4845),o=r(1951),a=r(8377),u=r(3640),c=a("symbol-to-string-registry");i({target:"Symbol",stat:!0,forced:!u},{keyFor:function(t){if(!s(t))throw new TypeError(o(t)+" is not a symbol");if(n(c,t))return c[t]}})},1900:(t,e,r)=>{"use strict";r(9843),r(6582),r(12),r(575)},1918:(t,e,r)=>{"use strict";var i=r(171);r(1638),r(7568),r(8524),r(4673),r(665),r(4067),r(7312),r(5759),r(7728),r(4840),t.exports=i},1928:(t,e,r)=>{"use strict";var i=r(8217);t.exports=i},1941:(t,e,r)=>{"use strict";var i=r(9089);t.exports=function(t,e){return new(i(t))(0===e?0:e)}},1949:(t,e,r)=>{"use strict";var i=r(9624),n=r(8352),s=r(5021),o=r(6280),a=r(2391),u=i([].push);t.exports=function(t){if(s(t))return t;if(n(t)){for(var e=t.length,r=[],i=0;i<e;i++){var c=t[i];"string"==typeof c?u(r,c):"number"!=typeof c&&"Number"!==o(c)&&"String"!==o(c)||u(r,a(c))}var h=r.length,f=!0;return function(t,e){if(f)return f=!1,e;if(n(this))return e;for(var i=0;i<h;i++)if(r[i]===t)return e}}}},1951:t=>{"use strict";var e=String;t.exports=function(t){try{return e(t)}catch(t){return"Object"}}},2005:(t,e,r)=>{"use strict";var i=r(9855).match(/firefox\/(\d+)/i);t.exports=!!i&&+i[1]},2056:(t,e,r)=>{"use strict";var i=r(8153);t.exports=i},2071:t=>{"use strict";t.exports={}},2105:(t,e,r)=>{"use strict";var i=r(5701),n=r(850),s=r(6415),o=r(1951),a=r(283),u=TypeError;t.exports=function(t,e){var r=arguments.length<2?a(t):e;if(n(r))return s(i(r,t));throw new u(o(t)+" is not iterable")}},2113:(t,e,r)=>{"use strict";var i=r(5701),n=r(2890),s=r(4845),o=r(6998),a=r(6870),u=r(5563),c=TypeError,h=u("toPrimitive");t.exports=function(t,e){if(!n(t)||s(t))return t;var r,u=o(t,h);if(u){if(void 0===e&&(e="default"),r=i(u,t,e),!n(r)||s(r))return r;throw new c("Can't convert object to primitive value")}return void 0===e&&(e="number"),a(t,e)}},2206:(t,e,r)=>{"use strict";r(5809),t.exports=r(8184)},2239:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(850),o=r(3811),a=r(9255),u=r(9508);i({target:"Promise",stat:!0,forced:r(8849)},{allSettled:function(t){var e=this,r=o.f(e),i=r.resolve,c=r.reject,h=a((function(){var r=s(e.resolve),o=[],a=0,c=1;u(t,(function(t){var s=a++,u=!1;c++,n(r,e,t).then((function(t){u||(u=!0,o[s]={status:"fulfilled",value:t},--c||i(o))}),(function(t){u||(u=!0,o[s]={status:"rejected",reason:t},--c||i(o))}))})),--c||i(o)}));return h.error&&c(h.value),r.promise}})},2244:(t,e,r)=>{"use strict";var i=r(8184),n=r(2071);t.exports=function(t,e){var r=n[t+"Prototype"],s=r&&r[e];if(s)return s;var o=i[t],a=o&&o.prototype;return a&&a[e]}},2391:(t,e,r)=>{"use strict";var i=r(803),n=String;t.exports=function(t){if("Symbol"===i(t))throw new TypeError("Cannot convert a Symbol value to a string");return n(t)}},2399:(t,e,r)=>{t.exports=r(3109)},2403:(t,e,r)=>{"use strict";r(4468);var i=r(2071);t.exports=i.parseInt},2456:(t,e,r)=>{"use strict";var i=r(1836),n=r(6959).concat("length","prototype");e.f=Object.getOwnPropertyNames||function(t){return i(t,n)}},2459:(t,e,r)=>{"use strict";r(4140),r(7228);var i=r(2855);t.exports=i.f("toPrimitive")},2463:(t,e,r)=>{"use strict";r(8811)},2473:(t,e,r)=>{"use strict";r.d(e,{A:()=>u});var i=r(2399),n=r.n(i),s=r(6582);const o=[["harmony",/harmonyos ([\d_.]+)/],["harmony",/openharmony ([\d_.]+)/],["iphone",/iphone os ([\d_.]+)/],["ipad",/ipad; cpu os ([\d_.]+)/],["itouch",/itouch; cpu os ([\d_.]+)/],["android",/android ([\d_.]+)/],["wp",/windows phone ([\d_.]+)/],["windows",/windows nt ([\d_.]+)/],["linux",/linux/],["mac",/mac os x ([\d_.]+)/]],a=function(t){let e,r;return(0,s.__)(o,(i=>{let n=i[1].exec(t);if(n)return e=i[0],r=n[1],r&&(r=r.replace(/_/g,".")),!1})),{name:e||"",version:r||"",mobile:n()(t).call(t,"mobile")>-1}}(("object"==typeof navigator&&navigator.userAgent||"").toLowerCase());a.name&&(a[a.name]=!0,{iphone:1,ipad:1,itouch:1}[a.name]&&(a.ios=!0));const u=a},2475:(t,e,r)=>{"use strict";var i=r(8052);t.exports=i},2518:(t,e,r)=>{"use strict";var i=r(3012),n=r(1767);t.exports=i&&n((function(){return 42!==Object.defineProperty((function(){}),"prototype",{value:42,writable:!1}).prototype}))},2542:(t,e,r)=>{"use strict";var i=r(8184);t.exports=i.Promise},2551:(t,e,r)=>{"use strict";function i(){return"function"==typeof registerProcessor&&"number"==typeof sampleRate&&"number"==typeof currentFrame&&"number"==typeof currentTime}r.d(e,{A:()=>i})},2563:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(7218),n=r(8338);function s(t,e,r){return(e=(0,n.A)(e))in t?i(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}},2606:(t,e,r)=>{"use strict";var i=r(6086);t.exports=function(t){return i(t.length)}},2608:(t,e,r)=>{r(3198)},2625:(t,e,r)=>{"use strict";var i=r(9838),n=r(4691);i({target:"Array",proto:!0,forced:n!==[].lastIndexOf},{lastIndexOf:n})},2643:(t,e,r)=>{"use strict";r.d(e,{A:()=>d});var i=r(5970),n=r.n(i),s=r(6582),o=r(9843),a=r(8507),u=r(2473);function c(t){return o.Yj(t)&&t.split(".").shift()||""}const h=[["alipay",/alipay/],["wechat",/micromessenger/],["dingtalk",/dingtalk[ \/]([\d_.]+)/],["baiduApp",/baiduboxapp/],["baidu",/baidubrowser/],["baidu",/bdbrowser/],["uc",/ucbrowser/],["uc",/ucweb/],["qq",/qqbrowser/],["qqApp",/qq/],["ie",/iemobile[ \/]([\d_.]+)/],["ie",/msie[ \/]([\d_.]+)/],["ie",/trident[ \/]([\d_.]+)/,4],["edge",/edge[ \/]([\d_.]+)/],["newEdge",/edg[ \/]([\d_.]+)/],["chrome",/chrome[ \/]([\d_.]+)/],["firefox",/firefox[ \/]([\d_.]+)/],["opera",/opera(?:.*version)?[ \/]([\d_.]+)/],["safari",/version[ \/]([\d_.]+) safari/],["safari",/version[ \/]([\d_.]+) \S* safari/],["safari",/safari/]],f={},l={},p=function(t){let e,r;return(0,s.__)(h,(i=>{let s=i[1].exec(t);if(s)return e=i[0],r=s[1],r&&(r=r.replace(/_/g,"."),i[2]&&(r=n()(r,10)+i[2]+".0")),!1})),"safari"!==e||r||(r=u.A.version),{name:e||"",version:r||"",majorVersion:(f[e]||c)(r),checkVersion:l[e]||a.A}}(("object"==typeof navigator&&navigator.userAgent||"").toLowerCase());p.name&&(p[p.name]=!0);const d=p},2710:(t,e,r)=>{"use strict";r(43),r(1768),r(9627),r(8826),r(2239),r(7286),r(7249),r(6124),r(9239),r(8940);var i=r(2071);t.exports=i.Promise},2730:(t,e,r)=>{"use strict";var i=r(9838),n=r(1767),s=r(8352),o=r(2890),a=r(6157),u=r(2606),c=r(1037),h=r(2888),f=r(1941),l=r(1437),p=r(5563),d=r(6455),v=p("isConcatSpreadable"),g=d>=51||!n((function(){var t=[];return t[v]=!1,t.concat()[0]!==t})),y=function(t){if(!o(t))return!1;var e=t[v];return void 0!==e?!!e:s(t)};i({target:"Array",proto:!0,arity:1,forced:!g||!l("concat")},{concat:function(t){var e,r,i,n,s,o=a(this),l=f(o,0),p=0;for(e=-1,i=arguments.length;e<i;e++)if(y(s=-1===e?o:arguments[e]))for(n=u(s),c(p+n),r=0;r<n;r++,p++)r in s&&h(l,p,s[r]);else c(p+1),h(l,p++,s);return l.length=p,l}})},2793:(t,e,r)=>{r(2951)},2830:(t,e,r)=>{"use strict";var i=r(1767);t.exports=function(t,e){var r=[][t];return!!r&&i((function(){r.call(null,e||function(){return 1},1)}))}},2833:(t,e,r)=>{"use strict";r(1768);var i=r(9760),n=r(8184),s=r(3975),o=r(7221);for(var a in i)s(n[a],a),o[a]=o.Array},2841:(t,e,r)=>{"use strict";var i=r(3437),n=r(4418),s=r(2606),o=function(t){return function(e,r,o){var a=i(e),u=s(a);if(0===u)return!t&&-1;var c,h=n(o,u);if(t&&r!=r){for(;u>h;)if((c=a[h++])!=c)return!0}else for(;u>h;h++)if((t||h in a)&&a[h]===r)return t||h||0;return!t&&-1}};t.exports={includes:o(!0),indexOf:o(!1)}},2855:(t,e,r)=>{"use strict";var i=r(5563);e.f=i},2888:(t,e,r)=>{"use strict";var i=r(3012),n=r(7097),s=r(7884);t.exports=function(t,e,r){i?n.f(t,e,s(0,r)):t[e]=r}},2890:(t,e,r)=>{"use strict";var i=r(5021);t.exports=function(t){return"object"==typeof t?null!==t:i(t)}},2940:(t,e,r)=>{"use strict";r(71),r(3668),r(6582)},2946:(t,e,r)=>{"use strict";r(9497),r(3856),r(5391),r(12),r(9843)},2951:(t,e,r)=>{"use strict";var i=r(6788);t.exports=i},2959:(t,e,r)=>{"use strict";var i=r(9624),n=r(4371),s=r(2391),o=r(1726),a=i("".charAt),u=i("".charCodeAt),c=i("".slice),h=function(t){return function(e,r){var i,h,f=s(o(e)),l=n(r),p=f.length;return l<0||l>=p?t?"":void 0:(i=u(f,l))<55296||i>56319||l+1===p||(h=u(f,l+1))<56320||h>57343?t?a(f,l):i:t?c(f,l,l+2):h-56320+(i-55296<<10)+65536}};t.exports={codeAt:h(!1),charAt:h(!0)}},3012:(t,e,r)=>{"use strict";var i=r(1767);t.exports=!i((function(){return 7!==Object.defineProperty({},1,{get:function(){return 7}})[1]}))},3022:(t,e,r)=>{"use strict";r.d(e,{zy:()=>o}),r(1193),r(8811);var i=r(2399),n=r.n(i),s=(r(2608),r(5970),r(1472),r(9843),r(7095));function o(t,e){return function(t,e,r){return n()(t).call(t,e,r!==s.ZH?r:0)}(t,e)>=0}r(9135)},3043:(t,e,r)=>{"use strict";var i=r(6516);t.exports=i},3063:(t,e,r)=>{"use strict";var i=r(9624),n=r(1767),s=r(6280),o=Object,a=i("".split);t.exports=n((function(){return!o("z").propertyIsEnumerable(0)}))?function(t){return"String"===s(t)?a(t,""):o(t)}:o},3105:(t,e,r)=>{"use strict";var i=r(3872),n=Function.prototype,s=n.apply,o=n.call;t.exports="object"==typeof Reflect&&Reflect.apply||(i?o.bind(s):function(){return o.apply(s,arguments)})},3109:(t,e,r)=>{"use strict";var i=r(6610);t.exports=i},3142:(t,e,r)=>{r(5680)},3198:(t,e,r)=>{"use strict";var i=r(5191);t.exports=i},3247:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(6600)(n.setTimeout,!0);i({global:!0,bind:!0,forced:n.setTimeout!==s},{setTimeout:s})},3254:(t,e,r)=>{"use strict";var i=r(9838),n=r(9624),s=r(850),o=r(6157),a=r(2606),u=r(9302),c=r(2391),h=r(1767),f=r(4176),l=r(2830),p=r(2005),d=r(8731),v=r(6455),g=r(8447),y=[],b=n(y.sort),m=n(y.push),w=h((function(){y.sort(void 0)})),x=h((function(){y.sort(null)})),S=l("sort"),A=!h((function(){if(v)return v<70;if(!(p&&p>3)){if(d)return!0;if(g)return g<603;var t,e,r,i,n="";for(t=65;t<76;t++){switch(e=String.fromCharCode(t),t){case 66:case 69:case 70:case 72:r=3;break;case 68:case 71:r=4;break;default:r=2}for(i=0;i<47;i++)y.push({k:e+i,v:r})}for(y.sort((function(t,e){return e.v-t.v})),i=0;i<y.length;i++)e=y[i].k.charAt(0),n.charAt(n.length-1)!==e&&(n+=e);return"DGBEFHACIJK"!==n}}));i({target:"Array",proto:!0,forced:w||!x||!S||!A},{sort:function(t){void 0!==t&&s(t);var e=o(this);if(A)return void 0===t?b(e):b(e,t);var r,i,n=[],h=a(e);for(i=0;i<h;i++)i in e&&m(n,e[i]);for(f(n,function(t){return function(e,r){return void 0===r?-1:void 0===e?1:void 0!==t?+t(e,r)||0:c(e)>c(r)?1:-1}}(t)),r=a(n),i=0;i<r;)e[i]=n[i++];for(;i<h;)u(e,i++);return e}})},3296:(t,e,r)=>{"use strict";r(2730);var i=r(2244);t.exports=i("Array","concat")},3309:(t,e,r)=>{"use strict";var i=r(6157),n=r(4418),s=r(2606);t.exports=function(t){for(var e=i(this),r=s(e),o=arguments.length,a=n(o>1?arguments[1]:void 0,r),u=o>2?arguments[2]:void 0,c=void 0===u?r:n(u,r);c>a;)e[a++]=t;return e}},3332:(t,e,r)=>{"use strict";var i=r(1767),n=r(2890),s=r(6280),o=r(5788),a=Object.isExtensible,u=i((function(){a(1)}));t.exports=u||o?function(t){return!!n(t)&&(!o||"ArrayBuffer"!==s(t))&&(!a||a(t))}:a},3437:(t,e,r)=>{"use strict";var i=r(3063),n=r(1726);t.exports=function(t){return i(n(t))}},3457:(t,e,r)=>{"use strict";var i=r(9624);t.exports=i({}.isPrototypeOf)},3518:(t,e,r)=>{"use strict";r(9815)("matchAll")},3567:(t,e,r)=>{"use strict";var i=r(522),n=r(2890),s=r(1726),o=r(8810);t.exports=Object.setPrototypeOf||("__proto__"in{}?function(){var t,e=!1,r={};try{(t=i(Object.prototype,"__proto__","set"))(r,[]),e=r instanceof Array}catch(t){}return function(r,i){return s(r),o(i),n(r)?(e?t(r,i):r.__proto__=i,r):r}}():void 0)},3601:(t,e,r)=>{"use strict";var i=r(8518);t.exports=i},3637:(t,e,r)=>{"use strict";var i=r(7960),n=r(9624),s=r(3063),o=r(6157),a=r(2606),u=r(1941),c=n([].push),h=function(t){var e=1===t,r=2===t,n=3===t,h=4===t,f=6===t,l=7===t,p=5===t||f;return function(d,v,g,y){for(var b,m,w=o(d),x=s(w),S=a(x),A=i(v,g),E=0,U=y||u,O=e?U(d,S):r||l?U(d,0):void 0;S>E;E++)if((p||E in x)&&(m=A(b=x[E],E,w),t))if(e)O[E]=m;else if(m)switch(t){case 3:return!0;case 5:return b;case 6:return E;case 2:c(O,b)}else switch(t){case 4:return!1;case 7:c(O,b)}return f?-1:n||h?h:O}};t.exports={forEach:h(0),map:h(1),filter:h(2),some:h(3),every:h(4),find:h(5),findIndex:h(6),filterReject:h(7)}},3640:(t,e,r)=>{"use strict";var i=r(9559);t.exports=i&&!!Symbol.for&&!!Symbol.keyFor},3668:(t,e,r)=>{"use strict";r(9843),r(7095)},3695:(t,e,r)=>{"use strict";r.r(e),r.d(e,{readSleb128:()=>c,readSleb128Async:()=>h,readUleb128:()=>a,readUleb128Async:()=>u,setMemoryMeta:()=>v,writeSleb128:()=>f,writeSleb128Async:()=>l,writeUleb128:()=>p,writeUleb128Async:()=>d});var i=r(7334),n=r(8722),s=r(2643),o=r(2473);function a(t){let e=0,r=0;for(;;){const i=t.readUint8();if(e|=(127&i)<<r,r+=7,!(128&i))break}return e}async function u(t){let e=0,r=0;for(;;){const i=await t.readUint8();if(e|=(127&i)<<r,r+=7,!(128&i))break}return e}function c(t){let e,r=0,i=0;for(;e=t.readUint8(),r|=(127&e)<<i,i+=7,128&e;);return 64&e&&(r|=-1<<i),r}async function h(t){let e,r=0,i=0;for(;e=await t.readUint8(),r|=(127&e)<<i,i+=7,128&e;);return 64&e&&(r|=-1<<i),r}function f(t,e){let r=!0;for(;r;){let i=127&e;0==(e>>=7)&&!(64&i)||-1===e&&64&i?r=!1:i|=128,t.writeUint8(i)}}async function l(t,e){let r=!0;for(;r;){let i=127&e;0==(e>>=7)&&!(64&i)||-1===e&&64&i?r=!1:i|=128,await t.writeUint8(i)}}function p(t,e){do{let r=127&e;0!=(e>>=7)&&(r|=128),t.writeUint8(r)}while(0!==e)}async function d(t,e){do{let r=127&e;0!=(e>>=7)&&(r|=128),await t.writeUint8(r)}while(0!==e)}function v(t,e){const r=new n.A(t,!0),u=new i.A(new Uint8Array(t.length+100),!0);for(u.writeBuffer(r.readBuffer(8));r.remainingSize();){const t=r.readUint8();u.writeUint8(t);const n=a(r);if(2===t){const t=new i.A(new Uint8Array(n+100));let h=a(r);for(p(t,h);h--;){const i=a(r);p(t,i),t.writeBuffer(r.readBuffer(i));const n=a(r);p(t,n),t.writeBuffer(r.readBuffer(n));const u=r.readUint8();switch(t.writeUint8(u),u){case 0:p(t,a(r));break;case 3:f(t,c(r)),p(t,a(r));break;case 2:{let i=a(r);e.shared?p(t,2|i):p(t,-3&i);const n=a(r);if(p(t,e.initial||n),1&i){let i=a(r);!e.maximum||o.A.ios&&!s.A.checkVersion(o.A.version,"17",!0)&&e.shared||(i=e.maximum),p(t,i)}break}case 1:{f(t,c(r));const e=a(r);p(t,e),p(t,a(r)),1&e&&p(t,a(r));break}}}const l=t.getWroteBuffer();p(u,l.length),u.writeBuffer(l)}else p(u,n),u.writeBuffer(r.readBuffer(n))}return u.getWroteBuffer()}},3712:(t,e,r)=>{"use strict";r.d(e,{A:()=>n});var i=r(7095);function n(t){return t!==i.ZH}},3728:(t,e,r)=>{"use strict";r(71),r(3668),r(6582),r(7095)},3744:(t,e,r)=>{"use strict";r(1519),r(6582)},3760:(t,e,r)=>{"use strict";r(9843)},3784:(t,e,r)=>{"use strict";r(6418);var i=r(2244);t.exports=i("Array","splice")},3799:(t,e,r)=>{"use strict";r(3022),r(7095)},3811:(t,e,r)=>{"use strict";var i=r(850),n=TypeError,s=function(t){var e,r;this.promise=new t((function(t,i){if(void 0!==e||void 0!==r)throw new n("Bad Promise constructor");e=t,r=i})),this.resolve=i(e),this.reject=i(r)};t.exports.f=function(t){return new s(t)}},3817:t=>{"use strict";t.exports=function(t,e){return{value:t,done:e}}},3836:(t,e,r)=>{"use strict";r(9815)("match")},3856:(t,e,r)=>{t.exports=r(7905)},3872:(t,e,r)=>{"use strict";var i=r(1767);t.exports=!i((function(){var t=function(){}.bind();return"function"!=typeof t||t.hasOwnProperty("prototype")}))},3960:(t,e,r)=>{"use strict";r(8796)},3975:(t,e,r)=>{"use strict";var i=r(8388),n=r(7097).f,s=r(5411),o=r(5497),a=r(179),u=r(5563)("toStringTag");t.exports=function(t,e,r,c){var h=r?t:t&&t.prototype;h&&(o(h,u)||n(h,u,{configurable:!0,value:e}),c&&!i&&s(h,"toString",a))}},4026:(t,e,r)=>{"use strict";var i=r(4150).PROPER,n=r(1767),s=r(8276);t.exports=function(t){return n((function(){return!!s[t]()||"​᠎"!=="​᠎"[t]()||i&&s[t].name!==t}))}},4043:(t,e,r)=>{"use strict";r(71)},4061:t=>{"use strict";t.exports={}},4067:(t,e,r)=>{"use strict";r(9838)({target:"Symbol",stat:!0,name:"isWellKnownSymbol",forced:!0},{isWellKnown:r(8448)})},4089:(t,e,r)=>{"use strict";var i=r(3012),n=r(2518),s=r(7097),o=r(6415),a=r(3437),u=r(8472);e.f=i&&!n?Object.defineProperties:function(t,e){o(t);for(var r,i=a(e),n=u(e),c=n.length,h=0;c>h;)s.f(t,r=n[h++],i[r]);return t}},4099:(t,e,r)=>{"use strict";var i=r(5405),n=r.n(i),s=r(71),o=r.n(s),a=r(244),u=r(7095);let c;typeof n()===u.s0&&(0,a.A)(n())&&(c=n()),c=typeof MessageChannel===u.s0&&(0,a.A)(MessageChannel)?function(t){const e=new MessageChannel;e.port1.onmessage=t,e.port2.postMessage(1)}:"function"==typeof o()?o():function(t){o()(t)}},4105:(t,e,r)=>{"use strict";var i=r(5563),n=r(7097).f,s=i("metadata"),o=Function.prototype;void 0===o[s]&&n(o,s,{value:null})},4125:t=>{"use strict";t.exports=function(t,e){try{1===arguments.length?console.error(t):console.error(t,e)}catch(t){}}},4140:()=>{},4150:(t,e,r)=>{"use strict";var i=r(3012),n=r(5497),s=Function.prototype,o=i&&Object.getOwnPropertyDescriptor,a=n(s,"name"),u=a&&"something"===function(){}.name,c=a&&(!i||i&&o(s,"name").configurable);t.exports={EXISTS:a,PROPER:u,CONFIGURABLE:c}},4167:(t,e,r)=>{"use strict";r(2399)},4176:(t,e,r)=>{"use strict";var i=r(1800),n=Math.floor,s=function(t,e){var r=t.length;if(r<8)for(var o,a,u=1;u<r;){for(a=u,o=t[u];a&&e(t[a-1],o)>0;)t[a]=t[--a];a!==u++&&(t[a]=o)}else for(var c=n(r/2),h=s(i(t,0,c),e),f=s(i(t,c),e),l=h.length,p=f.length,d=0,v=0;d<l||v<p;)t[d+v]=d<l&&v<p?e(h[d],f[v])<=0?h[d++]:f[v++]:d<l?h[d++]:f[v++];return t};t.exports=s},4221:(t,e)=>{"use strict";e.f=Object.getOwnPropertySymbols},4267:(t,e,r)=>{"use strict";var i=r(9748);t.exports=i},4279:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(850),o=r(3811),a=r(9255),u=r(9508);i({target:"Promise",stat:!0,forced:r(8849)},{race:function(t){var e=this,r=o.f(e),i=r.reject,c=a((function(){var o=s(e.resolve);u(t,(function(t){n(o,e,t).then(r.resolve,i)}))}));return c.error&&i(c.value),r.promise}})},4292:(t,e,r)=>{"use strict";r(9074);var i=r(2244);t.exports=i("Array","reverse")},4360:(t,e,r)=>{"use strict";var i=r(9679);r(2833),t.exports=i},4371:(t,e,r)=>{"use strict";var i=r(317);t.exports=function(t){var e=+t;return e!=e||0===e?0:i(e)}},4386:(t,e,r)=>{t.exports=r(64)},4416:(t,e,r)=>{"use strict";r(9815)("isConcatSpreadable")},4418:(t,e,r)=>{"use strict";var i=r(4371),n=Math.max,s=Math.min;t.exports=function(t,e){var r=i(t);return r<0?n(r+e,0):s(r,e)}},4427:(t,e,r)=>{"use strict";r.d(e,{J:()=>i.A,Rs:()=>n.A,ac:()=>s.A}),r(8440);var i=r(887),n=(r(3960),r(6215)),s=(r(7109),r(7784),r(5083),r(2463),r(8722),r(7334))},4468:(t,e,r)=>{"use strict";var i=r(9838),n=r(8119);i({global:!0,forced:parseInt!==n},{parseInt:n})},4485:(t,e,r)=>{"use strict";var i=r(9624),n=r(1767),s=r(5021),o=r(803),a=r(6927),u=r(530),c=function(){},h=a("Reflect","construct"),f=/^\s*(?:class|function)\b/,l=i(f.exec),p=!f.test(c),d=function(t){if(!s(t))return!1;try{return h(c,[],t),!0}catch(t){return!1}},v=function(t){if(!s(t))return!1;switch(o(t)){case"AsyncFunction":case"GeneratorFunction":case"AsyncGeneratorFunction":return!1}try{return p||!!l(f,u(t))}catch(t){return!0}};v.sham=!0,t.exports=!h||n((function(){var t;return d(d.call)||!d(Object)||!d((function(){t=!0}))||t}))?v:d},4537:(t,e,r)=>{"use strict";var i=r(5748);t.exports=i},4548:(t,e,r)=>{"use strict";var i=r(3457),n=r(3784),s=Array.prototype;t.exports=function(t){var e=t.splice;return t===s||i(s,t)&&e===s.splice?n:e}},4553:(t,e,r)=>{"use strict";var i=r(3457),n=r(9669),s=Array.prototype;t.exports=function(t){var e=t.fill;return t===s||i(s,t)&&e===s.fill?n:e}},4651:(t,e,r)=>{"use strict";Math.pow(2,32)},4652:(t,e,r)=>{"use strict";var i=r(8184),n=r(2542),s=r(5021),o=r(4676),a=r(530),u=r(5563),c=r(7839),h=r(1219),f=r(6455),l=n&&n.prototype,p=u("species"),d=!1,v=s(i.PromiseRejectionEvent),g=o("Promise",(function(){var t=a(n),e=t!==String(n);if(!e&&66===f)return!0;if(h&&(!l.catch||!l.finally))return!0;if(!f||f<51||!/native code/.test(t)){var r=new n((function(t){t(1)})),i=function(t){t((function(){}),(function(){}))};if((r.constructor={})[p]=i,!(d=r.then((function(){}))instanceof i))return!0}return!(e||"BROWSER"!==c&&"DENO"!==c||v)}));t.exports={CONSTRUCTOR:g,REJECTION_EVENT:v,SUBCLASSING:d}},4673:(t,e,r)=>{"use strict";r(9815)("observable")},4676:(t,e,r)=>{"use strict";var i=r(1767),n=r(5021),s=/#|\.prototype\./,o=function(t,e){var r=u[a(t)];return r===h||r!==c&&(n(e)?i(e):!!e)},a=o.normalize=function(t){return String(t).replace(s,".").toLowerCase()},u=o.data={},c=o.NATIVE="N",h=o.POLYFILL="P";t.exports=o},4691:(t,e,r)=>{"use strict";var i=r(3105),n=r(3437),s=r(4371),o=r(2606),a=r(2830),u=Math.min,c=[].lastIndexOf,h=!!c&&1/[1].lastIndexOf(1,-0)<0,f=a("lastIndexOf"),l=h||!f;t.exports=l?function(t){if(h)return i(c,this,arguments)||0;var e=n(this),r=o(e);if(0===r)return-1;var a=r-1;for(arguments.length>1&&(a=u(a,s(arguments[1]))),a<0&&(a=r+a);a>=0;a--)if(a in e&&e[a]===t)return a||0;return-1}:c},4715:(t,e,r)=>{"use strict";r(2625);var i=r(2244);t.exports=i("Array","lastIndexOf")},4718:(t,e,r)=>{"use strict";var i=r(4553);t.exports=i},4752:(t,e,r)=>{"use strict";var i=r(9838),n=r(6927),s=r(1219),o=r(2542),a=r(4652).CONSTRUCTOR,u=r(5398),c=n("Promise"),h=s&&!a;i({target:"Promise",stat:!0,forced:s||a},{resolve:function(t){return u(h&&this===c?o:this,t)}})},4797:(t,e,r)=>{"use strict";var i=r(6415),n=r(5188),s=r(1485),o=r(5563)("species");t.exports=function(t,e){var r,a=i(t).constructor;return void 0===a||s(r=i(a)[o])?e:n(r)}},4813:(t,e,r)=>{"use strict";var i=r(2890);t.exports=function(t){return i(t)||null===t}},4840:(t,e,r)=>{"use strict";r(9815)("replaceAll")},4845:(t,e,r)=>{"use strict";var i=r(6927),n=r(5021),s=r(3457),o=r(6440),a=Object;t.exports=o?function(t){return"symbol"==typeof t}:function(t){var e=i("Symbol");return n(e)&&s(e.prototype,a(t))}},4877:(t,e)=>{"use strict";var r={}.propertyIsEnumerable,i=Object.getOwnPropertyDescriptor,n=i&&!r.call({1:2},1);e.f=n?function(t){var e=i(this,t);return!!e&&e.enumerable}:r},4891:(t,e,r)=>{"use strict";r(3142)},4914:(t,e,r)=>{"use strict";var i=r(7569).IteratorPrototype,n=r(272),s=r(7884),o=r(3975),a=r(7221),u=function(){return this};t.exports=function(t,e,r,c){var h=e+" Iterator";return t.prototype=n(i,{next:s(+!c,r)}),o(t,h,!1,!0),a[h]=u,t}},4995:(t,e,r)=>{"use strict";r.d(e,{A:()=>u});var i=r(2563),n=r(3856),s=r.n(n),o=r(9843),a=r(6582);class u{constructor(){(0,i.A)(this,"queue",void 0),this.queue=[]}async execute(t){try{const e=await t.task();t.resolve(e)}catch(e){t.reject(e)}}async next(){if(this.queue.length){const t=this.queue[0];t.error?t.reject(t.error):await this.execute(t),this.queue.shift(),this.queue.length&&this.next()}}async push(t){if(!o.Pc(t))throw new TypeError("task must be a function");return new(s())(((e,r)=>{const i={task:t,resolve:e,reject:r};this.queue.push(i),1===this.queue.length&&this.next()}))}clear(t){a.__(this.queue,(e=>{e.error=t||new Error("command queue clear")}))}clearPadding(){this.queue.length=0}get length(){return this.queue.length}}},5021:t=>{"use strict";var e="object"==typeof document&&document.all;t.exports=void 0===e&&void 0!==e?function(t){return"function"==typeof t||t===e}:function(t){return"function"==typeof t}},5029:(t,e,r)=>{t.exports=r(4267)},5081:(t,e,r)=>{"use strict";r(71)},5083:(t,e,r)=>{"use strict";r(7523)},5089:(t,e,r)=>{"use strict";var i,n,s,o,a=r(8184),u=r(3105),c=r(7960),h=r(5021),f=r(5497),l=r(1767),p=r(821),d=r(1800),v=r(5967),g=r(7428),y=r(8192),b=r(8809),m=a.setImmediate,w=a.clearImmediate,x=a.process,S=a.Dispatch,A=a.Function,E=a.MessageChannel,U=a.String,O=0,I={},B="onreadystatechange";l((function(){i=a.location}));var k=function(t){if(f(I,t)){var e=I[t];delete I[t],e()}},P=function(t){return function(){k(t)}},j=function(t){k(t.data)},L=function(t){a.postMessage(U(t),i.protocol+"//"+i.host)};m&&w||(m=function(t){g(arguments.length,1);var e=h(t)?t:A(t),r=d(arguments,1);return I[++O]=function(){u(e,void 0,r)},n(O),O},w=function(t){delete I[t]},b?n=function(t){x.nextTick(P(t))}:S&&S.now?n=function(t){S.now(P(t))}:E&&!y?(o=(s=new E).port2,s.port1.onmessage=j,n=c(o.postMessage,o)):a.addEventListener&&h(a.postMessage)&&!a.importScripts&&i&&"file:"!==i.protocol&&!l(L)?(n=L,a.addEventListener("message",j,!1)):n=B in v("script")?function(t){p.appendChild(v("script"))[B]=function(){p.removeChild(this),k(t)}}:function(t){setTimeout(P(t),0)}),t.exports={set:m,clear:w}},5188:(t,e,r)=>{"use strict";var i=r(4485),n=r(1951),s=TypeError;t.exports=function(t){if(i(t))return t;throw new s(n(t)+" is not a constructor")}},5191:(t,e,r)=>{"use strict";var i=r(3457),n=r(4715),s=Array.prototype;t.exports=function(t){var e=t.lastIndexOf;return t===s||i(s,t)&&e===s.lastIndexOf?n:e}},5201:t=>{"use strict";var e=function(){this.head=null,this.tail=null};e.prototype={add:function(t){var e={item:t,next:null},r=this.tail;r?r.next=e:this.head=e,this.tail=e},get:function(){var t=this.head;if(t)return null===(this.head=t.next)&&(this.tail=null),t.item}},t.exports=e},5238:(t,e,r)=>{"use strict";function i(t,e){if(!e.length)return null;if(1===e.length)return e[0];let r,i=0;for(r of e)i+=r.length;let n=new t(i),s=0;for(r of e)n.set(r,s),s+=r.length;return n}r.d(e,{A:()=>i})},5391:(t,e,r)=>{"use strict";r(3142),r(71)},5398:(t,e,r)=>{"use strict";var i=r(6415),n=r(2890),s=r(3811);t.exports=function(t,e){if(i(t),n(e)&&e.constructor===t)return e;var r=s.f(t);return(0,r.resolve)(e),r.promise}},5405:(t,e,r)=>{t.exports=r(751)},5411:(t,e,r)=>{"use strict";var i=r(3012),n=r(7097),s=r(7884);t.exports=i?function(t,e,r){return n.f(t,e,s(1,r))}:function(t,e,r){return t[e]=r,t}},5419:(t,e,r)=>{"use strict";r(9815)("iterator")},5421:(t,e,r)=>{"use strict";t.exports=r(6395)},5463:(t,e,r)=>{r(8789)},5497:(t,e,r)=>{"use strict";var i=r(9624),n=r(6157),s=i({}.hasOwnProperty);t.exports=Object.hasOwn||function(t,e){return s(n(t),e)}},5522:(t,e,r)=>{"use strict";r(9843),r(5081),r(4891)},5563:(t,e,r)=>{"use strict";var i=r(8184),n=r(8377),s=r(5497),o=r(9096),a=r(9559),u=r(6440),c=i.Symbol,h=n("wks"),f=u?c.for||c:c&&c.withoutSetter||o;t.exports=function(t){return s(h,t)||(h[t]=a&&s(c,t)?c[t]:f("Symbol."+t)),h[t]}},5573:(t,e,r)=>{"use strict";r.d(e,{A:()=>a});var i=r(2399),n=r.n(i);let s,o="unknown";if("object"==typeof window&&window.document){const t=document.createElement("canvas"),e=t.getContext("webgl")||t.getContext("experimental-webgl");if(null!=e&&e.getExtension){const t=e.getExtension("WEBGL_debug_renderer_info");if(t){let r=(e.getParameter(t.UNMASKED_VENDOR_WEBGL)||"").toLocaleLowerCase();s=(e.getParameter(t.UNMASKED_RENDERER_WEBGL)||"").toLocaleLowerCase(),r&&(n()(r).call(r,"apple")>-1?o="apple":n()(r).call(r,"intel")>-1?o="intel":n()(r).call(r,"amd")>-1?o="amd":n()(r).call(r,"nvidia")>-1&&(o="nvidia"))}}}const a={vendor:o,renderer:s}},5590:(t,e,r)=>{"use strict";var i=r(9838),n=r(8352),s=r(4485),o=r(2890),a=r(4418),u=r(2606),c=r(3437),h=r(2888),f=r(5563),l=r(1437),p=r(1800),d=l("slice"),v=f("species"),g=Array,y=Math.max;i({target:"Array",proto:!0,forced:!d},{slice:function(t,e){var r,i,f,l=c(this),d=u(l),b=a(t,d),m=a(void 0===e?d:e,d);if(n(l)&&(r=l.constructor,(s(r)&&(r===g||n(r.prototype))||o(r)&&null===(r=r[v]))&&(r=void 0),r===g||void 0===r))return p(l,b,m);for(i=new(void 0===r?g:r)(y(m-b,0)),f=0;b<m;b++,f++)b in l&&h(i,f,l[b]);return i.length=f,i}})},5634:(t,e,r)=>{"use strict";var i=r(9838),n=r(1026).trim;i({target:"String",proto:!0,forced:r(4026)("trim")},{trim:function(){return n(this)}})},5651:(t,e,r)=>{"use strict";var i=r(6942);t.exports=i},5661:(t,e,r)=>{"use strict";Math.pow(2,32)},5680:(t,e,r)=>{"use strict";var i=r(7413);t.exports=i},5695:(t,e,r)=>{"use strict";r(6163);var i=r(2071);t.exports=i.Object.freeze},5701:(t,e,r)=>{"use strict";var i=r(3872),n=Function.prototype.call;t.exports=i?n.bind(n):function(){return n.apply(n,arguments)}},5748:(t,e,r)=>{"use strict";var i=r(3457),n=r(6832),s=Array.prototype;t.exports=function(t){var e=t.slice;return t===s||i(s,t)&&e===s.slice?n:e}},5759:(t,e,r)=>{"use strict";r(9815)("metadataKey")},5765:(t,e,r)=>{"use strict";var i=r(9838),n=r(9559),s=r(1767),o=r(4221),a=r(6157);i({target:"Object",stat:!0,forced:!n||s((function(){o.f(1)}))},{getOwnPropertySymbols:function(t){var e=o.f;return e?e(a(t)):[]}})},5788:(t,e,r)=>{"use strict";var i=r(1767);t.exports=i((function(){if("function"==typeof ArrayBuffer){var t=new ArrayBuffer(8);Object.isExtensible(t)&&Object.defineProperty(t,"a",{value:8})}}))},5801:(t,e,r)=>{"use strict";r(2730),r(9627),r(7899),r(9257),r(5828),r(879),r(6324),r(825),r(4416),r(5419),r(3836),r(3518),r(5965),r(1265),r(8883),r(1801),r(7228),r(7749),r(1326),r(7939),r(599),r(7224);var i=r(2071);t.exports=i.Symbol},5809:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184);i({global:!0,forced:n.globalThis!==n},{globalThis:n})},5828:(t,e,r)=>{"use strict";r(9815)("asyncIterator")},5884:(t,e,r)=>{"use strict";var i=r(2563),n=r(7095);class s{constructor(t,e){(0,i.A)(this,"type",void 0),(0,i.A)(this,"phase",void 0),(0,i.A)(this,"ns",void 0),(0,i.A)(this,"target",void 0),(0,i.A)(this,"originalEvent",void 0),(0,i.A)(this,"isPrevented",void 0),(0,i.A)(this,"isStopped",void 0),(0,i.A)(this,"listener",void 0),this.type=t,this.phase=s.PHASE_CURRENT,e&&(this.originalEvent=e)}preventDefault(){const t=this;if(!t.isPrevented){const{originalEvent:e}=t;e&&e.preventDefault(),t.isPrevented=n.rT}return t}stopPropagation(){const t=this;if(!t.isStopped){const{originalEvent:e}=t;e&&e.stopPropagation(),t.isStopped=n.rT}return t}prevent(){return this.preventDefault()}stop(){return this.stopPropagation()}}(0,i.A)(s,"PHASE_CURRENT",0),(0,i.A)(s,"PHASE_UPWARD",1),(0,i.A)(s,"PHASE_DOWNWARD",n.Cy)},5945:(t,e,r)=>{"use strict";var i=r(9838),n=r(9624),s=Date,o=n(s.prototype.getTime);i({target:"Date",stat:!0},{now:function(){return o(new s)}})},5948:(t,e,r)=>{"use strict";var i=r(6280),n=r(9624);t.exports=function(t){if("Function"===i(t))return n(t)}},5965:(t,e,r)=>{"use strict";r(9815)("replace")},5967:(t,e,r)=>{"use strict";var i=r(8184),n=r(2890),s=i.document,o=n(s)&&n(s.createElement);t.exports=function(t){return o?s.createElement(t):{}}},5970:(t,e,r)=>{t.exports=r(1788)},5973:()=>{"use strict";let t,e;const r="object"==typeof navigator&&navigator.userAgent||"";t=r.match(/NetType\/\w+/)?r.match(/NetType\/\w+/)[0]:"NetType/other",t=t.toLowerCase().replace("nettype/","");const i={ethernet:"ethernet",wifi:"wifi","5g":"5g","4g":"4g","3g":"3g","3gnet":"3g","2g":"2g","slow-2g":"2g"};if(e=i[t],!e&&"object"==typeof navigator){let t=navigator.connection||navigator.mozConnection||navigator.webkitConnection;t&&(e=i[t.type],e||(e=i[t.effectiveType]))}e||(e="unknown")},5977:(t,e,r)=>{"use strict";var i=r(6927),n=r(8626),s=r(5563),o=r(3012),a=s("species");t.exports=function(t){var e=i(t);o&&e&&!e[a]&&n(e,a,{configurable:!0,get:function(){return this}})}},6e3:(t,e,r)=>{"use strict";var i=r(9838),n=r(6157),s=r(8472);i({target:"Object",stat:!0,forced:r(1767)((function(){s(1)}))},{keys:function(t){return s(n(t))}})},6001:(t,e,r)=>{"use strict";var i=r(8184),n=Object.defineProperty;t.exports=function(t,e){try{n(i,t,{value:e,configurable:!0,writable:!0})}catch(r){i[t]=e}return e}},6017:(t,e,r)=>{"use strict";var i=r(9855);t.exports=/ipad|iphone|ipod/i.test(i)&&"undefined"!=typeof Pebble},6040:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(1219),o=r(4150),a=r(5021),u=r(4914),c=r(7307),h=r(3567),f=r(3975),l=r(5411),p=r(7632),d=r(5563),v=r(7221),g=r(7569),y=o.PROPER,b=o.CONFIGURABLE,m=g.IteratorPrototype,w=g.BUGGY_SAFARI_ITERATORS,x=d("iterator"),S="keys",A="values",E="entries",U=function(){return this};t.exports=function(t,e,r,o,d,g,O){u(r,e,o);var I,B,k,P=function(t){if(t===d&&_)return _;if(!w&&t&&t in T)return T[t];switch(t){case S:case A:case E:return function(){return new r(this,t)}}return function(){return new r(this)}},j=e+" Iterator",L=!1,T=t.prototype,z=T[x]||T["@@iterator"]||d&&T[d],_=!w&&z||P(d),C="Array"===e&&T.entries||z;if(C&&(I=c(C.call(new t)))!==Object.prototype&&I.next&&(s||c(I)===m||(h?h(I,m):a(I[x])||p(I,x,U)),f(I,j,!0,!0),s&&(v[j]=U)),y&&d===A&&z&&z.name!==A&&(!s&&b?l(T,"name",A):(L=!0,_=function(){return n(z,this)})),d)if(B={values:P(A),keys:g?_:P(S),entries:P(E)},O)for(k in B)(w||L||!(k in T))&&p(T,k,B[k]);else i({target:e,proto:!0,forced:w||L},B);return s&&!O||T[x]===_||p(T,x,_,{name:d}),v[e]=_,B}},6059:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(850),o=r(3811),a=r(9255),u=r(9508);i({target:"Promise",stat:!0,forced:r(8849)},{all:function(t){var e=this,r=o.f(e),i=r.resolve,c=r.reject,h=a((function(){var r=s(e.resolve),o=[],a=0,h=1;u(t,(function(t){var s=a++,u=!1;h++,n(r,e,t).then((function(t){u||(u=!0,o[s]=t,--h||i(o))}),c)})),--h||i(o)}));return h.error&&c(h.value),r.promise}})},6086:(t,e,r)=>{"use strict";var i=r(4371),n=Math.min;t.exports=function(t){var e=i(t);return e>0?n(e,9007199254740991):0}},6124:(t,e,r)=>{"use strict";var i=r(9838),n=r(3811);i({target:"Promise",stat:!0},{withResolvers:function(){var t=n.f(this);return{promise:t.promise,resolve:t.resolve,reject:t.reject}}})},6154:(t,e,r)=>{"use strict";var i=r(12);(0,i.BE)({a:65,b:66,c:67,d:68,e:69,f:70,g:71,h:72,i:73,j:74,k:75,l:76,m:77,n:78,o:79,p:80,q:81,r:82,s:83,t:84,u:85,v:86,w:87,x:88,y:89,z:90,0:48,1:49,2:50,3:51,4:52,5:53,6:54,7:55,8:56,9:57,"`":192,"+":187,"-":189,"=":61,"[":219,"]":221,"\\":220,";":59,"'":222,",":188,".":190,"/":191,$0:96,$1:97,$2:98,$3:99,$4:100,$5:101,$6:102,$7:103,$8:104,$9:105,"$.":110,"$+":107,"$-":109,"$*":106,"$/":111,space:32,tab:9}),(0,i.BE)({backspace:8,delete:46}),(0,i.BE)({f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123,enter:13,esc:27,capslock:20,insert:45,home:36,end:35,pageup:33,pagedown:34,left:37,right:39,up:38,down:40}),(0,i.BE)({shift:16,ctrl:17,meta:91,alt:18})},6157:(t,e,r)=>{"use strict";var i=r(1726),n=Object;t.exports=function(t){return n(i(t))}},6163:(t,e,r)=>{"use strict";var i=r(9838),n=r(9136),s=r(1767),o=r(2890),a=r(9059).onFreeze,u=Object.freeze;i({target:"Object",stat:!0,forced:s((function(){u(1)})),sham:!n},{freeze:function(t){return u&&o(t)?u(a(t)):t}})},6215:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(2563),n=r(8796);class s{constructor(t=1048576,e=!0,r){if((0,i.A)(this,"data",void 0),(0,i.A)(this,"buffer",void 0),(0,i.A)(this,"pointer",void 0),(0,i.A)(this,"pos",void 0),(0,i.A)(this,"size",void 0),(0,i.A)(this,"littleEndian",void 0),(0,i.A)(this,"error",void 0),(0,i.A)(this,"onFlush",void 0),(0,i.A)(this,"onSeek",void 0),this.pointer=0,this.pos=BigInt(0),this.size=t,this.littleEndian=!e,this.error=0,r&&r.view)this.size=r.length,this.buffer=r,this.data=r.view;else if(r&&!r.byteOffset)this.size=r.length,this.buffer=r,this.data=new DataView(this.buffer.buffer);else{if(r)throw new Error("not support subarray of ArrayBuffer");this.buffer=new Uint8Array(this.size),this.data=new DataView(this.buffer.buffer)}}writeUint8(t){this.remainingLength()<1&&this.flush(),this.data.setUint8(this.pointer,t),this.pointer++,this.pos++}writeUint16(t){this.remainingLength()<2&&this.flush(),this.data.setUint16(this.pointer,t,this.littleEndian),this.pointer+=2,this.pos+=BigInt(2)}writeUint24(t){this.remainingLength()<3&&this.flush();const e=(16711680&t)>>16,r=(65280&t)>>8,i=255&t;this.littleEndian?(this.writeUint8(i),this.writeUint8(r),this.writeUint8(e)):(this.writeUint8(e),this.writeUint8(r),this.writeUint8(i))}writeUint32(t){this.remainingLength()<4&&this.flush(),this.data.setUint32(this.pointer,t,this.littleEndian),this.pointer+=4,this.pos+=BigInt(4)}writeUint64(t){this.remainingLength()<8&&this.flush(),this.data.setBigUint64(this.pointer,t,this.littleEndian),this.pointer+=8,this.pos+=BigInt(8)}writeInt8(t){this.remainingLength()<1&&this.flush(),this.data.setInt8(this.pointer,t),this.pointer++,this.pos++}writeInt16(t){this.remainingLength()<2&&this.flush(),this.data.setInt16(this.pointer,t,this.littleEndian),this.pointer+=2,this.pos+=BigInt(2)}writeInt24(t){this.writeUint24(t<0?t+16777216:t)}writeInt32(t){this.remainingLength()<4&&this.flush(),this.data.setInt32(this.pointer,t,this.littleEndian),this.pointer+=4,this.pos+=BigInt(4)}writeInt64(t){this.remainingLength()<8&&this.flush(),this.data.setBigInt64(this.pointer,t,this.littleEndian),this.pointer+=8,this.pos+=BigInt(8)}writeFloat(t){this.remainingLength()<4&&this.flush(),this.data.setFloat32(this.pointer,t,this.littleEndian),this.pointer+=4,this.pos+=BigInt(4)}writeDouble(t){this.remainingLength()<8&&this.flush(),this.data.setFloat64(this.pointer,t,this.littleEndian),this.pointer+=8,this.pos+=BigInt(8)}getPointer(){return this.pointer}getPos(){return this.pos}remainingLength(){return this.size-this.pointer}writeBuffer(t){if(!t.length)return;let e=t.length;if(this.remainingLength()<e){let r=0;for(;e>0;){this.flush();const i=Math.min(this.size,e);this.buffer.set(t.subarray(r,r+i),this.pointer),this.pointer+=i,this.pos+=BigInt(i),r+=i,e-=i}}else this.buffer.set(t,this.pointer),this.pointer+=e,this.pos+=BigInt(e)}writeString(t){const e=n.l(t);return this.writeBuffer(e),e.length}flush(){if(!this.onFlush)throw this.error=-1048574,Error("IOWriter error, flush failed because of no flush callback");if(this.pointer){const t=this.onFlush(this.buffer.subarray(0,this.pointer));if(0!==t)throw this.error=t,Error("IOWriter error, flush failed")}this.pointer=0}flushToPos(t){if(!this.onFlush)throw this.error=-1048574,Error("IOWriter error, flush failed because of no flush callback");if(this.pointer){const e=this.onFlush(this.buffer.subarray(0,this.pointer),t);if(0!==e)throw this.error=e,Error("IOWriter error, flush failed")}this.pointer=0}seek(t){if(!this.onSeek)throw this.error=-1048574,Error("IOWriter error, seek failed because of no seek callback");this.flush();const e=this.onSeek(t);if(0!==e)throw this.error=e,Error("IOWriter error, seek failed");this.pos=t}seekInline(t){const e=this.pointer;this.pointer=Math.max(0,Math.min(this.size,t)),this.pos+=BigInt(this.pointer-e)}skip(t){const e=this.pointer;this.pointer=Math.min(this.size,this.pointer+t),this.pos+=BigInt(this.pointer-e)}back(t){const e=this.pointer;this.pointer=Math.max(0,this.pointer-t),this.pos+=BigInt(this.pointer-e)}getBuffer(){return this.buffer.subarray(0,this.pointer)}setEndian(t){this.littleEndian=!t}reset(){this.pointer=0,this.pos=BigInt(0),this.error=0}getBufferSize(){return this.size}}},6236:(t,e,r)=>{"use strict";var i=r(5801);r(2833),t.exports=i},6280:(t,e,r)=>{"use strict";var i=r(9624),n=i({}.toString),s=i("".slice);t.exports=function(t){return s(n(t),8,-1)}},6324:(t,e,r)=>{"use strict";r(9815)("dispose")},6395:(t,e,r)=>{"use strict";r(120);var i=r(1928);t.exports=i},6415:(t,e,r)=>{"use strict";var i=r(2890),n=String,s=TypeError;t.exports=function(t){if(i(t))return t;throw new s(n(t)+" is not an object")}},6418:(t,e,r)=>{"use strict";var i=r(9838),n=r(6157),s=r(4418),o=r(4371),a=r(2606),u=r(7223),c=r(1037),h=r(1941),f=r(2888),l=r(9302),p=r(1437)("splice"),d=Math.max,v=Math.min;i({target:"Array",proto:!0,forced:!p},{splice:function(t,e){var r,i,p,g,y,b,m=n(this),w=a(m),x=s(t,w),S=arguments.length;for(0===S?r=i=0:1===S?(r=0,i=w-x):(r=S-2,i=v(d(o(e),0),w-x)),c(w+r-i),p=h(m,i),g=0;g<i;g++)(y=x+g)in m&&f(p,g,m[y]);if(p.length=i,r<i){for(g=x;g<w-i;g++)b=g+r,(y=g+i)in m?m[b]=m[y]:l(m,b);for(g=w;g>w-i+r;g--)l(m,g-1)}else if(r>i)for(g=w-i;g>x;g--)b=g+r-1,(y=g+i-1)in m?m[b]=m[y]:l(m,b);for(g=0;g<r;g++)m[g+x]=arguments[g+2];return u(m,w-i+r),p}})},6426:(t,e,r)=>{"use strict";r(9257)},6436:(t,e,r)=>{"use strict";var i=r(5497),n=r(15),s=r(347),o=r(7097);t.exports=function(t,e,r){for(var a=n(e),u=o.f,c=s.f,h=0;h<a.length;h++){var f=a[h];i(t,f)||r&&i(r,f)||u(t,f,c(e,f))}}},6437:(t,e,r)=>{"use strict";var i,n,s,o=r(9046),a=r(8184),u=r(2890),c=r(5411),h=r(5497),f=r(8069),l=r(767),p=r(4061),d="Object already initialized",v=a.TypeError,g=a.WeakMap;if(o||f.state){var y=f.state||(f.state=new g);y.get=y.get,y.has=y.has,y.set=y.set,i=function(t,e){if(y.has(t))throw new v(d);return e.facade=t,y.set(t,e),e},n=function(t){return y.get(t)||{}},s=function(t){return y.has(t)}}else{var b=l("state");p[b]=!0,i=function(t,e){if(h(t,b))throw new v(d);return e.facade=t,c(t,b,e),e},n=function(t){return h(t,b)?t[b]:{}},s=function(t){return h(t,b)}}t.exports={set:i,get:n,has:s,enforce:function(t){return s(t)?n(t):i(t,{})},getterFor:function(t){return function(e){var r;if(!u(e)||(r=n(e)).type!==t)throw new v("Incompatible receiver, "+t+" required");return r}}}},6440:(t,e,r)=>{"use strict";var i=r(9559);t.exports=i&&!Symbol.sham&&"symbol"==typeof Symbol.iterator},6453:(t,e,r)=>{"use strict";var i=r(4360);t.exports=i},6455:(t,e,r)=>{"use strict";var i,n,s=r(8184),o=r(9855),a=s.process,u=s.Deno,c=a&&a.versions||u&&u.version,h=c&&c.v8;h&&(n=(i=h.split("."))[0]>0&&i[0]<4?1:+(i[0]+i[1])),!n&&o&&(!(i=o.match(/Edge\/(\d+)/))||i[1]>=74)&&(i=o.match(/Chrome\/(\d+)/))&&(n=+i[1]),t.exports=n},6516:(t,e,r)=>{"use strict";r(6e3);var i=r(2071);t.exports=i.Object.keys},6523:(t,e,r)=>{"use strict";var i=r(1767),n=r(7884);t.exports=!i((function(){var t=new Error("a");return!("stack"in t)||(Object.defineProperty(t,"stack",n(1,7)),7!==t.stack)}))},6582:(t,e,r)=>{"use strict";r.d(e,{__:()=>n}),r(6713),r(8811),r(9843);var i=r(7095);function n(t,e,r){if(!t)return;const{length:n}=t;if(n)if(r)for(let r=n-1;r>=0&&e(t[r],r)!==i.W8;r--);else for(let r=0;r<n&&e(t[r],r)!==i.W8;r++);}r(3668)},6600:(t,e,r)=>{"use strict";var i,n=r(8184),s=r(3105),o=r(5021),a=r(7839),u=r(9855),c=r(1800),h=r(7428),f=n.Function,l=/MSIE .\./.test(u)||"BUN"===a&&((i=n.Bun.version.split(".")).length<3||"0"===i[0]&&(i[1]<3||"3"===i[1]&&"0"===i[2]));t.exports=function(t,e){var r=e?2:1;return l?function(i,n){var a=h(arguments.length,1)>r,u=o(i)?i:f(i),l=a?c(arguments,r):[],p=a?function(){s(u,this,l)}:u;return e?t(p,n):t(p)}:t}},6610:(t,e,r)=>{"use strict";var i=r(3457),n=r(9270),s=Array.prototype;t.exports=function(t){var e=t.indexOf;return t===s||i(s,t)&&e===s.indexOf?n:e}},6644:(t,e,r)=>{"use strict";var i=r(3457),n=r(1014),s=String.prototype;t.exports=function(t){var e=t.trim;return"string"==typeof t||t===s||i(s,t)&&e===s.trim?n:e}},6713:(t,e,r)=>{r(7347)},6715:(t,e,r)=>{"use strict";var i,n,s,o,a,u=r(8184),c=r(7477),h=r(7960),f=r(5089).set,l=r(5201),p=r(8192),d=r(6017),v=r(300),g=r(8809),y=u.MutationObserver||u.WebKitMutationObserver,b=u.document,m=u.process,w=u.Promise,x=c("queueMicrotask");if(!x){var S=new l,A=function(){var t,e;for(g&&(t=m.domain)&&t.exit();e=S.get();)try{e()}catch(t){throw S.head&&i(),t}t&&t.enter()};p||g||v||!y||!b?!d&&w&&w.resolve?((o=w.resolve(void 0)).constructor=w,a=h(o.then,o),i=function(){a(A)}):g?i=function(){m.nextTick(A)}:(f=h(f,u),i=function(){f(A)}):(n=!0,s=b.createTextNode(""),new y(A).observe(s,{characterData:!0}),i=function(){s.data=n=!n}),x=function(t){S.head||i(),S.add(t)}}t.exports=x},6716:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(1918),n=r(446);function s(t){return s="function"==typeof i&&"symbol"==typeof n?function(t){return typeof t}:function(t){return t&&"function"==typeof i&&t.constructor===i&&t!==i.prototype?"symbol":typeof t},s(t)}},6728:(t,e,r)=>{"use strict";r(3712)},6788:(t,e,r)=>{"use strict";var i=r(3457),n=r(9992),s=Array.prototype;t.exports=function(t){var e=t.sort;return t===s||i(s,t)&&e===s.sort?n:e}},6832:(t,e,r)=>{"use strict";r(5590);var i=r(2244);t.exports=i("Array","slice")},6842:(t,e,r)=>{"use strict";var i=r(5701),n=r(6927),s=r(5563),o=r(7632);t.exports=function(){var t=n("Symbol"),e=t&&t.prototype,r=e&&e.valueOf,a=s("toPrimitive");e&&!e[a]&&o(e,a,(function(t){return i(r,this)}),{arity:1})}},6870:(t,e,r)=>{"use strict";var i=r(5701),n=r(5021),s=r(2890),o=TypeError;t.exports=function(t,e){var r,a;if("string"===e&&n(r=t.toString)&&!s(a=i(r,t)))return a;if(n(r=t.valueOf)&&!s(a=i(r,t)))return a;if("string"!==e&&n(r=t.toString)&&!s(a=i(r,t)))return a;throw new o("Can't convert object to primitive value")}},6927:(t,e,r)=>{"use strict";var i=r(2071),n=r(8184),s=r(5021),o=function(t){return s(t)?t:void 0};t.exports=function(t,e){return arguments.length<2?o(i[t])||o(n[t]):i[t]&&i[t][e]||n[t]&&n[t][e]}},6942:(t,e,r)=>{"use strict";r(9643),r(1630);var i=r(2071),n=r(3105);i.JSON||(i.JSON={stringify:JSON.stringify}),t.exports=function(t,e,r){return n(i.JSON.stringify,null,arguments)}},6959:t=>{"use strict";t.exports=["constructor","hasOwnProperty","isPrototypeOf","propertyIsEnumerable","toLocaleString","toString","valueOf"]},6972:(t,e,r)=>{"use strict";var i=r(8606),n=r.n(i),s=r(2551),o=r(9309),a=r(2643),u=r(2473);!function(){let t="object"==typeof WebAssembly&&"function"==typeof WebAssembly.instantiate,e="object"==typeof document&&document.createElement("canvas"),r=(e&&e.getContext("webgl"),"function"==typeof Worker),i="object"==typeof Atomics&&"Atomics"===Atomics[n()],c="function"==typeof VideoDecoder,h="function"==typeof AudioDecoder,f="function"==typeof SharedArrayBuffer,l="function"==typeof Proxy;r||(0,o.A)()||(0,s.A)(),"function"==typeof WebAssembly.Suspending&&WebAssembly.promising;(a.A.safari&&!a.A.checkVersion(a.A.majorVersion,"11",!0)||u.A.ios&&!a.A.checkVersion(u.A.version,"11",!0))&&(t=!1),a.A.chrome&&!a.A.checkVersion(a.A.majorVersion,"94",!0)&&(c=!1,h=!1),(a.A.safari&&!a.A.checkVersion(a.A.majorVersion,"17",!0)||u.A.ios&&!a.A.checkVersion(u.A.version,"17",!0))&&(c=!1);"object"==typeof navigator&&navigator.gpu,t&&WebAssembly.Global;a.A,(a.A.chrome||a.A.newEdge)&&a.A.checkVersion(a.A.majorVersion,"91",!0)||a.A.firefox&&a.A.checkVersion(a.A.majorVersion,"89",!0)||a.A.safari&&a.A.checkVersion(a.A.version,"16.4",!0)||u.A.ios&&a.A.checkVersion(u.A.version,"16.4",!0)}()},6998:(t,e,r)=>{"use strict";var i=r(850),n=r(1485);t.exports=function(t,e){var r=t[e];return n(r)?void 0:i(r)}},7041:(t,e,r)=>{"use strict";var i=r(2113),n=r(4845);t.exports=function(t){var e=i(t,"string");return n(e)?e:e+""}},7095:(t,e,r)=>{"use strict";r.d(e,{Cq:()=>c,Cy:()=>f,M_:()=>v,TK:()=>g,W8:()=>u,ZH:()=>h,aV:()=>l,jf:()=>d,rT:()=>a,s0:()=>p,u1:()=>b,x7:()=>y});var i=r(9777),n=r.n(i),s=r(4386),o=r.n(s);const a=!0,u=!1,c=null,h=void 0,f=-1,l="undefined",p="function",d=typeof window!==l?window:h,v=(typeof document!==l&&document,typeof n()!==l?n():typeof r.g!==l?r.g:d),g=typeof self!==l?self:v,y=function(){},b=(o()({}),o()([]),"")},7097:(t,e,r)=>{"use strict";var i=r(3012),n=r(8309),s=r(2518),o=r(6415),a=r(7041),u=TypeError,c=Object.defineProperty,h=Object.getOwnPropertyDescriptor,f="enumerable",l="configurable",p="writable";e.f=i?s?function(t,e,r){if(o(t),e=a(e),o(r),"function"==typeof t&&"prototype"===e&&"value"in r&&p in r&&!r[p]){var i=h(t,e);i&&i[p]&&(t[e]=r.value,r={configurable:l in r?r[l]:i[l],enumerable:f in r?r[f]:i[f],writable:!1})}return c(t,e,r)}:c:function(t,e,r){if(o(t),e=a(e),o(r),n)try{return c(t,e,r)}catch(t){}if("get"in r||"set"in r)throw new u("Accessors not supported");return"value"in r&&(t[e]=r.value),t}},7109:(t,e,r)=>{"use strict";r.d(e,{A:()=>u});var i=r(2563),n=r(8811),s=r.n(n),o=r(3856),a=r.n(o);class u{constructor(t,e=!1){(0,i.A)(this,"handler",void 0),(0,i.A)(this,"file",void 0),(0,i.A)(this,"pos",void 0),(0,i.A)(this,"writer",void 0),(0,i.A)(this,"append",void 0),(0,i.A)(this,"reader",void 0),(0,i.A)(this,"size",void 0),(0,i.A)(this,"blobSlice",void 0),(0,i.A)(this,"readied",void 0),(0,i.A)(this,"readHold",void 0),this.handler=t,this.append=e,this.readied=!1}async ready(){this.readied||(this.file=await this.handler.getFile(),this.writer=await this.handler.createWritable(),this.pos=this.append?this.file.size:0,this.size=this.pos,this.reader=new FileReader,this.blobSlice=s()(File.prototype)||File.prototype.mozSlice||File.prototype.webkitSlice,this.reader.onloadend=t=>{this.readHold&&(this.readHold.resolve(t.target.result),this.readHold=null)},this.readied=!0)}async write_(t){await this.writer.write(t),this.pos+=t.byteLength,this.pos>this.size&&(this.size+=t.byteLength)}async write(t){await this.write_(t)}async seek_(t){await this.writer.seek(t),this.pos=t}async seek(t){await this.seek_(t)}async seekToEnd(){await this.seek_(this.size)}async resize_(t){t!==this.file.size&&(t<this.file.size&&(this.pos=this.file.size),await this.writer.truncate(t),this.size=t)}async resize(t){await this.resize_(t)}async read_(t,e){return new(a())(((r,i)=>{this.readHold={resolve:r,reject:i},this.reader.readAsArrayBuffer(this.blobSlice.call(this.file,t,e))}))}async read(t,e){return await this.read_(t,e)}async appendBufferByPosition(t,e){await this.writer.close(),this.file=await this.handler.getFile(),this.writer=await this.handler.createWritable({keepExistingData:!0});const r=this.file.size,i=t.byteLength;if(e>=this.file.size)await this.resize_(e+i),await this.seek_(e),await this.write_(t);else{let i=e;for(await this.seek_(e),await this.write_(t);i<r;){const t=await this.read_(i,Math.min(i+5242880,r));await this.write_(t),i+=t.byteLength}}}async close_(){this.readied&&(await this.writer.close(),this.file=await this.handler.getFile(),this.readied=!1)}async close(){await this.close_()}getFile(){return this.file}getHandle(){return this.handler}getPos(){return this.pos}getSize(){return this.size}async destroy(){await this.close_(),this.handler=null,this.file=null}}},7110:(t,e,r)=>{"use strict";r(1193)},7124:(t,e,r)=>{"use strict";var i=r(3457),n=r(3296),s=Array.prototype;t.exports=function(t){var e=t.concat;return t===s||i(s,t)&&e===s.concat?n:e}},7194:(t,e,r)=>{"use strict";r(2399),r(8811),r(9843),r(7247),r(6582),r(12)},7218:(t,e,r)=>{"use strict";var i=r(2475);t.exports=i},7221:t=>{"use strict";t.exports={}},7223:(t,e,r)=>{"use strict";var i=r(3012),n=r(8352),s=TypeError,o=Object.getOwnPropertyDescriptor,a=i&&!function(){if(void 0!==this)return!0;try{Object.defineProperty([],"length",{writable:!1}).length=1}catch(t){return t instanceof TypeError}}();t.exports=a?function(t,e){if(n(t)&&!o(t,"length").writable)throw new s("Cannot set read only .length");return t.length=e}:function(t,e){return t.length=e}},7224:()=>{},7228:(t,e,r)=>{"use strict";var i=r(9815),n=r(6842);i("toPrimitive"),n()},7247:(t,e,r)=>{"use strict";r(1193),r(9843),r(6582)},7249:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(3105),o=r(1800),a=r(3811),u=r(850),c=r(9255),h=n.Promise,f=!1;i({target:"Promise",stat:!0,forced:!h||!h.try||c((function(){h.try((function(t){f=8===t}),8)})).error||!f},{try:function(t){var e=arguments.length>1?o(arguments,1):[],r=a.f(this),i=c((function(){return s(u(t),void 0,e)}));return(i.error?r.reject:r.resolve)(i.value),r.promise}})},7286:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(850),o=r(6927),a=r(3811),u=r(9255),c=r(9508),h=r(8849),f="No one promise resolved";i({target:"Promise",stat:!0,forced:h},{any:function(t){var e=this,r=o("AggregateError"),i=a.f(e),h=i.resolve,l=i.reject,p=u((function(){var i=s(e.resolve),o=[],a=0,u=1,p=!1;c(t,(function(t){var s=a++,c=!1;u++,n(i,e,t).then((function(t){c||p||(p=!0,h(t))}),(function(t){c||p||(c=!0,o[s]=t,--u||l(new r(o,f)))}))})),--u||l(new r(o,f))}));return p.error&&l(p.value),i.promise}})},7299:(t,e,r)=>{"use strict";var i=r(9838),n=r(1448);i({global:!0,forced:parseFloat!==n},{parseFloat:n})},7307:(t,e,r)=>{"use strict";var i=r(5497),n=r(5021),s=r(6157),o=r(767),a=r(9803),u=o("IE_PROTO"),c=Object,h=c.prototype;t.exports=a?c.getPrototypeOf:function(t){var e=s(t);if(i(e,u))return e[u];var r=e.constructor;return n(r)&&e instanceof r?r.prototype:e instanceof c?h:null}},7312:(t,e,r)=>{"use strict";r(9815)("matcher")},7334:(t,e,r)=>{"use strict";r.d(e,{A:()=>o});var i=r(2563),n=r(7523),s=r(8796);class o{constructor(t,e=!0){(0,i.A)(this,"data",void 0),(0,i.A)(this,"buffer",void 0),(0,i.A)(this,"byteStart",void 0),(0,i.A)(this,"pos",void 0),(0,i.A)(this,"size",void 0),(0,i.A)(this,"littleEndian",void 0),this.buffer=t,this.data=t instanceof Uint8Array?new DataView(t.buffer):t.view,this.byteStart=t instanceof Uint8Array?t.byteOffset:0,this.pos=0,this.size=t.byteLength,this.littleEndian=!e}writeUint8(t){this.data.setUint8(this.pos+++this.byteStart,t)}writeUint16(t){this.data.setUint16(this.pos+this.byteStart,t,this.littleEndian),this.pos+=2}writeUint24(t){const e=3840&t,r=240&t,i=15&t;this.littleEndian?(this.writeUint8(i),this.writeUint8(r),this.writeUint8(e)):(this.writeUint8(e),this.writeUint8(r),this.writeUint8(i))}writeUint32(t){this.data.setUint32(this.pos+this.byteStart,t,this.littleEndian),this.pos+=4}writeUint64(t){this.data.setBigUint64(this.pos+this.byteStart,t,this.littleEndian),this.pos+=8}writeInt8(t){this.data.setInt8(this.pos+++this.byteStart,t)}writeInt16(t){this.data.setInt16(this.pos+this.byteStart,t,this.littleEndian),this.pos+=2}writeInt24(t){this.writeUint24(t<0?t+16777216:t)}writeInt32(t){this.data.setInt32(this.pos+this.byteStart,t,this.littleEndian),this.pos+=4}writeInt64(t){this.data.setBigInt64(this.pos+this.byteStart,t,this.littleEndian),this.pos+=8}writeFloat(t){this.data.setFloat32(this.pos+this.byteStart,t,this.littleEndian),this.pos+=4}writeDouble(t){this.data.setFloat64(this.pos+this.byteStart,t,this.littleEndian),this.pos+=8}getPos(){return this.pos}seek(t){t>this.size&&(t=this.size),this.pos=Math.max(0,t)}skip(t){this.seek(this.pos+t)}back(t){this.seek(this.pos-t)}remainingSize(){return this.size-this.pos}writeBuffer(t){let e=t.length;this.remainingSize()<e&&(e=this.remainingSize(),n.R8(`the remaining buffer size is smaller then the wrote buffer, hope set ${t.length}, but set ${e}`,"src/common/io/BufferWriter.ts",202)),this.buffer.set(t,this.pos),this.pos+=t.length}writeString(t){const e=s.l(t);return this.writeBuffer(e),e.length}getWroteBuffer(){return this.buffer.subarray(0,this.pos)}resetBuffer(t,e=!0){this.buffer=t,this.data=t instanceof Uint8Array?new DataView(t.buffer):t.view,this.byteStart=t instanceof Uint8Array?t.byteOffset:0,this.pos=0,this.size=t.byteLength,this.littleEndian=!e}}},7347:(t,e,r)=>{"use strict";var i=r(4548);t.exports=i},7385:(t,e,r)=>{t.exports=r(8459)},7413:(t,e,r)=>{"use strict";r(5945);var i=r(2071);t.exports=i.Date.now},7428:t=>{"use strict";var e=TypeError;t.exports=function(t,r){if(t<r)throw new e("Not enough arguments");return t}},7447:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(6716),n=r(3601);function s(t,e){if("object"!=(0,i.A)(t)||!t)return t;var r=t[n];if(void 0!==r){var s=r.call(t,e||"default");if("object"!=(0,i.A)(s))return s;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}},7477:(t,e,r)=>{"use strict";var i=r(8184),n=r(3012),s=Object.getOwnPropertyDescriptor;t.exports=function(t){if(!n)return i[t];var e=s(i,t);return e&&e.value}},7489:(t,e,r)=>{"use strict";var i=r(9838),n=r(3457),s=r(7307),o=r(3567),a=r(6436),u=r(272),c=r(5411),h=r(7884),f=r(9736),l=r(9491),p=r(9508),d=r(371),v=r(5563)("toStringTag"),g=Error,y=[].push,b=function(t,e){var r,i=n(m,this);o?r=o(new g,i?s(this):m):(r=i?this:u(m),c(r,v,"Error")),void 0!==e&&c(r,"message",d(e)),l(r,b,r.stack,1),arguments.length>2&&f(r,arguments[2]);var a=[];return p(t,y,{that:a}),c(r,"errors",a),r};o?o(b,g):a(b,g,{name:!0});var m=b.prototype=u(g.prototype,{constructor:h(1,b),message:h(1,""),name:h(1,"AggregateError")});i({global:!0,constructor:!0,arity:2},{AggregateError:b})},7523:(t,e,r)=>{"use strict";r.d(e,{R8:()=>d,h2:()=>v});var i=r(7095),n=r(9135);const s=0,o=3,a=4,u=5,c=typeof console!==i.aV?console:i.Cq,h=/common/.test((0,n.A)(i.x7))?2:o,f=(c||i.x7,c?function(t,e){c.warn(t,e)}:i.x7),l=c?function(t,e){c.error(t,e)}:i.x7;function p(){if(i.M_){const t=i.TK.COMMON_LOG_LEVEL;if(t>=s&&t<=u)return t}return h}function d(t,e,r){p()<=o&&f(`[${arguments[1]}][line ${arguments[2]}] [warn]`,t)}function v(t,e,r){if(p()<=u)throw function(t,e,r){p()<=a&&l(`[${arguments[1]}][line ${arguments[2]}] [error]`,t)}(t,e,r),new Error(`[${arguments[1]}][line ${arguments[2]}] [fatal]: ${t}`)}},7564:(t,e,r)=>{"use strict";var i,n,s,o,a=r(9838),u=r(1219),c=r(8809),h=r(8184),f=r(2071),l=r(5701),p=r(7632),d=r(3567),v=r(3975),g=r(5977),y=r(850),b=r(5021),m=r(2890),w=r(9535),x=r(4797),S=r(5089).set,A=r(6715),E=r(4125),U=r(9255),O=r(5201),I=r(6437),B=r(2542),k=r(4652),P=r(3811),j="Promise",L=k.CONSTRUCTOR,T=k.REJECTION_EVENT,z=k.SUBCLASSING,_=I.getterFor(j),C=I.set,F=B&&B.prototype,R=B,D=F,N=h.TypeError,M=h.document,W=h.process,V=P.f,$=V,q=!!(M&&M.createEvent&&h.dispatchEvent),H="unhandledrejection",G=function(t){var e;return!(!m(t)||!b(e=t.then))&&e},J=function(t,e){var r,i,n,s=e.value,o=1===e.state,a=o?t.ok:t.fail,u=t.resolve,c=t.reject,h=t.domain;try{a?(o||(2===e.rejection&&X(e),e.rejection=1),!0===a?r=s:(h&&h.enter(),r=a(s),h&&(h.exit(),n=!0)),r===t.promise?c(new N("Promise-chain cycle")):(i=G(r))?l(i,r,u,c):u(r)):c(s)}catch(t){h&&!n&&h.exit(),c(t)}},K=function(t,e){t.notified||(t.notified=!0,A((function(){for(var r,i=t.reactions;r=i.get();)J(r,t);t.notified=!1,e&&!t.rejection&&Y(t)})))},Z=function(t,e,r){var i,n;q?((i=M.createEvent("Event")).promise=e,i.reason=r,i.initEvent(t,!1,!0),h.dispatchEvent(i)):i={promise:e,reason:r},!T&&(n=h["on"+t])?n(i):t===H&&E("Unhandled promise rejection",r)},Y=function(t){l(S,h,(function(){var e,r=t.facade,i=t.value;if(Q(t)&&(e=U((function(){c?W.emit("unhandledRejection",i,r):Z(H,r,i)})),t.rejection=c||Q(t)?2:1,e.error))throw e.value}))},Q=function(t){return 1!==t.rejection&&!t.parent},X=function(t){l(S,h,(function(){var e=t.facade;c?W.emit("rejectionHandled",e):Z("rejectionhandled",e,t.value)}))},tt=function(t,e,r){return function(i){t(e,i,r)}},et=function(t,e,r){t.done||(t.done=!0,r&&(t=r),t.value=e,t.state=2,K(t,!0))},rt=function(t,e,r){if(!t.done){t.done=!0,r&&(t=r);try{if(t.facade===e)throw new N("Promise can't be resolved itself");var i=G(e);i?A((function(){var r={done:!1};try{l(i,e,tt(rt,r,t),tt(et,r,t))}catch(e){et(r,e,t)}})):(t.value=e,t.state=1,K(t,!1))}catch(e){et({done:!1},e,t)}}};if(L&&(D=(R=function(t){w(this,D),y(t),l(i,this);var e=_(this);try{t(tt(rt,e),tt(et,e))}catch(t){et(e,t)}}).prototype,(i=function(t){C(this,{type:j,done:!1,notified:!1,parent:!1,reactions:new O,rejection:!1,state:0,value:null})}).prototype=p(D,"then",(function(t,e){var r=_(this),i=V(x(this,R));return r.parent=!0,i.ok=!b(t)||t,i.fail=b(e)&&e,i.domain=c?W.domain:void 0,0===r.state?r.reactions.add(i):A((function(){J(i,r)})),i.promise})),n=function(){var t=new i,e=_(t);this.promise=t,this.resolve=tt(rt,e),this.reject=tt(et,e)},P.f=V=function(t){return t===R||t===s?new n(t):$(t)},!u&&b(B)&&F!==Object.prototype)){o=F.then,z||p(F,"then",(function(t,e){var r=this;return new R((function(t,e){l(o,r,t,e)})).then(t,e)}),{unsafe:!0});try{delete F.constructor}catch(t){}d&&d(F,D)}a({global:!0,constructor:!0,wrap:!0,forced:L},{Promise:R}),s=f.Promise,v(R,j,!1,!0),g(j)},7568:(t,e,r)=>{"use strict";r(9838)({target:"Symbol",stat:!0,forced:!0},{isWellKnownSymbol:r(8448)})},7569:(t,e,r)=>{"use strict";var i,n,s,o=r(1767),a=r(5021),u=r(2890),c=r(272),h=r(7307),f=r(7632),l=r(5563),p=r(1219),d=l("iterator"),v=!1;[].keys&&("next"in(s=[].keys())?(n=h(h(s)))!==Object.prototype&&(i=n):v=!0),!u(i)||o((function(){var t={};return i[d].call(t)!==t}))?i={}:p&&(i=c(i)),a(i[d])||f(i,d,(function(){return this})),t.exports={IteratorPrototype:i,BUGGY_SAFARI_ITERATORS:v}},7579:(t,e,r)=>{"use strict";var i=r(5701),n=r(6415),s=r(6998);t.exports=function(t,e,r){var o,a;n(t);try{if(!(o=s(t,"return"))){if("throw"===e)throw r;return r}o=i(o,t)}catch(t){a=!0,o=t}if("throw"===e)throw r;if(a)throw o;return n(o),r}},7632:(t,e,r)=>{"use strict";var i=r(5411);t.exports=function(t,e,r,n){return n&&n.enumerable?t[e]=r:i(t,e,r),t}},7728:(t,e,r)=>{"use strict";r(9815)("patternMatch")},7749:(t,e,r)=>{"use strict";var i=r(6927),n=r(9815),s=r(3975);n("toStringTag"),s(i("Symbol"),"Symbol")},7784:(t,e,r)=>{"use strict";r(2563);var i=r(7109);r(4995),i.A},7809:(t,e,r)=>{"use strict";var i=r(9838),n=r(3811);i({target:"Promise",stat:!0,forced:r(4652).CONSTRUCTOR},{reject:function(t){var e=n.f(this);return(0,e.reject)(t),e.promise}})},7839:(t,e,r)=>{"use strict";var i=r(8184),n=r(9855),s=r(6280),o=function(t){return n.slice(0,t.length)===t};t.exports=o("Bun/")?"BUN":o("Cloudflare-Workers")?"CLOUDFLARE":o("Deno/")?"DENO":o("Node.js/")?"NODE":i.Bun&&"string"==typeof Bun.version?"BUN":i.Deno&&"object"==typeof Deno.version?"DENO":"process"===s(i.process)?"NODE":i.window&&i.document?"BROWSER":"REST"},7849:(t,e,r)=>{"use strict";var i,n,s=r(2399),o=r.n(s),a=r(5573);const u=("object"==typeof navigator&&navigator.userAgent||"").toLocaleLowerCase();let c="unknown",h="";o()(u).call(u,"intel")>-1?c="intel":o()(u).call(u,"amd")>-1&&(c="amd"),"apple"===a.A.vendor&&o()(i=a.A.renderer).call(i,"m1")>-1&&(c="apple",h="m1"),"apple"===a.A.vendor&&o()(n=a.A.renderer).call(n,"m2")>-1&&(c="apple",h="m2")},7851:(t,e,r)=>{"use strict";var i=r(9838),n=r(1219),s=r(4652).CONSTRUCTOR,o=r(2542),a=r(6927),u=r(5021),c=r(7632),h=o&&o.prototype;if(i({target:"Promise",proto:!0,forced:s,real:!0},{catch:function(t){return this.then(void 0,t)}}),!n&&u(o)){var f=a("Promise").prototype.catch;h.catch!==f&&c(h,"catch",f,{unsafe:!0})}},7874:(t,e,r)=>{"use strict";var i=r(6927),n=r(9624),s=i("Symbol"),o=s.keyFor,a=n(s.prototype.valueOf);t.exports=s.isRegisteredSymbol||function(t){try{return void 0!==o(a(t))}catch(t){return!1}}},7884:t=>{"use strict";t.exports=function(t,e){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:e}}},7899:(t,e,r)=>{"use strict";r(1329),r(9902),r(1852),r(1630),r(5765)},7905:(t,e,r)=>{"use strict";var i=r(2710);r(2833),t.exports=i},7939:(t,e,r)=>{"use strict";var i=r(8184);r(3975)(i.JSON,"JSON",!0)},7960:(t,e,r)=>{"use strict";var i=r(5948),n=r(850),s=r(3872),o=i(i.bind);t.exports=function(t,e){return n(t),void 0===e?t:s?o(t,e):function(){return t.apply(e,arguments)}}},7975:(t,e,r)=>{"use strict";var i=r(9843),n=r(12),s=r(7095);const o="object"==typeof window&&void 0!==window.localStorage;let a=s.x7,u=null,c=null;o&&(a=function(t,e){if(i.Qd(t))n.__(t,((t,e)=>{a(e,t)}));else try{localStorage[t]=e}catch(t){}},function(t){let e;try{e=localStorage[t]}catch(t){}return e})},8052:(t,e,r)=>{"use strict";var i=r(9133);t.exports=i},8069:(t,e,r)=>{"use strict";var i=r(1219),n=r(8184),s=r(6001),o="__core-js_shared__",a=t.exports=n[o]||s(o,{});(a.versions||(a.versions=[])).push({version:"3.46.0",mode:i?"pure":"global",copyright:"© 2014-2025 Denis Pushkarev (zloirock.ru), 2025 CoreJS Company (core-js.io)",license:"https://github.com/zloirock/core-js/blob/v3.46.0/LICENSE",source:"https://github.com/zloirock/core-js"})},8119:(t,e,r)=>{"use strict";var i=r(8184),n=r(1767),s=r(9624),o=r(2391),a=r(1026).trim,u=r(8276),c=i.parseInt,h=i.Symbol,f=h&&h.iterator,l=/^[+-]?0x/i,p=s(l.exec),d=8!==c(u+"08")||22!==c(u+"0x16")||f&&!n((function(){c(Object(f))}));t.exports=d?function(t,e){var r=a(o(t));return c(r,e>>>0||(p(l,r)?16:10))}:c},8132:(t,e,r)=>{"use strict";var i=r(5563)("iterator"),n=!1;try{var s=0,o={next:function(){return{done:!!s++}},return:function(){n=!0}};o[i]=function(){return this},Array.from(o,(function(){throw 2}))}catch(t){}t.exports=function(t,e){try{if(!e&&!n)return!1}catch(t){return!1}var r=!1;try{var s={};s[i]=function(){return{next:function(){return{done:r=!0}}}},t(s)}catch(t){}return r}},8153:(t,e,r)=>{"use strict";r(7939),r(599),r(9627),r(7224),r(7749);var i=r(2855);t.exports=i.f("toStringTag")},8161:(t,e,r)=>{"use strict";var i=r(9838),n=r(3012),s=r(7097).f;i({target:"Object",stat:!0,forced:Object.defineProperty!==s,sham:!n},{defineProperty:s})},8183:(t,e,r)=>{"use strict";r(9663),r(3247)},8184:function(t,e,r){"use strict";var i=function(t){return t&&t.Math===Math&&t};t.exports=i("object"==typeof globalThis&&globalThis)||i("object"==typeof window&&window)||i("object"==typeof self&&self)||i("object"==typeof r.g&&r.g)||i("object"==typeof this&&this)||function(){return this}()||Function("return this")()},8192:(t,e,r)=>{"use strict";var i=r(9855);t.exports=/(?:ipad|iphone|ipod).*applewebkit/i.test(i)},8217:(t,e,r)=>{"use strict";var i=r(2206);t.exports=i},8276:t=>{"use strict";t.exports="\t\n\v\f\r                　\u2028\u2029\ufeff"},8309:(t,e,r)=>{"use strict";var i=r(3012),n=r(1767),s=r(5967);t.exports=!i&&!n((function(){return 7!==Object.defineProperty(s("div"),"a",{get:function(){return 7}}).a}))},8323:(t,e,r)=>{"use strict";r(6324)},8338:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(6716),n=r(7447);function s(t){var e=(0,n.A)(t,"string");return"symbol"==(0,i.A)(e)?e:e+""}},8350:(t,e,r)=>{"use strict";r(9843),r(9937),r(6582),r(12)},8352:(t,e,r)=>{"use strict";var i=r(6280);t.exports=Array.isArray||function(t){return"Array"===i(t)}},8377:(t,e,r)=>{"use strict";var i=r(8069);t.exports=function(t,e){return i[t]||(i[t]=e||{})}},8388:(t,e,r)=>{"use strict";var i={};i[r(5563)("toStringTag")]="z",t.exports="[object z]"===String(i)},8440:(t,e,r)=>{"use strict";r(3856),r(7523),r(8796),r(5391)},8447:(t,e,r)=>{"use strict";var i=r(9855).match(/AppleWebKit\/(\d+)\./);t.exports=!!i&&+i[1]},8448:(t,e,r)=>{"use strict";for(var i=r(8377),n=r(6927),s=r(9624),o=r(4845),a=r(5563),u=n("Symbol"),c=u.isWellKnownSymbol,h=n("Object","getOwnPropertyNames"),f=s(u.prototype.valueOf),l=i("wks"),p=0,d=h(u),v=d.length;p<v;p++)try{var g=d[p];o(u[g])&&a(g)}catch(t){}t.exports=function(t){if(c&&c(t))return!0;try{for(var e=f(t),r=0,i=h(l),n=i.length;r<n;r++)if(l[i[r]]==e)return!0}catch(t){}return!1}},8459:(t,e,r)=>{"use strict";var i=r(7124);t.exports=i},8472:(t,e,r)=>{"use strict";var i=r(1836),n=r(6959);t.exports=Object.keys||function(t){return i(t,n)}},8507:(t,e,r)=>{"use strict";r.d(e,{A:()=>n});var i=r(1387);function n(t,e,r=!1){const n=e.split("."),s=t.split(".");for(let t=0;t<s.length;t++){if(r&&t==s.length-1&&(0,i.A)(s[t])>=(0,i.A)(n[t]))return s.length>=n.length;if((0,i.A)(s[t])>(0,i.A)(n[t]))return!0;if((0,i.A)(s[t])<(0,i.A)(n[t]))return!1;if(t===n.length-1&&t===s.length-1)return r;if(t===n.length-1)return!0;if(t===s.length-1)return!1}return!0}},8518:(t,e,r)=>{"use strict";var i=r(163);t.exports=i},8524:(t,e,r)=>{"use strict";r(9815)("customMatcher")},8606:(t,e,r)=>{t.exports=r(2056)},8626:(t,e,r)=>{"use strict";var i=r(7097);t.exports=function(t,e,r){return i.f(t,e,r)}},8686:(t,e,r)=>{"use strict";r.d(e,{vB:()=>i}),r(339),r(5884),r(3760),r(394),r(4995),r(5522),r(9263),r(6972),r(2643),r(2473),r(5973),r(7849),r(5573),r(9843),r(3022),r(6582),r(12),r(4167),r(1104);var i=r(3695);r(958),r(7523),r(8796),r(3799),r(7194),r(6154),r(7975),r(2946),r(1241),r(7110),r(3744),r(9937),r(8350),r(8507),r(3728),r(3668),r(8802),r(4891),r(4651),r(5661),r(3712),r(6728),r(244),r(9309),r(4099),r(4043),r(7247),r(2940),r(1387),r(9135),r(575),r(1900)},8690:(t,e,r)=>{"use strict";r(9838)({target:"Array",stat:!0},{isArray:r(8352)})},8720:(t,e,r)=>{"use strict";r(152),r(469)},8722:(t,e,r)=>{"use strict";r.d(e,{A:()=>u});var i=r(2563),n=r(8811),s=r.n(n),o=r(5238),a=r(8796);class u{constructor(t,e=!0){(0,i.A)(this,"data",void 0),(0,i.A)(this,"buffer",void 0),(0,i.A)(this,"byteStart",void 0),(0,i.A)(this,"pos",void 0),(0,i.A)(this,"size",void 0),(0,i.A)(this,"littleEndian",void 0),this.buffer=t,this.data=t instanceof Uint8Array?new DataView(t.buffer):t.view,this.byteStart=t instanceof Uint8Array?t.byteOffset:0,this.pos=0,this.size=t.byteLength,this.littleEndian=!e}readUint8(){return this.data.getUint8(this.pos+++this.byteStart)}peekUint8(){return this.data.getUint8(this.pos+this.byteStart)}readUint16(){const t=this.data.getUint16(this.pos+this.byteStart,this.littleEndian);return this.pos+=2,t}peekUint16(){return this.data.getUint16(this.pos+this.byteStart,this.littleEndian)}readUint24(){const t=this.readUint16(),e=this.readUint8();return this.littleEndian?e<<16|t:t<<8|e}peekUint24(){const t=this.readUint16(),e=this.readUint8();return this.pos-=3,this.littleEndian?e<<16|t:t<<8|e}readUint32(){const t=this.data.getUint32(this.pos+this.byteStart,this.littleEndian);return this.pos+=4,t}peekUint32(){return this.data.getUint32(this.pos+this.byteStart,this.littleEndian)}readUint64(){const t=BigInt(this.readUint32()),e=BigInt(this.readUint32());return this.littleEndian?e<<BigInt(32)|t:t<<BigInt(32)|e}peekUint64(){const t=BigInt(this.readUint32()),e=BigInt(this.readUint32());return this.pos-=8,this.littleEndian?e<<BigInt(32)|t:t<<BigInt(32)|e}readInt8(){return this.data.getInt8(this.pos+++this.byteStart)}peekInt8(){return this.data.getInt8(this.pos+this.byteStart)}readInt16(){const t=this.data.getInt16(this.pos+this.byteStart,this.littleEndian);return this.pos+=2,t}peekInt16(){return this.data.getInt16(this.pos+this.byteStart,this.littleEndian)}readInt24(){const t=this.readUint24();return 8388608&t?t-16777216:t}peekInt24(){const t=this.peekUint24();return 8388608&t?t-16777216:t}readInt32(){const t=this.data.getInt32(this.pos+this.byteStart,this.littleEndian);return this.pos+=4,t}peekInt32(){return this.data.getInt32(this.pos+this.byteStart,this.littleEndian)}readInt64(){const t=BigInt(this.readInt32()),e=BigInt(this.readInt32());return this.littleEndian?e<<BigInt(32)|t:t<<BigInt(32)|e}peekInt64(){const t=BigInt(this.readInt32()),e=BigInt(this.readInt32());return this.pos-=8,this.littleEndian?e<<BigInt(32)|t:t<<BigInt(32)|e}readFloat(){const t=this.data.getFloat32(this.pos+this.byteStart,this.littleEndian);return this.pos+=4,t}peekFloat(){return this.data.getFloat32(this.pos+this.byteStart,this.littleEndian)}readDouble(){const t=this.data.getFloat64(this.pos+this.byteStart,this.littleEndian);return this.pos+=8,t}peekDouble(){return this.data.getFloat64(this.pos+this.byteStart,this.littleEndian)}readHex(t=1){let e="";for(let r=0;r<t;r++){const t=this.readUint8().toString(16);e+=1===t.length?"0"+t:t}return e}peekHex(t=1){const e=this.pos,r=this.readHex(t);return this.pos=e,r}readString(t=1){let e="";if(t){let r=this.pos;for(let e=0;e<t&&0===this.buffer[this.pos+e];e++)r++;e=a.D(this.buffer.subarray(r,r+t))}return this.pos+=t,e}peekString(t=1){const e=this.pos,r=this.readString(t);return this.pos=e,r}readLine(){let t="";for(let e=this.pos;e<this.size;e++)if(10===this.buffer[e]||13===this.buffer[e]){t+=this.readString(e-this.pos);break}for(let t=this.pos;t<this.size&&(10===this.buffer[t]||13===this.buffer[t]);t++)this.readUint8();return t}peekLine(){const t=this.pos,e=this.readLine();return this.pos=t,e}getPos(){return BigInt(this.pos)}seek(t){t>this.size&&(t=this.size),this.pos=Math.max(0,t)}skip(t){this.seek(this.pos+t)}back(t){this.seek(this.pos-t)}remainingSize(){return this.size-this.pos}readBuffer(t){var e;t=Math.min(t,this.remainingSize());const r=s()(e=this.buffer).call(e,this.pos,this.pos+t);return this.pos+=t,r}appendBuffer(t){var e;this.buffer=(0,o.A)(Uint8Array,[s()(e=this.buffer).call(e),s()(t).call(t)]),this.data=new DataView(this.buffer.buffer),this.size+=t.byteLength,this.byteStart=0}resetBuffer(t,e=!0){this.buffer=t,this.data=t instanceof Uint8Array?new DataView(t.buffer):t.view,this.byteStart=t instanceof Uint8Array?t.byteOffset:0,this.pos=0,this.size=t.byteLength,this.littleEndian=!e}}},8731:(t,e,r)=>{"use strict";var i=r(9855);t.exports=/MSIE|Trident/.test(i)},8769:(t,e,r)=>{r(3043)},8789:(t,e,r)=>{"use strict";var i=r(216);t.exports=i},8796:(t,e,r)=>{"use strict";r.d(e,{D:()=>a,l:()=>s});const i="function"==typeof TextEncoder?new TextEncoder:null,n="function"==typeof TextDecoder?new TextDecoder:null;function s(t){if(i)return i.encode(t);const e=[];for(let r=0;r<t.length;++r){let i=t.charCodeAt(r);i>=55296&&i<=57343&&(i=65536+((1023&i)<<10)|1023&t.charCodeAt(++r)),i<=127?e.push(i):i<=2047?(e.push(192|i>>6),e.push(128|63&i)):i<=65535?(e.push(224|i>>12),e.push(128|i>>6&63),e.push(128|63&i)):(e.push(240|i>>18),e.push(128|i>>12&63),e.push(128|i>>6&63),e.push(128|63&i))}return new Uint8Array(e)}function o(t){let e="";for(let r=0;r<t.length;){let i=t[r++>>>0];if(!(128&i)){e+=String.fromCharCode(i);continue}let n=63&t[r++>>>0];if(192==(224&i)){e+=String.fromCharCode((31&i)<<6|n);continue}let s=63&t[r++>>>0];if(i=224==(240&i)?(15&i)<<12|n<<6|s:(7&i)<<18|n<<12|s<<6|63&t[r++>>>0],i<65536)e+=String.fromCharCode(i);else{let t=i-65536;e+=String.fromCharCode(55296|t>>10,56320|1023&t)}}return e}function a(t){if(t instanceof Uint8Array&&n&&!("function"==typeof SharedArrayBuffer&&t.buffer instanceof SharedArrayBuffer))try{return n.decode(t)}catch(e){return o(t)}return o(t)}},8802:(t,e,r)=>{"use strict";r(9843)},8809:(t,e,r)=>{"use strict";var i=r(7839);t.exports="NODE"===i},8810:(t,e,r)=>{"use strict";var i=r(4813),n=String,s=TypeError;t.exports=function(t){if(i(t))return t;throw new s("Can't set "+n(t)+" as a prototype")}},8811:(t,e,r)=>{t.exports=r(4537)},8819:(t,e,r)=>{"use strict";var i=r(9838),n=r(3309),s=r(1645);i({target:"Array",proto:!0},{fill:n}),s("fill")},8826:(t,e,r)=>{"use strict";r(7564),r(6059),r(7851),r(4279),r(7809),r(4752)},8836:(t,e,r)=>{"use strict";var i=r(9624),n=r(1767),s=r(1725),o=RangeError,a=isFinite,u=Math.abs,c=Date.prototype,h=c.toISOString,f=i(c.getTime),l=i(c.getUTCDate),p=i(c.getUTCFullYear),d=i(c.getUTCHours),v=i(c.getUTCMilliseconds),g=i(c.getUTCMinutes),y=i(c.getUTCMonth),b=i(c.getUTCSeconds);t.exports=n((function(){return"0385-07-25T07:06:39.999Z"!==h.call(new Date(-50000000000001))}))||!n((function(){h.call(new Date(NaN))}))?function(){if(!a(f(this)))throw new o("Invalid time value");var t=this,e=p(t),r=v(t),i=e<0?"-":e>9999?"+":"";return i+s(u(e),i?6:4,0)+"-"+s(y(t)+1,2,0)+"-"+s(l(t),2,0)+"T"+s(d(t),2,0)+":"+s(g(t),2,0)+":"+s(b(t),2,0)+"."+s(r,3,0)+"Z"}:h},8849:(t,e,r)=>{"use strict";var i=r(2542),n=r(8132),s=r(4652).CONSTRUCTOR;t.exports=s||!n((function(t){i.all(t).then(void 0,(function(){}))}))},8883:(t,e,r)=>{"use strict";r(9815)("species")},8940:(t,e,r)=>{"use strict";var i=r(2959).charAt,n=r(2391),s=r(6437),o=r(6040),a=r(3817),u="String Iterator",c=s.set,h=s.getterFor(u);o(String,"String",(function(t){c(this,{type:u,string:n(t),index:0})}),(function(){var t,e=h(this),r=e.string,n=e.index;return n>=r.length?a(void 0,!0):(t=i(r,n),e.index+=t.length,a(t,!1))}))},9021:t=>{"use strict";t.exports=require("fs")},9046:(t,e,r)=>{"use strict";var i=r(8184),n=r(5021),s=i.WeakMap;t.exports=n(s)&&/native code/.test(String(s))},9059:(t,e,r)=>{"use strict";var i=r(9838),n=r(9624),s=r(4061),o=r(2890),a=r(5497),u=r(7097).f,c=r(2456),h=r(1602),f=r(3332),l=r(9096),p=r(9136),d=!1,v=l("meta"),g=0,y=function(t){u(t,v,{value:{objectID:"O"+g++,weakData:{}}})},b=t.exports={enable:function(){b.enable=function(){},d=!0;var t=c.f,e=n([].splice),r={};r[v]=1,t(r).length&&(c.f=function(r){for(var i=t(r),n=0,s=i.length;n<s;n++)if(i[n]===v){e(i,n,1);break}return i},i({target:"Object",stat:!0,forced:!0},{getOwnPropertyNames:h.f}))},fastKey:function(t,e){if(!o(t))return"symbol"==typeof t?t:("string"==typeof t?"S":"P")+t;if(!a(t,v)){if(!f(t))return"F";if(!e)return"E";y(t)}return t[v].objectID},getWeakData:function(t,e){if(!a(t,v)){if(!f(t))return!0;if(!e)return!1;y(t)}return t[v].weakData},onFreeze:function(t){return p&&d&&f(t)&&!a(t,v)&&y(t),t}};s[v]=!0},9074:(t,e,r)=>{"use strict";var i=r(9838),n=r(9624),s=r(8352),o=n([].reverse),a=[1,2];i({target:"Array",proto:!0,forced:String(a)===String(a.reverse())},{reverse:function(){return s(this)&&(this.length=this.length),o(this)}})},9089:(t,e,r)=>{"use strict";var i=r(8352),n=r(4485),s=r(2890),o=r(5563)("species"),a=Array;t.exports=function(t){var e;return i(t)&&(e=t.constructor,(n(e)&&(e===a||i(e.prototype))||s(e)&&null===(e=e[o]))&&(e=void 0)),void 0===e?a:e}},9096:(t,e,r)=>{"use strict";var i=r(9624),n=0,s=Math.random(),o=i(1.1.toString);t.exports=function(t){return"Symbol("+(void 0===t?"":t)+")_"+o(++n+s,36)}},9133:(t,e,r)=>{"use strict";r(8161);var i=r(2071).Object,n=t.exports=function(t,e,r){return i.defineProperty(t,e,r)};i.defineProperty.sham&&(n.sham=!0)},9135:(t,e,r)=>{"use strict";r.d(e,{A:()=>n});var i=r(7095);function n(t,e){return t!=i.Cq&&t.toString?t.toString():e!==i.ZH?e:i.u1}},9136:(t,e,r)=>{"use strict";var i=r(1767);t.exports=!i((function(){return Object.isExtensible(Object.preventExtensions({}))}))},9197:(t,e,r)=>{"use strict";r(8183);var i=r(2071);t.exports=i.setTimeout},9239:(t,e,r)=>{"use strict";var i=r(9838),n=r(1219),s=r(2542),o=r(1767),a=r(6927),u=r(5021),c=r(4797),h=r(5398),f=r(7632),l=s&&s.prototype;if(i({target:"Promise",proto:!0,real:!0,forced:!!s&&o((function(){l.finally.call({then:function(){}},(function(){}))}))},{finally:function(t){var e=c(this,a("Promise")),r=u(t);return this.then(r?function(r){return h(e,t()).then((function(){return r}))}:t,r?function(r){return h(e,t()).then((function(){throw r}))}:t)}}),!n&&u(s)){var p=a("Promise").prototype.finally;l.finally!==p&&f(l,"finally",p,{unsafe:!0})}},9255:t=>{"use strict";t.exports=function(t){try{return{error:!1,value:t()}}catch(t){return{error:!0,value:t}}}},9257:(t,e,r)=>{"use strict";r(9815)("asyncDispose")},9263:(t,e,r)=>{"use strict";r(7523),r(12)},9270:(t,e,r)=>{"use strict";r(36);var i=r(2244);t.exports=i("Array","indexOf")},9302:(t,e,r)=>{"use strict";var i=r(1951),n=TypeError;t.exports=function(t,e){if(!delete t[e])throw new n("Cannot delete property "+i(e)+" of "+i(t))}},9309:(t,e,r)=>{"use strict";r.d(e,{A:()=>s});var i=r(3712),n=r(2551);function s(){return!("object"==typeof window&&(0,i.A)(window.document)||(0,n.A)())}},9491:(t,e,r)=>{"use strict";var i=r(5411),n=r(409),s=r(6523),o=Error.captureStackTrace;t.exports=function(t,e,r,a){s&&(o?o(t,e):i(t,"stack",n(r,a)))}},9497:(t,e,r)=>{r(5651)},9508:(t,e,r)=>{"use strict";var i=r(7960),n=r(5701),s=r(6415),o=r(1951),a=r(9769),u=r(2606),c=r(3457),h=r(2105),f=r(283),l=r(7579),p=TypeError,d=function(t,e){this.stopped=t,this.result=e},v=d.prototype;t.exports=function(t,e,r){var g,y,b,m,w,x,S,A=r&&r.that,E=!(!r||!r.AS_ENTRIES),U=!(!r||!r.IS_RECORD),O=!(!r||!r.IS_ITERATOR),I=!(!r||!r.INTERRUPTED),B=i(e,A),k=function(t){return g&&l(g,"normal"),new d(!0,t)},P=function(t){return E?(s(t),I?B(t[0],t[1],k):B(t[0],t[1])):I?B(t,k):B(t)};if(U)g=t.iterator;else if(O)g=t;else{if(!(y=f(t)))throw new p(o(t)+" is not iterable");if(a(y)){for(b=0,m=u(t);m>b;b++)if((w=P(t[b]))&&c(v,w))return w;return new d(!1)}g=h(t,y)}for(x=U?t.next:g.next;!(S=n(x,g)).done;){try{w=P(S.value)}catch(t){l(g,"throw",t)}if("object"==typeof w&&w&&c(v,w))return w}return new d(!1)}},9535:(t,e,r)=>{"use strict";var i=r(3457),n=TypeError;t.exports=function(t,e){if(i(e,t))return t;throw new n("Incorrect invocation")}},9559:(t,e,r)=>{"use strict";var i=r(6455),n=r(1767),s=r(8184).String;t.exports=!!Object.getOwnPropertySymbols&&!n((function(){var t=Symbol("symbol detection");return!s(t)||!(Object(t)instanceof Symbol)||!Symbol.sham&&i&&i<41}))},9624:(t,e,r)=>{"use strict";var i=r(3872),n=Function.prototype,s=n.call,o=i&&n.bind.bind(s,s);t.exports=i?o:function(t){return function(){return s.apply(t,arguments)}}},9627:()=>{},9643:(t,e,r)=>{"use strict";var i=r(9838),n=r(5701),s=r(6157),o=r(2113),a=r(8836),u=r(6280);i({target:"Date",proto:!0,forced:r(1767)((function(){return null!==new Date(NaN).toJSON()||1!==n(Date.prototype.toJSON,{toISOString:function(){return 1}})}))},{toJSON:function(t){var e=s(this),r=o(e,"number");return"number"!=typeof r||isFinite(r)?"toISOString"in e||"Date"!==u(e)?e.toISOString():n(a,e):null}})},9663:(t,e,r)=>{"use strict";var i=r(9838),n=r(8184),s=r(6600)(n.setInterval,!0);i({global:!0,bind:!0,forced:n.setInterval!==s},{setInterval:s})},9669:(t,e,r)=>{"use strict";r(8819);var i=r(2244);t.exports=i("Array","fill")},9679:(t,e,r)=>{"use strict";r(1768),r(9627),r(8940),r(5419);var i=r(2855);t.exports=i.f("iterator")},9736:(t,e,r)=>{"use strict";var i=r(2890),n=r(5411);t.exports=function(t,e){i(e)&&"cause"in e&&n(t,"cause",e.cause)}},9745:(t,e,r)=>{"use strict";var i=r(900);t.exports=i},9748:(t,e,r)=>{"use strict";r(7299);var i=r(2071);t.exports=i.parseFloat},9760:t=>{"use strict";t.exports={CSSRuleList:0,CSSStyleDeclaration:0,CSSValueList:0,ClientRectList:0,DOMRectList:0,DOMStringList:0,DOMTokenList:1,DataTransferItemList:0,FileList:0,HTMLAllCollection:0,HTMLCollection:0,HTMLFormElement:0,HTMLSelectElement:0,MediaList:0,MimeTypeArray:0,NamedNodeMap:0,NodeList:1,PaintRequestList:0,Plugin:0,PluginArray:0,SVGLengthList:0,SVGNumberList:0,SVGPathSegList:0,SVGPointList:0,SVGStringList:0,SVGTransformList:0,SourceBufferList:0,StyleSheetList:0,TextTrackCueList:0,TextTrackList:0,TouchList:0}},9769:(t,e,r)=>{"use strict";var i=r(5563),n=r(7221),s=i("iterator"),o=Array.prototype;t.exports=function(t){return void 0!==t&&(n.Array===t||o[s]===t)}},9777:(t,e,r)=>{t.exports=r(5421)},9803:(t,e,r)=>{"use strict";var i=r(1767);t.exports=!i((function(){function t(){}return t.prototype.constructor=null,Object.getPrototypeOf(new t)!==t.prototype}))},9815:(t,e,r)=>{"use strict";var i=r(2071),n=r(5497),s=r(2855),o=r(7097).f;t.exports=function(t){var e=i.Symbol||(i.Symbol={});n(e,t)||o(e,t,{value:s.f(t)})}},9838:(t,e,r)=>{"use strict";var i=r(8184),n=r(3105),s=r(5948),o=r(5021),a=r(347).f,u=r(4676),c=r(2071),h=r(7960),f=r(5411),l=r(5497);r(8069);var p=function(t){var e=function(r,i,s){if(this instanceof e){switch(arguments.length){case 0:return new t;case 1:return new t(r);case 2:return new t(r,i)}return new t(r,i,s)}return n(t,this,arguments)};return e.prototype=t.prototype,e};t.exports=function(t,e){var r,n,d,v,g,y,b,m,w,x=t.target,S=t.global,A=t.stat,E=t.proto,U=S?i:A?i[x]:i[x]&&i[x].prototype,O=S?c:c[x]||f(c,x,{})[x],I=O.prototype;for(v in e)n=!(r=u(S?v:x+(A?".":"#")+v,t.forced))&&U&&l(U,v),y=O[v],n&&(b=t.dontCallGetSet?(w=a(U,v))&&w.value:U[v]),g=n&&b?b:e[v],(r||E||typeof y!=typeof g)&&(m=t.bind&&n?h(g,i):t.wrap&&n?p(g):E&&o(g)?s(g):g,(t.sham||g&&g.sham||y&&y.sham)&&f(m,"sham",!0),f(O,v,m),E&&(l(c,d=x+"Prototype")||f(c,d,{}),f(c[d],v,g),t.real&&I&&(r||!I[v])&&f(I,v,g)))}},9843:(t,e,r)=>{"use strict";r.d(e,{Pc:()=>o,Qd:()=>h,Yj:()=>a,sH:()=>u}),r(1519);var i=r(5029),n=r.n(i),s=r(7095);function o(t){return typeof t===s.s0}function a(t){return"string"==typeof t}function u(t){return function(t){return"number"==typeof t&&!isNaN(t)}(t)||a(t)&&!isNaN(n()(t))&&isFinite(+t)}const c={}.hasOwnProperty;function h(t){if((e=t)===s.Cq||"object"!=typeof e||t.nodeType||t===t.window)return!1;var e;if(t.constructor&&!c.call(t,"constructor")&&!c.call(t.constructor.prototype||{},"isPrototypeOf"))return!1;let r;for(r in t);return void 0===r||c.call(t,r)}},9847:(t,e,r)=>{"use strict";var i=r(6644);t.exports=i},9855:(t,e,r)=>{"use strict";var i=r(8184).navigator,n=i&&i.userAgent;t.exports=n?String(n):""},9902:(t,e,r)=>{"use strict";var i=r(9838),n=r(6927),s=r(5497),o=r(2391),a=r(8377),u=r(3640),c=a("string-to-symbol-registry"),h=a("symbol-to-string-registry");i({target:"Symbol",stat:!0,forced:!u},{for:function(t){var e=o(t);if(s(c,e))return c[e];var r=n("Symbol")(e);return c[e]=r,h[r]=e,r}})},9937:(t,e,r)=>{"use strict";r(9135)},9992:(t,e,r)=>{"use strict";r(3254);var i=r(2244);t.exports=i("Array","sort")}},e={};function r(i){var n=e[i];if(void 0!==n)return n.exports;var s=e[i]={exports:{}};return t[i].call(s.exports,s,s.exports,r),s.exports}r.n=t=>{var e=t&&t.__esModule?()=>t.default:()=>t;return r.d(e,{a:e}),e},r.d=(t,e)=>{for(var i in e)r.o(e,i)&&!r.o(t,i)&&Object.defineProperty(t,i,{enumerable:!0,get:e[i]})},r.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(t){if("object"==typeof window)return window}}(),r.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})};var i={};(()=>{"use strict";r.r(i);var t=r(8811),e=r.n(t),n=r(7385),s=r.n(n),o=r(9021),a=r(8686),u=r(4427),c=r(868);let h={};function f(){const t=o.openSync(h.i,"r"),e=o.statSync(h.i);let r=0;const i=e.size,n=new u.J;return n.onFlush=e=>{if(r>=i)return-1048576;const n=Math.min(e.length,i-r);return o.readSync(t,e,0,n,r),r+=n,n},n.onSeek=t=>(r=Number(t),0),n.onSize=()=>BigInt(e.size),n.fid=t,n}function l(t){let e=0;do{let r=127&t;0!=(t>>=7)&&(r|=128),e++}while(0!==t);return e}c.program.version("1.0.0").description("cheap wasm optimize tool").option("-i, --input <wasm file>","input wasm file path").option("-o, --output <wasm file>","output wasm file path").option("-b, --bss","enable bss optimize").action((t=>{h=t,h.i&&h.o&&function(){const t=function(){const t={dataSize:0,dataAlign:4,tableSize:0,tableAlign:0,dataPrefixSize:0,data:null},e=f();try{for(e.readUint32(),e.readUint32();;){const r=e.readUint8(),i=a.vB.readUleb128(e),n=e.getPos();if(11===r){const r=e.getPos();if(1===a.vB.readUleb128(e)){for(a.vB.readUleb128(e);11!==e.readUint8(););t.dataPrefixSize=Number(e.getPos()-r),t.dataSize=a.vB.readUleb128(e),t.data=e.readBuffer(t.dataSize)}}else if(2===r){let r=a.vB.readUleb128(e),i=0;for(;r--;){const r=a.vB.readUleb128(e);e.readBuffer(r);const n=a.vB.readUleb128(e);switch(e.readBuffer(n),e.readUint8()){case 0:a.vB.readUleb128(e);break;case 3:a.vB.readSleb128(e),a.vB.readUleb128(e);break;case 2:{let t=a.vB.readUleb128(e);a.vB.readUleb128(e),1&t&&a.vB.readUleb128(e),i++;break}case 1:{a.vB.readSleb128(e);const r=a.vB.readUleb128(e),n=a.vB.readUleb128(e);t.tableSize=n,1&r&&a.vB.readUleb128(e),i++;break}}if(2===i)break}}else if(0===r){const r=a.vB.readUleb128(e);"dylink.0"===e.readString(r)&&(a.vB.readUleb128(e),t.dataAlign=a.vB.readUleb128(e),a.vB.readUleb128(e),t.tableAlign=a.vB.readUleb128(e))}const s=i-Number(e.getPos()-n);s&&e.skip(s)}}catch(r){if(-1048576===e.error)return t;throw r}}(),r=function(t){if(!t)return{data:null,bssSize:0};let e=t.length-1;for(;e>=0&&0===t[e];e--);return 0===e?{data:t.subarray(0,1),bssSize:t.length-1}:{data:t.subarray(0,e+1),bssSize:t.length-e-1}}(t.data),i=f(),n=new u.Rs,c=[];if(n.onFlush=t=>(c.push(e()(t).call(t)),0),n.writeUint32(i.readUint32()),n.writeUint32(i.readUint32()),t.dataSize||t.tableSize){let e=new u.ac(new Uint8Array(30));a.vB.writeUleb128(e,t.dataSize),a.vB.writeUleb128(e,t.dataAlign),a.vB.writeUleb128(e,t.tableSize),a.vB.writeUleb128(e,t.tableAlign);const r=e.getWroteBuffer();e=new u.ac(new Uint8Array(30)),a.vB.writeUleb128(e,8),e.writeString("dylink.0"),e.writeUint8(1),a.vB.writeUleb128(e,r.length),e.writeBuffer(r),n.writeUint8(0),a.vB.writeUleb128(n,e.getWroteBuffer().length),n.writeBuffer(e.getWroteBuffer())}try{for(;;){const e=i.readUint8(),s=a.vB.readUleb128(i),o=i.getPos();if(11===e&&t.dataSize&&h.bss){for(n.writeUint8(e),a.vB.writeUleb128(n,t.dataPrefixSize+l(r.data.length)+r.data.length),a.vB.writeUleb128(n,a.vB.readUleb128(i)),a.vB.writeUleb128(n,a.vB.readUleb128(i));;){const t=i.readUint8();if(n.writeUint8(t),11===t)break}const s=a.vB.readUleb128(i);i.skip(s),a.vB.writeUleb128(n,r.data.length),n.writeBuffer(r.data)}else if(0===e&&t.dataSize&&h.bss){const t=a.vB.readUleb128(i),r=i.readString(t);if("dylink.0"===r){i.skip(s-Number(i.getPos()-o));continue}n.writeUint8(e),a.vB.writeUleb128(n,s),a.vB.writeUleb128(n,t),n.writeString(r)}else n.writeUint8(e),a.vB.writeUleb128(n,s);s-Number(i.getPos()-o)&&i.pipe(n,s-Number(i.getPos()-o))}}catch(t){if(-1048576!==i.error)throw t;n.flush(),o.closeSync(i.fid),o.writeFileSync(h.o,s()(Buffer).call(Buffer,c))}}()})),c.program.parse(process.argv)})(),module.exports=i})();
+'use strict';
+
+var fs = require('fs');
+var common = require('@libmedia/common');
+var commander = require('commander');
+
+function _interopNamespaceDefault(e) {
+    var n = Object.create(null);
+    if (e) {
+        Object.keys(e).forEach(function (k) {
+            if (k !== 'default') {
+                var d = Object.getOwnPropertyDescriptor(e, k);
+                Object.defineProperty(n, k, d.get ? d : {
+                    enumerable: true,
+                    get: function () { return e[k]; }
+                });
+            }
+        });
+    }
+    n.default = e;
+    return Object.freeze(n);
+}
+
+var fs__namespace = /*#__PURE__*/_interopNamespaceDefault(fs);
+
+/**
+ * @file 为了压缩，定义的常量
+ */
+const NULL = null;
+const UNDEFINED = void 0;
+const RAW_UNDEFINED = 'undefined';
+/**
+ * Single instance for window in browser
+ */
+const WINDOW = typeof window !== RAW_UNDEFINED ? window : UNDEFINED;
+/**
+ * Single instance for global in nodejs or browser
+ */
+// @ts-ignore
+const GLOBAL = typeof globalThis !== RAW_UNDEFINED ? globalThis : (typeof global !== RAW_UNDEFINED ? global : WINDOW);
+/**
+ * Single instance for self in nodejs or browser
+ */
+// @ts-ignore
+const SELF = typeof self !== RAW_UNDEFINED ? self : GLOBAL;
+/**
+ * Single instance for noop function
+ */
+const EMPTY_FUNCTION = function () {
+    /** common */
+};
+/**
+ * 空字符串
+ */
+const EMPTY_STRING = '';
+
+/**
+ * @file 强转为 string
+ */
+/**
+ * 强转为 string
+ *
+ * @param target 待转换的值
+ * @param defaultValue 默认值
+ * @returns 转换之后的值
+ */
+function toString(target, defaultValue) {
+    return target != NULL && target.toString
+        ? target.toString()
+        : EMPTY_STRING;
+}
+
+/**
+ * @file 日志
+ */
+const TRACE = 0;
+const INFO = 2;
+const WARN = 3;
+const ERROR = 4;
+const FATAL = 5;
+const nativeConsole = typeof console !== RAW_UNDEFINED ? console : NULL, 
+/**
+ * 当前是否是源码调试，如果开启了代码压缩，empty function 里的注释会被干掉
+ */
+defaultLogLevel = /common/.test(toString(EMPTY_FUNCTION)) ? INFO : WARN, 
+printWarn = nativeConsole
+    ? function (tag, msg) {
+        nativeConsole.warn(tag, msg);
+    }
+    : EMPTY_FUNCTION, printError = nativeConsole
+    ? function (tag, msg) {
+        nativeConsole.error(tag, msg);
+    }
+    : EMPTY_FUNCTION;
+/**
+ * 全局调试开关
+ */
+function getLogLevel() {
+    if (GLOBAL) {
+        const logLevel = SELF['COMMON_LOG_LEVEL'];
+        if (logLevel >= TRACE && logLevel <= FATAL) {
+            return logLevel;
+        }
+    }
+    return defaultLogLevel;
+}
+function warn(msg, file, line) {
+    if (getLogLevel() <= WARN) {
+        printWarn(`[${arguments[1]}][line ${arguments[2]}] [warn]`, msg);
+    }
+}
+function error(msg, file, line) {
+    if (getLogLevel() <= ERROR) {
+        printError(`[${arguments[1]}][line ${arguments[2]}] [error]`, msg);
+    }
+}
+function fatal(msg, file, line) {
+    if (getLogLevel() <= FATAL) {
+        error(msg, file, line);
+        throw new Error(`[${arguments[1]}][line ${arguments[2]}] [fatal]: ${msg}`);
+    }
+}
+
+const encoder = typeof TextEncoder === 'function' ? new TextEncoder() : null;
+const decoder = typeof TextDecoder === 'function' ? new TextDecoder() : null;
+function encode(data) {
+    if (encoder) {
+        return encoder.encode(data);
+    }
+    const array = [];
+    for (let i = 0; i < data.length; ++i) {
+        let u = data.charCodeAt(i);
+        if (u >= 55296 && u <= 57343) {
+            let u1 = data.charCodeAt(++i);
+            u = 65536 + ((u & 1023) << 10) | u1 & 1023;
+        }
+        if (u <= 127) {
+            array.push(u);
+        }
+        else if (u <= 2047) {
+            array.push(192 | u >> 6);
+            array.push(128 | u & 63);
+        }
+        else if (u <= 65535) {
+            array.push(224 | u >> 12);
+            array.push(128 | u >> 6 & 63);
+            array.push(128 | u & 63);
+        }
+        else {
+            array.push(240 | u >> 18);
+            array.push(128 | u >> 12 & 63);
+            array.push(128 | u >> 6 & 63);
+            array.push(128 | u & 63);
+        }
+    }
+    return new Uint8Array(array);
+}
+function decodeJS(data) {
+    let result = '';
+    for (let i = 0; i < data.length;) {
+        let u0 = data[i++ >>> 0];
+        if (!(u0 & 128)) {
+            result += String.fromCharCode(u0);
+            continue;
+        }
+        let u1 = data[i++ >>> 0] & 63;
+        if ((u0 & 224) == 192) {
+            result += String.fromCharCode((u0 & 31) << 6 | u1);
+            continue;
+        }
+        let u2 = data[i++ >>> 0] & 63;
+        if ((u0 & 240) == 224) {
+            u0 = (u0 & 15) << 12 | u1 << 6 | u2;
+        }
+        else {
+            u0 = (u0 & 7) << 18 | u1 << 12 | u2 << 6 | data[i++ >>> 0] & 63;
+        }
+        if (u0 < 65536) {
+            result += String.fromCharCode(u0);
+        }
+        else {
+            let ch = u0 - 65536;
+            result += String.fromCharCode(55296 | ch >> 10, 56320 | ch & 1023);
+        }
+    }
+    return result;
+}
+function decode(data) {
+    if (data instanceof Uint8Array && decoder && !(typeof SharedArrayBuffer === 'function' && data.buffer instanceof SharedArrayBuffer)) {
+        try {
+            // chrome 偶现 data.buffer instanceof SharedArrayBuffer 返回 false 但其实是 SharedArrayBuffer 的情况
+            return decoder.decode(data);
+        }
+        catch (error) {
+            return decodeJS(data);
+        }
+    }
+    return decodeJS(data);
+}
+
+const cheap__fileName__0$1 = "src/common/src/io/IOReaderSync.ts";
+class IOReaderSync {
+    data;
+    buffer;
+    pointer;
+    endPointer;
+    pos;
+    size;
+    littleEndian;
+    fileSize_;
+    error;
+    onFlush;
+    onSeek;
+    onSize;
+    flags;
+    /**
+     * @param data 待读取的字节
+     * @param bigEndian 是否按大端字节序读取，默认大端字节序（网络字节序）
+     */
+    constructor(size = 1048576, bigEndian = true, map) {
+        this.pos = BigInt(0);
+        this.pointer = 0;
+        this.error = 0;
+        this.endPointer = 0;
+        this.littleEndian = !bigEndian;
+        this.flags = 0;
+        if (map && map.view) {
+            this.size = map.length;
+            this.buffer = map;
+            this.data = map.view;
+        }
+        else if (map && !map.byteOffset) {
+            this.size = map.length;
+            this.buffer = map;
+            this.data = new DataView(this.buffer.buffer);
+        }
+        else {
+            if (map) {
+                throw new Error('not support subarray of ArrayBuffer');
+            }
+            this.size = Math.max(size, 102400);
+            this.buffer = new Uint8Array(this.size);
+            this.data = new DataView(this.buffer.buffer);
+        }
+    }
+    /**
+     * 读取 8 位无符号整数
+     *
+     * @returns
+     */
+    readUint8() {
+        if (this.remainingLength() < 1) {
+            this.flush(1);
+        }
+        const value = this.data.getUint8(this.pointer);
+        this.pointer++;
+        this.pos++;
+        return value;
+    }
+    /**
+     * 读取 8 位无符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekUint8() {
+        if (this.remainingLength() < 1) {
+            this.flush(1);
+        }
+        return this.data.getUint8(this.pointer);
+    }
+    /**
+     * 读取 16 位无符号整数
+     *
+     * @returns
+     */
+    readUint16() {
+        if (this.remainingLength() < 2) {
+            this.flush(2);
+        }
+        const value = this.data.getUint16(this.pointer, this.littleEndian);
+        this.pointer += 2;
+        this.pos += BigInt(2);
+        return value;
+    }
+    /**
+     * 读取 16 位无符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekUint16() {
+        if (this.remainingLength() < 2) {
+            this.flush(2);
+        }
+        return this.data.getUint16(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取 24 位无符号整数
+     *
+     * @returns
+     */
+    readUint24() {
+        if (this.remainingLength() < 3) {
+            this.flush(3);
+        }
+        const high = this.readUint16();
+        const low = this.readUint8();
+        return this.littleEndian ? (low << 16 | high) : (high << 8 | low);
+    }
+    /**
+     * 读取 24 位无符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekUint24() {
+        if (this.remainingLength() < 3) {
+            this.flush(3);
+        }
+        const pointer = this.pointer;
+        const pos = this.pos;
+        const high = this.readUint16();
+        const low = this.readUint8();
+        const value = this.littleEndian ? (low << 16 | high) : (high << 8 | low);
+        this.pointer = pointer;
+        this.pos = pos;
+        return value;
+    }
+    /**
+     * 读取 32 位无符号整数
+     *
+     * @returns
+     */
+    readUint32() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        const value = this.data.getUint32(this.pointer, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+        return value;
+    }
+    /**
+     * 读取 32 位无符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekUint32() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        return this.data.getUint32(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取 64 位无符号整数
+     *
+     * @returns
+     */
+    readUint64() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        const value = this.data.getBigUint64(this.pointer, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+        return value;
+    }
+    /**
+     * 读取 64 位无符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekUint64() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        return this.data.getBigUint64(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取 8 位有符号整数
+     *
+     * @returns
+     */
+    readInt8() {
+        if (this.remainingLength() < 1) {
+            this.flush(1);
+        }
+        const value = this.data.getInt8(this.pointer);
+        this.pointer++;
+        this.pos++;
+        return value;
+    }
+    /**
+     * 读取 8 位有符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekInt8() {
+        if (this.remainingLength() < 1) {
+            this.flush(1);
+        }
+        return this.data.getInt8(this.pointer);
+    }
+    /**
+     * 读取 16 位有符号整数
+     *
+     * @returns
+     */
+    readInt16() {
+        if (this.remainingLength() < 2) {
+            this.flush(2);
+        }
+        const value = this.data.getInt16(this.pointer, this.littleEndian);
+        this.pointer += 2;
+        this.pos += BigInt(2);
+        return value;
+    }
+    /**
+     * 读取 16 位有符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekInt16() {
+        if (this.remainingLength() < 2) {
+            this.flush(2);
+        }
+        return this.data.getInt16(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取 24 位有符号整数
+     *
+     * @returns
+     */
+    readInt24() {
+        const value = this.readUint24();
+        return (value & 0x800000) ? (value - 0x1000000) : value;
+    }
+    /**
+     * 读取 24 位有符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekInt24() {
+        const value = this.peekUint24();
+        return (value & 0x800000) ? (value - 0x1000000) : value;
+    }
+    /**
+     * 读取 32 位有符号整数
+     *
+     * @returns
+     */
+    readInt32() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        const value = this.data.getInt32(this.pointer, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+        return value;
+    }
+    /**
+     * 读取 32 位有符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekInt32() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        return this.data.getInt32(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取 64 位有符号整数
+     *
+     * @returns
+     */
+    readInt64() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        const value = this.data.getBigInt64(this.pointer, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+        return value;
+    }
+    /**
+     * 读取 64 位有符号整数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekInt64() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        return this.data.getBigInt64(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取单精度浮点数
+     *
+     * @returns
+     */
+    readFloat() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        const value = this.data.getFloat32(this.pointer, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+        return value;
+    }
+    /**
+     * 读取单精度浮点数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekFloat() {
+        if (this.remainingLength() < 4) {
+            this.flush(4);
+        }
+        return this.data.getFloat32(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取双精度浮点数
+     *
+     * @returns
+     */
+    readDouble() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        const value = this.data.getFloat64(this.pointer, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+        return value;
+    }
+    /**
+     * 读取双精度浮点数（不会移动读取指针位置）
+     *
+     * @returns
+     */
+    peekDouble() {
+        if (this.remainingLength() < 8) {
+            this.flush(8);
+        }
+        return this.data.getFloat64(this.pointer, this.littleEndian);
+    }
+    /**
+     * 读取指定长度的字节，并以 16 进制字符串返回
+     *
+     * @param length 默认 1
+     * @returns
+     */
+    readHex(length = 1) {
+        let hexStr = '';
+        for (let i = 0; i < length; i++) {
+            const hex = this.readUint8().toString(16);
+            hexStr += (hex.length === 1 ? '0' + hex : hex);
+        }
+        return hexStr;
+    }
+    /**
+     * 读取指定长度的字节，并以 16 进制字符串返回（不会移动读取指针位置）
+     *
+     * @param length 默认 1
+     * @returns
+     */
+    peekHex(length = 1) {
+        if (length > this.size) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            fatal('peekHex, length too large', cheap__fileName__0$1, 412);
+        }
+        if (this.remainingLength() < length) {
+            this.flush(length);
+        }
+        const pointer = this.pointer;
+        const pos = this.pos;
+        let hexStr = '';
+        for (let i = 0; i < length; i++) {
+            const hex = this.readUint8().toString(16);
+            hexStr += (hex.length === 1 ? '0' + hex : hex);
+        }
+        this.pointer = pointer;
+        this.pos = pos;
+        return hexStr;
+    }
+    readBuffer(length, buffer) {
+        if (!length) {
+            return new Uint8Array(0);
+        }
+        if (!buffer) {
+            buffer = new Uint8Array(length);
+        }
+        if (this.remainingLength() < length) {
+            let index = 0;
+            if (this.remainingLength() > 0) {
+                const len = this.remainingLength();
+                buffer.set(this.buffer.subarray(this.pointer, this.pointer + len), index);
+                index += len;
+                this.pointer += len;
+                this.pos += BigInt(len);
+                length -= len;
+            }
+            while (length > 0) {
+                this.flush();
+                const len = Math.min(this.endPointer - this.pointer, length);
+                buffer.set(this.buffer.subarray(this.pointer, this.pointer + len), index);
+                index += len;
+                this.pointer += len;
+                this.pos += BigInt(len);
+                length -= len;
+            }
+        }
+        else {
+            buffer.set(this.buffer.subarray(this.pointer, this.pointer + length), 0);
+            this.pointer += length;
+            this.pos += BigInt(length);
+        }
+        return buffer;
+    }
+    peekBuffer(length, buffer) {
+        if (!length) {
+            return new Uint8Array(0);
+        }
+        if (length > this.size) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            fatal('peekBuffer, length too large', cheap__fileName__0$1, 505);
+        }
+        if (this.remainingLength() < length) {
+            this.flush(length);
+        }
+        if (!buffer) {
+            buffer = new Uint8Array(length);
+        }
+        buffer.set(this.buffer.subarray(this.pointer, this.pointer + length), 0);
+        return buffer;
+    }
+    /**
+     * 读取最多 length 字节的数据到指定 buffer，返回已写入的字节长度
+     *
+     * @param length
+     * @param buffer
+     * @returns
+     */
+    readToBuffer(length, buffer) {
+        if (this.remainingLength() < length) {
+            let index = 0;
+            if (this.remainingLength() > 0) {
+                const len = this.remainingLength();
+                buffer.set(this.buffer.subarray(this.pointer, this.pointer + len), index);
+                index += len;
+                this.pointer += len;
+                this.pos += BigInt(len);
+                length -= len;
+            }
+            while (length > 0) {
+                try {
+                    this.flush();
+                }
+                catch (error) {
+                    if (this.error === -1048576 /* IOError.END */ && index) {
+                        return index;
+                    }
+                    else {
+                        throw error;
+                    }
+                }
+                const len = Math.min(this.endPointer - this.pointer, length);
+                buffer.set(this.buffer.subarray(this.pointer, this.pointer + len), index);
+                index += len;
+                this.pointer += len;
+                this.pos += BigInt(len);
+                length -= len;
+            }
+            return index;
+        }
+        else {
+            buffer.set(this.buffer.subarray(this.pointer, this.pointer + length), 0);
+            this.pointer += length;
+            this.pos += BigInt(length);
+            return length;
+        }
+    }
+    /**
+     * 读取指定长度的字符串
+     *
+     * @param length 默认 1
+     * @returns
+     */
+    readString(length = 1) {
+        const buffer = this.readBuffer(length);
+        return decode(buffer);
+    }
+    /**
+     * 读取指定长度的字符串
+     *
+     * @param length 默认 1
+     * @returns
+     */
+    peekString(length = 1) {
+        const buffer = this.peekBuffer(length);
+        return decode(buffer);
+    }
+    /**
+     * 读取一行字符
+     */
+    readLine() {
+        let str = '';
+        while (true) {
+            let got = false;
+            for (let i = this.pointer; i < this.endPointer; i++) {
+                if (this.buffer[i] === 0x0a || this.buffer[i] === 0x0d) {
+                    if (i !== this.pointer) {
+                        str += this.readString(i - this.pointer);
+                    }
+                    got = true;
+                    break;
+                }
+            }
+            if (!got) {
+                str += this.readString(this.remainingLength());
+                this.flush();
+            }
+            else {
+                break;
+            }
+        }
+        let next = this.peekUint8();
+        if (next === 0x0a || next === 0x0d) {
+            this.pointer++;
+            if (next === 0x0d) {
+                next = this.peekUint8();
+                // \r\n
+                if (next === 0x0a) {
+                    this.pointer++;
+                }
+            }
+        }
+        return str;
+    }
+    /**
+     * 读取一行字符
+     */
+    peekLine() {
+        if (this.remainingLength() < this.size) {
+            this.flush();
+        }
+        let str = '';
+        let got = false;
+        for (let i = this.pointer; i < this.endPointer; i++) {
+            if (this.buffer[i] === 0x0a || this.buffer[i] === 0x0d) {
+                str += this.peekString(i - this.pointer);
+                got = true;
+                break;
+            }
+        }
+        if (!got) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            fatal('peekLine, out of buffer', cheap__fileName__0$1, 656);
+        }
+        return str;
+    }
+    /**
+     * 获取当前读取指针
+     *
+     * @returns
+     */
+    getPointer() {
+        return this.pointer;
+    }
+    /**
+     * 获取已读字节偏移
+     *
+     * @returns
+     */
+    getPos() {
+        return this.pos;
+    }
+    /**
+     * 跳过指定字节长度
+     *
+     * @param length
+     */
+    skip(length) {
+        const backup = length;
+        while (this.remainingLength() < length) {
+            length -= this.remainingLength();
+            this.pointer = this.endPointer;
+            this.flush();
+        }
+        if (this.remainingLength() >= length) {
+            this.pointer += length;
+        }
+        this.pos += BigInt(backup);
+    }
+    /**
+     * 获取剩余可读字节数
+     *
+     * @returns
+     */
+    remainingLength() {
+        return this.endPointer - this.pointer;
+    }
+    /**
+     * 重新填充剩余缓冲区
+     *
+     * @param need
+     * @returns
+     */
+    flush(need = 0) {
+        if (!this.onFlush) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            fatal('IOReader error, flush failed because of no flush callback', cheap__fileName__0$1, 720);
+        }
+        if (this.size - this.remainingLength() <= 0) {
+            return;
+        }
+        need = Math.min(need, this.size);
+        if (this.pointer < this.endPointer) {
+            this.buffer.set(this.buffer.subarray(this.pointer, this.endPointer), 0);
+            this.endPointer = this.endPointer - this.pointer;
+        }
+        else {
+            this.endPointer = 0;
+        }
+        this.pointer = 0;
+        if (need) {
+            while (this.remainingLength() < need) {
+                const len = this.onFlush(this.buffer.subarray(this.endPointer));
+                if (len < 0) {
+                    this.error = len;
+                    throw new Error(`IOReader error, flush ${len === -1048576 /* IOError.END */ ? 'ended' : 'failed'}, ret: ${len}`);
+                }
+                this.endPointer += len;
+            }
+        }
+        else {
+            const len = this.onFlush(this.buffer.subarray(this.endPointer));
+            if (len < 0) {
+                this.error = len;
+                throw new Error(`IOReader error, flush ${len === -1048576 /* IOError.END */ ? 'ended' : 'failed'}, ret: ${len}`);
+            }
+            this.endPointer += len;
+        }
+        this.error = 0;
+    }
+    /**
+     *
+     * seek 到指定位置
+     *
+     * @param pos
+     * @param force false 时可以在目前的缓冲区内 seek，否则丢弃缓冲区内容重新填充指定位置的数据，默认 false
+     * @param flush 指定 seek 之后是否马上填充数据，否则只 seek 到目标位置，默认 true
+     * @returns
+     */
+    seek(pos, force = false, flush = true) {
+        if (!force) {
+            const len = Number(pos - this.pos);
+            // 可以往回 seek
+            if (len < 0 && Math.abs(len) <= this.pointer) {
+                this.pointer += len;
+                this.pos = pos;
+                return;
+            }
+            // 可以直接往后 seek
+            else if (len > 0 && this.pointer + len < this.endPointer) {
+                this.pointer += len;
+                this.pos = pos;
+                return;
+            }
+            else if (len === 0) {
+                return;
+            }
+        }
+        if (!this.onSeek) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            fatal('IOReader error, seek failed because of no seek callback', cheap__fileName__0$1, 790);
+        }
+        this.pointer = this.endPointer = 0;
+        this.pos = pos;
+        const ret = this.onSeek(pos);
+        if (ret !== 0) {
+            this.error = ret;
+            fatal('IOReader error, seek failed', cheap__fileName__0$1, 799);
+        }
+        if (flush) {
+            this.flush();
+        }
+    }
+    /**
+     * 获取缓冲区
+     */
+    getBuffer() {
+        return this.buffer;
+    }
+    /**
+     * 写入数据到缓冲区
+     *
+     * @param buffer
+     */
+    appendBuffer(buffer) {
+        if (this.size - this.endPointer >= buffer.length) {
+            this.buffer.set(buffer, this.endPointer);
+            this.endPointer += buffer.length;
+        }
+        else {
+            this.buffer.set(this.buffer.subarray(this.pointer, this.endPointer), 0);
+            this.endPointer = this.endPointer - this.pointer;
+            this.pointer = 0;
+            if (this.size - this.endPointer >= buffer.length) {
+                this.buffer.set(buffer, this.endPointer);
+                this.endPointer += buffer.length;
+            }
+            else {
+                const len = Math.min(this.size - this.endPointer, buffer.length);
+                this.buffer.set(buffer.subarray(0, len), this.endPointer);
+                this.endPointer += len;
+                warn('IOReader, call appendBuffer but the buffer\'s size is lagger then the remaining size', cheap__fileName__0$1, 838);
+            }
+        }
+    }
+    /**
+     * 重置 reader
+     */
+    reset() {
+        this.pointer = this.endPointer = 0;
+        this.pos = BigInt(0);
+        this.error = 0;
+    }
+    /**
+     * 设置读取是小端还是大端
+     *
+     * @param bigEndian
+     */
+    setEndian(bigEndian) {
+        this.littleEndian = !bigEndian;
+    }
+    /**
+     * 当前读取模式是否是大端
+     *
+     * @returns
+     */
+    isBigEndian() {
+        return !this.littleEndian;
+    }
+    /**
+     * 获取源总字节长度
+     *
+     * @returns
+     */
+    fileSize() {
+        if (this.fileSize_) {
+            return this.fileSize_;
+        }
+        if (!this.onSize) {
+            warn('IOReader error, fileSize failed because of no onSize callback', cheap__fileName__0$1, 880);
+            return BigInt(0);
+        }
+        try {
+            this.fileSize_ = this.onSize();
+        }
+        catch (error) {
+            warn(`IOReader error, call fileSize failed: ${error}`, cheap__fileName__0$1, 887);
+            this.fileSize_ = BigInt(0);
+        }
+        return this.fileSize_;
+    }
+    /**
+     * 获取缓冲区长度
+     *
+     * @returns
+     */
+    getBufferSize() {
+        return this.size;
+    }
+    /**
+     * 连接到 ioWriter
+     *
+     * @param ioWriter
+     * @param length
+     */
+    pipe(ioWriter, length) {
+        if (length) {
+            if (this.remainingLength() < length) {
+                if (this.remainingLength() > 0) {
+                    const len = this.remainingLength();
+                    ioWriter.writeBuffer(this.buffer.subarray(this.pointer, this.pointer + len));
+                    this.pointer += len;
+                    this.pos += BigInt(len);
+                    length -= len;
+                }
+                while (length > 0) {
+                    this.flush();
+                    const len = Math.min(this.endPointer - this.pointer, length);
+                    ioWriter.writeBuffer(this.buffer.subarray(this.pointer, this.pointer + len));
+                    this.pointer += len;
+                    this.pos += BigInt(len);
+                    length -= len;
+                }
+            }
+            else {
+                ioWriter.writeBuffer(this.buffer.subarray(this.pointer, this.pointer + length));
+                this.pointer += length;
+                this.pos += BigInt(length);
+            }
+        }
+        else {
+            if (this.remainingLength() > 0) {
+                const len = this.remainingLength();
+                ioWriter.writeBuffer(this.buffer.subarray(this.pointer, this.pointer + len));
+                this.pointer += len;
+                this.pos += BigInt(len);
+            }
+            while (this.onFlush(this.buffer.subarray(0)) > 0) {
+                const len = this.remainingLength();
+                ioWriter.writeBuffer(this.buffer.subarray(this.pointer, this.pointer + len));
+                this.pointer += len;
+                this.pos += BigInt(len);
+            }
+        }
+    }
+}
+
+/**
+ * 写字节流工具
+ */
+class IOWriterSync {
+    data;
+    buffer;
+    pointer;
+    pos;
+    size;
+    littleEndian;
+    error;
+    onFlush;
+    onSeek;
+    /**
+     * @param data 待写的 Uint8Array
+     * @param bigEndian 是否按大端字节序写，默认大端字节序（网络字节序）
+     */
+    constructor(size = 1048576, bigEndian = true, map) {
+        this.pointer = 0;
+        this.pos = BigInt(0);
+        this.size = size;
+        this.littleEndian = !bigEndian;
+        this.error = 0;
+        if (map && map.view) {
+            this.size = map.length;
+            this.buffer = map;
+            this.data = map.view;
+        }
+        else if (map && !map.byteOffset) {
+            this.size = map.length;
+            this.buffer = map;
+            this.data = new DataView(this.buffer.buffer);
+        }
+        else {
+            if (map) {
+                throw new Error('not support subarray of ArrayBuffer');
+            }
+            this.buffer = new Uint8Array(this.size);
+            this.data = new DataView(this.buffer.buffer);
+        }
+    }
+    /**
+     * 写 8 位无符号整数
+     */
+    writeUint8(value) {
+        if (this.remainingLength() < 1) {
+            this.flush();
+        }
+        this.data.setUint8(this.pointer, value);
+        this.pointer++;
+        this.pos++;
+    }
+    /**
+     * 读取 16 位无符号整数
+     */
+    writeUint16(value) {
+        if (this.remainingLength() < 2) {
+            this.flush();
+        }
+        this.data.setUint16(this.pointer, value, this.littleEndian);
+        this.pointer += 2;
+        this.pos += BigInt(2);
+    }
+    /**
+     * 写 24 位无符号整数
+     */
+    writeUint24(value) {
+        if (this.remainingLength() < 3) {
+            this.flush();
+        }
+        const high = (value & 0xff0000) >> 16;
+        const middle = (value & 0x00ff00) >> 8;
+        const low = value & 0x0000ff;
+        if (this.littleEndian) {
+            this.writeUint8(low);
+            this.writeUint8(middle);
+            this.writeUint8(high);
+        }
+        else {
+            this.writeUint8(high);
+            this.writeUint8(middle);
+            this.writeUint8(low);
+        }
+    }
+    /**
+     * 写 32 位无符号整数
+     */
+    writeUint32(value) {
+        if (this.remainingLength() < 4) {
+            this.flush();
+        }
+        this.data.setUint32(this.pointer, value, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+    }
+    /**
+     * 写 64 位无符号整数
+     */
+    writeUint64(value) {
+        if (this.remainingLength() < 8) {
+            this.flush();
+        }
+        this.data.setBigUint64(this.pointer, value, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+    }
+    /**
+     * 写 8 位有符号整数
+     *
+     * @returns
+     */
+    writeInt8(value) {
+        if (this.remainingLength() < 1) {
+            this.flush();
+        }
+        this.data.setInt8(this.pointer, value);
+        this.pointer++;
+        this.pos++;
+    }
+    /**
+     * 写 16 位有符号整数
+     */
+    writeInt16(value) {
+        if (this.remainingLength() < 2) {
+            this.flush();
+        }
+        this.data.setInt16(this.pointer, value, this.littleEndian);
+        this.pointer += 2;
+        this.pos += BigInt(2);
+    }
+    /**
+     * 写 24 位有符号整数
+     */
+    writeInt24(value) {
+        this.writeUint24(value < 0 ? (value + 0x1000000) : value);
+    }
+    /**
+     * 写 32 位有符号整数
+     */
+    writeInt32(value) {
+        if (this.remainingLength() < 4) {
+            this.flush();
+        }
+        this.data.setInt32(this.pointer, value, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+    }
+    /**
+     * 写 64 位有符号整数
+     */
+    writeInt64(value) {
+        if (this.remainingLength() < 8) {
+            this.flush();
+        }
+        this.data.setBigInt64(this.pointer, value, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+    }
+    /**
+     * 写单精度浮点数
+     *
+     * @returns
+     */
+    writeFloat(value) {
+        if (this.remainingLength() < 4) {
+            this.flush();
+        }
+        this.data.setFloat32(this.pointer, value, this.littleEndian);
+        this.pointer += 4;
+        this.pos += BigInt(4);
+    }
+    /**
+     * 写双精度浮点数
+     */
+    writeDouble(value) {
+        if (this.remainingLength() < 8) {
+            this.flush();
+        }
+        this.data.setFloat64(this.pointer, value, this.littleEndian);
+        this.pointer += 8;
+        this.pos += BigInt(8);
+    }
+    /**
+     * 获取当前写指针
+     *
+     * @returns
+     */
+    getPointer() {
+        return this.pointer;
+    }
+    getPos() {
+        return this.pos;
+    }
+    /**
+     * 获取剩余可写节数
+     *
+     * @returns
+     */
+    remainingLength() {
+        return this.size - this.pointer;
+    }
+    /**
+     * 写指定长度的二进制 buffer 数据
+     *
+     * @param length
+     * @returns
+     */
+    writeBuffer(buffer) {
+        if (!buffer.length) {
+            return;
+        }
+        let length = buffer.length;
+        if (this.remainingLength() < length) {
+            let index = 0;
+            while (length > 0) {
+                this.flush();
+                const len = Math.min(this.size, length);
+                this.buffer.set(buffer.subarray(index, index + len), this.pointer);
+                this.pointer += len;
+                this.pos += BigInt(len);
+                index += len;
+                length -= len;
+            }
+        }
+        else {
+            this.buffer.set(buffer, this.pointer);
+            this.pointer += length;
+            this.pos += BigInt(length);
+        }
+    }
+    /**
+     * 写一个字符串
+     */
+    writeString(str) {
+        const buffer = encode(str);
+        this.writeBuffer(buffer);
+        return buffer.length;
+    }
+    /**
+     * 将缓冲区中数据写出
+     */
+    flush() {
+        if (!this.onFlush) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            throw Error('IOWriter error, flush failed because of no flush callback');
+        }
+        if (this.pointer) {
+            const ret = this.onFlush(this.buffer.subarray(0, this.pointer));
+            if (ret !== 0) {
+                this.error = ret;
+                throw Error('IOWriter error, flush failed');
+            }
+        }
+        this.pointer = 0;
+    }
+    /**
+     * 将缓冲区中数据写出到指定位置
+     *
+     * @param pos
+     */
+    flushToPos(pos) {
+        if (!this.onFlush) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            throw Error('IOWriter error, flush failed because of no flush callback');
+        }
+        if (this.pointer) {
+            const ret = this.onFlush(this.buffer.subarray(0, this.pointer), pos);
+            if (ret !== 0) {
+                this.error = ret;
+                throw Error('IOWriter error, flush failed');
+            }
+        }
+        this.pointer = 0;
+    }
+    /**
+     * seek 到指定位置
+     *
+     * @param pos
+     */
+    seek(pos) {
+        if (!this.onSeek) {
+            this.error = -1048574 /* IOError.INVALID_OPERATION */;
+            throw Error('IOWriter error, seek failed because of no seek callback');
+        }
+        this.flush();
+        const ret = this.onSeek(pos);
+        if (ret !== 0) {
+            this.error = ret;
+            throw Error('IOWriter error, seek failed');
+        }
+        this.pos = pos;
+    }
+    /**
+     * 在当前缓冲区映射区间内 seek
+     *
+     * @param pos
+     */
+    seekInline(pos) {
+        const pointer = this.pointer;
+        this.pointer = Math.max(0, Math.min(this.size, pos));
+        this.pos += BigInt(this.pointer - pointer);
+    }
+    /**
+     * 跳过指定长度
+     *
+     * @param length
+     */
+    skip(length) {
+        const pointer = this.pointer;
+        this.pointer = Math.min(this.size, this.pointer + length);
+        this.pos += BigInt(this.pointer - pointer);
+    }
+    /**
+     * 回退指定长度，不能大于 pointer 大小
+     *
+     * @param length
+     */
+    back(length) {
+        const pointer = this.pointer;
+        this.pointer = Math.max(0, this.pointer - length);
+        this.pos += BigInt(this.pointer - pointer);
+    }
+    /**
+     * 获取缓冲区
+     *
+     * @returns
+     */
+    getBuffer() {
+        return this.buffer.subarray(0, this.pointer);
+    }
+    /**
+     * 设置读取是小端还是大端
+     *
+     * @param bigEndian
+     */
+    setEndian(bigEndian) {
+        this.littleEndian = !bigEndian;
+    }
+    /**
+     * 重置 writer
+     */
+    reset() {
+        this.pointer = 0;
+        this.pos = BigInt(0);
+        this.error = 0;
+    }
+    /**
+     * 获取缓冲区长度
+     *
+     * @returns
+     */
+    getBufferSize() {
+        return this.size;
+    }
+}
+
+const cheap__fileName__0 = "src/common/src/io/BufferWriter.ts";
+class BufferWriter {
+    data;
+    buffer;
+    byteStart;
+    pos;
+    size;
+    littleEndian;
+    /**
+     * @param data 待写的 Uint8Array
+     * @param bigEndian 是否按大端字节序写，默认大端字节序（网络字节序）
+     */
+    constructor(data, bigEndian = true) {
+        this.buffer = data;
+        this.data = data instanceof Uint8Array ? new DataView(data.buffer) : data.view;
+        this.byteStart = data instanceof Uint8Array ? data.byteOffset : 0;
+        this.pos = 0;
+        this.size = data.byteLength;
+        this.littleEndian = !bigEndian;
+    }
+    /**
+     * 写 8 位无符号整数
+     */
+    writeUint8(value) {
+        this.data.setUint8(this.pos++ + this.byteStart, value);
+    }
+    /**
+     * 读取 16 位无符号整数
+     */
+    writeUint16(value) {
+        this.data.setUint16(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 2;
+    }
+    /**
+     * 写 24 位无符号整数
+     */
+    writeUint24(value) {
+        const high = value & 0xf00;
+        const middle = value & 0x0f0;
+        const low = value & 0x00f;
+        if (this.littleEndian) {
+            this.writeUint8(low);
+            this.writeUint8(middle);
+            this.writeUint8(high);
+        }
+        else {
+            this.writeUint8(high);
+            this.writeUint8(middle);
+            this.writeUint8(low);
+        }
+    }
+    /**
+     * 写 32 位无符号整数
+     */
+    writeUint32(value) {
+        this.data.setUint32(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 4;
+    }
+    /**
+     * 写 64 位无符号整数
+     */
+    writeUint64(value) {
+        this.data.setBigUint64(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 8;
+    }
+    /**
+     * 写 8 位有符号整数
+     *
+     * @returns
+     */
+    writeInt8(value) {
+        this.data.setInt8(this.pos++ + this.byteStart, value);
+    }
+    /**
+     * 写 16 位有符号整数
+     */
+    writeInt16(value) {
+        this.data.setInt16(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 2;
+    }
+    /**
+     * 写 24 位有符号整数
+     */
+    writeInt24(value) {
+        this.writeUint24(value < 0 ? (value + 0x1000000) : value);
+    }
+    /**
+     * 写 32 位有符号整数
+     */
+    writeInt32(value) {
+        this.data.setInt32(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 4;
+    }
+    /**
+     * 写 64 位有符号整数
+     */
+    writeInt64(value) {
+        this.data.setBigInt64(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 8;
+    }
+    /**
+     * 写单精度浮点数
+     *
+     * @returns
+     */
+    writeFloat(value) {
+        this.data.setFloat32(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 4;
+    }
+    /**
+     * 写双精度浮点数
+     */
+    writeDouble(value) {
+        this.data.setFloat64(this.pos + this.byteStart, value, this.littleEndian);
+        this.pos += 8;
+    }
+    /**
+     * 获取当前写指针
+     *
+     * @returns
+     */
+    getPos() {
+        return this.pos;
+    }
+    /**
+     * seek 写指针
+     *
+     * @param pos
+     */
+    seek(pos) {
+        if (pos > this.size) {
+            pos = this.size;
+        }
+        this.pos = Math.max(0, pos);
+    }
+    /**
+     * 跳过指定字节长度
+     *
+     * @param length
+     */
+    skip(length) {
+        this.seek(this.pos + length);
+    }
+    /**
+     * 返回指定字节长度
+     *
+     * @param length
+     */
+    back(length) {
+        this.seek(this.pos - length);
+    }
+    /**
+     * 获取剩余可写节数
+     *
+     * @returns
+     */
+    remainingSize() {
+        return this.size - this.pos;
+    }
+    /**
+     * 写指定长度的二进制 buffer 数据
+     *
+     * @param length
+     * @returns
+     */
+    writeBuffer(buffer) {
+        let length = buffer.length;
+        if (this.remainingSize() < length) {
+            length = this.remainingSize();
+            warn(`the remaining buffer size is smaller then the wrote buffer, hope set ${buffer.length}, but set ${length}`, cheap__fileName__0, 202);
+        }
+        this.buffer.set(buffer, this.pos);
+        this.pos += buffer.length;
+    }
+    /**
+     * 写一个字符串
+     */
+    writeString(str) {
+        const buffer = encode(str);
+        this.writeBuffer(buffer);
+        return buffer.length;
+    }
+    /**
+     * 获取已写的数据
+     *
+     * @returns
+     */
+    getWroteBuffer() {
+        return this.buffer.subarray(0, this.pos);
+    }
+    /**
+     * 重新装载数据
+     *
+     * @param data
+     * @param bigEndian
+     */
+    resetBuffer(data, bigEndian = true) {
+        this.buffer = data;
+        this.data = data instanceof Uint8Array ? new DataView(data.buffer) : data.view;
+        this.byteStart = data instanceof Uint8Array ? data.byteOffset : 0;
+        this.pos = 0;
+        this.size = data.byteLength;
+        this.littleEndian = !bigEndian;
+    }
+}
+
+let command = {};
+commander.program
+    .version('1.0.0')
+    .description('cheap wasm optimize tool')
+    .option('-i, --input <wasm file>', 'input wasm file path')
+    .option('-o, --output <wasm file>', 'output wasm file path')
+    .option('-b, --bss', 'enable bss optimize')
+    .action((options) => {
+    command = options;
+    if (command.i && command.o) {
+        optimize();
+    }
+});
+commander.program.parse(process.argv);
+function createReader() {
+    const fid = fs__namespace.openSync(command.i, 'r');
+    const stats = fs__namespace.statSync(command.i);
+    let readPos = 0;
+    const readFileLength = stats.size;
+    const ioReader = new IOReaderSync();
+    ioReader.onFlush = (buffer) => {
+        if (readPos >= readFileLength) {
+            return -1048576 /* IOError.END */;
+        }
+        const len = Math.min(buffer.length, readFileLength - readPos);
+        fs__namespace.readSync(fid, buffer, 0, len, readPos);
+        readPos += len;
+        return len;
+    };
+    ioReader.onSeek = (pos) => {
+        readPos = Number(pos);
+        return 0;
+    };
+    ioReader.onSize = () => {
+        return BigInt(stats.size);
+    };
+    // @ts-ignore
+    ioReader.fid = fid;
+    return ioReader;
+}
+function analyze() {
+    const options = {
+        dataSize: 0,
+        dataAlign: 4,
+        tableSize: 0,
+        tableAlign: 0,
+        dataPrefixSize: 0,
+        data: null
+    };
+    const ioReader = createReader();
+    try {
+        ioReader.readUint32();
+        ioReader.readUint32();
+        while (true) {
+            const sectionId = ioReader.readUint8();
+            const size = common.wasm.readUleb128(ioReader);
+            const now = ioReader.getPos();
+            if (sectionId === 11 /* wasm.SectionId.Data */) {
+                const now = ioReader.getPos();
+                const count = common.wasm.readUleb128(ioReader);
+                if (count === 1) {
+                    common.wasm.readUleb128(ioReader);
+                    while (true) {
+                        const byte = ioReader.readUint8();
+                        if (byte === 0x0b) {
+                            break;
+                        }
+                    }
+                    options.dataPrefixSize = Number(ioReader.getPos() - now);
+                    options.dataSize = common.wasm.readUleb128(ioReader);
+                    options.data = ioReader.readBuffer(options.dataSize);
+                }
+            }
+            else if (sectionId === 2 /* wasm.SectionId.Import */) {
+                let count = common.wasm.readUleb128(ioReader);
+                let counter = 0;
+                while (count--) {
+                    const moduleLen = common.wasm.readUleb128(ioReader);
+                    ioReader.readBuffer(moduleLen);
+                    const fieldLen = common.wasm.readUleb128(ioReader);
+                    ioReader.readBuffer(fieldLen);
+                    const externalKind = ioReader.readUint8();
+                    switch (externalKind) {
+                        case 0 /* wasm.ExternalKind.Function */: {
+                            common.wasm.readUleb128(ioReader);
+                            break;
+                        }
+                        case 3 /* wasm.ExternalKind.Global */: {
+                            common.wasm.readSleb128(ioReader);
+                            common.wasm.readUleb128(ioReader);
+                            break;
+                        }
+                        case 2 /* wasm.ExternalKind.Memory */: {
+                            let flags = common.wasm.readUleb128(ioReader);
+                            common.wasm.readUleb128(ioReader);
+                            if (flags & 0x01) {
+                                common.wasm.readUleb128(ioReader);
+                            }
+                            counter++;
+                            break;
+                        }
+                        case 1 /* wasm.ExternalKind.Table */: {
+                            common.wasm.readSleb128(ioReader);
+                            const flags = common.wasm.readUleb128(ioReader);
+                            const initial = common.wasm.readUleb128(ioReader);
+                            options.tableSize = initial;
+                            if (flags & 0x01) {
+                                common.wasm.readUleb128(ioReader);
+                            }
+                            counter++;
+                            break;
+                        }
+                    }
+                    if (counter === 2) {
+                        break;
+                    }
+                }
+            }
+            else if (sectionId === 0 /* wasm.SectionId.Custom */) {
+                const nameLen = common.wasm.readUleb128(ioReader);
+                const name = ioReader.readString(nameLen);
+                if (name === 'dylink.0') {
+                    common.wasm.readUleb128(ioReader);
+                    options.dataAlign = common.wasm.readUleb128(ioReader);
+                    common.wasm.readUleb128(ioReader);
+                    options.tableAlign = common.wasm.readUleb128(ioReader);
+                }
+            }
+            const remainingLength = size - Number(ioReader.getPos() - now);
+            if (remainingLength) {
+                ioReader.skip(remainingLength);
+            }
+        }
+    }
+    catch (e) {
+        if (ioReader.error === -1048576 /* IOError.END */) {
+            return options;
+        }
+        else {
+            throw e;
+        }
+    }
+}
+function analyzeBss(data) {
+    if (!data) {
+        return {
+            data: null,
+            bssSize: 0
+        };
+    }
+    let i = data.length - 1;
+    for (; i >= 0; i--) {
+        if (data[i] !== 0) {
+            break;
+        }
+    }
+    if (i === 0) {
+        return {
+            data: data.subarray(0, 1),
+            bssSize: data.length - 1
+        };
+    }
+    return {
+        data: data.subarray(0, i + 1),
+        bssSize: data.length - i - 1
+    };
+}
+function uleb128Len(value) {
+    let len = 0;
+    do {
+        value >>= 7;
+        len++;
+    } while (value !== 0);
+    return len;
+}
+function optimize() {
+    const options = analyze();
+    const bss = analyzeBss(options.data);
+    const ioReader = createReader();
+    const ioWriter = new IOWriterSync();
+    const buffers = [];
+    ioWriter.onFlush = (buffer) => {
+        buffers.push(buffer.slice());
+        return 0;
+    };
+    ioWriter.writeUint32(ioReader.readUint32());
+    ioWriter.writeUint32(ioReader.readUint32());
+    if (options.dataSize || options.tableSize) {
+        let bufferWriter = new BufferWriter(new Uint8Array(30));
+        common.wasm.writeUleb128(bufferWriter, options.dataSize);
+        common.wasm.writeUleb128(bufferWriter, options.dataAlign);
+        common.wasm.writeUleb128(bufferWriter, options.tableSize);
+        common.wasm.writeUleb128(bufferWriter, options.tableAlign);
+        const content = bufferWriter.getWroteBuffer();
+        bufferWriter = new BufferWriter(new Uint8Array(30));
+        common.wasm.writeUleb128(bufferWriter, 8);
+        bufferWriter.writeString('dylink.0');
+        bufferWriter.writeUint8(1 /* wasm.DYlinkType.MEMORY */);
+        common.wasm.writeUleb128(bufferWriter, content.length);
+        bufferWriter.writeBuffer(content);
+        ioWriter.writeUint8(0 /* wasm.SectionId.Custom */);
+        common.wasm.writeUleb128(ioWriter, bufferWriter.getWroteBuffer().length);
+        ioWriter.writeBuffer(bufferWriter.getWroteBuffer());
+    }
+    try {
+        while (true) {
+            const sectionId = ioReader.readUint8();
+            const size = common.wasm.readUleb128(ioReader);
+            const now = ioReader.getPos();
+            if (sectionId === 11 /* wasm.SectionId.Data */ && options.dataSize && command.bss) {
+                ioWriter.writeUint8(sectionId);
+                common.wasm.writeUleb128(ioWriter, options.dataPrefixSize + uleb128Len(bss.data.length) + bss.data.length);
+                common.wasm.writeUleb128(ioWriter, common.wasm.readUleb128(ioReader));
+                common.wasm.writeUleb128(ioWriter, common.wasm.readUleb128(ioReader));
+                while (true) {
+                    const byte = ioReader.readUint8();
+                    ioWriter.writeUint8(byte);
+                    if (byte === 0x0b) {
+                        break;
+                    }
+                }
+                const dataSize = common.wasm.readUleb128(ioReader);
+                ioReader.skip(dataSize);
+                common.wasm.writeUleb128(ioWriter, bss.data.length);
+                ioWriter.writeBuffer(bss.data);
+            }
+            else if (sectionId === 0 /* wasm.SectionId.Custom */ && options.dataSize && command.bss) {
+                const nameLen = common.wasm.readUleb128(ioReader);
+                const name = ioReader.readString(nameLen);
+                if (name === 'dylink.0') {
+                    ioReader.skip(size - Number(ioReader.getPos() - now));
+                    continue;
+                }
+                ioWriter.writeUint8(sectionId);
+                common.wasm.writeUleb128(ioWriter, size);
+                common.wasm.writeUleb128(ioWriter, nameLen);
+                ioWriter.writeString(name);
+            }
+            else {
+                ioWriter.writeUint8(sectionId);
+                common.wasm.writeUleb128(ioWriter, size);
+            }
+            const remainingLength = size - Number(ioReader.getPos() - now);
+            if (remainingLength) {
+                ioReader.pipe(ioWriter, size - Number(ioReader.getPos() - now));
+            }
+        }
+    }
+    catch (e) {
+        if (ioReader.error === -1048576 /* IOError.END */) {
+            ioWriter.flush();
+            // @ts-ignore
+            fs__namespace.closeSync(ioReader.fid);
+            fs__namespace.writeFileSync(command.o, Buffer.concat(buffers));
+        }
+        else {
+            throw e;
+        }
+    }
+}
+//# sourceMappingURL=wasm-opt.cjs.map

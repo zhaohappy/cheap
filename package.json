@@ -14,23 +14,30 @@
     "url": "git+https://github.com/zhaohappy/cheap.git"
   },
   "scripts": {
+    "build-transformer": "rollup -c --environment transformer:1",
+    "build-wasm-opt": "rollup -c --environment wasm_opt:1",
     "test-transformer": "jest --verbose",
     "prepublishOnly": "node ./scripts/check-publish-status.js"
   },
   "files": [
     "dist",
     "include",
-    "build"
+    "build",
+    "src"
   ],
   "author": "Gaoxing Zhao",
   "license": "MIT",
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
-    "@types/jest": "^23.3.14",
+    "@jest/globals": "^30.2.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.10.1",
     "cross-env": "^7.0.3",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
+    "jest": "^30.2.0",
+    "rollup": "^4.53.2",
+    "ts-jest": "^29.4.5",
+    "ts-jest-mock-import-meta": "^1.3.1",
     "typescript": "^5.9.3",
     "yargs": "^13.3.0"
   },
@@ -48,38 +55,38 @@
       "browser": "./dist/esm/index.js",
       "import": "./dist/mjs/index.js",
       "require": "./dist/cjs/index.cjs",
-      "default":  "./dist/mjs/index.js",
+      "default": "./dist/mjs/index.js",
       "types": "./dist/esm/index.d.ts"
     },
     "./internal": {
       "browser": "./dist/esm/internal.js",
       "import": "./dist/mjs/internal.js",
       "require": "./dist/cjs/internal.cjs",
-      "default":  "./dist/mjs/internal.js",
+      "default": "./dist/mjs/internal.js",
       "types": "./dist/esm/internal.d.ts"
     },
     "./cheapdef": {
       "browser": "./dist/esm/cheapdef.js",
       "import": "./dist/mjs/cheapdef.js",
       "require": "./dist/cjs/cheapdef.cjs",
-      "default":  "./dist/mjs/cheapdef.js",
+      "default": "./dist/mjs/cheapdef.js",
       "types": "./dist/esm/cheapdef.d.ts"
     },
     "./runThread": {
       "browser": "./dist/esm/thread/runThread.js",
       "import": "./dist/mjs/thread/runThread.js",
       "require": "./dist/cjs/thread/runThread.cjs",
-      "default":  "./dist/mjs/thread/runThread.js",
+      "default": "./dist/mjs/thread/runThread.js",
       "types": "./dist/esm/thread/runThread.d.ts"
     },
-    "./CheapPlugin": "./build/webpack/plugin/CheapPlugin.js",
-    "./transformer": {
+    "./build/CheapPlugin": "./build/webpack/plugin/CheapPlugin.js",
+    "./build/transformer": {
       "import": "./build/transformer.mjs",
       "require": "./build/transformer.cjs",
       "default": "./build/transformer.mjs",
       "types": "./build/transformer.d.ts"
     },
-    "./wasm-opt": {
+    "./build/wasm-opt": {
       "require": "./build/wasm-opt.cjs",
       "import": "./build/wasm-opt.mjs",
       "default": "./build/wasm-opt.mjs"
