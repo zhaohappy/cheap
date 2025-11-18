@@ -21,10 +21,20 @@ import ThreadPool from './ThreadPool'
 import * as cond from '../thread/cond'
 import * as mutex from '../thread/mutex'
 import runThread from './runThread'
-
 import { SELF } from '@libmedia/common/constant'
 import sourceLoad from '@libmedia/common/sourceLoad'
 import { is, object, support, array, logger } from '@libmedia/common'
+if (defined(ENV_NODE) && !defined(ENV_CJS)) {
+  // @ts-ignore
+  import { Worker as Worker_ } from 'worker_threads'
+  // @ts-ignore
+  import fs from 'fs'
+  // @ts-ignore
+  import path from 'path'
+  // @ts-ignore
+  import { fileURLToPath } from 'url'
+}
+
 
 export type WebAssemblyRunnerOptions = {
   imports?: Record<string, Record<string, WebAssembly.ImportValue>>
@@ -40,8 +50,13 @@ export type WebAssemblyRunnerOptions = {
 
 let Worker: new (url: string | URL) => Worker = SELF.Worker
 if (defined(ENV_NODE)) {
-  const { Worker: Worker_ } = require('worker_threads')
-  Worker = Worker_
+  if (defined(ENV_CJS)) {
+    const { Worker: Worker_ } = require('worker_threads')
+    Worker = Worker_
+  }
+  else {
+    Worker = Worker_ as any
+  }
 }
 
 function emptyFunction() {}
@@ -428,6 +443,7 @@ export default class WebAssemblyRunner {
   private createChildUrl() {
     if (defined(ENABLE_THREADS)) {
       let source = ''
+      let staticImport = ''
       if (defined(ENV_WEBPACK) && !defined(ENV_NODE) && !defined(ENV_CSP)) {
         // 保证打包工具包含下面的模块代码
         require('./runThread')
@@ -474,6 +490,12 @@ export default class WebAssemblyRunner {
           if (this.childImports) {
             childImports = `Object.assign(self.imports.env, require(${this.childImports}).env)`
           }
+          if (!defined(ENV_CJS)) {
+            staticImport = `
+              import WebAssemblyRunnerClass_ from './WebAssemblyRunner.js'
+              import { parentPort as parentPort_ } from 'worker_threads'
+            `
+          }
         }
         else {
           // @ts-ignore
@@ -486,6 +508,7 @@ export default class WebAssemblyRunner {
           }
         }
         source = `
+          ${staticImport}
           var self = typeof self !== 'undefined' ? self : (typeof globalThis !== 'undefined' ? globalThis : window)
           self.CHEAP_HEAP_INITIAL = ${(SELF as any).CHEAP_HEAP_INITIAL}
           self.CHEAP_HEAP_MAXIMUM = ${(SELF as any).CHEAP_HEAP_MAXIMUM}
@@ -499,11 +522,22 @@ export default class WebAssemblyRunner {
         `
       }
       if (defined(ENV_NODE)) {
-        const path = require('path')
-        const fs = require('fs')
-        this.childUrl = path.join(__dirname, '.__node__WebAssemblyRunnerWorker.js')
-        if (!fs.existsSync(this.childUrl)) {
-          fs.writeFileSync(this.childUrl, source)
+        if (defined(ENV_CJS)) {
+          const path = require('path')
+          const fs = require('fs')
+          this.childUrl = path.join(__dirname, '.__node__WebAssemblyRunnerWorker.cjs')
+          if (!fs.existsSync(this.childUrl)) {
+            fs.writeFileSync(this.childUrl, source)
+          }
+        }
+        else {
+          // @ts-ignore
+          const __filename = fileURLToPath(import.meta.url)
+          const __dirname = path.dirname(__filename)
+          this.childUrl = path.join(__dirname, '.__node__WebAssemblyRunnerWorker.js')
+          if (!fs.existsSync(this.childUrl)) {
+            fs.writeFileSync(this.childUrl, source)
+          }
         }
       }
       else if (defined(ENV_CSP)) {
@@ -768,8 +802,13 @@ export default class WebAssemblyRunner {
 
     if (this.childUrl) {
       if (defined(ENV_NODE)) {
-        const fs = require('fs')
-        fs.unlinkSync(this.childUrl)
+        if (defined(ENV_CJS)) {
+          const fs = require('fs')
+          fs.unlinkSync(this.childUrl)
+        }
+        else {
+          fs.unlinkSync(this.childUrl)
+        }
       }
       else if (is.string(this.childUrl)) {
         URL.revokeObjectURL(this.childUrl)

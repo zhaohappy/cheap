@@ -24,3 +24,5 @@ declare const WASM_64: boolean
 declare const ENABLE_THREADS_SPLIT: boolean
 
 declare const ENV_CSP: boolean
+
+declare const ENV_CJS: boolean

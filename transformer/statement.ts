@@ -1,6 +1,7 @@
 
 import ts from 'typescript'
 import path from 'path'
+import fs from 'fs'
 import { array, object } from '@libmedia/common'
 import parseImports from './function/parseImports'
 import type { DeclarationData, ImportData, RequireData, TransformerOptions } from './type'
@@ -11,6 +12,13 @@ import relativePath from './function/relativePath'
 import { minimatch } from 'minimatch'
 import getFilePath from './function/getFilePath'
 import reportError from './function/reportError'
+
+interface PackageJsonResult {
+  path: string;
+  content: any;
+}
+
+const packageJsonCache = new Map<string, PackageJsonResult | null>()
 
 function formatIdentifier(identifier: string, index: number) {
   return `cheap__${identifier}__${index}`
@@ -132,6 +140,7 @@ class Statement {
 
   identifierIndex: number
 
+  packageModule?: string
   moduleType: ts.ModuleKind
   esModuleInterop: boolean
 
@@ -157,10 +166,29 @@ class Statement {
       const relative = path.relative(this.options.cheapSourcePath, file.fileName)
       this.isCheapSource = !!relative && !relative.startsWith('..') && !path.isAbsolute(relative)
     }
+    if (this.moduleType === ts.ModuleKind.Node16
+      || this.moduleType === ts.ModuleKind.Node18
+      || this.moduleType === ts.ModuleKind.Node20
+      || this.moduleType === ts.ModuleKind.NodeNext
+    ) {
+      const jsonInfo = this.findNearestPackageJson(this.currentFile.fileName)
+      if (jsonInfo?.content.type) {
+        this.packageModule = jsonInfo.content.type
+      }
+    }
   }
 
   isOutputCJS() {
     return this.moduleType === ts.ModuleKind.CommonJS
+      || this.moduleType === ts.ModuleKind.UMD
+      || this.moduleType === ts.ModuleKind.AMD
+      || this.options.module === 'commonjs'
+      || (this.moduleType === ts.ModuleKind.Node16
+        || this.moduleType === ts.ModuleKind.Node18
+        || this.moduleType === ts.ModuleKind.Node20
+        || this.moduleType === ts.ModuleKind.NodeNext
+      )
+        && this.packageModule === 'commonjs'
   }
 
   end(newFile: ts.SourceFile) {
@@ -561,9 +589,11 @@ class Statement {
   }
 
   addStructImport(symbol: ts.Symbol, target: ts.SourceFile) {
-    let local = this.lookupLocalSymbol(symbol)
-    if (local) {
-      return this.context.factory.createIdentifier(local)
+    if (!this.isOutputCJS()) {
+      let local = this.lookupLocalSymbol(symbol)
+      if (local) {
+        return this.context.factory.createIdentifier(local)
+      }
     }
     let pathString = relativePath(this.currentFile.fileName, target.fileName)
     let name: string = symbol.escapedName as string
@@ -706,6 +736,44 @@ class Statement {
       }
     }
     return false
+  }
+
+  findNearestPackageJson(filePath: string): PackageJsonResult | null {
+    const absPath = path.resolve(filePath)
+
+    // 检查缓存
+    if (packageJsonCache.has(absPath)) {
+      return packageJsonCache.get(absPath)!
+    }
+
+    let dir = path.dirname(absPath)
+
+    while (true) {
+      const pkgPath = path.join(dir, 'package.json')
+      if (packageJsonCache.get(pkgPath)) {
+        return packageJsonCache.get(pkgPath)
+      }
+      if (!packageJsonCache.has(pkgPath) && fs.existsSync(pkgPath)) {
+        try {
+          const content = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+          const result = { path: pkgPath, content }
+          packageJsonCache.set(pkgPath, result)
+          return result
+        }
+        catch (e) {
+          // 忽略解析错误，继续往上查找
+          packageJsonCache.set(pkgPath, null)
+        }
+      }
+      const parent = path.dirname(dir)
+      if (parent === dir) {
+        break
+      }
+      dir = parent
+    }
+    // 找不到
+    packageJsonCache.set(absPath, null)
+    return null
   }
 }
 

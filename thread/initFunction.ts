@@ -1,9 +1,18 @@
 import { SELF } from '@libmedia/common/constant'
+if (defined(ENV_NODE) && !defined(ENV_CJS)) {
+  // @ts-ignore
+  import { parentPort as parentPort_ } from 'worker_threads'
+}
 
 let parentPort = SELF
 if (defined(ENV_NODE)) {
-  const { parentPort: parentPort_ } = require('worker_threads')
-  parentPort = parentPort_
+  if (defined(ENV_CJS)) {
+    const { parentPort: parentPort_ } = require('worker_threads')
+    parentPort = parentPort_
+  }
+  else {
+    parentPort = parentPort_
+  }
 }
 
 export default function init(run: (...args: any[]) => any) {

@@ -18,13 +18,26 @@ import {
   NodeIPCPort
 } from '@libmedia/common/network'
 
+if (defined(ENV_NODE) && !defined(ENV_CJS)) {
+  // @ts-ignore
+  import { Worker as Worker_, MessageChannel as MessageChannel_ } from 'worker_threads'
+  // @ts-ignore
+  import fs from 'fs'
+}
+
 let Worker: new (url: string) => Worker = SELF.Worker
 let MessageChannel: new () => MessageChannel = SELF.MessageChannel
 
 if (defined(ENV_NODE)) {
-  const { Worker: Worker_, MessageChannel: MessageChannel_ } = require('worker_threads')
-  Worker = Worker_
-  MessageChannel = MessageChannel_
+  if (defined(ENV_CJS)) {
+    const { Worker: Worker_, MessageChannel: MessageChannel_ } = require('worker_threads')
+    Worker = Worker_
+    MessageChannel = MessageChannel_
+  }
+  else {
+    Worker = Worker_ as unknown as (new (url: string) => Worker)
+    MessageChannel = MessageChannel_ as unknown as (new () => MessageChannel)
+  }
 }
 
 if (defined(ENABLE_THREADS) && defined(ENV_WEBPACK)) {
@@ -171,8 +184,13 @@ export function createThreadFromClass<T, U extends any[]>(
           `
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
-            const fs = require('fs')
-            fs.writeFileSync(workerUrl, source)
+            if (defined(ENV_CJS)) {
+              const fs = require('fs')
+              fs.writeFileSync(workerUrl, source)
+            }
+            else {
+              fs.writeFileSync(workerUrl, source)
+            }
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })
@@ -424,8 +442,13 @@ export function createThreadFromFunction<T extends any[], U extends any>(
           `
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
-            const fs = require('fs')
-            fs.writeFileSync(workerUrl, source)
+            if (defined(ENV_CJS)) {
+              const fs = require('fs')
+              fs.writeFileSync(workerUrl, source)
+            }
+            else {
+              fs.writeFileSync(workerUrl, source)
+            }
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })
@@ -595,8 +618,13 @@ export function createThreadFromModule<T extends Object>(
 
           if (defined(ENV_NODE)) {
             workerUrl = `./cheap_${generateUUID()}.js`
-            const fs = require('fs')
-            fs.writeFileSync(workerUrl, source)
+            if (defined(ENV_CJS)) {
+              const fs = require('fs')
+              fs.writeFileSync(workerUrl, source)
+            }
+            else {
+              fs.writeFileSync(workerUrl, source)
+            }
           }
           else {
             const blob = new Blob([source], { type: 'text/javascript' })
@@ -764,8 +792,13 @@ export function closeThread<T, U>(thread: Thread<T, U>) {
         caches.get(cacheKey).refCount--
         if (caches.get(cacheKey).refCount === 0) {
           if (defined(ENV_NODE)) {
-            const fs = require('fs')
-            fs.unlinkSync(caches.get(cacheKey).url)
+            if (defined(ENV_CJS)) {
+              const fs = require('fs')
+              fs.unlinkSync(caches.get(cacheKey).url)
+            }
+            else {
+              fs.unlinkSync(caches.get(cacheKey).url)
+            }
           }
           else {
             URL.revokeObjectURL(caches.get(cacheKey).url)

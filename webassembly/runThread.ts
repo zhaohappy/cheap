@@ -2,13 +2,25 @@
 import type { ThreadWait } from './thread'
 import type WebAssemblyRunner from './WebAssemblyRunner'
 
+if (defined(ENV_NODE) && !defined(ENV_CJS)) {
+  // @ts-ignore
+  import WebAssemblyRunnerClass_ from './WebAssemblyRunner.js'
+  // @ts-ignore
+  import { parentPort as parentPort_ } from 'worker_threads'
+}
+
 /* eslint-disable camelcase */
 export default function runThread() {
 
   let WebAssemblyRunnerClass: typeof WebAssemblyRunner
 
   if (defined(ENV_NODE)) {
-    WebAssemblyRunnerClass = require('./WebAssemblyRunner.js').default
+    if (defined(ENV_CJS)) {
+      WebAssemblyRunnerClass = require('./WebAssemblyRunner.js').default
+    }
+    else {
+      WebAssemblyRunnerClass = WebAssemblyRunnerClass_
+    }
   }
   // @ts-ignore
   else if (typeof __WebAssemblyRunner__ === 'object') {
@@ -23,8 +35,13 @@ export default function runThread() {
 
   let parentPort = self
   if (defined(ENV_NODE)) {
-    const { parentPort: parentPort_ } = require('worker_threads')
-    parentPort = parentPort_
+    if (defined(ENV_CJS)) {
+      const { parentPort: parentPort_ } = require('worker_threads')
+      parentPort = parentPort_
+    }
+    else {
+      parentPort = parentPort_ as any
+    }
   }
 
   let runner: any

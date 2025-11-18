@@ -27,6 +27,7 @@ export interface TransformerOptions {
   projectPath?: string
   cheapSourcePath?: string
   formatIdentifier?: boolean
+  module?: string
   exclude?: RegExp | RegExp[]
   defined?: Record<string, any>
   cheapPacketName?: string

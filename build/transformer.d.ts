@@ -10,6 +10,14 @@ export interface TransformerOptions {
    */
   projectPath?: string
   /**
+   * 如果 cheap 使用的源码依赖，传 cheap 根路径
+   */
+  cheapSourcePath?: string
+  /**
+   * 输出的模块类型
+   */
+  module?: 'module' | 'commonjs'
+  /**
    * 排除文件
    */
   exclude?: RegExp | RegExp[]

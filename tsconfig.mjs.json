@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/cjs",
+    "outDir": "./dist/mjs",
     "declaration": false,
-    "module": "CommonJS"
+    "module": "ESNext",
+    "moduleResolution": "node"
   },
   "exclude": [
     "*.test.ts",

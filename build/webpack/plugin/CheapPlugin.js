@@ -2,7 +2,7 @@
 const path = require('path');
 const os = require('os');
 const webpack = require('webpack');
-const transformer = require('../../transformer');
+const transformer = require('../../transformer.cjs');
 
 function formatKey(error) {
   return `${error.loc.start.line}-${error.loc.start.column}-${error.loc.end.line}-${error.loc.end.column}`
@@ -135,7 +135,8 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName,
-                  cheapSourcePath: me.options.cheapSourcePath
+                  cheapSourcePath: me.options.cheapSourcePath,
+                  module: me.options.module
                 }, getProgram);
                 const after = transformer.after(program, {
                   projectPath: me.options.projectPath,
@@ -151,7 +152,8 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName,
-                  cheapSourcePath: me.options.cheapSourcePath
+                  cheapSourcePath: me.options.cheapSourcePath,
+                  module: me.options.module
                 }, getProgram);
                 const afterDeclarations = transformer.afterDeclarations(program, {
                   projectPath: me.options.projectPath,
@@ -167,7 +169,8 @@ class CheapPlugin {
                   tmpPath: me.options.tmpPath || compiler.options.output.path,
                   wat2wasm: wat2wasmPath,
                   cheapPacketName: me.options.cheapPacketName,
-                  cheapSourcePath: me.options.cheapSourcePath
+                  cheapSourcePath: me.options.cheapSourcePath,
+                  module: me.options.module
                 }, getProgram);
                 if (!result.before) {
                   result.before = [

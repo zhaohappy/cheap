@@ -43,6 +43,8 @@ export { default as getUniqueCounter32 } from './std/function/getUniqueCounter32
 
 export { default as getUniqueCounter64 } from './std/function/getUniqueCounter64'
 
+export { default as getRandomValues } from './std/function/getRandomValues'
+
 export { default as isPointer } from './std/function/isPointer'
 
 export { default as isCStruct } from './std/function/isCStruct'

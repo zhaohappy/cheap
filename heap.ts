@@ -13,6 +13,10 @@ import * as memoryAsm from './asm/memory'
 import * as atomicsAsm from './thread/asm/atomics'
 import initCtypeEnumImpl from './ctypeEnumImpl'
 import { isWorker, isAudioWorklet, browser, os } from '@libmedia/common'
+if (defined(ENV_NODE) && !defined(ENV_CJS)) {
+  // @ts-ignore
+  import { isMainThread as isMainThread_ } from 'worker_threads'
+}
 
 /**
  * 线程 id
@@ -525,8 +529,15 @@ export function initMain() {
 }
 
 if (defined(ENV_NODE)) {
-  const { isMainThread: isMainThread_ } = require('worker_threads')
-  if (isMainThread_) {
+  let isMain: boolean
+  if (defined(ENV_CJS)) {
+    const { isMainThread: isMainThread_ } = require('worker_threads')
+    isMain = isMainThread_
+  }
+  else {
+    isMain = isMainThread_
+  }
+  if (isMain) {
     initMain()
   }
   else {

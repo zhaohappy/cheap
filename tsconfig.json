@@ -15,15 +15,12 @@
     "baseUrl": "./",
     "paths": {
       "@libmedia/cheap": ["./*"],
-      "@libmedia/common": ["../common"],
-      "@libmedia/common/io": ["../common/io"],
-      "@libmedia/common/network": ["../common/network"],
-      "@libmedia/common/math": ["../common/math"],
+      "@libmedia/common": ["../common/index"],
+      "@libmedia/common/io": ["../common/io/index"],
+      "@libmedia/common/network": ["../common/network/index"],
+      "@libmedia/common/math": ["../common/math/index"],
       "@libmedia/common/sourceLoad": ["../common/function/sourceLoad"],
-      "@libmedia/common/constant": ["../common/util/constant"],
-      "@libmedia/common/support": ["../common/util/support"],
-      "@libmedia/common/browser": ["../common/util/browser"],
-      "@libmedia/common/os": ["../common/util/os"]
+      "@libmedia/common/constant": ["../common/util/constant"]
     },
     "typeRoots": [
       "./node_modules/@types",

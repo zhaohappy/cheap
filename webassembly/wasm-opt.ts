@@ -1,34 +1,28 @@
 import * as fs from 'fs'
-
 import { wasm } from '@libmedia/common'
 import { IOReaderSync as IOReader, IOError, IOWriterSync as IOWriter, BufferWriter } from '@libmedia/common/io'
-
-const args = process.argv.slice(2)
+import { program } from 'commander'
 
 let command: {
   i?: string
   o?: string
   bss?: boolean
 } = {}
-let currentOption = null
 
-args.forEach((arg) => {
-  if (arg.startsWith('-')) {
-    currentOption = arg.replace(/^-+/, '')
-    command[currentOption] = true
-  }
-  else if (currentOption) {
-    command[currentOption] = arg
-    currentOption = null
-  }
-  else {
-    command['i'] = arg
-  }
-})
+program
+  .version('1.0.0')
+  .description('cheap wasm optimize tool')
+  .option('-i, --input <wasm file>', 'input wasm file path')
+  .option('-o, --output <wasm file>', 'output wasm file path')
+  .option('-b, --bss', 'enable bss optimize')
+  .action((options) => {
+    command = options
+    if (command.i && command.o) {
+      optimize()
+    }
+  })
 
-if (command.i && command.o) {
-  optimize()
-}
+program.parse(process.argv)
 
 function createReader() {
   const fid = fs.openSync(command.i, 'r')

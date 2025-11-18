@@ -21,12 +21,15 @@ import * as typedef from '../typedef'
 import * as definedConstant from './defined'
 import { is, object, array } from '@libmedia/common'
 import path from 'path'
+import os from 'os'
+import getDirname from './function/getDirname'
 
 const createNumericLiteralSymbol = Symbol('createNumericLiteral')
 
 const DefaultDefined = {
   ENV_NODE: false,
   ENV_CSP: false,
+  ENV_CJS: false,
   ENABLE_THREADS: true,
   ENABLE_THREADS_SPLIT: false,
   DEBUG: false,
@@ -55,14 +58,15 @@ export function before(program: ts.Program, options?: TransformerOptions | (() =
     options.projectPath = program.getCurrentDirectory()
   }
   if (!options.wat2wasm) {
-    const path = require('path')
-    const os = require('os')
-    let wat2wasmPath = path.resolve(__dirname, './asm/ubuntu') + '/wat2wasm'
+    // @ts-ignore
+    let wat2wasmPath = path.resolve(getDirname(import.meta.url), './asm/ubuntu') + '/wat2wasm'
     if (os.platform() === 'win32') {
-      wat2wasmPath = path.resolve(__dirname, './asm/win') + '/wat2wasm.exe'
+      // @ts-ignore
+      wat2wasmPath = path.resolve(getDirname(import.meta.url), './asm/win') + '/wat2wasm.exe'
     }
     else if (os.platform() === 'darwin') {
-      wat2wasmPath = path.resolve(__dirname, './asm/macos') + '/wat2wasm'
+      // @ts-ignore
+      wat2wasmPath = path.resolve(getDirname(import.meta.url), './asm/macos') + '/wat2wasm'
     }
     options.wat2wasm = wat2wasmPath
   }

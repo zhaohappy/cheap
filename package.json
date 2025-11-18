@@ -34,29 +34,55 @@
     "typescript": "^5.9.3",
     "yargs": "^13.3.0"
   },
+  "dependencies": {
+    "@libmedia/common": "workspace:*",
+    "commander": "^13.1.0"
+  },
+  "type": "module",
+  "types": "./dist/esm/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/mjs/index.js",
+  "browser": "./dist/esm/index.js",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
+      "browser": "./dist/esm/index.js",
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default":  "./dist/mjs/index.js",
       "types": "./dist/esm/index.d.ts"
     },
     "./internal": {
-      "import": "./dist/esm/internal.js",
-      "require": "./dist/cjs/internal.js",
+      "browser": "./dist/esm/internal.js",
+      "import": "./dist/mjs/internal.js",
+      "require": "./dist/cjs/internal.cjs",
+      "default":  "./dist/mjs/internal.js",
       "types": "./dist/esm/internal.d.ts"
     },
     "./cheapdef": {
-      "import": "./dist/esm/cheapdef.js",
-      "require": "./dist/cjs/cheapdef.js",
+      "browser": "./dist/esm/cheapdef.js",
+      "import": "./dist/mjs/cheapdef.js",
+      "require": "./dist/cjs/cheapdef.cjs",
+      "default":  "./dist/mjs/cheapdef.js",
       "types": "./dist/esm/cheapdef.d.ts"
     },
     "./runThread": {
-      "import": "./dist/esm/thread/runThread.js",
-      "require": "./dist/cjs/thread/runThread.js",
+      "browser": "./dist/esm/thread/runThread.js",
+      "import": "./dist/mjs/thread/runThread.js",
+      "require": "./dist/cjs/thread/runThread.cjs",
+      "default":  "./dist/mjs/thread/runThread.js",
       "types": "./dist/esm/thread/runThread.d.ts"
     },
-    "./build/webpack/CheapPlugin": "./build/webpack/plugin/CheapPlugin.js",
-    "./build/transformer": "./build/transformer.js",
-    "./build/wasm-opt": "./build/wasm-opt.js"
+    "./CheapPlugin": "./build/webpack/plugin/CheapPlugin.js",
+    "./transformer": {
+      "import": "./build/transformer.mjs",
+      "require": "./build/transformer.cjs",
+      "default": "./build/transformer.mjs",
+      "types": "./build/transformer.d.ts"
+    },
+    "./wasm-opt": {
+      "require": "./build/wasm-opt.cjs",
+      "import": "./build/wasm-opt.mjs",
+      "default": "./build/wasm-opt.mjs"
+    }
   }
 }

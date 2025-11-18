@@ -2,6 +2,7 @@
 
 import { mapUint8Array } from '../../std/memory'
 import { text } from '@libmedia/common'
+import getRandomValues from '../../std/function/getRandomValues'
 
 const buffers = [null, [], []]
 
@@ -175,12 +176,6 @@ export function clock_res_get(clock_id: uint32, resolution: pointer<uint64>) {
 
 export function random_get(pointer: pointer<uint8>, size: size) {
   const buffer = mapUint8Array(pointer, size)
-  if (defined(ENV_NODE)) {
-    const crypto = require('crypto')
-    crypto.randomFillSync(buffer)
-  }
-  else {
-    crypto.getRandomValues(buffer)
-  }
+  getRandomValues(buffer)
   return WASI_ERRNO_SUCCESS
 }
