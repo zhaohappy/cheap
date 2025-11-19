@@ -1,3 +1,5 @@
 {
-  "type": "commonjs"
+  "type": "commonjs",
+  "types": "./CheapPlugin.d.ts",
+  "main": "./CheapPlugin.js"
 }

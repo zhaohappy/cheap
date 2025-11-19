@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@libmedia/common':
-        specifier: file:../common
-        version: file:../common
       commander:
         specifier: ^13.1.0
         version: 13.1.0
@@ -349,9 +346,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@libmedia/common@file:../common':
-    resolution: {directory: ../common, type: directory}
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -2131,8 +2125,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@libmedia/common@file:../common': {}
 
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:

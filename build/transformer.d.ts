@@ -14,6 +14,10 @@ export interface TransformerOptions {
    */
   cheapSourcePath?: string
   /**
+   * 指定 cheap 包名
+   */
+  cheapPacketName?: string
+  /**
    * 输出的模块类型
    */
   module?: 'module' | 'commonjs'
@@ -31,6 +35,7 @@ export interface TransformerOptions {
    * @param error 
    * @returns 
    */
+  importPath?: (p: string) => void
   reportError?: (error: {
     file: string,
     loc: {
