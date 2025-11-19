@@ -85,7 +85,7 @@ module.exports = (env) => {
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer';
+import * as transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...
@@ -116,7 +116,7 @@ export default defineConfig({
 ```javascript
 
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer'
+import * as transformer from '@libmedia/cheap/build/transformer'
 
 export default {
   ...
@@ -561,11 +561,10 @@ After getting the wasm output, you can use it under cheap
 
 ```javascript
 
-import compile from '@libmedia/cheap/webassembly/compiler'
-import WebAssemblyRunner from '@libmedia/cheap/webassembly/WebAssemblyRunner'
+import { WebAssemblyRunner, compileResource } from '@libmedia/cheap'
 
 // The resource can be stored in indexDB and taken out directly for use next time without having to perform network requests and compilation.
-const resource = await compile(
+const resource = await compileResource(
   {
     source: 'https://xxxx.wasm'
   }
@@ -646,7 +645,7 @@ First, we need to create a separate ts file ```worker.ts``` as the entry point o
 
 ```javascript
 import task from './task'
-import runThread from '@libmedia/cheap/thread/runThread'
+import runThread from '@libmedia/cheap/runThread'
 runThread(task)
 ```
 
@@ -696,7 +695,7 @@ If you use vite, you need to add the following configuration for the worker:
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer';
+import * as transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...
@@ -1129,8 +1128,7 @@ interface SharedPtr<T> {
 Since data is copied between workers in javascript, the behavior of passing smart pointers between different threads is confusing. It is recommended that data structures that need to be frequently passed between different threads using raw pointers, you can use an object pool to manage them.
 
 ```typescript
-import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
-import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'
+import { createThreadFromFunction, deTransferableSharedPtr } from '@libmedia/cheap'
 
 @struct
 class MyStruct {

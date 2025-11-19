@@ -20,27 +20,6 @@ cheap 可以用于浏览器环境和 Node 环境
 npm install @libmedia/cheap
 ```
 
-#### 设置 tsconfig.json
-
-```javascript
-{
-  "baseUrl": "./",
-  "paths": {
-    ...
-    "@libmedia/cheap/*": ["node_modules/@libmedia/cheap/dist/esm/*"]
-  },
-  "files": [
-    "node_modules/@libmedia/cheap/dist/esm/cheapdef.d.ts"
-  ],
-  "cheap": {
-    // 可以配置一些宏
-    "defined": {
-
-    }
-  }
-}
-```
-
 #### 编译配置
 
 cheap 必须使用 TypeScript 开发。
@@ -84,7 +63,7 @@ module.exports = (env) => {
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer';
+import * as transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...
@@ -115,7 +94,7 @@ export default defineConfig({
 ```javascript
 
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer'
+import * as transformer from '@libmedia/cheap/build/transformer'
 
 export default {
   ...
@@ -565,11 +544,10 @@ emcc -O3 xx.c
 
 ```javascript
 
-import compile from '@libmedia/cheap/webassembly/compiler'
-import WebAssemblyRunner from '@libmedia/cheap/webassembly/WebAssemblyRunner'
+import { WebAssemblyRunner, compileResource } from '@libmedia/cheap'
 
 // resource 可以存入 indexDB 里面，下一次直接取出来用，不用在进行网络请求和编译了
-const resource = await compile(
+const resource = await compileResource(
   {
     source: 'https://xxxx.wasm'
   }
@@ -650,7 +628,7 @@ async function joinThread<T>(thread: Thread<{}>): Promise<T>
 
 ```javascript
 import task from './task'
-import runThread from '@libmedia/cheap/thread/runThread'
+import runThread from '@libmedia/cheap/runThread'
 runThread(task)
 ```
 
@@ -700,7 +678,7 @@ const pipeline = await createThreadFromFunction(
 
 import { defineConfig } from 'vite';
 import typescript from '@rollup/plugin-typescript';
-import transformer from '@libmedia/cheap/build/transformer';
+import * as transformer from '@libmedia/cheap/build/transformer';
 
 export default defineConfig({
   ...
@@ -1153,8 +1131,7 @@ interface SharedPtr<T> {
 由于 worker 之间传递数据是拷贝的，导致在不同线程之间传递智能指针的行为比较怪异，建议需要在不同线程之间频繁传递的数据结构使用裸指针来编写，自己写一个对象池来管理。
 
 ```typescript
-import { deTransferableSharedPtr } from '@libmedia/cheap/std/smartPtr/SharedPtr'
-import { createThreadFromFunction } from '@libmedia/cheap/thread/thread'
+import { createThreadFromFunction, deTransferableSharedPtr } from '@libmedia/cheap'
 
 @struct
 class MyStruct {
