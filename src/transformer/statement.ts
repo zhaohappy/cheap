@@ -208,8 +208,12 @@ class Statement {
       ))
     })
 
-    addImportStatements(this.memoryImports, constant.RootPath, updatedStatements)
-    addImportStatements(this.symbolImports, constant.InternalPath, updatedStatements)
+    if (this.memoryImports.length) {
+      addImportStatements(this.memoryImports, this.isCheapSource ? this.memoryImports[0].path : constant.RootPath, updatedStatements)
+    }
+    if (this.symbolImports.length) {
+      addImportStatements(this.symbolImports, this.isCheapSource ? this.symbolImports[0].path : constant.InternalPath, updatedStatements)
+    }
 
     const cheapReg = new RegExp(`^\\S*/node_modules/${constant.PACKET_NAME}/dist/((esm|cjs)/)?`)
 
@@ -589,12 +593,12 @@ class Statement {
   }
 
   addStructImport(symbol: ts.Symbol, target: ts.SourceFile) {
-    if (!this.isOutputCJS()) {
-      let local = this.lookupLocalSymbol(symbol)
-      if (local) {
-        return this.context.factory.createIdentifier(local)
-      }
-    }
+    // if (!this.isOutputCJS()) {
+    //   let local = this.lookupLocalSymbol(symbol)
+    //   if (local) {
+    //     return this.context.factory.createIdentifier(local)
+    //   }
+    // }
     let pathString = relativePath(this.currentFile.fileName, target.fileName)
     let name: string = symbol.escapedName as string
     object.each(this.cheapCompilerOptions.structPaths, (value, key) => {

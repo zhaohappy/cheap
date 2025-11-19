@@ -2459,8 +2459,12 @@ class Statement {
                 this.context.factory.createVariableDeclaration(item.formatName, undefined, undefined, item.initializer)
             ], ts.NodeFlags.Const)));
         });
-        addImportStatements(this.memoryImports, RootPath, updatedStatements);
-        addImportStatements(this.symbolImports, InternalPath, updatedStatements);
+        if (this.memoryImports.length) {
+            addImportStatements(this.memoryImports, this.isCheapSource ? this.memoryImports[0].path : RootPath, updatedStatements);
+        }
+        if (this.symbolImports.length) {
+            addImportStatements(this.symbolImports, this.isCheapSource ? this.symbolImports[0].path : InternalPath, updatedStatements);
+        }
         const cheapReg = new RegExp(`^\\S*/node_modules/${PACKET_NAME}/dist/((esm|cjs)/)?`);
         if (this.identifierImports.length) {
             this.identifierImports.forEach((item) => {
@@ -2736,12 +2740,12 @@ class Statement {
         }
     }
     addStructImport(symbol, target) {
-        if (!this.isOutputCJS()) {
-            let local = this.lookupLocalSymbol(symbol);
-            if (local) {
-                return this.context.factory.createIdentifier(local);
-            }
-        }
+        // if (!this.isOutputCJS()) {
+        //   let local = this.lookupLocalSymbol(symbol)
+        //   if (local) {
+        //     return this.context.factory.createIdentifier(local)
+        //   }
+        // }
         let pathString = relativePath(this.currentFile.fileName, target.fileName);
         let name = symbol.escapedName;
         common.object.each(this.cheapCompilerOptions.structPaths, (value, key) => {
