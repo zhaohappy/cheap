@@ -18,7 +18,7 @@ function getAllModuleDeps(compilation, module, getModule) {
     if (list && list.length) {
       for (let i = 0; i < list.length; i++) {
         if (list[i].request
-          && list[i].constructor.name === 'HarmonyImportSpecifierDependency'
+          && list[i].constructor.name !== 'HarmonyImportSideEffectDependency'
         ) {
           const dep = list[i];
           const m = compilation.moduleGraph.getModule(dep);
