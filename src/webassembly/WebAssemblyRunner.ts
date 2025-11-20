@@ -23,7 +23,7 @@ import * as mutex from '../thread/mutex'
 import runThread from './runThread'
 import { SELF } from '@libmedia/common/constant'
 import sourceLoad from '@libmedia/common/sourceLoad'
-import { is, object, support, array, logger } from '@libmedia/common'
+import { is, object, support, array, logger, isWorker, isAudioWorklet } from '@libmedia/common'
 if (defined(ENV_NODE) && !defined(ENV_CJS)) {
   // @ts-ignore
   import { Worker as Worker_ } from 'worker_threads'
@@ -610,6 +610,18 @@ export default class WebAssemblyRunner {
     ) {
       if (!threadAsm.wasmThreadProxy) {
         threadAsm.init(Memory, config.HEAP_INITIAL, config.HEAP_MAXIMUM, pthread.override)
+        if (!defined(ENV_NODE)
+          && !defined(USE_WORKER_SELF_URL)
+          && !isWorker()
+          && !isAudioWorklet()
+          && support.jspi
+        ) {
+          pthread.override({
+            wasm_pthread_mutex_lock: new WebAssembly.Suspending(pthread.wasm_pthread_mutex_lock_async),
+            wasm_pthread_cond_wait: new WebAssembly.Suspending(pthread.wasm_pthread_cond_wait_async),
+            wasm_pthread_cond_timedwait: new WebAssembly.Suspending(pthread.wasm_pthread_cond_timedwait_async)
+          })
+        }
       }
       object.extend(this.imports.env, pthread)
     }

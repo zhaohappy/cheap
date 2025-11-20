@@ -18,7 +18,7 @@ export let wasm_pthread_mutex_init: (mutex: pointer<Mutex>, attr: pointer<void>)
 
 export let wasm_pthread_mutex_destroy: (mutex: pointer<Mutex>) => int32
 
-export let wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32
+export let wasm_pthread_mutex_lock: (mutex: pointer<Mutex>) => int32 | Promise<int32>
 
 export let wasm_pthread_mutex_trylock: (mutex: pointer<Mutex>) => int32
 
@@ -28,9 +28,9 @@ export let wasm_pthread_cond_init: (cond: pointer<Cond>, attr: pointer<void>) =>
 
 export let wasm_pthread_cond_destroy: (cond: pointer<Cond>) => int32
 
-export let wasm_pthread_cond_wait: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32
+export let wasm_pthread_cond_wait: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32 | Promise<int32>
 
-export let wasm_pthread_cond_timedwait: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32
+export let wasm_pthread_cond_timedwait: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32 | Promise<int32>
 
 export let wasm_pthread_cond_signal: (cond: pointer<Cond>) => int32
 
@@ -76,6 +76,10 @@ wasm_pthread_mutex_lock = function (mutex: pointer<Mutex>) {
   return mutexUtils.lock(mutex)
 }
 
+export function wasm_pthread_mutex_lock_async(mutex: pointer<Mutex>) {
+  return mutexUtils.lockAsync(mutex)
+}
+
 wasm_pthread_mutex_trylock = function (mutex: pointer<Mutex>) {
   return mutexUtils.tryLock(mutex)
 }
@@ -96,9 +100,18 @@ wasm_pthread_cond_wait = function (cond: pointer<Cond>, mutex: pointer<Mutex>) {
   return condUtils.wait(cond, mutex)
 }
 
+export function wasm_pthread_cond_wait_async(cond: pointer<Cond>, mutex: pointer<Mutex>) {
+  return condUtils.waitAsync(cond, mutex)
+}
+
 wasm_pthread_cond_timedwait = function (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) {
   let timeout = Number(abstime.tvSec) * 1000 + abstime.tvNSec / 1000000
   return condUtils.timedWait(cond, mutex, timeout)
+}
+
+export function wasm_pthread_cond_timedwait_async(cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) {
+  let timeout = Number(abstime.tvSec) * 1000 + abstime.tvNSec / 1000000
+  return condUtils.timedwaitAsync(cond, mutex, timeout)
 }
 
 wasm_pthread_cond_signal = function (cond: pointer<Cond>) {
@@ -117,11 +130,11 @@ wasm_pthread_once = function (control: pointer<PthreadOnce>, func: pointer<() =>
 }
 
 export function override(data: {
-  wasm_pthread_mutex_lock?: (mutex: pointer<Mutex>) => int32,
+  wasm_pthread_mutex_lock?: (mutex: pointer<Mutex>) => int32 | Promise<int32>,
   wasm_pthread_mutex_trylock?: (mutex: pointer<Mutex>) => int32,
   wasm_pthread_mutex_unlock?: (mutex: pointer<Mutex>) => int32,
-  wasm_pthread_cond_wait?: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32,
-  wasm_pthread_cond_timedwait?: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32,
+  wasm_pthread_cond_wait?: (cond: pointer<Cond>, mutex: pointer<Mutex>) => int32 | Promise<int32>,
+  wasm_pthread_cond_timedwait?: (cond: pointer<Cond>, mutex: pointer<Mutex>, abstime: pointer<Timespec>) => int32 | Promise<int32>,
   wasm_pthread_cond_signal?: (cond: pointer<Cond>) => int32,
   wasm_pthread_cond_broadcast?: (cond: pointer<Cond>) => int32
 }) {
