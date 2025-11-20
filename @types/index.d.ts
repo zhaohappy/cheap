@@ -26,3 +26,5 @@ declare const ENABLE_THREADS_SPLIT: boolean
 declare const ENV_CSP: boolean
 
 declare const ENV_CJS: boolean
+
+declare const USE_WORKER_SELF_URL: boolean

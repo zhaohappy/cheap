@@ -40,7 +40,8 @@ const DefaultDefined = {
   ENABLE_SYNCHRONIZE_API: false,
   ENABLE_LOG_PATH: true,
   ENV_WEBPACK: false,
-  WASM_64: false
+  WASM_64: false,
+  USE_WORKER_SELF_URL: false
 }
 export function before(program: ts.Program): ts.TransformerFactory<ts.SourceFile>
 export function before(program: ts.Program, getProgram: () => ts.Program): ts.TransformerFactory<ts.SourceFile>

@@ -17,11 +17,15 @@ function getAllModuleDeps(compilation, module, getModule) {
   function addDeps(list) {
     if (list && list.length) {
       for (let i = 0; i < list.length; i++) {
-        if (list[i].request) {
-          if (!handle.has(list[i].request)) {
-            deps.push(list[i]);
+        if (list[i].request
+          && list[i].constructor.name === 'HarmonyImportSpecifierDependency'
+        ) {
+          const dep = list[i];
+          const m = compilation.moduleGraph.getModule(dep);
+          if (!handle.has(m)) {
+            deps.push(m)
           }
-          handle.set(list[i].request, true);
+          handle.set(m, true);
         }
       }
     }
@@ -29,8 +33,7 @@ function getAllModuleDeps(compilation, module, getModule) {
   addDeps(module.dependencies);
 
   while (deps.length) {
-    const dep = deps.shift();
-    const m = compilation.moduleGraph.getModule(dep);
+    const m = deps.shift();
     if (m) {
       if (!cache.has(m.resource)) {
         if (getModule) {
@@ -244,7 +247,7 @@ class CheapPlugin {
     });
 
     compiler.hooks.thisCompilation.tap('CheapPlugin', (compilation) => {
-      compilation.hooks.afterOptimizeTree.tap('CheapPlugin', (chunks, modules) => {
+      compilation.hooks.afterOptimizeChunkModules.tap('CheapPlugin', (chunks, modules) => {
         const handleModules = [];
         const threadFiles = me.options.threadFiles || [];
         if (!threadFiles.length) {

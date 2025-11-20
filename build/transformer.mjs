@@ -7221,7 +7221,8 @@ const DefaultDefined = {
     ENABLE_SYNCHRONIZE_API: false,
     ENABLE_LOG_PATH: true,
     ENV_WEBPACK: false,
-    WASM_64: false
+    WASM_64: false,
+    USE_WORKER_SELF_URL: false
 };
 function before(program, options, getProgram) {
     var _a, _b;
