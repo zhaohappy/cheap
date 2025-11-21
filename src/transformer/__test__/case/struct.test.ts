@@ -63,31 +63,33 @@ describe('struct', () => {
         o: pointer<uint64>;
         p: pointer<int64>;
         q: pointer<pointer<uint8>>;
+
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 4, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 2, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          map.set("c", { 0: 11, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+          map.set("d", { 0: 5, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 12, 8: 0 });
+          map.set("e", { 0: 3, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 16, 8: 0 });
+          map.set("f", { 0: 12, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 20, 8: 0 });
+          map.set("g", { 0: 6, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 24, 8: 0 });
+          map.set("h", { 0: 13, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 28, 8: 0 });
+          map.set("i", { 0: 7, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 32, 8: 0 });
+          map.set("j", { 0: 14, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 36, 8: 0 });
+          map.set("k", { 0: 8, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 40, 8: 0 });
+          map.set("l", { 0: 15, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 44, 8: 0 });
+          map.set("m", { 0: 9, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 48, 8: 0 });
+          map.set("n", { 0: 16, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 52, 8: 0 });
+          map.set("o", { 0: 10, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 56, 8: 0 });
+          map.set("p", { 0: 17, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 60, 8: 0 });
+          map.set("q", { 0: 2, 1: 1, 2: 2, 3: 0, 4: 0, 5: 0, 6: 0, 7: 64, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 68);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 4, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 2, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        map.set("c", { 0: 11, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
-        map.set("d", { 0: 5, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 12, 8: 0 });
-        map.set("e", { 0: 3, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 16, 8: 0 });
-        map.set("f", { 0: 12, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 20, 8: 0 });
-        map.set("g", { 0: 6, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 24, 8: 0 });
-        map.set("h", { 0: 13, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 28, 8: 0 });
-        map.set("i", { 0: 7, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 32, 8: 0 });
-        map.set("j", { 0: 14, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 36, 8: 0 });
-        map.set("k", { 0: 8, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 40, 8: 0 });
-        map.set("l", { 0: 15, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 44, 8: 0 });
-        map.set("m", { 0: 9, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 48, 8: 0 });
-        map.set("n", { 0: 16, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 52, 8: 0 });
-        map.set("o", { 0: 10, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 56, 8: 0 });
-        map.set("p", { 0: 17, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 60, 8: 0 });
-        map.set("q", { 0: 2, 1: 1, 2: 2, 3: 0, 4: 0, 5: 0, 6: 0, 7: 64, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 68);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input
@@ -114,15 +116,16 @@ describe('struct', () => {
       }
       class TestA {
         a: A
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.int32}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 4);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.int32}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 4);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input
@@ -143,15 +146,16 @@ describe('struct', () => {
       class TestA {
         a: uint8
         b: number
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input
@@ -177,16 +181,17 @@ describe('struct', () => {
       class TestA {
         a: array<pointer<uint8>, 8>;
         b: uint8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 1, 2: 1, 3: 1, 4: 8, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 32, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 36);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 1, 2: 1, 3: 1, 4: 8, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 32, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 36);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let p: pointer<TestA>;
       CTypeEnumWrite[20](p + 12, 0);
     `
@@ -215,16 +220,17 @@ describe('struct', () => {
       class TestA {
         a: array<array<pointer<uint8>, 8>, 8>;
         b: uint8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 1, 2: 1, 3: 1, 4: 64, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 256, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 260);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 1, 2: 1, 3: 1, 4: 64, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 256, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 260);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let p: pointer<TestA>;
       CTypeEnumWrite[20](p + 96 + 16, 0);
       let b = CTypeEnumRead[20](p + 64 + 4);
@@ -249,15 +255,16 @@ describe('struct', () => {
       class TestA {
         a: uint8
         b: uint8
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input
@@ -279,15 +286,16 @@ describe('struct', () => {
       class TestA {
         a: uint8
         b: uint8
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input,
@@ -312,16 +320,17 @@ describe('struct', () => {
       class TestA {
         a: uint8
         b: uint8
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 2);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input,
@@ -349,27 +358,29 @@ describe('struct', () => {
       class TestA {
         a: uint8;
         b: uint8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 2);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       class TestB extends TestA {
         c: int64;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("c", { 0: 17, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 16);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("c", { 0: 17, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 16);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestB.prototype);
     `
     check(source, target, {
       input
@@ -422,17 +433,18 @@ describe('struct', () => {
           never
         ] ? never : pointer<ListNode<T, LevelDepth[D]>>;
         data: pointer<T>;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("prev", { 0: ListNode, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("next", { 0: ListNode, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          map.set("data", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 12);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("prev", { 0: ListNode, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("next", { 0: ListNode, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        map.set("data", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 12);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(ListNode.prototype);
       let a: pointer<ListNode>;
       let data = CTypeEnumRead[20](a + 8);
     `
@@ -455,16 +467,17 @@ describe('struct', () => {
       class TestA {
         a: uint8
         b: uint16
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
+          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-        definedMetaProperty(prototype, symbolStructLength, 2);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
     `
     check(source, target, {
       input
@@ -491,25 +504,26 @@ describe('struct', () => {
           a: uint8;
           b: uint16;
         }>;
-      }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: (function (prototype) {
-          var map = new Map();
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
           map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-          map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
+          map.set("b", { 0: (function (prototype) {
+            const map = new Map();
+            map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
+            definedMetaProperty(prototype, symbolStruct, true);
+            definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
+            definedMetaProperty(prototype, symbolStructLength, 4);
+            definedMetaProperty(prototype, symbolStructKeysMeta, map);
+            return prototype;
+          })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
           definedMetaProperty(prototype, symbolStruct, true);
           definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-          definedMetaProperty(prototype, symbolStructLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 6);
           definedMetaProperty(prototype, symbolStructKeysMeta, map);
-          return prototype;
-        })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-        definedMetaProperty(prototype, symbolStructLength, 6);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
+        }
+      }
     `
     check(source, target, {
       input
@@ -536,25 +550,26 @@ describe('struct', () => {
           a: uint8;
           b: uint16;
         }>;
-      }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: (function (prototype) {
-          var map = new Map();
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
           map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-          map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: (function (prototype) {
+            const map = new Map();
+            map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            definedMetaProperty(prototype, symbolStruct, true);
+            definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
+            definedMetaProperty(prototype, symbolStructLength, 2);
+            definedMetaProperty(prototype, symbolStructKeysMeta, map);
+            return prototype;
+          })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
           definedMetaProperty(prototype, symbolStruct, true);
           definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructLength, 4);
           definedMetaProperty(prototype, symbolStructKeysMeta, map);
-          return prototype;
-        })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-        definedMetaProperty(prototype, symbolStructLength, 4);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
+        }
+      }
     `
     check(source, target, {
       input
@@ -596,15 +611,16 @@ describe('struct', () => {
       }
       class TestA {
         a: A | B;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.int32}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 4);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.int32}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 4);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let p1: pointer<TestA>;
       let p2: pointer<TestA>;
       let b = CTypeEnumRead[15](p1);
@@ -650,15 +666,16 @@ describe('struct', () => {
       ${ctypeEnumWriteImport}
       class TestA {
         a: size;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let a: pointer<TestA>;
       CTypeEnumWrite[${CTypeEnum.size}](a, 0n);
     `
@@ -686,15 +703,16 @@ describe('struct', () => {
       ${ctypeEnumWriteImport}
       class TestA {
         a: bit<size, 5>;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 1, 6: 5, 7: 0, 8: 59 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 1, 6: 5, 7: 0, 8: 59 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let a: pointer<TestA>;
       CTypeEnumWrite[${CTypeEnum.size}](a, (CTypeEnumRead[${CTypeEnum.size}](a) & ~31n) | ((5n & 31n) << 0n));
     `
@@ -741,27 +759,28 @@ describe('struct', () => {
           map: pointer<void>;
         }>;
         opaque: pointer<void>;
-      }
-      (function (prototype) {
-        var map = new Map();
-        map.set("order", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("nbChannels", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        map.set("u", { 0: (function (prototype) {
-          var map = new Map();
-          map.set("mask", { 0: 10, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-          map.set("map", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("order", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("nbChannels", { 0: 15, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          map.set("u", { 0: (function (prototype) {
+            const map = new Map();
+            map.set("mask", { 0: 10, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            map.set("map", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            definedMetaProperty(prototype, symbolStruct, true);
+            definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+            definedMetaProperty(prototype, symbolStructLength, 8);
+            definedMetaProperty(prototype, symbolStructKeysMeta, map);
+            return prototype;
+          })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+          map.set("opaque", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 16, 8: 0 });
           definedMetaProperty(prototype, symbolStruct, true);
           definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 24);
           definedMetaProperty(prototype, symbolStructKeysMeta, map);
-          return prototype;
-        })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
-        map.set("opaque", { 0: 1, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 16, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 24);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(AVChannelLayout.prototype);
+        }
+      }
       declare class TestA {
         a: uint8;
         b: uint16;

@@ -16,32 +16,35 @@ export default function (node: ts.ClassDeclaration, visitor: ts.Visitor): ts.Nod
       statement.addStruct(structName)
     }
 
+    const structNode = ts.visitEachChild(node, visitor, statement.context)
+
     const newNode: ts.Node[] = [
-      ts.visitEachChild(node, visitor, statement.context),
-      statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(
-        statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          [
-            statement.context.factory.createParameterDeclaration(
-              undefined,
-              undefined,
-              statement.context.factory.createIdentifier(constant.prototype)
-            )
-          ],
-          undefined,
-          statement.context.factory.createBlock(generateStruct(struct), true)
-        )),
-        undefined,
+      statement.context.factory.createClassDeclaration(
+        structNode.modifiers,
+        structNode.name,
+        structNode.typeParameters,
+        structNode.heritageClauses,
         [
-          statement.context.factory.createPropertyAccessExpression(
-            statement.context.factory.createIdentifier(structName),
-            statement.context.factory.createIdentifier('prototype')
-          )
+          ...structNode.members,
+          statement.context.factory.createClassStaticBlockDeclaration(statement.context.factory.createBlock([
+            statement.context.factory.createVariableStatement(
+              undefined,
+              statement.context.factory.createVariableDeclarationList([
+                statement.context.factory.createVariableDeclaration(
+                  statement.context.factory.createIdentifier(constant.prototype),
+                  undefined,
+                  undefined,
+                  statement.context.factory.createPropertyAccessExpression(
+                    statement.context.factory.createThis(),
+                    statement.context.factory.createIdentifier(constant.prototype)
+                  )
+                )
+              ], ts.NodeFlags.Const)
+            ),
+            ...generateStruct(struct)
+          ], true))
         ]
-      ))
+      )
     ]
 
     const item = statement.getDeclaration(structName)

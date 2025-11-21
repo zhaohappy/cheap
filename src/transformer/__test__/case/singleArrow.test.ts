@@ -216,16 +216,17 @@ describe('signal arrow', () => {
       class TestA {
         a: uint8
         b: float
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let a: pointer<TestA>;
       let b: pointer<TestA>;
       // @ts-ignore
@@ -256,16 +257,17 @@ describe('signal arrow', () => {
       class TestA {
         a: uint8
         b: float
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let a: pointer<TestA>;
       let b: pointer<TestA>;
       // @ts-ignore
@@ -297,16 +299,17 @@ describe('signal arrow', () => {
       class TestA {
         a: uint8
         b: float
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.uint8}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: ${CTypeEnum.float}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       let a: pointer<pointer<TestA>>;
       let b: pointer<TestA>;
       // @ts-ignore

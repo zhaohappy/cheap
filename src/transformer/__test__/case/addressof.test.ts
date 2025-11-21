@@ -39,32 +39,34 @@ describe('addressof', () => {
       a: pointer<uint8>;
       b: uint8;
       c: array<uint8, 8>;
+      static {
+        const prototype = this.prototype;
+        const map = new Map();
+        map.set("a", { 0: 2, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("c", { 0: 2, 1: 0, 2: 0, 3: 1, 4: 8, 5: 0, 6: 0, 7: 5, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+        definedMetaProperty(prototype, symbolStructLength, 16);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      }
     }
-    (function (prototype) {
-      var map = new Map();
-      map.set("a", { 0: 2, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-      map.set("b", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-      map.set("c", { 0: 2, 1: 0, 2: 0, 3: 1, 4: 8, 5: 0, 6: 0, 7: 5, 8: 0 });
-      definedMetaProperty(prototype, symbolStruct, true);
-      definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-      definedMetaProperty(prototype, symbolStructLength, 16);
-      definedMetaProperty(prototype, symbolStructKeysMeta, map);
-    })(TestA.prototype);
     class TestB {
       a: pointer<TestA>;
       b: TestA;
       c: uint16;
+      static {
+        const prototype = this.prototype;
+        const map = new Map();
+        map.set("a", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+        map.set("b", { 0: TestA, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+        map.set("c", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 20, 8: 0 });
+        definedMetaProperty(prototype, symbolStruct, true);
+        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+        definedMetaProperty(prototype, symbolStructLength, 24);
+        definedMetaProperty(prototype, symbolStructKeysMeta, map);
+      }
     }
-    (function (prototype) {
-      var map = new Map();
-      map.set("a", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-      map.set("b", { 0: TestA, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-      map.set("c", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 20, 8: 0 });
-      definedMetaProperty(prototype, symbolStruct, true);
-      definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-      definedMetaProperty(prototype, symbolStructLength, 24);
-      definedMetaProperty(prototype, symbolStructKeysMeta, map);
-    })(TestB.prototype);
   `
 
   test('addressof(struct)', () => {
@@ -275,25 +277,26 @@ describe('addressof', () => {
           a: uint8;
           b: uint16;
         }>;
-      }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: (function (prototype) {
-          var map = new Map();
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
           map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-          map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: (function (prototype) {
+            const map = new Map();
+            map.set("a", { 0: 2, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            map.set("b", { 0: 6, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+            definedMetaProperty(prototype, symbolStruct, true);
+            definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
+            definedMetaProperty(prototype, symbolStructLength, 2);
+            definedMetaProperty(prototype, symbolStructKeysMeta, map);
+            return prototype;
+          })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
           definedMetaProperty(prototype, symbolStruct, true);
           definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructLength, 4);
           definedMetaProperty(prototype, symbolStructKeysMeta, map);
-          return prototype;
-        })({}), 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 2, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 2);
-        definedMetaProperty(prototype, symbolStructLength, 4);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
+        }
+      }
       let p: pointer<TestA>;
       let a = p + 2;
       let b = p + 2;

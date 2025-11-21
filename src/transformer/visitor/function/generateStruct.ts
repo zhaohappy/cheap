@@ -1,4 +1,4 @@
-import type ts from 'typescript'
+import ts from 'typescript'
 import { is } from '@libmedia/common'
 import type { Struct } from '../../struct'
 import { StructType } from '../../struct'
@@ -30,7 +30,7 @@ export default function generateStruct(struct: Struct) {
           []
         )
       )
-    ])
+    ], ts.NodeFlags.Const)
   ))
 
   const meta = struct.meta

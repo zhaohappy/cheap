@@ -97,15 +97,16 @@ describe('unary', () => {
       ${ctypeEnumWriteImport}
       class Test {
         a: uint64;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.uint64}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.uint64}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(Test.prototype);
       let a: pointer<Test>;
       CTypeEnumWrite[${CTypeEnum.uint64}](a, CTypeEnumRead[${CTypeEnum.uint64}](a) + 1n);
     `
@@ -265,16 +266,17 @@ describe('unary', () => {
       class Test {
         a: pointer<void>;
         b: size;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(Test.prototype);
       let a: pointer<Test>;
       a = a + 8;
     `
@@ -299,16 +301,17 @@ describe('unary', () => {
       class Test {
         a: pointer<void>;
         b: size;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
+          definedMetaProperty(prototype, symbolStructLength, 16);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: ${CTypeEnum.void}, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: ${CTypeEnum.size}, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 8, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 8);
-        definedMetaProperty(prototype, symbolStructLength, 16);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(Test.prototype);
       let a: pointer<Test>;
       a = a + 16n;
     `

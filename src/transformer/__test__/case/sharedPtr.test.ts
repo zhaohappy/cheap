@@ -47,15 +47,16 @@ describe('sharedPtr', () => {
       ${ctypeEnumWriteImport}
       class TestA {
         a: int8
+        static {
+          const prototype = this.prototype;
+          const map = new Map()
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
+          definedMetaProperty(prototype, symbolStruct, true)
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
+          definedMetaProperty(prototype, symbolStructLength, 1)
+          definedMetaProperty(prototype, symbolStructKeysMeta, map)
+        }
       }
-      (function (prototype) {
-        var map = new Map()
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
-        definedMetaProperty(prototype, symbolStruct, true)
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
-        definedMetaProperty(prototype, symbolStructLength, 1)
-        definedMetaProperty(prototype, symbolStructKeysMeta, map)
-      })(TestA.prototype)
       let b = makeSharedPtr(TestA)
       let a = CTypeEnumRead[11](b.get())
       CTypeEnumWrite[11](b.get(), 6)
@@ -92,28 +93,30 @@ describe('sharedPtr', () => {
       ${ctypeEnumWriteImport}
       class TestA {
         a: int8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       class TestB {
         a: int8;
         b: TestA;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: TestA, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 2);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: TestA, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 1, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 2);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestB.prototype);
       let b = makeSharedPtr(TestB);
       let a = mapStruct(b.get() + 1, TestA);
       let c = make(TestA);
@@ -148,28 +151,30 @@ describe('sharedPtr', () => {
       ${ctypeEnumWriteImport}
       class TestA {
         a: int8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       class TestB {
         a: int8;
         b: pointer<TestA>;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestB.prototype);
       let b = makeSharedPtr(TestB);
       let a = CTypeEnumRead[11](CTypeEnumRead[20](b.get() + 4));
       CTypeEnumWrite[11](CTypeEnumRead[20](b.get() + 4), 8);
@@ -200,28 +205,30 @@ describe('sharedPtr', () => {
       ${ctypeEnumReadImport}
       class TestA {
         a: int8;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
+          definedMetaProperty(prototype, symbolStructLength, 1);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1);
-        definedMetaProperty(prototype, symbolStructLength, 1);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestA.prototype);
       class TestB {
         a: int8;
         b: pointer<TestA>;
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
+          map.set("b", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
+          definedMetaProperty(prototype, symbolStruct, true);
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
+          definedMetaProperty(prototype, symbolStructLength, 8);
+          definedMetaProperty(prototype, symbolStructKeysMeta, map);
+        }
       }
-      (function (prototype) {
-        var map = new Map();
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 });
-        map.set("b", { 0: TestA, 1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 4, 8: 0 });
-        definedMetaProperty(prototype, symbolStruct, true);
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 4);
-        definedMetaProperty(prototype, symbolStructLength, 8);
-        definedMetaProperty(prototype, symbolStructKeysMeta, map);
-      })(TestB.prototype);
       let b = makeSharedPtr(TestB);
       let a = CTypeEnumRead[20](b.get() + 4);
     `

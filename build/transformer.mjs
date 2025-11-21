@@ -4654,7 +4654,7 @@ function generateStruct(struct) {
     // const map = new Map()
     list.push(statement.context.factory.createVariableStatement(undefined, statement.context.factory.createVariableDeclarationList([
         statement.context.factory.createVariableDeclaration(statement.context.factory.createIdentifier('map'), undefined, undefined, statement.context.factory.createNewExpression(statement.context.factory.createIdentifier('Map'), undefined, []))
-    ])));
+    ], ts.NodeFlags.Const)));
     const meta = struct.meta;
     meta.forEach((data, key) => {
         var _a;
@@ -4746,13 +4746,17 @@ function classDeclarationVisitor (node, visitor) {
         if (!statement.hasStruct(structName)) {
             statement.addStruct(structName);
         }
+        const structNode = ts.visitEachChild(node, visitor, statement.context);
         const newNode = [
-            ts.visitEachChild(node, visitor, statement.context),
-            statement.context.factory.createExpressionStatement(statement.context.factory.createCallExpression(statement.context.factory.createParenthesizedExpression(statement.context.factory.createFunctionExpression(undefined, undefined, undefined, undefined, [
-                statement.context.factory.createParameterDeclaration(undefined, undefined, statement.context.factory.createIdentifier(prototype))
-            ], undefined, statement.context.factory.createBlock(generateStruct(struct), true))), undefined, [
-                statement.context.factory.createPropertyAccessExpression(statement.context.factory.createIdentifier(structName), statement.context.factory.createIdentifier('prototype'))
-            ]))
+            statement.context.factory.createClassDeclaration(structNode.modifiers, structNode.name, structNode.typeParameters, structNode.heritageClauses, [
+                ...structNode.members,
+                statement.context.factory.createClassStaticBlockDeclaration(statement.context.factory.createBlock([
+                    statement.context.factory.createVariableStatement(undefined, statement.context.factory.createVariableDeclarationList([
+                        statement.context.factory.createVariableDeclaration(statement.context.factory.createIdentifier(prototype), undefined, undefined, statement.context.factory.createPropertyAccessExpression(statement.context.factory.createThis(), statement.context.factory.createIdentifier(prototype)))
+                    ], ts.NodeFlags.Const)),
+                    ...generateStruct(struct)
+                ], true))
+            ])
         ];
         const item = statement.getDeclaration(structName);
         if (item) {

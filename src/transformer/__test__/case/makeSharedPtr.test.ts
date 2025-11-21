@@ -37,15 +37,16 @@ describe('makeSharedPtr', () => {
       ${makeSharedPtrImport}
       class TestA {
         a: int8
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
+          definedMetaProperty(prototype, symbolStruct, true)
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
+          definedMetaProperty(prototype, symbolStructLength, 1)
+          definedMetaProperty(prototype, symbolStructKeysMeta, map)
+        }
       }
-      (function (prototype) {
-        var map = new Map()
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
-        definedMetaProperty(prototype, symbolStruct, true)
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
-        definedMetaProperty(prototype, symbolStructLength, 1)
-        definedMetaProperty(prototype, symbolStructKeysMeta, map)
-      })(TestA.prototype)
       let b = makeSharedPtr(TestA)
     `
     check(source, target, {
@@ -67,15 +68,16 @@ describe('makeSharedPtr', () => {
       ${makeSharedPtrImport}
       class TestA {
         a: int8
+        static {
+          const prototype = this.prototype;
+          const map = new Map();
+          map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
+          definedMetaProperty(prototype, symbolStruct, true)
+          definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
+          definedMetaProperty(prototype, symbolStructLength, 1)
+          definedMetaProperty(prototype, symbolStructKeysMeta, map)
+        }
       }
-      (function (prototype) {
-        var map = new Map()
-        map.set("a", { 0: 11, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 })
-        definedMetaProperty(prototype, symbolStruct, true)
-        definedMetaProperty(prototype, symbolStructMaxBaseTypeByteLength, 1)
-        definedMetaProperty(prototype, symbolStructLength, 1)
-        definedMetaProperty(prototype, symbolStructKeysMeta, map)
-      })(TestA.prototype)
       let b = makeSharedPtr({a: 0}, TestA)
     `
     check(source, target, {
