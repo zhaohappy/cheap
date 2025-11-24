@@ -58,7 +58,7 @@
     "yargs": "^13.3.0"
   },
   "dependencies": {
-    "@libmedia/common": "workspace:*",
+    "@libmedia/common": "~2.1.0",
     "commander": "^13.1.0"
   },
   "type": "module",
