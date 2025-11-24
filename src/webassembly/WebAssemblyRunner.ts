@@ -23,7 +23,7 @@ import * as mutex from '../thread/mutex'
 import runThread from './runThread'
 import { SELF } from '@libmedia/common/constant'
 import sourceLoad from '@libmedia/common/sourceLoad'
-import { is, object, support, array, logger, isWorker, isAudioWorklet } from '@libmedia/common'
+import { is, object, support, array, logger, isWorker, isAudioWorklet, withResolvers } from '@libmedia/common'
 if (defined(ENV_NODE) && !defined(ENV_CJS)) {
   // @ts-ignore
   import { Worker as Worker_ } from 'worker_threads'
@@ -283,10 +283,8 @@ export default class WebAssemblyRunner {
           threadDescriptor
         })
 
-        let resolve: (ret: int32) => void
-        const promise = new Promise<int32>((r) => {
-          resolve = r
-        })
+        const { promise, resolve } = withResolvers<int32>()
+
         if (!support.jspi) {
           this.childReadyPromises.push(promise as unknown as Promise<void>)
         }
