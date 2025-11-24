@@ -4768,7 +4768,8 @@ function classDeclarationVisitor (node, visitor) {
 }
 
 function check(node) {
-    if (ts.isBlock(node)
+    if (node
+        && ts.isBlock(node)
         && !node.statements.some((n) => !ts.isImportDeclaration(n))) {
         if (node.statements.length === 1) {
             return node.statements[0];

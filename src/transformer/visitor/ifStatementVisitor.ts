@@ -4,7 +4,8 @@ import statement from '../statement'
 import * as nodeUtil from '../util/nodeutil'
 
 function check(node: ts.Node) {
-  if (ts.isBlock(node)
+  if (node
+    && ts.isBlock(node)
     && !node.statements.some((n) => !ts.isImportDeclaration(n))
   ) {
     if (node.statements.length === 1) {
