@@ -95,3 +95,5 @@ export {
   isMainThread,
   ThreadId
 } from './heap'
+
+export { default as ASMRunner } from './asm/ASMRunner'
