@@ -1,6 +1,6 @@
 {
   "name": "@libmedia/cheap",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "一个多线程和高性能 wasm 开发库",
   "sideEffects": [
     "./src/heap.ts",
@@ -58,7 +58,7 @@
     "yargs": "^13.3.0"
   },
   "dependencies": {
-    "@libmedia/common": "~2.1.0",
+    "@libmedia/common": "~2.2.0",
     "commander": "^13.1.0"
   },
   "type": "module",
