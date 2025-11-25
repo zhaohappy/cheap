@@ -224,10 +224,20 @@ class Statement {
         if (this.options.importPath) {
           p = this.options.importPath(p)
         }
+        else if ((this.moduleType === ts.ModuleKind.Node16
+          || this.moduleType === ts.ModuleKind.Node18
+          || this.moduleType === ts.ModuleKind.Node20
+          || this.moduleType === ts.ModuleKind.NodeNext)
+          && (path.isAbsolute(p) || p.startsWith('./') || p.startsWith('../'))
+        ) {
+          if (!/\.js$/.test(p)) {
+            p += '.js'
+          }
+        }
         const importDeclaration = this.context.factory.createImportDeclaration(
           undefined,
           this.context.factory.createImportClause(
-            false,
+            undefined,
             item.default
               ? this.context.factory.createIdentifier(item.formatName)
               : undefined,

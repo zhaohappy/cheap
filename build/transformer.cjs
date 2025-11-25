@@ -2473,7 +2473,16 @@ class Statement {
                 if (this.options.importPath) {
                     p = this.options.importPath(p);
                 }
-                const importDeclaration = this.context.factory.createImportDeclaration(undefined, this.context.factory.createImportClause(false, item.default
+                else if ((this.moduleType === ts.ModuleKind.Node16
+                    || this.moduleType === ts.ModuleKind.Node18
+                    || this.moduleType === ts.ModuleKind.Node20
+                    || this.moduleType === ts.ModuleKind.NodeNext)
+                    && (path$1.isAbsolute(p) || p.startsWith('./') || p.startsWith('../'))) {
+                    if (!/\.js$/.test(p)) {
+                        p += '.js';
+                    }
+                }
+                const importDeclaration = this.context.factory.createImportDeclaration(undefined, this.context.factory.createImportClause(undefined, item.default
                     ? this.context.factory.createIdentifier(item.formatName)
                     : undefined, item.default
                     ? undefined
@@ -5975,7 +5984,12 @@ function handleMeta(node, tree, meta) {
                     && ts.isCallExpression(node.parent)
                     && ts.isIdentifier(node.parent.expression)
                     && node.parent.expression.escapedText === addressof
-                    && !statement.lookupFunc(addressof)) {
+                    && !statement.lookupFunc(addressof)
+                    && (!node.parent.parent
+                        || !ts.isCallExpression(node.parent.parent)
+                        || !ts.isIdentifier(node.parent.parent.expression)
+                        || node.parent.parent.expression.escapedText !== accessof
+                        || statement.lookupFunc(accessof))) {
                     key = statement.context.factory.createIdentifier('undefined');
                 }
                 else {

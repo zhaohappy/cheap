@@ -145,6 +145,12 @@ function handleMeta(node: ts.Node, tree: ts.Node, meta: KeyMetaExt) {
           && ts.isIdentifier(node.parent.expression)
           && node.parent.expression.escapedText === constant.addressof
           && !statement.lookupFunc(constant.addressof)
+          && (!node.parent.parent
+            || !ts.isCallExpression(node.parent.parent)
+            || !ts.isIdentifier(node.parent.parent.expression)
+            || node.parent.parent.expression.escapedText !== constant.accessof
+            || statement.lookupFunc(constant.accessof)
+          )
         ) {
           key = statement.context.factory.createIdentifier('undefined')
         }

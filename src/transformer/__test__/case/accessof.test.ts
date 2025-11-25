@@ -521,4 +521,23 @@ describe('accessof', () => {
       input
     })
   })
+
+  test('accessof(addressof(pointer.struct))', () => {
+    const source = `
+      ${snippetClassTestABSource}
+      let a: pointer<TestB>
+      let b = accessof(addressof(a.c))
+    `
+    const target = `
+      ${symbolImport}
+      ${definedMetaPropertyImport}
+      ${mapStructImport}
+      ${snippetClassTestABTarget}
+      let a: pointer<TestB>
+      let b = mapStruct(a + 8, TestA)
+    `
+    check(source, target, {
+      input
+    })
+  })
 })
