@@ -6,6 +6,7 @@ import { Memory, allocThreadId } from '../heap'
 import * as cond from '../thread/cond'
 import * as mutex from '../thread/mutex'
 import * as atomicsUtils from '../thread/atomics'
+import { SELF } from '@libmedia/common/constant'
 
 interface TheadPoolEntry {
   id: uint32
@@ -41,15 +42,16 @@ export default class ThreadPool {
 
   private async createTheadPoolEntry(options: TheadPoolEntryOptions) {
     return new Promise<TheadPoolEntry>((resolve, reject) => {
-      const worker = new Worker(this.url)
+      const id = allocThreadId()
+      const worker = new Worker(this.url, {
+        name: SELF.name ? `${SELF.name}-Thread-${id}` : ''
+      })
       const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
       const threadDescriptor = reinterpret_cast<pointer<ThreadDescriptor>>(malloc(sizeof(ThreadDescriptor)))
       memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
 
       threadDescriptor.status = PthreadStatus.STOP
       threadDescriptor.flags |= PthreadFlags.POOL
-
-      const id = allocThreadId()
 
       worker.onmessage = (message) => {
         const origin = message.data

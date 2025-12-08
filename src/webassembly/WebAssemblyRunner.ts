@@ -48,7 +48,7 @@ export type WebAssemblyRunnerOptions = {
   threadDescriptor?: pointer<ThreadDescriptor>
 }
 
-let Worker: new (url: string | URL) => Worker = SELF.Worker
+let Worker: new (url: string | URL, options?: WorkerOptions) => Worker = SELF.Worker
 if (defined(ENV_NODE)) {
   if (defined(ENV_CJS)) {
     const { Worker: Worker_ } = require('worker_threads')
@@ -264,9 +264,13 @@ export default class WebAssemblyRunner {
           this.createChildUrl()
         }
 
-        const worker = new Worker(this.childUrl)
+        const threadId = allocThreadId()
 
-        thread.id = allocThreadId()
+        const worker = new Worker(this.childUrl, {
+          name: SELF.name ? `${SELF.name}-Thread-${threadId}` : ''
+        })
+
+        thread.id = threadId
         thread.status = PthreadStatus.RUN
         thread.flags = 0
         thread.retval = nullptr

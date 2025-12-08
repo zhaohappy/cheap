@@ -25,7 +25,7 @@ if (defined(ENV_NODE) && !defined(ENV_CJS)) {
   import fs from 'fs'
 }
 
-let Worker: new (url: string) => Worker = SELF.Worker
+let Worker: new (url: string | URL, options?: WorkerOptions) => Worker = SELF.Worker
 let MessageChannel: new () => MessageChannel = SELF.MessageChannel
 
 if (defined(ENV_NODE)) {
@@ -202,7 +202,7 @@ export function createThreadFromClass<T, U extends any[]>(
             refCount: 1
           })
         }
-        worker = new Worker(workerUrl)
+        worker = new Worker(workerUrl, options)
       }
       else {
         throw new Error('not support')
@@ -460,7 +460,7 @@ export function createThreadFromFunction<T extends any[], U extends any>(
             refCount: 1
           })
         }
-        worker = new Worker(workerUrl)
+        worker = new Worker(workerUrl, options)
       }
       else {
         throw new Error('not support')
@@ -635,7 +635,7 @@ export function createThreadFromModule<T extends Object>(
             refCount: 1
           })
         }
-        worker = new Worker(workerUrl)
+        worker = new Worker(workerUrl, options)
       }
       else {
         throw new Error('not support')
