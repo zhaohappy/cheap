@@ -15,4 +15,5 @@ export interface CheapPluginOptions {
 
 export default class CheapPlugin {
   constructor(options: CheapPluginOptions)
+  apply: (compiler: any) => void
 }
