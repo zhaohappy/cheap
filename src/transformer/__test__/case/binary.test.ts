@@ -639,6 +639,7 @@ describe('binary', () => {
       let totalSize: size
       const INT32_MAX: int32
       const sizes: pointer<size>
+      let i: int32
       if (totalSize > static_cast<size>(INT32_MAX) - sizes[i]) {
       }
     `
@@ -647,7 +648,8 @@ describe('binary', () => {
       let totalSize: size
       const INT32_MAX: int32
       const sizes: pointer<size>
-      if (totalSize > BigInt(INT32_MAX >>> 0) - CTypeEnumRead[${CTypeEnum.size}](sizes + i)) {
+      let i: int32
+      if (totalSize > BigInt(INT32_MAX >>> 0) - CTypeEnumRead[${CTypeEnum.size}](sizes + (BigInt(i) * 8n))) {
       }
     `
     check(source, target, {
@@ -666,6 +668,47 @@ describe('binary', () => {
     const target = `
       const sizes: pointer<size>
       let a = sizes % 2n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+
+  test('pointer + number + number wasm64', () => {
+    const source = `
+      const p: pointer<uint8>
+      let i: number
+      let a: int32
+      let a = p + (i + a) + 1
+    `
+    const target = `
+      const p: pointer<uint8>
+      let i: number
+      let a: int32
+      let a = p + BigInt((i + a)) + 1n
+    `
+    check(source, target, {
+      input,
+      defined: {
+        WASM_64: true
+      }
+    })
+  })
+  test('pointer + number wasm64', () => {
+    const source = `
+      const p: pointer<uint8>
+      let i: number
+      let a: int32
+      let a = p + 1
+    `
+    const target = `
+      const p: pointer<uint8>
+      let i: number
+      let a: int32
+      let a = p + 1n
     `
     check(source, target, {
       input,

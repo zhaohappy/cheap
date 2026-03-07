@@ -816,6 +816,40 @@ function handle(node: ts.BinaryExpression, visitor: ts.Visitor): ts.Node {
         )
       }
     }
+    // pointer + number + number
+    else if (nodeUtils.isPointerOperatorBinaryNode(node)) {
+      if (nodeUtils.isPointerOperatorBinaryNode(node.left)
+        && !nodeUtils.isPointerOperatorBinaryNode(node.right)
+      ) {
+        const right = visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        return statement.context.factory.createBinaryExpression(
+          visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+          node.operatorToken.kind,
+          ts.isNumericLiteral(right)
+            ? nodeUtils.createPointerOperand(+right.text)
+            : nodeUtils.createPointerOperand(right)
+        )
+      }
+      else if (!nodeUtils.isPointerOperatorBinaryNode(node.left)
+        && nodeUtils.isPointerOperatorBinaryNode(node.right)
+      ) {
+        const left = visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression
+        return statement.context.factory.createBinaryExpression(
+          ts.isNumericLiteral(left)
+            ? nodeUtils.createPointerOperand(+left.text)
+            : nodeUtils.createPointerOperand(left),
+          node.operatorToken.kind,
+          visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        )
+      }
+      else {
+        return statement.context.factory.createBinaryExpression(
+          visitorLeft(node.left, visitor, node.operatorToken.kind) as ts.Expression,
+          node.operatorToken.kind,
+          visitorRight(node.right, visitor, node.operatorToken.kind) as ts.Expression
+        )
+      }
+    }
   }
   return ts.visitEachChild(node, visitor, statement.context)
 }

@@ -4556,6 +4556,34 @@ function getTypeAtLocation(node) {
     }
     return statement.typeChecker.getTypeAtLocation(node);
 }
+function isPointerOperatorBinaryNode(node, child = false) {
+    if (ts.isBinaryExpression(node)) {
+        if (node.operatorToken.kind === ts.SyntaxKind.PlusToken
+            || node.operatorToken.kind === ts.SyntaxKind.MinusToken) {
+            let hasPointer = false;
+            if (isPointerNode(node.left)) {
+                hasPointer = true;
+                if (!isPointerOperatorBinaryNode(node.left, true)) {
+                    return false;
+                }
+            }
+            if (isPointerNode(node.right)) {
+                hasPointer = true;
+                if (!isPointerOperatorBinaryNode(node.right, true)) {
+                    return false;
+                }
+            }
+            return hasPointer;
+        }
+    }
+    if (child) {
+        const type = statement.typeChecker.getTypeAtLocation(node);
+        if (isPointerType(type, node)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 function blockVisitor (node, visitor) {
     let type = BlockType.UNKNOWN;
@@ -6784,6 +6812,26 @@ function handle(node, visitor) {
                     : node.operatorToken.kind, ts.isNumericLiteral(right)
                     ? createPointerOperand(+right.text)
                     : createPointerOperand(right));
+            }
+        }
+        // pointer + number + number
+        else if (isPointerOperatorBinaryNode(node)) {
+            if (isPointerOperatorBinaryNode(node.left)
+                && !isPointerOperatorBinaryNode(node.right)) {
+                const right = visitorRight(node.right, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, ts.isNumericLiteral(right)
+                    ? createPointerOperand(+right.text)
+                    : createPointerOperand(right));
+            }
+            else if (!isPointerOperatorBinaryNode(node.left)
+                && isPointerOperatorBinaryNode(node.right)) {
+                const left = visitorLeft(node.left, visitor, node.operatorToken.kind);
+                return statement.context.factory.createBinaryExpression(ts.isNumericLiteral(left)
+                    ? createPointerOperand(+left.text)
+                    : createPointerOperand(left), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind));
+            }
+            else {
+                return statement.context.factory.createBinaryExpression(visitorLeft(node.left, visitor, node.operatorToken.kind), node.operatorToken.kind, visitorRight(node.right, visitor, node.operatorToken.kind));
             }
         }
     }

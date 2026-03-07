@@ -585,3 +585,33 @@ export function getTypeAtLocation(node: ts.Node) {
 export function isNullPointerNode(node: ts.Node) {
   return ts.isIdentifier(node) && node.escapedText === constant.typeNullptr
 }
+
+export function isPointerOperatorBinaryNode(node: ts.Node, child: boolean = false) {
+  if (ts.isBinaryExpression(node)) {
+    if (node.operatorToken.kind === ts.SyntaxKind.PlusToken
+      || node.operatorToken.kind === ts.SyntaxKind.MinusToken
+    ) {
+      let hasPointer = false
+      if (isPointerNode(node.left)) {
+        hasPointer = true
+        if (!isPointerOperatorBinaryNode(node.left, true)) {
+          return false
+        }
+      }
+      if (isPointerNode(node.right)) {
+        hasPointer = true
+        if (!isPointerOperatorBinaryNode(node.right, true)) {
+          return false
+        }
+      }
+      return hasPointer
+    }
+  }
+  if (child) {
+    const type = statement.typeChecker.getTypeAtLocation(node)
+    if (typeUtils.isPointerType(type, node)) {
+      return true
+    }
+  }
+  return false
+}
