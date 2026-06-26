@@ -13,7 +13,7 @@ describe('merge operator', () => {
   })
 
   afterAll(() => {
-    fs.unlinkSync(input)
+    fs.rmSync(input, { force: true })
     fs.rmSync(output, { force: true })
   })
 

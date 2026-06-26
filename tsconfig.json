@@ -7,12 +7,12 @@
     "noUnusedParameters": false,
     "moduleResolution": "node",
     "declaration": true,
-    "downlevelIteration": true,
     "declarationMap": false,
     "module": "esnext",
     "target": "esnext",
     "esModuleInterop": true,
     "baseUrl": "./",
+    "strict": false,
     "paths": {
       "@libmedia/cheap": ["./*"],
       "@libmedia/common": ["../common/src"],

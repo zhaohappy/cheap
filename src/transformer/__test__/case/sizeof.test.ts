@@ -14,7 +14,7 @@ describe('sizeof', () => {
   })
 
   afterAll(() => {
-    fs.unlinkSync(input)
+    fs.rmSync(input, { force: true })
     fs.rmSync(output, { force: true })
   })
 
