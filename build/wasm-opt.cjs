@@ -198,7 +198,9 @@ function decode(data) {
     return decodeJS(data);
 }
 
-const cheap__fileName__0$1 = "src/common/src/io/IOReaderSync.ts";
+/**
+ * 读字节流工具
+ */
 class IOReaderSync {
     data;
     buffer;
@@ -217,8 +219,8 @@ class IOReaderSync {
      * @param data 待读取的字节
      * @param bigEndian 是否按大端字节序读取，默认大端字节序（网络字节序）
      */
-    constructor(size = 1048576, bigEndian = true, map) {
-        this.pos = BigInt(0);
+    constructor(size = 1 * 1024 * 1024, bigEndian = true, map) {
+        this.pos = 0n;
         this.pointer = 0;
         this.error = 0;
         this.endPointer = 0;
@@ -238,7 +240,7 @@ class IOReaderSync {
             if (map) {
                 throw new Error('not support subarray of ArrayBuffer');
             }
-            this.size = Math.max(size, 102400);
+            this.size = Math.max(size, 100 * 1024);
             this.buffer = new Uint8Array(this.size);
             this.data = new DataView(this.buffer.buffer);
         }
@@ -279,7 +281,7 @@ class IOReaderSync {
         }
         const value = this.data.getUint16(this.pointer, this.littleEndian);
         this.pointer += 2;
-        this.pos += BigInt(2);
+        this.pos += 2n;
         return value;
     }
     /**
@@ -335,7 +337,7 @@ class IOReaderSync {
         }
         const value = this.data.getUint32(this.pointer, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
         return value;
     }
     /**
@@ -360,7 +362,7 @@ class IOReaderSync {
         }
         const value = this.data.getBigUint64(this.pointer, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
         return value;
     }
     /**
@@ -410,7 +412,7 @@ class IOReaderSync {
         }
         const value = this.data.getInt16(this.pointer, this.littleEndian);
         this.pointer += 2;
-        this.pos += BigInt(2);
+        this.pos += 2n;
         return value;
     }
     /**
@@ -453,7 +455,7 @@ class IOReaderSync {
         }
         const value = this.data.getInt32(this.pointer, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
         return value;
     }
     /**
@@ -478,7 +480,7 @@ class IOReaderSync {
         }
         const value = this.data.getBigInt64(this.pointer, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
         return value;
     }
     /**
@@ -503,7 +505,7 @@ class IOReaderSync {
         }
         const value = this.data.getFloat32(this.pointer, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
         return value;
     }
     /**
@@ -528,7 +530,7 @@ class IOReaderSync {
         }
         const value = this.data.getFloat64(this.pointer, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
         return value;
     }
     /**
@@ -565,7 +567,7 @@ class IOReaderSync {
     peekHex(length = 1) {
         if (length > this.size) {
             this.error = -1048574 /* IOError.INVALID_OPERATION */;
-            fatal('peekHex, length too large', cheap__fileName__0$1, 412);
+            fatal('peekHex, length too large');
         }
         if (this.remainingLength() < length) {
             this.flush(length);
@@ -621,7 +623,7 @@ class IOReaderSync {
         }
         if (length > this.size) {
             this.error = -1048574 /* IOError.INVALID_OPERATION */;
-            fatal('peekBuffer, length too large', cheap__fileName__0$1, 505);
+            fatal('peekBuffer, length too large');
         }
         if (this.remainingLength() < length) {
             this.flush(length);
@@ -753,7 +755,7 @@ class IOReaderSync {
         }
         if (!got) {
             this.error = -1048574 /* IOError.INVALID_OPERATION */;
-            fatal('peekLine, out of buffer', cheap__fileName__0$1, 656);
+            fatal('peekLine, out of buffer');
         }
         return str;
     }
@@ -807,7 +809,7 @@ class IOReaderSync {
     flush(need = 0) {
         if (!this.onFlush) {
             this.error = -1048574 /* IOError.INVALID_OPERATION */;
-            fatal('IOReader error, flush failed because of no flush callback', cheap__fileName__0$1, 720);
+            fatal('IOReader error, flush failed because of no flush callback');
         }
         if (this.size - this.remainingLength() <= 0) {
             return;
@@ -871,14 +873,14 @@ class IOReaderSync {
         }
         if (!this.onSeek) {
             this.error = -1048574 /* IOError.INVALID_OPERATION */;
-            fatal('IOReader error, seek failed because of no seek callback', cheap__fileName__0$1, 790);
+            fatal('IOReader error, seek failed because of no seek callback');
         }
         this.pointer = this.endPointer = 0;
         this.pos = pos;
         const ret = this.onSeek(pos);
         if (ret !== 0) {
             this.error = ret;
-            fatal('IOReader error, seek failed', cheap__fileName__0$1, 799);
+            fatal('IOReader error, seek failed');
         }
         if (flush) {
             this.flush();
@@ -912,7 +914,7 @@ class IOReaderSync {
                 const len = Math.min(this.size - this.endPointer, buffer.length);
                 this.buffer.set(buffer.subarray(0, len), this.endPointer);
                 this.endPointer += len;
-                warn('IOReader, call appendBuffer but the buffer\'s size is lagger then the remaining size', cheap__fileName__0$1, 838);
+                warn('IOReader, call appendBuffer but the buffer\'s size is lagger then the remaining size');
             }
         }
     }
@@ -921,7 +923,7 @@ class IOReaderSync {
      */
     reset() {
         this.pointer = this.endPointer = 0;
-        this.pos = BigInt(0);
+        this.pos = 0n;
         this.error = 0;
     }
     /**
@@ -950,15 +952,15 @@ class IOReaderSync {
             return this.fileSize_;
         }
         if (!this.onSize) {
-            warn('IOReader error, fileSize failed because of no onSize callback', cheap__fileName__0$1, 880);
-            return BigInt(0);
+            warn('IOReader error, fileSize failed because of no onSize callback');
+            return 0n;
         }
         try {
             this.fileSize_ = this.onSize();
         }
         catch (error) {
-            warn(`IOReader error, call fileSize failed: ${error}`, cheap__fileName__0$1, 887);
-            this.fileSize_ = BigInt(0);
+            warn(`IOReader error, call fileSize failed: ${error}`);
+            this.fileSize_ = 0n;
         }
         return this.fileSize_;
     }
@@ -1035,9 +1037,9 @@ class IOWriterSync {
      * @param data 待写的 Uint8Array
      * @param bigEndian 是否按大端字节序写，默认大端字节序（网络字节序）
      */
-    constructor(size = 1048576, bigEndian = true, map) {
+    constructor(size = 1 * 1024 * 1024, bigEndian = true, map) {
         this.pointer = 0;
-        this.pos = BigInt(0);
+        this.pos = 0n;
         this.size = size;
         this.littleEndian = !bigEndian;
         this.error = 0;
@@ -1079,7 +1081,7 @@ class IOWriterSync {
         }
         this.data.setUint16(this.pointer, value, this.littleEndian);
         this.pointer += 2;
-        this.pos += BigInt(2);
+        this.pos += 2n;
     }
     /**
      * 写 24 位无符号整数
@@ -1111,7 +1113,7 @@ class IOWriterSync {
         }
         this.data.setUint32(this.pointer, value, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
     }
     /**
      * 写 64 位无符号整数
@@ -1122,7 +1124,7 @@ class IOWriterSync {
         }
         this.data.setBigUint64(this.pointer, value, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
     }
     /**
      * 写 8 位有符号整数
@@ -1146,7 +1148,7 @@ class IOWriterSync {
         }
         this.data.setInt16(this.pointer, value, this.littleEndian);
         this.pointer += 2;
-        this.pos += BigInt(2);
+        this.pos += 2n;
     }
     /**
      * 写 24 位有符号整数
@@ -1163,7 +1165,7 @@ class IOWriterSync {
         }
         this.data.setInt32(this.pointer, value, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
     }
     /**
      * 写 64 位有符号整数
@@ -1174,7 +1176,7 @@ class IOWriterSync {
         }
         this.data.setBigInt64(this.pointer, value, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
     }
     /**
      * 写单精度浮点数
@@ -1187,7 +1189,7 @@ class IOWriterSync {
         }
         this.data.setFloat32(this.pointer, value, this.littleEndian);
         this.pointer += 4;
-        this.pos += BigInt(4);
+        this.pos += 4n;
     }
     /**
      * 写双精度浮点数
@@ -1198,7 +1200,7 @@ class IOWriterSync {
         }
         this.data.setFloat64(this.pointer, value, this.littleEndian);
         this.pointer += 8;
-        this.pos += BigInt(8);
+        this.pos += 8n;
     }
     /**
      * 获取当前写指针
@@ -1361,7 +1363,7 @@ class IOWriterSync {
      */
     reset() {
         this.pointer = 0;
-        this.pos = BigInt(0);
+        this.pos = 0n;
         this.error = 0;
     }
     /**
@@ -1374,7 +1376,9 @@ class IOWriterSync {
     }
 }
 
-const cheap__fileName__0 = "src/common/src/io/BufferWriter.ts";
+/**
+ * 写字节流工具
+ */
 class BufferWriter {
     data;
     buffer;
@@ -1543,7 +1547,7 @@ class BufferWriter {
         let length = buffer.length;
         if (this.remainingSize() < length) {
             length = this.remainingSize();
-            warn(`the remaining buffer size is smaller then the wrote buffer, hope set ${buffer.length}, but set ${length}`, cheap__fileName__0, 202);
+            warn(`the remaining buffer size is smaller then the wrote buffer, hope set ${buffer.length}, but set ${length}`);
         }
         this.buffer.set(buffer, this.pos);
         this.pos += buffer.length;
