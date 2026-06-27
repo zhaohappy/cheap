@@ -25,6 +25,13 @@ export default function getRandomValues(buffer: Uint8Array) {
     crypto_.randomFillSync(buffer)
   }
   else {
-    crypto_.getRandomValues(buffer)
+    if (buffer.buffer instanceof SharedArrayBuffer) {
+      const data = new Uint8Array(buffer.byteLength)
+      crypto_.getRandomValues(data)
+      buffer.set(data, 0)
+    }
+    else {
+      crypto_.getRandomValues(buffer as Uint8Array<ArrayBuffer>)
+    }
   }
 }

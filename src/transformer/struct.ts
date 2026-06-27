@@ -394,7 +394,7 @@ function analyze(symbol: ts.Symbol) {
   const metaMap = new Map()
   const metaQueue = []
 
-  const inlineStructPathMap = new WeakMap()
+  const inlineStructPathMap: WeakMap<ts.Symbol, string> = new WeakMap()
   const struct = {
     maxBaseTypeByteLength: 0,
     length: 0,
