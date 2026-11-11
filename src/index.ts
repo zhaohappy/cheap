@@ -51,7 +51,17 @@ export { default as isCStruct } from './std/function/isCStruct'
 
 export { default as WebAssemblyRunner, WebAssemblyRunnerOptions } from './webassembly/WebAssemblyRunner'
 
-export { default as compileResource, WebAssemblyResource, WebAssemblySource } from './webassembly/compiler'
+export {
+  default as compileResource,
+  getWebAssemblyResourceMetadata,
+  type WebAssemblyResource,
+  type WebAssemblySource,
+  type WebAssemblyResourceInput,
+  type WebAssemblyResourceMetadata,
+  type WebAssemblyRuntimeInfo,
+  type WebAssemblyVariant,
+  type WebAssemblyVariantSource
+} from './webassembly/compiler'
 
 export { deTransferableSharedPtr } from './std/smartPtr/SharedPtr'
 

@@ -32,6 +32,7 @@ export const enum PthreadStatus {
 }
 
 export type ChildThread = {
+  runtimeState?: Int32Array<SharedArrayBuffer>
   thread: pointer<Pthread>
   worker: Worker
   stackPointer: pointer<void>

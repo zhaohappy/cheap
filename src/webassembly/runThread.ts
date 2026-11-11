@@ -71,6 +71,11 @@ export default function runThread() {
               runner.destroy()
             }
             run()
+          }).finally(() => {
+            const state = data.runner.options.threadRuntimeState
+            if (state) {
+              Atomics.store(state, 0, 0)
+            }
           })
         }
         break
@@ -101,10 +106,18 @@ export default function runThread() {
             runnerData.func = WebAssemblyRunnerClass.readPointer(addressof(waitData.func))
             runnerData.args = WebAssemblyRunnerClass.readPointer(addressof(waitData.args))
 
-            runner = new WebAssemblyRunnerClass(runnerData.resource, runnerData.options)
-            runner.runAsChild()
-            WebAssemblyRunnerClass.getTable().get(runnerData.func)(runnerData.args)
-            runner.destroy()
+            try {
+              runner = new WebAssemblyRunnerClass(runnerData.resource, runnerData.options)
+              runner.runAsChild()
+              WebAssemblyRunnerClass.getTable().get(runnerData.func)(runnerData.args)
+              runner.destroy()
+            }
+            finally {
+              const state = runnerData.options.threadRuntimeState
+              if (state) {
+                Atomics.store(state, 0, 0)
+              }
+            }
             WebAssemblyRunnerClass.writePointer(addressof(waitData.thread), nullptr)
             WebAssemblyRunnerClass.mutexUnlock(addressof(waitData.mutex))
           }
