@@ -1572,14 +1572,14 @@ program
     .option('-b, --bss', 'enable bss optimize')
     .action((options) => {
     command = options;
-    if (command.i && command.o) {
+    if (command.input && command.output) {
         optimize();
     }
 });
 program.parse(process.argv);
 function createReader() {
-    const fid = fs.openSync(command.i, 'r');
-    const stats = fs.statSync(command.i);
+    const fid = fs.openSync(command.input, 'r');
+    const stats = fs.statSync(command.input);
     let readPos = 0;
     const readFileLength = stats.size;
     const ioReader = new IOReaderSync();
@@ -1816,7 +1816,7 @@ function optimize() {
             ioWriter.flush();
             // @ts-ignore
             fs.closeSync(ioReader.fid);
-            fs.writeFileSync(command.o, Buffer.concat(buffers));
+            fs.writeFileSync(command.output, Buffer.concat(buffers));
         }
         else {
             throw e;
