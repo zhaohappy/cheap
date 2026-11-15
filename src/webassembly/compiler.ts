@@ -4,7 +4,23 @@ import { nearestPowerOf2 } from '@libmedia/common/math'
 import { is, object, concatTypeArray, browser, os, wasm } from '@libmedia/common'
 import { IOReader, IOError, IOWriter, BufferWriter } from '@libmedia/common/io'
 
+export type WebAssemblyVariant = 'baseline' | 'atomic' | 'simd' | '64' | 'unknown'
+export type WebAssemblyVariantSource = 'metadata' | 'filename' | 'unknown'
+
+export interface WebAssemblyResourceMetadata {
+  variant: WebAssemblyVariant
+  /** Declaration provenance, not verification of the module's instructions. */
+  variantSource?: WebAssemblyVariantSource
+}
+
+export interface WebAssemblyRuntimeInfo extends WebAssemblyResourceMetadata {
+  variantSource: WebAssemblyVariantSource
+  /** One running instance plus live pthreads; excludes idle pool workers and pipeline Workers. */
+  threadCount: number
+}
+
 export interface WebAssemblyResource {
+  metadata?: WebAssemblyResourceMetadata
   readonly tableSize: number
   readonly tableAlign: number
   readonly dataSize: number
@@ -27,11 +43,23 @@ export interface WebAssemblyResource {
 
 export interface WebAssemblySource {
   source: Uint8Array<ArrayBuffer> | ArrayBuffer | string
+  metadata?: WebAssemblyResourceMetadata
   tableSize?: number
   tableAlign?: number
   dataSize?: number
   dataAlign?: number
   bssSize?: number
+}
+
+export type WebAssemblyResourceInput = string | ArrayBuffer | WebAssemblySource | WebAssemblyResource
+
+/** Preserves declared resource metadata without inspecting names or inferring browser capabilities. */
+export function getWebAssemblyResourceMetadata(source: { metadata?: WebAssemblyResourceMetadata }): WebAssemblyResourceMetadata {
+  const variant = source.metadata?.variant ?? 'unknown'
+  if (variant !== 'unknown') {
+    return { variant, variantSource: source.metadata.variantSource === 'filename' ? 'filename' : 'metadata' }
+  }
+  return { variant: 'unknown', variantSource: 'unknown' }
 }
 
 interface Context {
@@ -503,6 +531,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
 
   if (options.child) {
     return {
+      metadata: getWebAssemblyResourceMetadata(source),
       module,
       initFuncs: options.initFuncs || [],
       tableSize: 0,
@@ -515,6 +544,7 @@ export default async function compile(source: WebAssemblySource, options: Compil
   }
 
   return {
+    metadata: getWebAssemblyResourceMetadata(source),
     module,
     tableSize,
     tableAlign: tableAlign || 0,

@@ -3,7 +3,8 @@
 import { Memory, StackPointer, Table, allocThreadId, StackTop } from '../heap'
 import { memcpy, memset } from '../std/memory'
 import { fd_fdstat_get, fd_write, abort, random_get, clock_time_get, clock_res_get, environ_get, environ_sizes_get } from './runtime/clib'
-import type { WebAssemblyResource } from './compiler'
+import type { WebAssemblyResource, WebAssemblyResourceMetadata, WebAssemblyRuntimeInfo } from './compiler'
+import { getWebAssemblyResourceMetadata } from './compiler'
 import * as atomics from './runtime/atomic'
 import * as pthread from './runtime/pthread'
 import * as semaphore from './runtime/semaphore'
@@ -46,6 +47,7 @@ export type WebAssemblyRunnerOptions = {
   tableBase?: number
   thread?: pointer<Pthread>
   threadDescriptor?: pointer<ThreadDescriptor>
+  threadRuntimeState?: Int32Array<SharedArrayBuffer>
 }
 
 let Worker: new (url: string | URL, options?: WorkerOptions) => Worker = SELF.Worker
@@ -90,6 +92,7 @@ export default class WebAssemblyRunner {
   }
 
   private resource: WebAssemblyResource
+  private resourceMetadata: WebAssemblyResourceMetadata
 
   /**
    * WebAssembly runtime 实例
@@ -127,6 +130,7 @@ export default class WebAssemblyRunner {
   constructor(resource: WebAssemblyResource, options: WebAssemblyRunnerOptions = {}) {
 
     this.resource = resource
+    this.resourceMetadata = getWebAssemblyResourceMetadata(resource)
     this.builtinMalloc = []
     this.initCalling = false
 
@@ -280,7 +284,12 @@ export default class WebAssemblyRunner {
         const threadDescriptor = reinterpret_cast<pointer<ThreadDescriptor>>(malloc(sizeof(ThreadDescriptor)))
         memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
 
+        // This state outlives detached pthread descriptors, which the child frees.
+        const runtimeState = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT))
+        Atomics.store(runtimeState, 0, PthreadStatus.RUN)
+
         this.childThreads.set(thread.id, {
+          runtimeState,
           thread,
           worker,
           stackPointer,
@@ -308,9 +317,12 @@ export default class WebAssemblyRunner {
         if (defined(ENV_NODE)) {
           // @ts-ignore
           worker.on('message', handler)
+          // @ts-ignore
+          worker.once('exit', () => Atomics.store(runtimeState, 0, PthreadStatus.STOP))
         }
         else {
           worker.onmessage = handler
+          worker.addEventListener('error', () => Atomics.store(runtimeState, 0, PthreadStatus.STOP))
         }
 
         if (this.childImportUrl) {
@@ -347,6 +359,7 @@ export default class WebAssemblyRunner {
                 tableBase: this.tableBase,
                 thread,
                 threadDescriptor,
+                threadRuntimeState: runtimeState,
                 childImports: this.childImports
               },
               func,
@@ -791,7 +804,32 @@ export default class WebAssemblyRunner {
     return this.childThreads.size
   }
 
+  /** Includes this running instance and live pthreads, excluding idle pool workers. */
+  public getRunningThreadCount() {
+    if (!this.instance) {
+      return 0
+    }
+    let count = 1 + (this.threadPool?.getRunningThreadCount() ?? 0)
+    this.childThreads.forEach((child) => {
+      if (child.runtimeState && Atomics.load(child.runtimeState, 0) === PthreadStatus.RUN) {
+        count++
+      }
+    })
+    return count
+  }
+
+  public getRuntimeInfo(): WebAssemblyRuntimeInfo {
+    return {
+      variant: this.resourceMetadata.variant,
+      variantSource: this.resourceMetadata.variantSource,
+      threadCount: this.getRunningThreadCount()
+    }
+  }
+
   public destroy() {
+    if (this.options.threadRuntimeState) {
+      Atomics.store(this.options.threadRuntimeState, 0, PthreadStatus.STOP)
+    }
     if (this.builtinMalloc?.length) {
       array.each(this.builtinMalloc, (pointer) => {
         free(pointer)
@@ -836,6 +874,9 @@ export default class WebAssemblyRunner {
     if (this.childThreads.size) {
       this.childThreads.forEach((thread, id) => {
         if (!(thread.threadDescriptor.flags & PthreadFlags.DETACH)) {
+          if (thread.runtimeState) {
+            Atomics.store(thread.runtimeState, 0, PthreadStatus.STOP)
+          }
           logger.warn('has child thread running, maybe resource leakage')
           thread.worker.terminate()
           thread.thread.status = PthreadStatus.STOP

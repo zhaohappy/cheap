@@ -49,6 +49,8 @@ export default class ThreadPool {
       const stackPointer = aligned_alloc(config.STACK_ALIGNMENT, config.STACK_SIZE)
       const threadDescriptor = reinterpret_cast<pointer<ThreadDescriptor>>(malloc(sizeof(ThreadDescriptor)))
       memset(threadDescriptor, 0, sizeof(ThreadDescriptor))
+      const runtimeState = new Int32Array(new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT))
+      worker.addEventListener('error', () => Atomics.store(runtimeState, 0, PthreadStatus.STOP))
 
       threadDescriptor.status = PthreadStatus.STOP
       threadDescriptor.flags |= PthreadFlags.POOL
@@ -68,6 +70,7 @@ export default class ThreadPool {
             resolve({
               id,
               thread: {
+                runtimeState,
                 thread: nullptr,
                 worker,
                 stackPointer,
@@ -107,6 +110,7 @@ export default class ThreadPool {
               memoryBase: options.memoryBase,
               tableBase: options.tableBase,
               threadDescriptor,
+              threadRuntimeState: runtimeState,
               childImports: options.childImports
             },
             imports: options.childImports
@@ -131,6 +135,18 @@ export default class ThreadPool {
     return false
   }
 
+  /** Counts assigned pthreads that have not exited; idle pool workers do not count. */
+  public getRunningThreadCount() {
+    let count = 0
+    for (let i = 0; i < this.childThreads.length; i++) {
+      const child = this.childThreads[i].thread
+      if (child.runtimeState && Atomics.load(child.runtimeState, 0) === PthreadStatus.RUN) {
+        count++
+      }
+    }
+    return count
+  }
+
   public isPoolThread(thread: pointer<Pthread>) {
     for (let i = 0; i < this.childThreads.length; i++) {
       if (this.childThreads[i].thread.thread === thread) {
@@ -149,6 +165,7 @@ export default class ThreadPool {
         thread.flags |= PthreadFlags.POOL
 
         mutex.lock(addressof(this.childThreads[i].threadWait.mutex))
+        Atomics.store(this.childThreads[i].thread.runtimeState, 0, PthreadStatus.RUN)
         this.childThreads[i].threadWait.thread = thread
         this.childThreads[i].threadWait.func = func
         this.childThreads[i].threadWait.args = args
@@ -211,6 +228,7 @@ export default class ThreadPool {
 
   public destroy() {
     for (let i = 0; i < this.childThreads.length; i++) {
+      Atomics.store(this.childThreads[i].thread.runtimeState, 0, PthreadStatus.STOP)
       // 回收栈
       free(this.childThreads[i].thread.stackPointer)
       free(this.childThreads[i].thread.threadDescriptor)
